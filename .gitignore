@@ -49,3 +49,4 @@ vitest.config.*.timestamp*
 .nx/
 /.vscode/
 /.firebaserc
+/web-frontend/.env
