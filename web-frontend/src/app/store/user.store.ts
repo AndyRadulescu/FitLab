@@ -1,19 +1,20 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import firebase from 'firebase/compat/app';
 
 interface UserStore {
-  token: string;
+  user?: firebase.User;
   isLoggedIn: boolean;
-  setToken: (token: string) => void,
-  setIsLoggedIn: (isLoggedIn: boolean) => void
+  setUser: (user?: firebase.User) => void,
 }
 
 export const userStore = create<UserStore>()(
   persist((set) => ({
-    token: '',
+    token: undefined,
     isLoggedIn: false,
-    setToken: (token: string) => set((state) => ({ token })),
-    setIsLoggedIn: (isLoggedIn: boolean) => set((state) => ({ isLoggedIn }))
+    setUser: (user?: firebase.User) => set((state) => {
+      return { user, isLoggedIn: !!user };
+    }),
   }), {
     name: 'user-store'
   }));
