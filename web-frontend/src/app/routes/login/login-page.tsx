@@ -1,21 +1,23 @@
-import { getAuth, getRedirectResult, GoogleAuthProvider, signInWithRedirect, signInWithPopup } from 'firebase/auth';
-import { firebaseApp } from '../../firebase';
+import { GoogleAuthProvider, signInWithRedirect, signInWithPopup } from 'firebase/auth';
+import { firebaseApp, auth } from '../../../init-firebase-auth';
+import { redirect } from 'react-router';
 import { userStore } from '../../store/user.store';
 import firebase from 'firebase/compat/app';
-import { redirect } from 'react-router';
 
 export function LoginPage() {
   const setUser = userStore(state => state.setUser);
 
-  const provider = new GoogleAuthProvider();
-  const auth = getAuth(firebaseApp);
   const signInWithGoogle = () => {
     console.log(firebaseApp);
-    signInWithPopup(auth, provider).then((userCredential) => {
-      console.log(userCredential);
-      setUser(userCredential.user as firebase.User);
-      return redirect("/");
+    signInWithRedirect(auth, new GoogleAuthProvider()).then((user)=>{
+      console.log(user);
     });
+
+    // signInWithPopup(auth,  new GoogleAuthProvider()).then((userCredential) => {
+    //   console.log(userCredential);
+    //   setUser(userCredential.user as firebase.User);
+    //   return redirect("/");
+    // });
   };
 
   return (
