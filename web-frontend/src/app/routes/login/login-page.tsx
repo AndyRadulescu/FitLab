@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { auth } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -15,6 +15,9 @@ export function LoginPage() {
     />
   );
 
+  const signInWithGoogleRedirect = () => {
+    void signInWithRedirect(auth, new GoogleAuthProvider());
+  };
   const signInWithGoogle = () => {
     void signInWithPopup(auth, new GoogleAuthProvider());
 
@@ -34,7 +37,8 @@ export function LoginPage() {
 
   return (
     <div className="w-full h-full flex justify-center items-center">
-      <button className="p-4 bg-blue-500" onClick={signInWithGoogle}> Sign in with google</button>
+      <button className="p-4 bg-blue-500" onClick={signInWithGoogle}> Sign in with google popup</button>
+      <button className="p-4 bg-blue-500" onClick={signInWithGoogleRedirect}> Sign in with google redirect</button>
     </div>
   );
 }
