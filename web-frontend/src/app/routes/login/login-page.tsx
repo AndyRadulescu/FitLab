@@ -1,23 +1,28 @@
-import { GoogleAuthProvider, signInWithRedirect, signInWithPopup } from 'firebase/auth';
-import { firebaseApp, auth } from '../../../init-firebase-auth';
-import { redirect } from 'react-router';
+import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
+import { auth } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
-import firebase from 'firebase/compat/app';
+import { Navigate, useLocation } from 'react-router-dom';
 
 export function LoginPage() {
-  const setUser = userStore(state => state.setUser);
+  const isLoggedIn = userStore(state => state.isLoggedIn);
+  const location = useLocation();
+  if(isLoggedIn) return (
+    <Navigate
+      to="/"
+      replace
+      state={{ from: location }}
+    />
+  )
+
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     console.log('already logged in');
+  //     redirect('/');
+  //   }
+  // });
 
   const signInWithGoogle = () => {
-    console.log(firebaseApp);
-    signInWithRedirect(auth, new GoogleAuthProvider()).then((user)=>{
-      console.log(user);
-    });
-
-    // signInWithPopup(auth,  new GoogleAuthProvider()).then((userCredential) => {
-    //   console.log(userCredential);
-    //   setUser(userCredential.user as firebase.User);
-    //   return redirect("/");
-    // });
+    void signInWithRedirect(auth, new GoogleAuthProvider());
   };
 
   return (

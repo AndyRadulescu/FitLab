@@ -1,21 +1,21 @@
 // Uncomment this line to use CSS modules
 // import styles from './app.module.scss';
 import { getAuth } from 'firebase/auth';
-import { redirect } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { userStore } from './store/user.store';
 
 
 export function App() {
   const setUser = userStore(state => state.setUser);
+  const navigate = useNavigate();
 
   const auth = getAuth();
-  const logout = () => {
-    void auth.signOut().then(() => {
-      console.log('loggout');
-      setUser(undefined);
-      redirect('/login');
-    });
+  const logout = async () => {
+    await auth.signOut();
+    setUser(undefined);
+    navigate('/login', { replace: true });
   };
+
 
   return (
     <>

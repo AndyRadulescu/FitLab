@@ -15,7 +15,6 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-console.log('entered');
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp)
 
@@ -37,19 +36,14 @@ export async function initFirebaseAuth() {
   if (initialized) return;
   initialized = true;
 
-  console.log(JSON.stringify(firebaseApp))
-  console.log(auth);
   // Handle redirect result
-  await getRedirectResult(auth).then((user)=>{
-    console.log(user);
-  }).catch(console.error);
+  await getRedirectResult(auth).catch(console.error);
 
   // Sync Firebase → Zustand
   setTimeout(() => {
     onAuthStateChanged(auth, async (user) => {
       const store = userStore.getState();
 
-      console.log(user);
       if (user) {
         store.setUser(user as any);
         // return redirect("/");
