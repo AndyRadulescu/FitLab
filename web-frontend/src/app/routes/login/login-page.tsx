@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -6,23 +6,30 @@ import { Navigate, useLocation } from 'react-router-dom';
 export function LoginPage() {
   const isLoggedIn = userStore(state => state.isLoggedIn);
   const location = useLocation();
-  if(isLoggedIn) return (
+
+  if (isLoggedIn) return (
     <Navigate
       to="/"
       replace
       state={{ from: location }}
     />
-  )
-
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     console.log('already logged in');
-  //     redirect('/');
-  //   }
-  // });
+  );
 
   const signInWithGoogle = () => {
-    void signInWithRedirect(auth, new GoogleAuthProvider());
+    void signInWithPopup(auth, new GoogleAuthProvider());
+
+    // signInWithEmailAndPassword(auth, 'radulescu.eduard.andrei+test@gmail.com', 'muieplm')
+    //   .then((userCredential) => {
+    //     // Signed in
+    //     const user = userCredential.user;
+    //     console.log(user);
+    //     // ...
+    //   })
+    //   .catch((error) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     console.log(error);
+    //   });
   };
 
   return (

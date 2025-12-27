@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, devtools } from 'zustand/middleware';
 import firebase from 'firebase/compat/app';
 
 interface UserStore {
@@ -9,7 +9,8 @@ interface UserStore {
 }
 
 export const userStore = create<UserStore>()(
-  persist((set) => ({
+  devtools(
+    persist((set) => ({
     token: undefined,
     isLoggedIn: false,
     setUser: (user?: firebase.User) => set((state) => {
@@ -17,4 +18,4 @@ export const userStore = create<UserStore>()(
     }),
   }), {
     name: 'user-store'
-  }));
+  })));

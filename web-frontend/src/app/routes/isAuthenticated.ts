@@ -6,7 +6,6 @@ export async function isAuthenticated() {
     return redirect("/login");
   }
   const isLoggedIn = JSON.parse(userStore).state.isLoggedIn;
-  console.log(isLoggedIn);
   if (!isLoggedIn) {
     return redirect("/login");
   }
