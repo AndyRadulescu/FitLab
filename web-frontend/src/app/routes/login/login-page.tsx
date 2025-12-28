@@ -15,9 +15,6 @@ export function LoginPage() {
     />
   );
 
-  const signInWithGoogleRedirect = () => {
-    void signInWithRedirect(auth, new GoogleAuthProvider());
-  };
   const signInWithGoogle = () => {
     void signInWithPopup(auth, new GoogleAuthProvider());
 
@@ -36,9 +33,8 @@ export function LoginPage() {
   };
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
+    <div className="w-full h-svh flex justify-center items-center bg-linear-to-r from-violet-500 to-fuchsia-500">
       <button className="p-4 bg-blue-500" onClick={signInWithGoogle}> Sign in with google popup</button>
-      <button className="p-4 bg-blue-500" onClick={signInWithGoogleRedirect}> Sign in with google redirect</button>
     </div>
   );
 }
