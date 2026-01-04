@@ -11,7 +11,7 @@ export function App() {
   const logout = async () => {
     await auth.signOut();
     setUser(undefined);
-    navigate('/login', { replace: true });
+    navigate('/auth/login', { replace: true });
   };
 
   return (
