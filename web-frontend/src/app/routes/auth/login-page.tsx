@@ -37,19 +37,19 @@ export function LoginPage() {
   return (
     <form className="mb-6 px-4" onSubmit={handleSubmit(data => onSignInWithEmailAndPassword(data))}>
       <Input
-        label={t('auth.email', 'Email')}
+        placeholder={t('auth.email', 'Email')}
         type="email"
         {...register('email')}
         error={errors.email?.message}
       />
       <Input
-        label={t('auth.password', 'Password')}
+        placeholder={t('auth.password', 'Password')}
         type="password"
         {...register('password')}
         error={errors.password?.message}
       />
       <button
-        className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-violet-500 to-fuchsia-500"
+        className="w-full hover:bg-amber-500 text-white pointer font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-amber-300 to-red-900"
         disabled={isSubmitting}>
         <Trans i18nKey="auth.login">Login</Trans>
       </button>

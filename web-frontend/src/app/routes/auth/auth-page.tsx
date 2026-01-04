@@ -21,7 +21,7 @@ export function AuthPage() {
   };
 
   return (
-    <div className="w-full h-svh flex justify-center items-center bg-linear-to-r from-violet-500 to-fuchsia-500">
+    <div className="w-full h-svh flex justify-center items-center bg-linear-to-r from-amber-300 to-red-900">
       <div className="w-sm shadow-sm bg-white rounded flex justify-center">
         <div className="w-full py-16">
           <Outlet />
