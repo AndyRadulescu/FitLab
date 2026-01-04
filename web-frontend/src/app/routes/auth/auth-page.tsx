@@ -1,7 +1,8 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
-import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Trans } from 'react-i18next';
 
 export function AuthPage() {
   const isLoggedIn = userStore(state => state.isLoggedIn);
@@ -24,7 +25,9 @@ export function AuthPage() {
       <div className="w-sm shadow-sm bg-white rounded flex justify-center">
         <div className="w-full py-16">
           <Outlet />
-          <h3 className="w-full text-center inline-block my-2">Social</h3>
+          <h3 className="w-full text-center inline-block my-2">
+            <Trans i18nKey="auth.social">Social</Trans>
+          </h3>
           <div className="w-full justify-center flex">
             <button className="p-4 bg-blue-500 rounded-full mb-3" onClick={onSignInWithGoogle}> G</button>
           </div>

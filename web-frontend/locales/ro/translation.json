@@ -1,0 +1,7 @@
+{
+  "auth.login": "Autentificare",
+  "auth.email": "E-mail",
+  "auth.password": "Parolă",
+  "auth.register": "Înregistrare",
+  "auth.social": "Social"
+}

@@ -1,0 +1,7 @@
+{
+  "auth.login": "Login",
+  "auth.email": "E-mail",
+  "auth.password": "Password",
+  "auth.register": "Register",
+  "auth.social": "Social"
+}

@@ -5,6 +5,7 @@ import { Input } from '../../design/input';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Trans, useTranslation } from 'react-i18next';
 
 const schema = z.object({
   email: z.email(),
@@ -14,7 +15,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 export function LoginPage() {
-
+  const { t } = useTranslation();
   const onSignInWithEmailAndPassword = (data: FormData) => {
     console.log(data);
     void signInWithEmailAndPassword(auth, data.email, data.password).catch((error) => {
@@ -36,13 +37,13 @@ export function LoginPage() {
   return (
     <form className="mb-6 px-4" onSubmit={handleSubmit(data => onSignInWithEmailAndPassword(data))}>
       <Input
-        label="Email"
+        label={t('auth.email', 'Email')}
         type="email"
         {...register('email')}
         error={errors.email?.message}
       />
       <Input
-        label="Password"
+        label={t('auth.password', 'Password')}
         type="password"
         {...register('password')}
         error={errors.password?.message}
@@ -50,10 +51,12 @@ export function LoginPage() {
       <button
         className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-violet-500 to-fuchsia-500"
         disabled={isSubmitting}>
-        Login
+        <Trans i18nKey="auth.login">Login</Trans>
       </button>
       <div className="w-full justify-center flex">
-        <Link to={'/auth/register'}>Register</Link>
+        <Link to={'/auth/register'}>
+          <Trans i18nKey="auth.register">Register</Trans>
+        </Link>
       </div>
     </form>
   );
