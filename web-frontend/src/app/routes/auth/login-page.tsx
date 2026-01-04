@@ -1,45 +1,60 @@
 import { auth } from '../../../init-firebase-auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link } from 'react-router-dom';
+import { Input } from '../../design/input';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const schema = z.object({
+  email: z.email(),
+  password: z.string().min(6)
+});
+
+type FormData = z.infer<typeof schema>;
 
 export function LoginPage() {
-  const onSignInWithEmailAndPassword = () => {
-    void signInWithEmailAndPassword(auth, 'radulescu.eduard.andrei+test@gmail.com', 'muieplm');
-    // .then((userCredential) => {
-    //   // Signed in
-    //   const user = userCredential.user;
-    //   console.log(user);
-    //   // ...
-    // })
-    // .catch((error) => {
-    //   const errorCode = error.code;
-    //   const errorMessage = error.message;
-    //   console.log(error);
-    // });
+
+  const onSignInWithEmailAndPassword = (data: FormData) => {
+    console.log(data);
+    void signInWithEmailAndPassword(auth, data.email, data.password).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(error);
+      console.log(errorMessage);
+    });
   };
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<FormData>({
+    resolver: zodResolver(schema)
+  });
+
   return (
-    <div className="mb-6 px-4">
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">Email</label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="email" type="email" placeholder="john@doe.com" />
-      </div>
-      <div>
-        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">Password</label>
-        <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          id="password" type="password" />
-      </div>
+    <form className="mb-6 px-4" onSubmit={handleSubmit(data => onSignInWithEmailAndPassword(data))}>
+      <Input
+        label="Email"
+        type="email"
+        {...register('email')}
+        error={errors.email?.message}
+      />
+      <Input
+        label="Password"
+        type="password"
+        {...register('password')}
+        error={errors.password?.message}
+      />
       <button
         className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-violet-500 to-fuchsia-500"
-        onClick={onSignInWithEmailAndPassword}>
+        disabled={isSubmitting}>
         Login
       </button>
       <div className="w-full justify-center flex">
         <Link to={'/auth/register'}>Register</Link>
       </div>
-    </div>
+    </form>
   );
 }
