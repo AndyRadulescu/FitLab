@@ -15,5 +15,6 @@
   "errors.password.lowercase": "Password must contain an lowercase letter",
   "errors.password.number": "Password must contain a number",
   "errors.password.special": "Password must contain a special character",
-  "errors.password.mismatch": "Passwords do not match"
+  "errors.password.mismatch": "Passwords do not match",
+  "dashboard.nothingYet": "Noting to show yet"
 }

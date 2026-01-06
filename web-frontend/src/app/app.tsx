@@ -3,7 +3,7 @@
 import { useNavigate } from 'react-router-dom';
 import { userStore } from './store/user.store';
 import { auth } from '../init-firebase-auth';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 export function App() {
   const setUser = userStore(state => state.setUser);
@@ -22,7 +22,7 @@ export function App() {
         <button onClick={() => i18n.changeLanguage("en")}>EN</button>
         <button onClick={() => i18n.changeLanguage("ro")}>RO</button>
       </div>
-      <p>noting to show yet</p>
+      <p><Trans i18nKey="dashboard.nothingYet">Noting to show yet</Trans></p>
       <button onClick={logout}>Log out</button>
     </>
   );
