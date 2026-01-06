@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
+import { handleAuthErrors } from './error-handler';
 
 const loginSchema = z.object({
   email: z.email('errors.email.invalid'),
@@ -18,11 +19,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export function LoginPage() {
   const { t } = useTranslation();
   const onLogInWithEmailAndPassword = (data: LoginFormData) => {
-    void signInWithEmailAndPassword(auth, data.email, data.password).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(error);
-      console.log(errorMessage);
+    void signInWithEmailAndPassword(auth, data.email, data.password).catch((err) => {
+      handleAuthErrors(err, t);
     });
   };
 

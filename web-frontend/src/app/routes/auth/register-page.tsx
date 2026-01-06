@@ -6,6 +6,9 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
 import { Input } from '../../design/input';
+import firebase from 'firebase/compat/app';
+import AuthError = firebase.auth.AuthError;
+import { handleAuthErrors } from './error-handler';
 
 const registerSchema = z.object({
   email: z.email('errors.email.invalid'),
@@ -34,8 +37,9 @@ export function RegisterPage() {
   const { t } = useTranslation();
 
   const onRegisterWithEmailAndPassword = (data: RegisterFormData) => {
-    console.log(data);
-    // createUserWithEmailAndPassword(auth, data.email, data.password).catch(console.log);
+    createUserWithEmailAndPassword(auth, data.email, data.password).catch((err: AuthError) => {
+      handleAuthErrors(err, t)
+    });
   };
 
   const {
@@ -70,10 +74,10 @@ export function RegisterPage() {
       <button
         className="w-full hover:bg-amber-500 text-white pointer font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-amber-300 to-red-900"
         disabled={isSubmitting}>
-        <Trans i18nKey="auth.login">Register</Trans>
+        <Trans i18nKey="auth.regiser">Register</Trans>
       </button>
       <div className="w-full justify-center flex">
-        <Link to={'/auth/login'}>Login</Link>
+        <Link to={'/auth/login'}><Trans i18nKey="auth.login">Login</Trans></Link>
       </div>
     </form>
   );
