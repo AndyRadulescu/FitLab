@@ -7,17 +7,17 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
 
-const schema = z.object({
-  email: z.email(),
-  password: z.string().min(6)
+const loginSchema = z.object({
+  email: z.email('errors.email.invalid'),
+  password: z.string().min(6, 'errors.password.min')
+    .max(30, 'errors.password.max')
 });
 
-type FormData = z.infer<typeof schema>;
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginPage() {
   const { t } = useTranslation();
-  const onSignInWithEmailAndPassword = (data: FormData) => {
-    console.log(data);
+  const onLogInWithEmailAndPassword = (data: LoginFormData) => {
     void signInWithEmailAndPassword(auth, data.email, data.password).catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -30,23 +30,23 @@ export function LoginPage() {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
-  } = useForm<FormData>({
-    resolver: zodResolver(schema)
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema)
   });
 
   return (
-    <form className="mb-6 px-4" onSubmit={handleSubmit(data => onSignInWithEmailAndPassword(data))}>
+    <form className="mb-6 px-4" onSubmit={handleSubmit(data => onLogInWithEmailAndPassword(data))}>
       <Input
         placeholder={t('auth.email', 'Email')}
         type="email"
         {...register('email')}
-        error={errors.email?.message}
+        error={errors.email?.message && t(errors.email.message)}
       />
       <Input
         placeholder={t('auth.password', 'Password')}
         type="password"
         {...register('password')}
-        error={errors.password?.message}
+        error={errors.password?.message && t(errors.password.message)}
       />
       <button
         className="w-full hover:bg-amber-500 text-white pointer font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-amber-300 to-red-900"

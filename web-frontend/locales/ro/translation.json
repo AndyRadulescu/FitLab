@@ -2,6 +2,15 @@
   "auth.login": "Autentificare",
   "auth.email": "E-mail",
   "auth.password": "Parolă",
+  "auth.confirm-password": "Confirmă parola",
   "auth.register": "Înregistrare",
-  "auth.social": "Social"
+  "auth.social": "Social",
+  "errors.email.invalid": "Email is invalid",
+  "errors.password.min": "Parola trebuie să aibă cel puțin 6 caractere",
+  "errors.password.max": "Parola trebuie să aibă cel mult 30 de caractere",
+  "errors.password.uppercase": "Parola trebuie să conțină o literă mare",
+  "errors.password.lowercase": "Parola trebuie să conțină o literă mică",
+  "errors.password.number": "Parola trebuie să conțină un număr",
+  "errors.password.special": "Parola trebuie să conțină un caracter special",
+  "errors.password.mismatch": "Parolele nu coincid"
 }

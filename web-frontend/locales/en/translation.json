@@ -2,6 +2,15 @@
   "auth.login": "Login",
   "auth.email": "E-mail",
   "auth.password": "Password",
+  "confirm-password": "Confirm password",
   "auth.register": "Register",
-  "auth.social": "Social"
+  "auth.social": "Social",
+  "errors.email.invalid": "Email is invalid",
+  "errors.password.min": "Password must be at least 6 characters long",
+  "errors.password.max": "Password must be at max 30 characters long",
+  "errors.password.uppercase": "Password must contain an uppercase letter",
+  "errors.password.lowercase": "Password must contain an lowercase letter",
+  "errors.password.number": "Password must contain a number",
+  "errors.password.special": "Password must contain a special character",
+  "errors.password.mismatch": "Passwords do not match"
 }
