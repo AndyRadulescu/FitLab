@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom/client';
 import { router } from './app/routes/router';
 import { initFirebaseAuth } from './init-firebase-auth';
 import './i18n';
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration"; // CRA
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,3 +19,5 @@ root.render(
     </Suspense>
   </StrictMode>
 );
+
+serviceWorkerRegistration.register();
