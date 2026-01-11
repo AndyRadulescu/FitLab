@@ -2,7 +2,7 @@
   "auth.login": "Login",
   "auth.email": "E-mail",
   "auth.password": "Password",
-  "confirm-password": "Confirm password",
+  "auth.confirm-password": "Confirm password",
   "auth.register": "Register",
   "auth.social": "Social",
   "errors.unknown": "An error occurred!",
