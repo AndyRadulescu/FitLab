@@ -5,6 +5,8 @@
   "auth.confirm-password": "Confirm password",
   "auth.register": "Register",
   "auth.social": "Social",
+  "auth.sigin.facebook": "Sign in with Facebook",
+  "auth.sigin.google": "Sign in with Google",
   "errors.unknown": "An error occurred!",
   "errors.credentials.invalid": "Credentials are invalid!",
   "errors.email.alreadyExists": "The email has already been used!",

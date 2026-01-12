@@ -33,7 +33,7 @@ export function LoginPage() {
   });
 
   return (
-    <form className="mb-6 px-4" onSubmit={handleSubmit(data => onLogInWithEmailAndPassword(data))}>
+    <form onSubmit={handleSubmit(data => onLogInWithEmailAndPassword(data))}>
       <Input
         placeholder={t('auth.email', 'Email')}
         type="email"
