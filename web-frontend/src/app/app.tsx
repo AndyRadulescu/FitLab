@@ -1,6 +1,5 @@
 // Uncomment this line to use CSS modules
-// import styles from './app.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { userStore } from './store/user.store';
 import { auth } from '../init-firebase-auth';
 import { Trans, useTranslation } from 'react-i18next';
@@ -17,14 +16,30 @@ export function App() {
   };
 
   return (
-    <>
+    <div className="h-full">
+      <Outlet />
       <div>
-        <button onClick={() => i18n.changeLanguage("en")}>EN</button>
-        <button onClick={() => i18n.changeLanguage("ro")}>RO</button>
+        <button onClick={() => i18n.changeLanguage('en')}>EN</button>
+        <button onClick={() => i18n.changeLanguage('ro')}>RO</button>
       </div>
       <p><Trans i18nKey="dashboard.nothingYet">Noting to show yet</Trans></p>
       <button onClick={logout}>Log out</button>
-    </>
+
+      <span className="material-icons">account_circle</span>
+      <span className="material-icons-outlined">account_circle</span>
+      <span className="material-icons-round">account_circle</span>
+      <span className="material-icons-sharp">account_circle</span>
+      <span className="material-icons-two-tone">account_circle</span>
+
+      <div className="fixed bottom-2 left-0 w-full px-2">
+        <div className="flex justify-evenly items-center h-[60px] bg-gray-600 rounded-full">
+          <span className="material-icons text-5xl text-white">send</span>
+          <span className="material-icons text-5xl bg-amber-600 text-white rounded-full p-2">add</span>
+          <span className="material-icons text-5xl text-white">manage_accounts</span>
+        </div>
+      </div>
+
+    </div>
   );
 }
 
