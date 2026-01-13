@@ -5,6 +5,7 @@
   "auth.confirm-password": "Confirmă parola",
   "auth.register": "Înregistrare",
   "auth.social": "Social",
+  "auth.signout": "Ieși din cont",
   "auth.signin.facebook": "Înregistrează-te cu Facebook",
   "auth.signin.google": "Înregistrează-te cu Google",
   "errors.unknown": "A apărut o eroare!",
@@ -18,5 +19,6 @@
   "errors.password.number": "Parola trebuie să conțină un număr",
   "errors.password.special": "Parola trebuie să conțină un caracter special",
   "errors.password.mismatch": "Parolele nu coincid",
-  "dashboard.nothingYet": "Încă nu există nimic de afișat"
+  "dashboard.nothingYet": "Încă nu există nimic de afișat",
+  "profile.change.language": "Schimbă limba"
 }

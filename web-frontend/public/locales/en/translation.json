@@ -6,6 +6,7 @@
   "auth.register": "Register",
   "auth.social": "Social",
   "auth.signin.facebook": "Sign in with Facebook",
+  "auth.signout": "Log out",
   "auth.signin.google": "Sign in with Google",
   "errors.unknown": "An error occurred!",
   "errors.credentials.invalid": "Credentials are invalid!",
@@ -18,5 +19,6 @@
   "errors.password.number": "Password must contain a number",
   "errors.password.special": "Password must contain a special character",
   "errors.password.mismatch": "Passwords do not match",
-  "dashboard.nothingYet": "Noting to show yet"
+  "dashboard.nothingYet": "Nothing to show yet",
+  "profile.change.language": "Change language"
 }
