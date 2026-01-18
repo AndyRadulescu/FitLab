@@ -6,7 +6,7 @@ export function App() {
   const { t } = useTranslation(); // don't remove this; used to init i18n
 
   return (
-    <div className="m-4">
+    <div className="m-4 pb-[90px]">
       <Outlet />
       <Navbar />
     </div>
