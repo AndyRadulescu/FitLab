@@ -19,6 +19,11 @@
   "errors.password.number": "Password must contain a number",
   "errors.password.special": "Password must contain a special character",
   "errors.password.mismatch": "Passwords do not match",
+  "errors.profile.min": "Value must be at least 0",
+  "errors.profile.empty": "Value cannot be empty",
+  "errors.profile.min1": "Value must be at least 1",
+  "errors.profile.maxHour": "Value must be at max 12",
+  "errors.profile.max10": "Value must be at max 10",
   "dashboard.nothingYet": "Nothing to show yet",
   "profile.change.language": "Change language"
 }
