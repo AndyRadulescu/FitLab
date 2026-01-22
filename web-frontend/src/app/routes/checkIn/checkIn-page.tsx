@@ -4,6 +4,10 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { db } from '../../../init-firebase-auth';
+import { userStore } from '../../store/user.store';
+import { useNavigate } from 'react-router-dom';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -26,6 +30,8 @@ type CheckInFormData = z.infer<typeof checkinSchema>;
 
 export function CheckInPage() {
   const { t } = useTranslation();
+  const user = userStore((state) => state.user);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -35,8 +41,22 @@ export function CheckInPage() {
     resolver: zodResolver(checkinSchema)
   });
 
-  const sendCheckin = (data: CheckInFormData) => {
+  const sendCheckin = async (data: CheckInFormData) => {
     console.log(data);
+    if (!user) {
+      navigate('/auth/login', { replace: true });
+      return;
+    }
+    try {
+      await addDoc(collection(db, 'checkins'), {
+        ...data,
+        userId: user.uid,
+        createdAt: serverTimestamp()
+      });
+      navigate('/dashboard/', { replace: true });
+    } catch (e) {
+      alert('something went wrong');
+    }
   };
 
   return (
