@@ -24,6 +24,7 @@
   "errors.profile.min1": "Valoarea trebuie să fie cel puțin 1",
   "errors.profile.maxHour": "Valoarea trebuie să fie cel mult 12",
   "errors.profile.max10": "Valoarea trebuie să fie cel mult 10",
+  "errors.date.invalid": "Data este în format invalid",
   "dashboard.nothingYet": "Încă nu există nimic de afișat",
   "profile.change.language": "Schimbă limba",
   "checkin.measures.kg": "Greutate (kg):",
@@ -41,8 +42,9 @@
   "checkin.mood": "Pe o scară de la 1 la 10 cum te simți (mood check)?",
   "checkin.steps": "Cați pași ai făcut zilnic, în medie?",
   "start.title": "Salut, bine ai venit la Fitlab!",
-  "start.description": "Ca să incepem, ne trebuie doar câteva informații despre tine:",
+  "start.description": "Ca să incepem, ne trebuie doar câteva informații despre tine.",
   "start.dateOfBirth": "Data nașterii:",
   "start.startingWeight": "Greutatea cu care începem:",
-  "start.height": "Înăltime:"
+  "start.height": "Înăltime:",
+  "start.start": "Începe"
 }
