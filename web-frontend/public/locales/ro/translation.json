@@ -25,5 +25,19 @@
   "errors.profile.maxHour": "Valoarea trebuie să fie cel mult 12",
   "errors.profile.max10": "Valoarea trebuie să fie cel mult 10",
   "dashboard.nothingYet": "Încă nu există nimic de afișat",
-  "profile.change.language": "Schimbă limba"
+  "profile.change.language": "Schimbă limba",
+  "checkin.measures.kg": "Greutate (kg): ",
+  "checkin.measures.breast": "Măsurături bust: ",
+  "checkin.measures.waist": "Măsurături talie: ",
+  "checkin.measures.hips": "Măsurături şolduri: ",
+  "checkin.measures.butt": "Măsurături fund: ",
+  "checkin.measures.leftThigh": "Măsurături coapsa stânga: ",
+  "checkin.measures.rightThigh": "Măsurături coapsa dreaptă: ",
+  "checkin.measures.leftArm": "Măsurături brațul stâng: ",
+  "checkin.measures.rightArm": "Măsurături brațul drept: ",
+  "checkin.sleep": "Câte ore ai dormit în medie? ",
+  "checkin.plan": "Pe o scară de la 1 la 10, cât de bine ai respectat planul alimentar?",
+  "checkin.energy": "Pe o scară de la 1 la 10, ce energie ai?",
+  "checkin.mood": "Pe o scară de la 1 la 10 cum te simți (mood check)?",
+  "checkin.steps": "Cați pași ai făcut zilnic, în medie?"
 }

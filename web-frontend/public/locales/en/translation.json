@@ -25,5 +25,19 @@
   "errors.profile.maxHour": "Value must be at max 12",
   "errors.profile.max10": "Value must be at max 10",
   "dashboard.nothingYet": "Nothing to show yet",
-  "profile.change.language": "Change language"
+  "profile.change.language": "Change language",
+  "checkin.measures.kg": "Weight (kg): ",
+  "checkin.measures.breast": "Bust measurements: ",
+  "checkin.measures.waist": "Waist measurements: ",
+  "checkin.measures.hips": "Hip measurements: ",
+  "checkin.measures.butt": "Glute measurements: ",
+  "checkin.measures.leftThigh": "Left thigh measurements: ",
+  "checkin.measures.rightThigh": "Right thigh measurements: ",
+  "checkin.measures.leftArm": "Left arm measurements: ",
+  "checkin.measures.rightArm": "Right arm measurements: ",
+  "checkin.sleep": "How many hours did you sleep on average?",
+  "checkin.plan": "On a scale from 1 to 10, how well did you follow your meal plan?",
+  "checkin.energy": "On a scale from 1 to 10, how is your energy level?",
+  "checkin.mood": "On a scale from 1 to 10, how do you feel (mood check)?",
+  "checkin.steps": "How many steps did you take per day on average?"
 }
