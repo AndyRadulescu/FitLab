@@ -11,7 +11,7 @@ interface UserStore {
 export const userStore = create<UserStore>()(
   devtools(
     persist((set) => ({
-    token: undefined,
+    user: undefined,
     isLoggedIn: false,
     setUser: (user?: firebase.User) => set((state) => {
       return { user, isLoggedIn: !!user };
