@@ -4,10 +4,11 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp, doc } from 'firebase/firestore';
 import { db } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
 import { useNavigate } from 'react-router-dom';
+import { checkinStore } from '../../store/checkin.store';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -26,12 +27,14 @@ const checkinSchema = z.object({
   dailySteps: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1')
 });
 
-type CheckInFormData = z.infer<typeof checkinSchema>;
+export type CheckInFormData = z.infer<typeof checkinSchema>;
 
 export function CheckInPage() {
   const { t } = useTranslation();
   const user = userStore((state) => state.user);
+  const addCheckin = checkinStore((state) => state.addCheckin);
   const navigate = useNavigate();
+  const ref = doc(collection(db, 'checkin')); // 👈 ID generated here
 
   const {
     register,
@@ -42,17 +45,18 @@ export function CheckInPage() {
   });
 
   const sendCheckin = async (data: CheckInFormData) => {
-    console.log(data);
     if (!user) {
       navigate('/auth/login', { replace: true });
       return;
     }
     try {
+      const mappedData = {...data, createdAt: new Date(), id: ref.id}
       await addDoc(collection(db, 'checkins'), {
-        ...data,
+        ...mappedData,
         userId: user.uid,
         createdAt: serverTimestamp()
       });
+      addCheckin(mappedData)
       navigate('/dashboard/', { replace: true });
     } catch (e) {
       alert('something went wrong');
@@ -61,7 +65,7 @@ export function CheckInPage() {
 
   return (
     <div>
-      <h1 className="text-center">Check-in</h1>
+      <h1 className="text-center text-2xl mb-4">Check-in</h1>
       <form noValidate className="mt-4" onSubmit={handleSubmit(data => sendCheckin(data))}>
         <Card className="mb-2">
           <Input label={t('checkin.measures.kg')} type="number" min="0" {...register('kg', { valueAsNumber: true })}
