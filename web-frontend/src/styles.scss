@@ -6,3 +6,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'material-icons/iconfont/material-icons.css';
+@layer base {
+  body {
+    @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+  }
+}
