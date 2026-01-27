@@ -27,15 +27,15 @@ export function AuthPage() {
   };
 
   return (
-    <div className="w-full h-svh flex flex-col justify-end items-center bg-primary relative">
+    <div className="w-full h-svh flex flex-col justify-end items-center bg-primary dark:bg-gray-800 relative">
       <div
         className="absolute top-10 inset-x-4 h-[50%] bg-[url('/images/logo-title.svg')] bg-no-repeat bg-top bg-center bg-contain"></div>
-      <div className="w-full shadow-sm bg-white rounded-t-4xl flex justify-center rounded">
+      <div className="w-full shadow-sm bg-white dark:bg-gray-700 rounded-t-4xl flex justify-center rounded">
         <div className="w-full py-16 px-[40px]">
           <Outlet />
           <div className="flex items-center gap-4 w-full my-4">
             <div className="flex-1 h-px bg-gray-300" />
-            <span className="text-sm text-gray-500 whitespace-nowrap">
+            <span className="text-sm text-gray-500 dark:text-gray-100 whitespace-nowrap">
               <Trans i18nKey="auth.social">Social</Trans>
             </span>
             <div className="flex-1 h-px bg-gray-300" />
@@ -50,6 +50,7 @@ export function AuthPage() {
             </div>
             <div className="flex justify-center w-full">
               <select
+                className="dark:text-gray-100"
                 value={i18n.language}
                 onChange={(e) => i18n.changeLanguage(e.target.value)}
               >

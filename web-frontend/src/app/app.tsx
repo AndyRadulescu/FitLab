@@ -5,7 +5,7 @@ import { getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { StartPageFormDataDto, userStore } from './store/user.store';
 import { useNavigate } from 'react-router-dom';
-import { CheckInFormDataDto, CheckInFormDataDtoFirebase, checkinStore } from './store/checkin.store';
+import { CheckInFormDataDtoFirebase, checkinStore } from './store/checkin.store';
 import { getCheckinQuery, getStartDataQuery } from './firestore/queries';
 
 export function App() {
