@@ -27,9 +27,14 @@ export function AuthPage() {
   };
 
   return (
-    <div className="w-full h-svh flex flex-col justify-end items-center bg-primary dark:bg-gray-800 relative">
-      <div
-        className="absolute top-10 inset-x-4 h-[50%] bg-[url('/images/logo-title.svg')] bg-no-repeat bg-top bg-center bg-contain"></div>
+    <div className="w-full h-svh flex flex-col bg-primary dark:bg-gray-800">
+      <div className="flex-1 flex justify-center items-start pt-12 px-4 mb-4">
+        <img
+          src="/images/logo-title.svg"
+          alt="Logo"
+          className="max-h-64 object-contain"
+        />
+      </div>
       <div className="w-full shadow-sm bg-white dark:bg-gray-700 rounded-t-4xl flex justify-center rounded">
         <div className="w-full py-16 px-[40px]">
           <Outlet />

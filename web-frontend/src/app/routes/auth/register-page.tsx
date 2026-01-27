@@ -53,7 +53,6 @@ export function RegisterPage() {
 
   return (
     <form onSubmit={handleSubmit(data => onRegisterWithEmailAndPassword(data))}>
-      Register
       <Input
         placeholder={t('auth.email', 'Email')}
         type="email"
