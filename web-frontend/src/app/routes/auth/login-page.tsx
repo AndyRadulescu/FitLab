@@ -50,7 +50,7 @@ export function LoginPage() {
       <Button disabled={isSubmitting} type="primary">
         <Trans i18nKey="auth.login">Login</Trans>
       </Button>
-      <Button disabled={isSubmitting} type="tertiary">
+      <Button type="tertiary">
         <Link to={'/auth/register'}>
           <Trans i18nKey="auth.register">Register</Trans>
         </Link>
