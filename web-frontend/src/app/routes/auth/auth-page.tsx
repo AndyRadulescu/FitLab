@@ -27,14 +27,19 @@ export function AuthPage() {
   };
 
   return (
-    <div className="w-full h-svh flex flex-col justify-end items-center bg-gray-700 relative">
-      <div className="absolute top-10 inset-x-4 h-[50%] bg-[url('/images/logo-title.svg')] bg-no-repeat bg-top bg-center bg-contain"></div>
+    <div className="w-full h-svh flex flex-col justify-end items-center bg-primary relative">
+      <div
+        className="absolute top-10 inset-x-4 h-[50%] bg-[url('/images/logo-title.svg')] bg-no-repeat bg-top bg-center bg-contain"></div>
       <div className="w-full shadow-sm bg-white rounded-t-4xl flex justify-center rounded">
         <div className="w-full py-16 px-[40px]">
           <Outlet />
-          <h3 className="w-full text-center inline-block my-2">
-            <Trans i18nKey="auth.social">Social</Trans>
-          </h3>
+          <div className="flex items-center gap-4 w-full my-4">
+            <div className="flex-1 h-px bg-gray-300" />
+            <span className="text-sm text-gray-500 whitespace-nowrap">
+              <Trans i18nKey="auth.social">Social</Trans>
+            </span>
+            <div className="flex-1 h-px bg-gray-300" />
+          </div>
           <div className="w-full">
             <div onClick={onSignInWithGoogle} className="mb-2">
               <SocialButton socialType="google"></SocialButton>
@@ -48,8 +53,8 @@ export function AuthPage() {
                 value={i18n.language}
                 onChange={(e) => i18n.changeLanguage(e.target.value)}
               >
-                <option value="en">English</option>
-                <option value="ro">Română</option>
+                <option value="en">🇺🇸English</option>
+                <option value="ro">🇷🇴Română</option>
               </select>
             </div>
           </div>
