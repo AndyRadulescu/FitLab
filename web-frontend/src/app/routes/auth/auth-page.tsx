@@ -4,6 +4,7 @@ import { userStore } from '../../store/user.store';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
 import { SocialButton } from '../../design/social-button';
+import { LanguageToggle } from '../../design/language-toggle';
 
 export function AuthPage() {
   const { i18n } = useTranslation();
@@ -27,8 +28,10 @@ export function AuthPage() {
   };
 
   return (
-    <div className="w-full min-h-svh flex flex-col lg:flex-row align-center bg-primary dark:bg-gray-800 lg:dark:bg-gray-700 lg:bg-white">
-      <div className="flex-1 flex justify-center items-center p-8 lg:p-12 dark:bg-gray-800 lg:bg-primary lg:rounded-t-none lg:rounded-r-4xl">
+    <div
+      className="w-full min-h-svh flex flex-col lg:flex-row align-center bg-primary dark:bg-gray-800 lg:dark:bg-gray-700 lg:bg-white">
+      <div
+        className="flex-1 flex justify-center items-center p-8 lg:p-12 dark:bg-gray-800 lg:bg-primary lg:rounded-t-none lg:rounded-r-4xl">
         <img
           src="/images/logo-title.svg"
           alt="Logo"
@@ -58,14 +61,7 @@ export function AuthPage() {
             </div>
 
             <div className="flex justify-center w-full mt-6">
-              <select
-                className="dark:text-gray-100 bg-transparent border rounded p-1"
-                value={i18n.language}
-                onChange={(e) => i18n.changeLanguage(e.target.value)}
-              >
-                <option value="en">🇺🇸 English</option>
-                <option value="ro">🇷🇴 Română</option>
-              </select>
+              <LanguageToggle />
             </div>
           </div>
         </div>

@@ -72,7 +72,7 @@ export function RegisterPage() {
         error={errors.confirmPassword?.message && t(errors.confirmPassword.message)}
       />
       <Button type="primary" disabled={isSubmitting}>
-        <Trans i18nKey="auth.regiser">Register</Trans>
+        <Trans i18nKey="auth.register">Register</Trans>
       </Button>
       <Button type="tertiary">
         <Link to={'/auth/login'}><Trans i18nKey="auth.login">Login</Trans></Link>
