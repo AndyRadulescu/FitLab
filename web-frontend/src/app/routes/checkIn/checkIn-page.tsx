@@ -4,12 +4,11 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
-import { addDoc, collection, doc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
-import { useNavigate } from 'react-router-dom';
-import { checkinStore } from '../../store/checkin.store';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../../design/button';
+import { CheckInStrategyFactory } from './checkin-strategy';
+import { checkinStore } from '../../store/checkin.store';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -33,16 +32,18 @@ export type CheckInFormData = z.infer<typeof checkinSchema>;
 export function CheckInPage() {
   const { t } = useTranslation();
   const user = userStore((state) => state.user);
-  const addCheckin = checkinStore((state) => state.addCheckin);
   const navigate = useNavigate();
-  const ref = doc(collection(db, 'checkin')); // 👈 ID generated here
+  const [searchParams] = useSearchParams();
+  const checkinId = searchParams.get('checkinId');
+  const checkinData = checkinStore((state) => state.checkins).find(checkin => checkin.id === checkinId);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<CheckInFormData>({
-    resolver: zodResolver(checkinSchema)
+    resolver: zodResolver(checkinSchema),
+    defaultValues: checkinData
   });
 
   const sendCheckin = async (data: CheckInFormData) => {
@@ -51,15 +52,13 @@ export function CheckInPage() {
       return;
     }
     try {
-      const mappedData = { ...data, createdAt: new Date(), id: ref.id };
-      await addDoc(collection(db, 'checkins'), {
-        ...mappedData,
-        userId: user.uid,
-        createdAt: serverTimestamp()
+      await CheckInStrategyFactory.getStrategy(!!checkinData).checkIn({
+        data: { ...data, id: checkinData?.id ?? '' },
+        userId: user.uid
       });
-      addCheckin(mappedData);
       navigate('/dashboard/', { replace: true });
     } catch (e) {
+      console.log(e);
       alert('something went wrong');
     }
   };
@@ -112,7 +111,9 @@ export function CheckInPage() {
         </Card>
 
         <div className="mt-4">
-          <Button disabled={isSubmitting} type="primary"><Trans>Check-in</Trans></Button>
+          <Button disabled={isSubmitting} type="primary">
+            {!checkinData ? 'Check-in' : <Trans i18nKey="checkin.edit">Edit</Trans>}
+          </Button>
         </div>
       </form>
     </div>

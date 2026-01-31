@@ -5,9 +5,7 @@ import { CheckinList } from './checkin-list';
 export function Dashboard() {
   const checkins = checkinStore((state) => state.checkins);
 
-  if (checkins?.length === 0) {
-    return;
-  }
+  console.log(checkins.length);
 
   return (
     <div>

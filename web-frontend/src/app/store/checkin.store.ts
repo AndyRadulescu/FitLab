@@ -4,8 +4,8 @@ import { devtools } from 'zustand/middleware';
 import firebase from 'firebase/compat/app';
 import Timestamp = firebase.firestore.Timestamp;
 
-export type CheckInFormDataDto = CheckInFormData & { createdAt: Date, id: string };
-export type CheckInFormDataDtoFirebase = CheckInFormData & { createdAt: Timestamp, id: string };
+export type CheckInFormDataDto = CheckInFormData & { createdAt: Date, updatedAt: Date, id: string };
+export type CheckInFormDataDtoFirebase = CheckInFormData & { createdAt: Timestamp, updatedAt: Timestamp, id: string };
 
 interface CheckinStore {
   checkins: CheckInFormDataDto[];

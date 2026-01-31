@@ -1,6 +1,5 @@
 import { CheckInFormDataDto } from '../../store/checkin.store';
 import { Card } from '../../design/Card';
-import { useTranslation } from 'react-i18next';
 import { CheckinItem } from '../../design/checkin-item';
 
 export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {
