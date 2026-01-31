@@ -1,21 +1,30 @@
 import { CheckInFormDataDto } from '../store/checkin.store';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { calculateCm } from '../routes/checkIn/calculate-cm';
+import { Footprints, Weight, Bed, Zap, Ruler } from 'lucide-react';
 
 export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
   const { i18n } = useTranslation();
   return (
     <Link to={`/check-in?checkinId=${checkin.id}`}>
       <div className="flex">
-        <div className="w-1/2">
+        <div className="w-2/3">
           <h1 className="font-bold">{checkin.createdAt.toLocaleDateString(i18n.language, {
             month: 'short',
             day: 'numeric'
           })}</h1>
-          <p className="text-gray-500 dark:text-gray-300">{checkin.kg} kg 200 cm</p>
+          <p
+            className="text-gray-500 dark:text-gray-300 flex">
+            <span className="mr-1 text-sm"><Weight className="inline" strokeWidth="1" size="16"/> {checkin.kg}</span>
+            <span className="mr-1 text-sm"><Ruler className="inline" strokeWidth="1" size="16"/> {calculateCm(checkin)}</span>
+            <span className="mr-1 text-sm"><Bed className="inline" strokeWidth="1" size="16" /> {checkin.hoursSlept}</span>
+            <span className="mr-1 text-sm"><Footprints className="inline" strokeWidth="1" size="16" /> {checkin.dailySteps}</span>
+            <span className="mr-1 text-sm"><Zap className="inline" strokeWidth="1" size="16"/> {checkin.energyLevel}</span>
+          </p>
         </div>
 
-        <div className="w-1/2"></div>
+        <div className="w-1/3"></div>
       </div>
     </Link>
   );
