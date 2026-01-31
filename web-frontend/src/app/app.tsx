@@ -5,7 +5,7 @@ import { getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { StartPageFormDataDto, userStore } from './store/user.store';
 import { useNavigate } from 'react-router-dom';
-import { CheckInFormDataDtoFirebase, checkinStore } from './store/checkin.store';
+import { CheckInFormDataDto, CheckInFormDataDtoFirebase, checkinStore } from './store/checkin.store';
 import { getCheckinQuery, getStartDataQuery } from './firestore/queries';
 
 export function App() {
@@ -36,7 +36,11 @@ export function App() {
           ...data
         } as CheckInFormDataDtoFirebase;
       });
-      const checkinMapped = checkinData.map(checkin => ({ ...checkin, createdAt: checkin.createdAt.toDate() }));
+      const checkinMapped = checkinData.map(checkin => ({
+        ...checkin,
+        createdAt: checkin.createdAt.toDate(),
+        updatedAt: checkin.updatedAt.toDate()
+      })) as CheckInFormDataDto[];
       if (!initData) {
         alert(t('errors.unknown'));
       }

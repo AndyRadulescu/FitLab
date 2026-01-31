@@ -5,8 +5,6 @@ import { CheckinList } from './checkin-list';
 export function Dashboard() {
   const checkins = checkinStore((state) => state.checkins);
 
-  console.log(checkins.length);
-
   return (
     <div>
       <h1 className="text-2xl text-center mb-4">Your journey</h1>

@@ -112,7 +112,7 @@ export function CheckInPage() {
 
         <div className="mt-4">
           <Button disabled={isSubmitting} type="primary">
-            {!checkinData ? 'Check-in' : <Trans i18nKey="checkin.edit">Edit</Trans>}
+            {!checkinData ? 'Check-in' : <Trans i18nKey="checkin.save">Save</Trans>}
           </Button>
         </div>
       </form>

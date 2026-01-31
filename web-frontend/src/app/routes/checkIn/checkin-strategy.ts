@@ -1,13 +1,13 @@
-import { CheckInFormDataDto, checkinStore } from '../../store/checkin.store';
+import { CheckInFormDataDto, CheckInPayload, checkinStore } from '../../store/checkin.store';
 import { db } from '../../../init-firebase-auth';
 import { collection, doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 
 interface CheckInStrategy {
-  checkIn: ({ data, userId }: { data: CheckInFormDataDto, userId: string }) => Promise<void>;
+  checkIn: ({ data, userId }: { data: CheckInPayload, userId: string }) => Promise<void>;
 }
 
 class UpdateCheckInStrategy implements CheckInStrategy {
-  async checkIn({ data, userId }: { data: CheckInFormDataDto, userId: string }) {
+  async checkIn({ data, userId }: { data: CheckInPayload, userId: string }) {
     const docRef = doc(db, 'checkins', data.id);
     const mappedData = { ...data, updatedAt: new Date() };
     await updateDoc(docRef, {
@@ -19,11 +19,11 @@ class UpdateCheckInStrategy implements CheckInStrategy {
 }
 
 class AddCheckInStrategy implements CheckInStrategy {
-  async checkIn({ data, userId }: { data: CheckInFormDataDto, userId: string }) {
+  async checkIn({ data, userId }: { data: CheckInPayload, userId: string }) {
     const newDocRef = doc(collection(db, 'checkins'));
     const myId = newDocRef.id;
     const now = new Date();
-    const mappedData = { ...data, createdAt: now, updatedAt: now, id: myId };
+    const mappedData: CheckInFormDataDto = { ...data, createdAt: now, updatedAt: now, id: myId, userId };
 
     await setDoc(newDocRef, {
       ...mappedData,

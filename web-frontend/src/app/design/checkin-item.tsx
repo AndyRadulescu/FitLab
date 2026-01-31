@@ -16,11 +16,11 @@ export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
           })}</h1>
           <p
             className="text-gray-500 dark:text-gray-300 flex">
-            <span className="mr-1 text-sm"><Weight className="inline" strokeWidth="1" size="16"/> {checkin.kg}</span>
-            <span className="mr-1 text-sm"><Ruler className="inline" strokeWidth="1" size="16"/> {calculateCm(checkin)}</span>
-            <span className="mr-1 text-sm"><Bed className="inline" strokeWidth="1" size="16" /> {checkin.hoursSlept}</span>
-            <span className="mr-1 text-sm"><Footprints className="inline" strokeWidth="1" size="16" /> {checkin.dailySteps}</span>
-            <span className="mr-1 text-sm"><Zap className="inline" strokeWidth="1" size="16"/> {checkin.energyLevel}</span>
+            <span className="mr-1 text-xs"><Weight className="inline" strokeWidth="1" size="14"/> {checkin.kg}</span>
+            <span className="mr-1 text-xs"><Ruler className="inline" strokeWidth="1" size="14"/> {calculateCm(checkin)}</span>
+            <span className="mr-1 text-xs"><Bed className="inline" strokeWidth="1" size="14" /> {checkin.hoursSlept}</span>
+            <span className="mr-1 text-xs"><Footprints className="inline" strokeWidth="1" size="14" /> {checkin.dailySteps}</span>
+            <span className="mr-1 text-xs"><Zap className="inline" strokeWidth="1" size="14"/> {checkin.energyLevel}</span>
           </p>
         </div>
 
