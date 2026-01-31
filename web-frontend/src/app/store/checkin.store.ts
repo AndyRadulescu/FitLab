@@ -18,6 +18,7 @@ export type CheckInFormDataDtoFirebase = CheckInFormData & { createdAt: Timestam
 interface CheckinStore {
   checkins: CheckInFormDataDto[];
   upsertCheckin: (checkin: CheckInFormDataDto) => void;
+  deleteCheckin: (id: string) => void;
   setCheckin: (checkin: CheckInFormDataDto[]) => void;
 }
 
@@ -36,5 +37,9 @@ export const checkinStore = create<CheckinStore>()(
             )
         };
       }),
+    deleteCheckin: (id: string) =>
+      set((state) => ({
+        checkins: state.checkins.filter((item) => item.id !== id)
+      })),
     setCheckin: (checkins) => set((state) => ({ checkins }))
   })));

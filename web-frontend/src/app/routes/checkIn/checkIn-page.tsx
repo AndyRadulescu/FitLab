@@ -52,7 +52,8 @@ export function CheckInPage() {
       return;
     }
     try {
-      await CheckInStrategyFactory.getStrategy(!!checkinData).checkIn({
+      const strategy = !checkinData ? 'add' : 'edit';
+      await CheckInStrategyFactory.getStrategy(strategy).checkIn({
         data: { ...data, id: checkinData?.id ?? '' },
         userId: user.uid
       });
