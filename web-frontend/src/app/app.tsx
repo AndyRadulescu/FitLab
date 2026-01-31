@@ -36,7 +36,7 @@ export function App() {
           ...data
         } as CheckInFormDataDtoFirebase;
       });
-      const checkinMapped = checkinData.map(checkin => ({ ...checkin, createdAt: checkin.createdAt.toDate() }))
+      const checkinMapped = checkinData.map(checkin => ({ ...checkin, createdAt: checkin.createdAt.toDate() }));
       if (!initData) {
         alert(t('errors.unknown'));
       }
@@ -54,7 +54,10 @@ export function App() {
   if (!initData) {
     return <StartPage />;
   }
-  return <Main />;
+  return (
+    <div className="lg:mx-[10%] xl:mx-[20%]">
+      <Main />
+    </div>);
 }
 
 export default App;

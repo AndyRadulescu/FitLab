@@ -3,12 +3,13 @@ import { Card } from '../../design/Card';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslation } from 'react-i18next';
-import { addDoc, collection, serverTimestamp, doc } from 'firebase/firestore';
+import { Trans, useTranslation } from 'react-i18next';
+import { addDoc, collection, doc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
 import { useNavigate } from 'react-router-dom';
 import { checkinStore } from '../../store/checkin.store';
+import { Button } from '../../design/button';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -50,13 +51,13 @@ export function CheckInPage() {
       return;
     }
     try {
-      const mappedData = {...data, createdAt: new Date(), id: ref.id}
+      const mappedData = { ...data, createdAt: new Date(), id: ref.id };
       await addDoc(collection(db, 'checkins'), {
         ...mappedData,
         userId: user.uid,
         createdAt: serverTimestamp()
       });
-      addCheckin(mappedData)
+      addCheckin(mappedData);
       navigate('/dashboard/', { replace: true });
     } catch (e) {
       alert('something went wrong');
@@ -80,9 +81,11 @@ export function CheckInPage() {
                  error={errors.hipSize?.message && t(errors.hipSize.message)}></Input>
           <Input label={t('checkin.measures.butt')} type="number" {...register('buttSize', { valueAsNumber: true })}
                  error={errors.buttSize?.message && t(errors.buttSize.message)}></Input>
-          <Input label={t('checkin.measures.leftThigh')} type="number" {...register('leftThigh', { valueAsNumber: true })}
+          <Input label={t('checkin.measures.leftThigh')}
+                 type="number" {...register('leftThigh', { valueAsNumber: true })}
                  error={errors.leftThigh?.message && t(errors.leftThigh.message)}></Input>
-          <Input label={t('checkin.measures.rightThigh')} type="number" {...register('rightThigh', { valueAsNumber: true })}
+          <Input label={t('checkin.measures.rightThigh')}
+                 type="number" {...register('rightThigh', { valueAsNumber: true })}
                  error={errors.rightThigh?.message && t(errors.rightThigh.message)}></Input>
           <Input label={t('checkin.measures.leftArm')} type="number" {...register('leftArm', { valueAsNumber: true })}
                  error={errors.leftArm?.message && t(errors.leftArm.message)}></Input>
@@ -107,11 +110,10 @@ export function CheckInPage() {
                  min="0" {...register('dailySteps', { valueAsNumber: true })}
                  error={errors.dailySteps?.message && t(errors.dailySteps.message)}></Input>
         </Card>
-        <button
-          disabled={isSubmitting}
-          className="w-full hover:bg-amber-500 text-white pointer font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-amber-300 to-red-900">
-          Check-in
-        </button>
+
+        <div className="mt-4">
+          <Button disabled={isSubmitting} type="primary"><Trans>Check-in</Trans></Button>
+        </div>
       </form>
     </div>
   );

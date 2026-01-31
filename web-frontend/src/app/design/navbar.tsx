@@ -2,9 +2,9 @@ import { NavLink } from 'react-router-dom';
 
 export function Navbar() {
   return (
-    <div className="fixed bottom-2 left-0 w-full px-8 mb-4">
+    <div className="fixed bottom-2 left-0 w-full px-8 mb-4 lg:max-w-[80%] lg:ml-[10%] xl:max-w-[60%] xl:ml-[20%]">
 
-      <div className="flex justify-evenly items-center h-[70px] bg-gray-800 dark:bg-amber-600 rounded-full">
+      <div className="flex justify-evenly items-center h-[70px] bg-gray-800 dark:bg-pink-700 rounded-full">
         <NavLink to="/dashboard">
           {({ isActive }) => (
             <span

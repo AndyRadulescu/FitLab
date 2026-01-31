@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { userStore } from '../../store/user.store';
 import { auth } from '../../../init-firebase-auth';
-import { Trans, useTranslation } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import { Card } from '../../design/Card';
+import { LanguageToggle } from '../../design/language-toggle';
 
 export function ProfilePage() {
-  const { i18n } = useTranslation();
   const setUser = userStore(state => state.setUser);
   const navigate = useNavigate();
 
@@ -20,11 +20,8 @@ export function ProfilePage() {
       <Card>
         <div className="flex justify-center w-full mb-4">
           <div className="text-center">
-            <p><Trans i18nKey="profile.change.language">Change language</Trans></p>
-            <select value={i18n.language} onChange={(e) => i18n.changeLanguage(e.target.value)}>
-              <option value="en">🇺🇸 English</option>
-              <option value="ro">🇷🇴 Română</option>
-            </select>
+            <p className="mb-2"><Trans i18nKey="profile.change.language">Change language</Trans></p>
+            <LanguageToggle />
           </div>
         </div>
         <button type="button"
