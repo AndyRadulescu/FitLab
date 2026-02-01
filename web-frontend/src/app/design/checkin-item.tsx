@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom';
 import { calculateCm } from '../routes/checkIn/calculate-cm';
 import { Bed, Footprints, Ruler, Trash, Weight, Zap } from 'lucide-react';
 import { CheckInStrategyFactory } from '../routes/checkIn/checkin-strategy';
-import { MouseEventHandler } from 'react';
 
 export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
-  const deleteItem = (e: MouseEventHandler<HTMLDivElement>) => {
-    console.log('entered');
-    CheckInStrategyFactory.getStrategy('delete');
-    e.stopPropagation();
+  const deleteItem = () => {
+    // eslint-disable-next-line no-restricted-globals
+    const isDelete = confirm(t('checkin.delete'));
+    if (!isDelete) return;
+    void CheckInStrategyFactory.getStrategy('delete').checkIn({ data: checkin, userId: checkin.userId! });
   };
 
   return (

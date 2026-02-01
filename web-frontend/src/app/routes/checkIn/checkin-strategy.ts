@@ -7,7 +7,7 @@ interface CheckInStrategy {
 }
 
 class UpdateCheckInStrategy implements CheckInStrategy {
-  async checkIn({ data, userId }: { data: CheckInPayload, userId: string }) {
+  async checkIn({ data, userId }: { data: CheckInPayload, userId?: string }) {
     const docRef = doc(db, 'checkins', data.id);
     const mappedData = { ...data, updatedAt: new Date() };
     await updateDoc(docRef, {
@@ -20,7 +20,6 @@ class UpdateCheckInStrategy implements CheckInStrategy {
 
 class DeleteCheckInStrategy implements CheckInStrategy {
   async checkIn({ data, userId }: { data: CheckInPayload, userId: string }) {
-    console.log(data.id);
     const docRef = doc(db, 'checkins', data.id);
     await deleteDoc(docRef);
     checkinStore.getState().deleteCheckin(data.id!);
