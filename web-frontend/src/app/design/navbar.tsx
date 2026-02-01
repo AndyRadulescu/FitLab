@@ -2,14 +2,14 @@ import { NavLink } from 'react-router-dom';
 
 export function Navbar() {
   return (
-    <div className="fixed bottom-2 left-0 w-full px-8 mb-4">
+    <div className="fixed bottom-2 left-0 w-full px-8 mb-4 lg:max-w-[80%] lg:ml-[10%] xl:max-w-[60%] xl:ml-[20%]">
 
-      <div className="flex justify-evenly items-center h-[70px] bg-gray-800 rounded-full">
+      <div className="flex justify-evenly items-center h-[70px] bg-gray-800 dark:bg-pink-700 rounded-full">
         <NavLink to="/dashboard">
           {({ isActive }) => (
             <span
               className={`material-icons text-5xl ${
-                isActive ? 'bg-amber-600 text-white rounded-full p-2' : 'text-white'
+                isActive ? 'bg-amber-600 dark:bg-gray-800 text-white rounded-full p-2' : 'text-white'
               }`}
             >
         send
@@ -21,7 +21,7 @@ export function Navbar() {
           {({ isActive }) => (
             <span
               className={`material-icons text-5xl ${
-                isActive ? 'bg-amber-600 text-white rounded-full p-2' : 'text-white'
+                isActive ? 'bg-amber-600 dark:bg-gray-800 text-white rounded-full p-2' : 'text-white'
               }`}
             >
         add
@@ -33,7 +33,7 @@ export function Navbar() {
           {({ isActive }) => (
             <span
               className={`material-icons text-5xl ${
-                isActive ? 'bg-amber-600 text-white rounded-full p-2' : 'text-white'
+                isActive ? 'bg-amber-600 dark:bg-gray-800 text-white rounded-full p-2' : 'text-white'
               }`}
             >
         manage_accounts

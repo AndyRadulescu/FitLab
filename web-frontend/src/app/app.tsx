@@ -1,23 +1,21 @@
 import { useTranslation } from 'react-i18next';
 import { Main } from './routes/main';
-import { StartPage, StartPageFormData } from './routes/start-page/start-page';
-import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
-import { db } from '../init-firebase-auth';
+import { StartPage } from './routes/start-page/start-page';
+import { getDocs } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { userStore } from './store/user.store';
+import { StartPageFormDataDto, userStore } from './store/user.store';
 import { useNavigate } from 'react-router-dom';
+import { CheckInFormDataDto, CheckInFormDataDtoFirebase, checkinStore } from './store/checkin.store';
+import { getCheckinQuery, getStartDataQuery } from './firestore/queries';
 
 export function App() {
   const { t } = useTranslation(); // don't remove this; used to init i18n
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isStarted, setIsStarted] = useState<boolean>(false);
-  const [doc, setHasStartDoc] = useState<StartPageFormData | null>(null);
+  const initData = userStore((state) => state.initData);
+  const setInitData = userStore(state => state.setInitData);
+  const setCheckin = checkinStore(state => state.setCheckin);
   const user = userStore((state) => state.user);
   const navigate = useNavigate();
-
-  const startJourney = () => {
-    setIsStarted(true);
-  }
 
   useEffect(() => {
     const load = async () => {
@@ -27,15 +25,27 @@ export function App() {
       }
       setIsLoading(true);
 
-      const q = query(
-        collection(db, 'start'),
-        where('userId', '==', user.uid),
-        orderBy('createdAt', 'desc'),
-        limit(1)
-      );
-      const snapshot = await getDocs(q);
-      console.log(snapshot);
-      setHasStartDoc(snapshot.docs[0]?.data() as StartPageFormData | null ?? null);
+      const snapshotStart = await getDocs(getStartDataQuery(user));
+      const snapshotCheckin = await getDocs(getCheckinQuery(user));
+      const initData = snapshotStart.docs[0]?.data() as StartPageFormDataDto;
+      const checkinData: CheckInFormDataDtoFirebase[] = snapshotCheckin.docs.map(doc => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          createdAt: data.createdAt.toDate(),
+          ...data
+        } as CheckInFormDataDtoFirebase;
+      });
+      const checkinMapped = checkinData.map(checkin => ({
+        ...checkin,
+        createdAt: checkin.createdAt.toDate(),
+        updatedAt: checkin.updatedAt.toDate()
+      })) as CheckInFormDataDto[];
+      if (!initData) {
+        alert(t('errors.unknown'));
+      }
+      setInitData(initData);
+      setCheckin(checkinMapped);
       setIsLoading(false);
     };
 
@@ -45,10 +55,13 @@ export function App() {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  if (!doc && !isStarted) {
-    return <StartPage onStart={startJourney} />;
+  if (!initData) {
+    return <StartPage />;
   }
-  return <Main />;
+  return (
+    <div className="lg:mx-[10%] xl:mx-[20%]">
+      <Main />
+    </div>);
 }
 
 export default App;

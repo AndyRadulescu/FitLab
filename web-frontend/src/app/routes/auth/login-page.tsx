@@ -7,6 +7,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
 import { handleAuthErrors } from './error-handler';
+import { Button } from '../../design/button';
 
 const loginSchema = z.object({
   email: z.email('errors.email.invalid'),
@@ -46,16 +47,14 @@ export function LoginPage() {
         {...register('password')}
         error={errors.password?.message && t(errors.password.message)}
       />
-      <button
-        className="w-full hover:bg-amber-500 text-white pointer font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-amber-300 to-red-900"
-        disabled={isSubmitting}>
+      <Button disabled={isSubmitting} type="primary">
         <Trans i18nKey="auth.login">Login</Trans>
-      </button>
-      <div className="w-full justify-center flex">
+      </Button>
+      <Button type="tertiary">
         <Link to={'/auth/register'}>
           <Trans i18nKey="auth.register">Register</Trans>
         </Link>
-      </div>
+      </Button>
     </form>
   );
 }

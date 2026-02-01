@@ -3,11 +3,12 @@ import { Card } from '../../design/Card';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslation } from 'react-i18next';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-import { db } from '../../../init-firebase-auth';
+import { Trans, useTranslation } from 'react-i18next';
 import { userStore } from '../../store/user.store';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Button } from '../../design/button';
+import { CheckInStrategyFactory } from './checkin-strategy';
+import { checkinStore } from '../../store/checkin.store';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -26,42 +27,46 @@ const checkinSchema = z.object({
   dailySteps: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1')
 });
 
-type CheckInFormData = z.infer<typeof checkinSchema>;
+export type CheckInFormData = z.infer<typeof checkinSchema>;
 
 export function CheckInPage() {
   const { t } = useTranslation();
   const user = userStore((state) => state.user);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const checkinId = searchParams.get('checkinId');
+  const checkinData = checkinStore((state) => state.checkins).find(checkin => checkin.id === checkinId);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<CheckInFormData>({
-    resolver: zodResolver(checkinSchema)
+    resolver: zodResolver(checkinSchema),
+    defaultValues: checkinData
   });
 
   const sendCheckin = async (data: CheckInFormData) => {
-    console.log(data);
     if (!user) {
       navigate('/auth/login', { replace: true });
       return;
     }
     try {
-      await addDoc(collection(db, 'checkins'), {
-        ...data,
-        userId: user.uid,
-        createdAt: serverTimestamp()
+      const strategy = !checkinData ? 'add' : 'edit';
+      await CheckInStrategyFactory.getStrategy(strategy).checkIn({
+        data: { ...data, id: checkinData?.id ?? '' },
+        userId: user.uid
       });
       navigate('/dashboard/', { replace: true });
     } catch (e) {
+      console.log(e);
       alert('something went wrong');
     }
   };
 
   return (
     <div>
-      <h1 className="text-center">Check-in</h1>
+      <h1 className="text-center text-2xl mb-4">Check-in</h1>
       <form noValidate className="mt-4" onSubmit={handleSubmit(data => sendCheckin(data))}>
         <Card className="mb-2">
           <Input label={t('checkin.measures.kg')} type="number" min="0" {...register('kg', { valueAsNumber: true })}
@@ -76,9 +81,11 @@ export function CheckInPage() {
                  error={errors.hipSize?.message && t(errors.hipSize.message)}></Input>
           <Input label={t('checkin.measures.butt')} type="number" {...register('buttSize', { valueAsNumber: true })}
                  error={errors.buttSize?.message && t(errors.buttSize.message)}></Input>
-          <Input label={t('checkin.measures.leftThigh')} type="number" {...register('leftThigh', { valueAsNumber: true })}
+          <Input label={t('checkin.measures.leftThigh')}
+                 type="number" {...register('leftThigh', { valueAsNumber: true })}
                  error={errors.leftThigh?.message && t(errors.leftThigh.message)}></Input>
-          <Input label={t('checkin.measures.rightThigh')} type="number" {...register('rightThigh', { valueAsNumber: true })}
+          <Input label={t('checkin.measures.rightThigh')}
+                 type="number" {...register('rightThigh', { valueAsNumber: true })}
                  error={errors.rightThigh?.message && t(errors.rightThigh.message)}></Input>
           <Input label={t('checkin.measures.leftArm')} type="number" {...register('leftArm', { valueAsNumber: true })}
                  error={errors.leftArm?.message && t(errors.leftArm.message)}></Input>
@@ -103,11 +110,12 @@ export function CheckInPage() {
                  min="0" {...register('dailySteps', { valueAsNumber: true })}
                  error={errors.dailySteps?.message && t(errors.dailySteps.message)}></Input>
         </Card>
-        <button
-          disabled={isSubmitting}
-          className="w-full hover:bg-amber-500 text-white pointer font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-amber-300 to-red-900">
-          Check-in
-        </button>
+
+        <div className="mt-4">
+          <Button disabled={isSubmitting} type="primary">
+            {!checkinData ? 'Check-in' : <Trans i18nKey="checkin.save">Save</Trans>}
+          </Button>
+        </div>
       </form>
     </div>
   );

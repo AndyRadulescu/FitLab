@@ -28,6 +28,8 @@
   "dashboard.nothingYet": "Nothing to show yet",
   "profile.change.language": "Change language",
   "checkin.measures.kg": "Weight (kg):",
+  "checkin.save": "Edit",
+  "checkin.delete": "Are you sure you want to delete this check-in?",
   "checkin.measures.breast": "Bust measurements:",
   "checkin.measures.waist": "Waist measurements:",
   "checkin.measures.hips": "Hip measurements:",

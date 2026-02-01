@@ -7,8 +7,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
 import { Input } from '../../design/input';
 import firebase from 'firebase/compat/app';
-import AuthError = firebase.auth.AuthError;
 import { handleAuthErrors } from './error-handler';
+import { Button } from '../../design/button';
+import AuthError = firebase.auth.AuthError;
 
 const registerSchema = z.object({
   email: z.email('errors.email.invalid'),
@@ -38,7 +39,7 @@ export function RegisterPage() {
 
   const onRegisterWithEmailAndPassword = (data: RegisterFormData) => {
     createUserWithEmailAndPassword(auth, data.email, data.password).catch((err: AuthError) => {
-      handleAuthErrors(err, t)
+      handleAuthErrors(err, t);
     });
   };
 
@@ -52,7 +53,6 @@ export function RegisterPage() {
 
   return (
     <form onSubmit={handleSubmit(data => onRegisterWithEmailAndPassword(data))}>
-      Register
       <Input
         placeholder={t('auth.email', 'Email')}
         type="email"
@@ -71,14 +71,12 @@ export function RegisterPage() {
         {...register('confirmPassword')}
         error={errors.confirmPassword?.message && t(errors.confirmPassword.message)}
       />
-      <button
-        className="w-full hover:bg-amber-500 text-white pointer font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-amber-300 to-red-900"
-        disabled={isSubmitting}>
-        <Trans i18nKey="auth.regiser">Register</Trans>
-      </button>
-      <div className="w-full justify-center flex">
+      <Button type="primary" disabled={isSubmitting}>
+        <Trans i18nKey="auth.register">Register</Trans>
+      </Button>
+      <Button type="tertiary">
         <Link to={'/auth/login'}><Trans i18nKey="auth.login">Login</Trans></Link>
-      </div>
+      </Button>
     </form>
   );
 }

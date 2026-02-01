@@ -17,9 +17,10 @@ const startPageSchema = z.object({
 
 export type StartPageFormData = z.infer<typeof startPageSchema>;
 
-export function StartPage({ onStart }: { onStart: () => void }) {
+export function StartPage() {
   const { t } = useTranslation();
   const user = userStore((state) => state.user);
+  const setInitData = userStore(state => state.setInitData);
   const navigate = useNavigate();
 
   const sendInitData = async (data: StartPageFormData) => {
@@ -27,15 +28,17 @@ export function StartPage({ onStart }: { onStart: () => void }) {
       navigate('/auth/login', { replace: true });
       return;
     }
-
+    const mappedData = {
+      ...data,
+      dateOfBirth: data.dateOfBirth.toISOString(),
+    };
     try {
       await addDoc(collection(db, 'start'), {
-        ...data,
-        dateOfBirth: data.dateOfBirth.toISOString(),
+        ...mappedData,
         userId: user.uid,
         createdAt: serverTimestamp()
       });
-      onStart()
+      setInitData(mappedData);
       navigate('/dashboard/', { replace: true });
     } catch (e) {
       alert('something went wrong');
@@ -53,7 +56,8 @@ export function StartPage({ onStart }: { onStart: () => void }) {
 
 
   return (
-    <form noValidate className="mx-4 flex flex-col h-svh justify-between" onSubmit={handleSubmit(data => sendInitData(data))}>
+    <form noValidate className="mx-4 flex flex-col h-svh justify-between"
+          onSubmit={handleSubmit(data => sendInitData(data))}>
       <div>
         <Card className="my-4">
           <h1 className="text-2xl mb-2">Salut, bine ai venit la Fitlab!</h1>
