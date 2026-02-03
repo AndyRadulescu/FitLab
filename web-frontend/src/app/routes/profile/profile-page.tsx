@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { userStore } from '../../store/user.store';
-import { auth } from '../../../init-firebase-auth';
+import { analytics, auth } from '../../../init-firebase-auth';
 import { Trans } from 'react-i18next';
 import { Card } from '../../design/Card';
 import { LanguageToggle } from '../../design/language-toggle';
+import { logEvent } from 'firebase/analytics';
 
 export function ProfilePage() {
   const setUser = userStore(state => state.setUser);
@@ -12,6 +13,9 @@ export function ProfilePage() {
   const logout = async () => {
     await auth.signOut();
     setUser(undefined);
+    if (analytics) {
+      logEvent(analytics, 'logout');
+    }
     navigate('/auth/login', { replace: true });
   };
 

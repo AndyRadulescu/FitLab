@@ -7,6 +7,7 @@ import { StartPageFormDataDto, userStore } from './store/user.store';
 import { useNavigate } from 'react-router-dom';
 import { CheckInFormDataDto, CheckInFormDataDtoFirebase, checkinStore } from './store/checkin.store';
 import { getCheckinQuery, getStartDataQuery } from './firestore/queries';
+import { AnalyticsTracker } from './analytics-tracker';
 
 export function App() {
   const { t } = useTranslation(); // don't remove this; used to init i18n
@@ -59,9 +60,13 @@ export function App() {
     return <StartPage />;
   }
   return (
-    <div className="lg:mx-[10%] xl:mx-[20%]">
-      <Main />
-    </div>);
+    <>
+      <AnalyticsTracker />
+      <div className="lg:mx-[10%] xl:mx-[20%]">
+        <Main />
+      </div>
+    </>
+  );
 }
 
 export default App;

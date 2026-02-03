@@ -1,6 +1,7 @@
 import { CheckInFormDataDto, CheckInPayload, checkinStore } from '../../store/checkin.store';
-import { db } from '../../../init-firebase-auth';
-import { collection, doc, serverTimestamp, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { analytics, db } from '../../../init-firebase-auth';
+import { collection, deleteDoc, doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { logEvent } from 'firebase/analytics';
 
 interface CheckInStrategy {
   checkIn: ({ data, userId }: { data: CheckInPayload, userId: string }) => Promise<void>;
@@ -15,6 +16,9 @@ class UpdateCheckInStrategy implements CheckInStrategy {
       updatedAt: serverTimestamp()
     });
     checkinStore.getState().upsertCheckin(mappedData as CheckInFormDataDto);
+    if (analytics) {
+      logEvent(analytics, 'add-checkin');
+    }
   }
 }
 
@@ -23,6 +27,9 @@ class DeleteCheckInStrategy implements CheckInStrategy {
     const docRef = doc(db, 'checkins', data.id);
     await deleteDoc(docRef);
     checkinStore.getState().deleteCheckin(data.id!);
+    if (analytics) {
+      logEvent(analytics, 'delete-checkin');
+    }
   }
 }
 
@@ -41,6 +48,9 @@ class AddCheckInStrategy implements CheckInStrategy {
     });
 
     checkinStore.getState().upsertCheckin(mappedData);
+    if (analytics) {
+      logEvent(analytics, 'update-checkin');
+    }
   }
 }
 

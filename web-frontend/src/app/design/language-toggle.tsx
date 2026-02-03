@@ -2,12 +2,20 @@
 
 import { Languages } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { analytics } from '../../init-firebase-auth';
+import { logEvent } from 'firebase/analytics';
 
 export function LanguageToggle() {
   const { i18n } = useTranslation();
 
-  const toggleLanguage = () => {
-    i18n.changeLanguage(i18n.language === 'en-US' ? 'ro' : 'en-US');
+  const toggleLanguage = async () => {
+    const switcher = i18n.language === 'en-US' ? 'ro' : 'en-US';
+    await i18n.changeLanguage(switcher);
+    if (analytics) {
+      logEvent(analytics, 'language-switch', {
+        language: switcher
+      });
+    }
   };
 
   return (

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { auth } from '../../../init-firebase-auth';
+import { analytics, auth } from '../../../init-firebase-auth';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,6 +10,7 @@ import firebase from 'firebase/compat/app';
 import { handleAuthErrors } from './error-handler';
 import { Button } from '../../design/button';
 import AuthError = firebase.auth.AuthError;
+import { logEvent } from 'firebase/analytics';
 
 const registerSchema = z.object({
   email: z.email('errors.email.invalid'),
@@ -38,6 +39,9 @@ export function RegisterPage() {
   const { t } = useTranslation();
 
   const onRegisterWithEmailAndPassword = (data: RegisterFormData) => {
+    if (analytics) {
+      logEvent(analytics, 'email-password-register');
+    }
     createUserWithEmailAndPassword(auth, data.email, data.password).catch((err: AuthError) => {
       handleAuthErrors(err, t);
     });
