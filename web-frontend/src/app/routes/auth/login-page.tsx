@@ -1,4 +1,4 @@
-import { auth } from '../../../init-firebase-auth';
+import { analytics, auth } from '../../../init-firebase-auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link } from 'react-router-dom';
 import { Input } from '../../design/input';
@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
 import { handleAuthErrors } from './error-handler';
 import { Button } from '../../design/button';
+import { logEvent } from 'firebase/analytics';
 
 const loginSchema = z.object({
   email: z.email('errors.email.invalid'),
@@ -20,6 +21,9 @@ type LoginFormData = z.infer<typeof loginSchema>;
 export function LoginPage() {
   const { t } = useTranslation();
   const onLogInWithEmailAndPassword = (data: LoginFormData) => {
+    if (analytics) {
+      logEvent(analytics, 'email-password-login');
+    }
     void signInWithEmailAndPassword(auth, data.email, data.password).catch((err) => {
       handleAuthErrors(err, t);
     });

@@ -1,11 +1,12 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { auth } from '../../../init-firebase-auth';
+import { analytics, auth } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
 import { SocialButton } from '../../design/social-button';
 import { LanguageToggle } from '../../design/language-toggle';
 import { AnalyticsTracker } from '../../analytics-tracker';
+import { logEvent } from 'firebase/analytics';
 
 export function AuthPage() {
   const { i18n } = useTranslation();
@@ -21,10 +22,16 @@ export function AuthPage() {
   );
 
   const onSignInWithGoogle = () => {
+    if (analytics) {
+      logEvent(analytics, 'google-login');
+    }
     void signInWithPopup(auth, new GoogleAuthProvider());
   };
 
   const onSignInWithFacebook = () => {
+    if (analytics) {
+      logEvent(analytics, 'facebook-login');
+    }
     void alert('NOT implemented yet');
   };
 
