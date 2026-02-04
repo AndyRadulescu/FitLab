@@ -4,7 +4,7 @@ import { collection, deleteDoc, doc, serverTimestamp, setDoc, updateDoc } from '
 import { logEvent } from 'firebase/analytics';
 
 interface CheckInStrategy {
-  checkIn: ({ data, userId }: { data: CheckInPayload, userId: string }) => Promise<void>;
+  checkIn: ({ data, userId }: { data: CheckInPayload, userId: string }) => Promise<string>;
 }
 
 class UpdateCheckInStrategy implements CheckInStrategy {
@@ -19,6 +19,7 @@ class UpdateCheckInStrategy implements CheckInStrategy {
     if (analytics) {
       logEvent(analytics, 'add-checkin');
     }
+    return data.id!;
   }
 }
 
@@ -30,15 +31,16 @@ class DeleteCheckInStrategy implements CheckInStrategy {
     if (analytics) {
       logEvent(analytics, 'delete-checkin');
     }
+    return data.id!;
   }
 }
 
 class AddCheckInStrategy implements CheckInStrategy {
   async checkIn({ data, userId }: { data: CheckInPayload, userId: string }) {
     const newDocRef = doc(collection(db, 'checkins'));
-    const myId = newDocRef.id;
+    const checkinId = newDocRef.id;
     const now = new Date();
-    const mappedData: CheckInFormDataDto = { ...data, createdAt: now, updatedAt: now, id: myId, userId };
+    const mappedData: CheckInFormDataDto = { ...data, createdAt: now, updatedAt: now, id: checkinId, userId };
 
     await setDoc(newDocRef, {
       ...mappedData,
@@ -51,6 +53,7 @@ class AddCheckInStrategy implements CheckInStrategy {
     if (analytics) {
       logEvent(analytics, 'update-checkin');
     }
+    return checkinId;
   }
 }
 

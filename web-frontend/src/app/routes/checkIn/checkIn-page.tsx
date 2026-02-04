@@ -1,15 +1,15 @@
 import { Input } from '../../design/input';
 import { Card } from '../../design/Card';
 import { z } from 'zod';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
 import { userStore } from '../../store/user.store';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../../design/button';
-import { CheckInStrategyFactory } from './checkin-strategy';
 import { checkinStore } from '../../store/checkin.store';
-import { ImageUploader } from '../../design/image-uploader';
+import { ImageUploader } from '../../design/image/image-uploader';
+import { CheckInStrategyFactory } from './checkin-strategy';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -25,7 +25,8 @@ const checkinSchema = z.object({
   planAccuracy: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1').max(10, 'errors.profile.max10'),
   energyLevel: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1').max(10, 'errors.profile.max10'),
   moodCheck: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1').max(10, 'errors.profile.max10'),
-  dailySteps: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1')
+  dailySteps: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1'),
+  imgUrls: z.array(z.string(),'errors.image.invalid').min(3, 'errors.image.invalid').max(3)
 });
 
 export type CheckInFormData = z.infer<typeof checkinSchema>;
@@ -40,6 +41,7 @@ export function CheckInPage() {
 
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<CheckInFormData>({
@@ -112,9 +114,23 @@ export function CheckInPage() {
                  error={errors.dailySteps?.message && t(errors.dailySteps.message)}></Input>
         </Card>
 
-        <Card className="flex justify-center mt-4">
-          <ImageUploader userId={user?.uid}/>
-        </Card>
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-1">Check-in Photos</label>
+          <Controller
+            name="imgUrls"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <ImageUploader
+                userId={user?.uid}
+                value={value}
+                onChange={onChange}
+              />
+            )}
+          />
+          {errors.imgUrls && (
+            <p className="text-red-500 text-xs mt-1">{t('errors.image.invalid')}</p>
+          )}
+        </div>
 
         <div className="mt-4">
           <Button disabled={isSubmitting} type="primary">

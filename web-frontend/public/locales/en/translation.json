@@ -25,6 +25,7 @@
   "errors.profile.maxHour": "Value must be at max 12",
   "errors.profile.max10": "Value must be at max 10",
   "errors.date.invalid": "Date is invalid",
+  "errors.image.invalid": "Not all images have been uploaded. 3 images are required",
   "dashboard.nothingYet": "Nothing to show yet",
   "profile.change.language": "Change language",
   "checkin.measures.kg": "Weight (kg):",

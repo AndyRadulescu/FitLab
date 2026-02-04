@@ -6,11 +6,11 @@ async function compressImage(imageFiles: File[]): Promise<File[]> {
     maxWidthOrHeight: 1080,
     useWebWorker: true,
     initialQuality: 0.8,
+    alwaysKeepType: false,
     fileType: 'image/jpeg'
   };
 
   try {
-    console.log(imageFiles);
     return await Promise.all(
       imageFiles.map(file => imageCompression(file, options))
     );
@@ -29,12 +29,7 @@ export function uploadToFirebase(compressedFiles: File[], userId: string) {
     const storageRef = ref(storage, `checkin-imgs/${userId}/${Date.now()}_${index}.jpg`);
 
     const snapshot = await uploadBytes(storageRef, file);
-    const fullResUrl = await getDownloadURL(snapshot.ref);
-
-    console.log(snapshot);
-    console.log(fullResUrl);
-
-    return fullResUrl;
+    return await getDownloadURL(snapshot.ref);
   });
 
   return Promise.all(uploadPromises);

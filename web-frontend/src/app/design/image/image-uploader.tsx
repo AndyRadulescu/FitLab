@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import { CheckCircle2, Loader2, Upload, X } from 'lucide-react';
-import { uploadImage } from '../image-manager/image-compressor.manager';
+import { uploadImage } from '../../image-manager/image-compressor.manager';
 
-export const ImageUploader = ({ userId }: { userId?: string }) => {
+interface ImageUploaderProps {
+  userId?: string;
+  onChange: (urls: string[]) => void;
+  value?: string[];
+}
+
+export const ImageUploader = ({ userId, onChange, value }: ImageUploaderProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
+
+  if (value) {
+    console.log(value);
+  }
 
   if (!userId) {
     return <div>Loading...</div>;
@@ -30,7 +40,7 @@ export const ImageUploader = ({ userId }: { userId?: string }) => {
     setIsUploading(true);
     try {
       const urls = await uploadImage(files, userId);
-      console.log('Success! High-res URLs:', urls);
+      onChange(urls);
       setUploadComplete(true);
     } catch (error) {
       console.error('Upload failed:', error);
