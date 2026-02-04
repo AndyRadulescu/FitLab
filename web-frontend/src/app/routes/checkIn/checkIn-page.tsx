@@ -9,6 +9,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../../design/button';
 import { CheckInStrategyFactory } from './checkin-strategy';
 import { checkinStore } from '../../store/checkin.store';
+import { ImageUploader } from '../../design/image-uploader';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -109,6 +110,10 @@ export function CheckInPage() {
           <Input label={t('checkin.steps')} type="number"
                  min="0" {...register('dailySteps', { valueAsNumber: true })}
                  error={errors.dailySteps?.message && t(errors.dailySteps.message)}></Input>
+        </Card>
+
+        <Card className="flex justify-center mt-4">
+          <ImageUploader userId={user?.uid}/>
         </Card>
 
         <div className="mt-4">
