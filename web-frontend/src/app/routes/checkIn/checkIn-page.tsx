@@ -47,9 +47,6 @@ export function CheckInPage() {
     newCheckinId = newDocRef.current;
   }
 
-  console.log(checkinId);
-  console.log(newCheckinId);
-
   const {
     register,
     control,

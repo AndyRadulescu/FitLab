@@ -17,9 +17,11 @@ const SLOTS = ['front', 'back', 'side'] as const;
 
 export const ImageUploader = ({ userId, checkinId, onChange, value, error }: ImageUploaderProps) => {
   const [fileSlots, setFileSlots] = useState<Record<string, File | null>>({
-    front: null,
-    back: null,
-    side: null
+    front: null, back: null, side: null
+  });
+
+  const [remoteUrls, setRemoteUrls] = useState<Record<string, string | null>>({
+    front: null, back: null, side: null
   });
 
   const [previews, setPreviews] = useState<Record<string, string>>({});
@@ -27,106 +29,143 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
   const [uploadComplete, setUploadComplete] = useState(false);
 
   useEffect(() => {
-    const newPreviews: Record<string, string> = {};
+    if (value && value.length > 0) {
+      const existing: Record<string, string | null> = { front: null, back: null, side: null };
 
+      value.forEach((url) => {
+        if (url.includes('_front.')) existing.front = url;
+        if (url.includes('_back.')) existing.back = url;
+        if (url.includes('_side.')) existing.side = url;
+      });
+
+      setRemoteUrls(existing);
+      if (value.length === 3) setUploadComplete(true);
+    }
+  }, [value]);
+
+  useEffect(() => {
+    const newPreviews: Record<string, string> = {};
     Object.entries(fileSlots).forEach(([key, file]) => {
       if (file) newPreviews[key] = URL.createObjectURL(file);
     });
     setPreviews(newPreviews);
-    return () => {
-      Object.values(newPreviews).forEach((url) => URL.revokeObjectURL(url));
-    };
+    return () => Object.values(newPreviews).forEach((url) => URL.revokeObjectURL(url));
   }, [fileSlots]);
 
-  if (!userId) return <div className="p-6 text-center animate-pulse">Loading...</div>;
-
   const handleFileChange = (slot: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      setFileSlots((prev) => ({ ...prev, [slot]: file }));
+    if (event.target.files?.[0]) {
+      const originalFile = event.target.files[0];
+      const renamedFile = new File([originalFile], `${slot}.jpg`, {
+        type: originalFile.type,
+        lastModified: originalFile.lastModified,
+      });
+      setFileSlots((prev) => ({ ...prev, [slot]: renamedFile }));
+      setRemoteUrls((prev) => ({ ...prev, [slot]: null }));
+      setUploadComplete(false);
     }
   };
 
   const removeFile = (slot: string) => {
     setFileSlots((prev) => ({ ...prev, [slot]: null }));
+    setRemoteUrls((prev) => ({ ...prev, [slot]: null }));
+    setUploadComplete(false);
   };
 
+  const getDisplayUrl = (slot: string) => previews[slot] || remoteUrls[slot];
   const startUpload = async () => {
-    const filesArray = Object.values(fileSlots).filter((f): f is File => f !== null);
-    if (filesArray.length !== 3) return;
-
     setIsUploading(true);
     try {
-      const urls = await uploadImage(filesArray, userId, checkinId);
-      onChange(urls);
+      const finalUrls: string[] = ['', '', ''];
+      const uploads: { file: File; index: number }[] = [];
+
+      SLOTS.forEach((slot, index) => {
+        if (fileSlots[slot]) {
+          uploads.push({ file: fileSlots[slot], index });
+        } else if (remoteUrls[slot]) {
+          finalUrls[index] = remoteUrls[slot];
+        }
+      });
+
+      if (uploads.length > 0) {
+        const filesToProcess = uploads.map(u => u.file);
+        const newUploadedUrls = await uploadImage(filesToProcess, userId, checkinId);
+
+        newUploadedUrls.forEach((url, i) => {
+          const originalIndex = uploads[i].index;
+          finalUrls[originalIndex] = url;
+        });
+      }
+
+      onChange(finalUrls);
       setUploadComplete(true);
     } catch (error) {
-      console.error('Upload failed:', error);
       alert('Upload failed. Please try again.');
     } finally {
       setIsUploading(false);
     }
   };
-
-  const allFilesSelected = Object.values(fileSlots).every((f) => f !== null);
+  const allSlotsFilled = SLOTS.every(slot => fileSlots[slot] || remoteUrls[slot]);
 
   return (
     <Card>
-      <SectionHeader><Trans i18nkey="section.requiredPhotos">Required Photos</Trans></SectionHeader>
+      <SectionHeader><Trans i18nKey="section.requiredPhotos">Required Photos</Trans></SectionHeader>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-        {SLOTS.map((slot) => (
-          <div key={slot} className="relative aspect-square w-full max-w-[280px] mx-auto sm:max-w-none">
-            <div
-              className="absolute top-3 left-1/2 -translate-x-1/2 z-10 flex items-center justify-center px-4 py-1.5 bg-black/40 backdrop-blur-md rounded-full border border-white/10">
-              <span className="text-xs uppercase tracking-widest font-bold text-white shadow-sm">
-                {slot}
-              </span>
-            </div>
+        {SLOTS.map((slot) => {
+          const displayUrl = getDisplayUrl(slot);
 
-            {fileSlots[slot] ? (
-              <div className="relative h-full w-full">
-                <img
-                  src={previews[slot]}
-                  alt={slot}
-                  className="w-full h-full object-cover rounded-2xl border-2 border-gray-100 dark:border-slate-700 shadow-md"
-                />
-                <button
-                  onClick={() => removeFile(slot)}
-                  className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-2 shadow-xl hover:bg-red-600 transition-transform active:scale-90 z-20"
-                >
-                  <X size={18} />
-                </button>
+          return (
+            <div key={slot} className="relative aspect-square w-full max-w-[280px] mx-auto sm:max-w-none">
+              <div
+                className="absolute top-3 left-1/2 -translate-x-1/2 z-10 flex items-center justify-center px-4 h-7 bg-black/40 backdrop-blur-md rounded-full border border-white/10">
+                <span className="text-xs uppercase tracking-widest font-bold text-white shadow-sm">
+                  {slot}
+                </span>
               </div>
-            ) : (
-              <label
-                className="flex flex-col items-center justify-center h-full w-full border-2 border-dashed rounded-2xl cursor-pointer bg-gray-50/50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 border-gray-300 dark:border-slate-700 transition-all group">
-                <div
-                  className="p-4 rounded-full bg-white dark:bg-slate-700 shadow-sm group-hover:scale-110 transition-transform">
-                  <Upload className="text-blue-500" size={28} />
+
+              {displayUrl ? (
+                <div className="relative h-full w-full">
+                  <img
+                    src={displayUrl}
+                    alt={slot}
+                    className="w-full h-full object-cover rounded-2xl border-2 border-gray-100 dark:border-slate-700 shadow-md"
+                  />
+                  <button
+                    onClick={() => removeFile(slot)}
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-2 shadow-xl hover:bg-red-600 transition-transform z-20"
+                  >
+                    <X size={18} />
+                  </button>
                 </div>
-                <span className="mt-3 text-sm text-gray-500 font-semibold"><Trans
-                  i18nKey="section.upload" /> {slot}</span>
-                <input
-                  type="file"
-                  className="hidden"
-                  onChange={(e) => handleFileChange(slot, e)}
-                  accept="image/*"
-                />
-              </label>
-            )}
-          </div>
-        ))}
+              ) : (
+                <label
+                  className="flex flex-col items-center justify-center h-full w-full border-2 border-dashed rounded-2xl cursor-pointer bg-gray-50/50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 border-gray-300 dark:border-slate-700 transition-all group">
+                  <div
+                    className="p-4 rounded-full bg-white dark:bg-slate-700 shadow-sm group-hover:scale-110 transition-transform">
+                    <Upload className="text-blue-500" size={28} />
+                  </div>
+                  <span className="mt-3 text-sm text-gray-500 font-semibold"><Trans
+                    i18nKey="section.upload" /> {slot}</span>
+                  <input
+                    type="file"
+                    className="hidden"
+                    onChange={(e) => handleFileChange(slot, e)}
+                    accept="image/*"
+                  />
+                </label>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {!uploadComplete ? (
         <button
           onClick={startUpload}
-          disabled={!allFilesSelected || isUploading}
-          className="w-full py-4 px-4 bg-indigo-600 text-white rounded-xl font-bold disabled:bg-gray-200 dark:disabled:bg-slate-800 dark:disabled:text-slate-500 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
+          disabled={!allSlotsFilled || isUploading}
+          className="w-full py-4 px-4 bg-indigo-600 text-white dark:text-gray-700 rounded-xl font-bold disabled:bg-gray-200"
         >
-          {isUploading ? <Loader2 className="animate-spin" /> : null}
-          {isUploading ? <Trans i18nKey="section.optimizing" /> : <Trans i18nKey="section.uploading" />}
+          {isUploading ? <Loader2 className="animate-spin" /> : <Trans i18nKey="section.uploading" />}
         </button>
       ) : (
         <div

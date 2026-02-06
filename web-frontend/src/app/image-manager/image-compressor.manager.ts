@@ -26,7 +26,7 @@ export function uploadToFirebase(compressedFiles: File[], userId: string, checki
 
   if (!compressedFiles || compressedFiles.length === 0) throw Error('no files uploaded');
   const uploadPromises = compressedFiles.map(async (file, index) => {
-    const storageRef = ref(storage, `checkin-imgs/${userId}/${checkinId}_${index}.jpg`);
+    const storageRef = ref(storage, `checkin-imgs/${userId}/${checkinId}_${file.name}`);
 
     const snapshot = await uploadBytes(storageRef, file);
     return await getDownloadURL(snapshot.ref);
