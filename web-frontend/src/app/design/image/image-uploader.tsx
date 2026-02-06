@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { CheckCircle2, Loader2, Upload, X } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 import { uploadImage } from '../../image-manager/image-compressor.manager';
 import { Card } from '../Card';
 import { SectionHeader } from '../section-header';
@@ -52,16 +52,21 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
     return () => Object.values(newPreviews).forEach((url) => URL.revokeObjectURL(url));
   }, [fileSlots]);
 
-  const handleFileChange = (slot: string, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (slot: string, event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.[0]) {
+      setUploadComplete(false);
       const originalFile = event.target.files[0];
-      const renamedFile = new File([originalFile], `${slot}.jpg`, {
+      const renamedFile = new File([originalFile], `${slot}.jpg`, { // TODO change this, probaly that's why HEIC is not working
         type: originalFile.type,
-        lastModified: originalFile.lastModified,
+        lastModified: originalFile.lastModified
       });
       setFileSlots((prev) => ({ ...prev, [slot]: renamedFile }));
-      setRemoteUrls((prev) => ({ ...prev, [slot]: null }));
-      setUploadComplete(false);
+      const url = await uploadImage([renamedFile], userId, checkinId);
+      const newRemoteUrls = { ...remoteUrls, [slot]: url[0] };
+      setRemoteUrls(newRemoteUrls);
+      console.log(Object.entries(newRemoteUrls).map(([key, value]) => value || '').filter(Boolean) as string[]);
+      onChange(Object.entries(newRemoteUrls).map(([key, value]) => value || '').filter(Boolean) as string[]);
+      setUploadComplete(true);
     }
   };
 
@@ -72,39 +77,6 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
   };
 
   const getDisplayUrl = (slot: string) => previews[slot] || remoteUrls[slot];
-  const startUpload = async () => {
-    setIsUploading(true);
-    try {
-      const finalUrls: string[] = ['', '', ''];
-      const uploads: { file: File; index: number }[] = [];
-
-      SLOTS.forEach((slot, index) => {
-        if (fileSlots[slot]) {
-          uploads.push({ file: fileSlots[slot], index });
-        } else if (remoteUrls[slot]) {
-          finalUrls[index] = remoteUrls[slot];
-        }
-      });
-
-      if (uploads.length > 0) {
-        const filesToProcess = uploads.map(u => u.file);
-        const newUploadedUrls = await uploadImage(filesToProcess, userId, checkinId);
-
-        newUploadedUrls.forEach((url, i) => {
-          const originalIndex = uploads[i].index;
-          finalUrls[originalIndex] = url;
-        });
-      }
-
-      onChange(finalUrls);
-      setUploadComplete(true);
-    } catch (error) {
-      alert('Upload failed. Please try again.');
-    } finally {
-      setIsUploading(false);
-    }
-  };
-  const allSlotsFilled = SLOTS.every(slot => fileSlots[slot] || remoteUrls[slot]);
 
   return (
     <Card>
@@ -158,21 +130,6 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
           );
         })}
       </div>
-
-      {!uploadComplete ? (
-        <button
-          onClick={startUpload}
-          disabled={!allSlotsFilled || isUploading}
-          className="w-full py-4 px-4 bg-indigo-600 text-white dark:text-gray-700 rounded-xl font-bold disabled:bg-gray-200"
-        >
-          {isUploading ? <Loader2 className="animate-spin" /> : <Trans i18nKey="section.uploading" />}
-        </button>
-      ) : (
-        <div
-          className="flex items-center justify-center gap-3 text-emerald-600 font-bold py-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800">
-          <CheckCircle2 size={20} /> <Trans i18nKey="section.uploadComplete" />
-        </div>
-      )}
       {error && (
         <p className="text-red-500 text-xs mt-1"><Trans i18nKey="errors.image.invalid" /></p>
       )}
