@@ -21,12 +21,12 @@ async function compressImage(imageFiles: File[]): Promise<File[]> {
   return [];
 }
 
-export function uploadToFirebase(compressedFiles: File[], userId: string) {
+export function uploadToFirebase(compressedFiles: File[], userId: string, checkinId: string) {
   const storage = getStorage();
 
   if (!compressedFiles || compressedFiles.length === 0) throw Error('no files uploaded');
   const uploadPromises = compressedFiles.map(async (file, index) => {
-    const storageRef = ref(storage, `checkin-imgs/${userId}/${Date.now()}_${index}.jpg`);
+    const storageRef = ref(storage, `checkin-imgs/${userId}/${checkinId}_${index}.jpg`);
 
     const snapshot = await uploadBytes(storageRef, file);
     return await getDownloadURL(snapshot.ref);
@@ -35,7 +35,7 @@ export function uploadToFirebase(compressedFiles: File[], userId: string) {
   return Promise.all(uploadPromises);
 };
 
-export async function uploadImage(files: File[], userId: string) {
+export async function uploadImage(files: File[], userId: string, checkinId: string) {
   const compressedImageFiles = await compressImage(files);
-  return uploadToFirebase(compressedImageFiles, userId);
+  return uploadToFirebase(compressedImageFiles, userId, checkinId);
 }

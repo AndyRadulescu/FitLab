@@ -15,7 +15,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
            + ${error ? 'border-red-500' : ''}`}
           ref={ref} {...props} />
 
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 text-xs">{error}</p>}
       </div>
     );
   }

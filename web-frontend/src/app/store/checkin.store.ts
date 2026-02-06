@@ -11,7 +11,7 @@ export type CheckInFormDataDto = CheckInFormData & {
   userId: string;
 };
 export type CheckInPayload = CheckInFormData & {
-  id?: string;
+  id: string;
 };
 export type CheckInFormDataDtoFirebase = CheckInFormData & { createdAt: Timestamp, updatedAt: Timestamp, id: string };
 

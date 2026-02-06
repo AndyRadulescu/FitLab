@@ -6,14 +6,16 @@ import { SectionHeader } from '../section-header';
 import { Trans } from 'react-i18next';
 
 interface ImageUploaderProps {
-  userId?: string;
+  userId: string;
+  checkinId: string;
   onChange: (urls: string[]) => void;
   value?: string[];
+  error?: string;
 }
 
 const SLOTS = ['front', 'back', 'side'] as const;
 
-export const ImageUploader = ({ userId, onChange, value }: ImageUploaderProps) => {
+export const ImageUploader = ({ userId, checkinId, onChange, value, error }: ImageUploaderProps) => {
   const [fileSlots, setFileSlots] = useState<Record<string, File | null>>({
     front: null,
     back: null,
@@ -55,7 +57,7 @@ export const ImageUploader = ({ userId, onChange, value }: ImageUploaderProps) =
 
     setIsUploading(true);
     try {
-      const urls = await uploadImage(filesArray, userId);
+      const urls = await uploadImage(filesArray, userId, checkinId);
       onChange(urls);
       setUploadComplete(true);
     } catch (error) {
@@ -103,7 +105,8 @@ export const ImageUploader = ({ userId, onChange, value }: ImageUploaderProps) =
                   className="p-4 rounded-full bg-white dark:bg-slate-700 shadow-sm group-hover:scale-110 transition-transform">
                   <Upload className="text-blue-500" size={28} />
                 </div>
-                <span className="mt-3 text-sm text-gray-500 font-semibold"><Trans i18nKey="section.upload"/> {slot}</span>
+                <span className="mt-3 text-sm text-gray-500 font-semibold"><Trans
+                  i18nKey="section.upload" /> {slot}</span>
                 <input
                   type="file"
                   className="hidden"
@@ -123,13 +126,16 @@ export const ImageUploader = ({ userId, onChange, value }: ImageUploaderProps) =
           className="w-full py-4 px-4 bg-indigo-600 text-white rounded-xl font-bold disabled:bg-gray-200 dark:disabled:bg-slate-800 dark:disabled:text-slate-500 flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
         >
           {isUploading ? <Loader2 className="animate-spin" /> : null}
-          {isUploading ? <Trans i18nKey="section.optimizing"/> : <Trans i18nKey="section.uploading"/>}
+          {isUploading ? <Trans i18nKey="section.optimizing" /> : <Trans i18nKey="section.uploading" />}
         </button>
       ) : (
         <div
           className="flex items-center justify-center gap-3 text-emerald-600 font-bold py-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800">
-          <CheckCircle2 size={20} /> <Trans i18nKey="section.uploadComplete"/>
+          <CheckCircle2 size={20} /> <Trans i18nKey="section.uploadComplete" />
         </div>
+      )}
+      {error && (
+        <p className="text-red-500 text-xs mt-1"><Trans i18nKey="errors.image.invalid" /></p>
       )}
     </Card>
   );

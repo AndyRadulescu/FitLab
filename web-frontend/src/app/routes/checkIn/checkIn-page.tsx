@@ -10,6 +10,9 @@ import { Button } from '../../design/button';
 import { checkinStore } from '../../store/checkin.store';
 import { ImageUploader } from '../../design/image/image-uploader';
 import { CheckInStrategyFactory } from './checkin-strategy';
+import { collection, doc } from 'firebase/firestore';
+import { db } from '../../../init-firebase-auth';
+import { useRef } from 'react';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -26,7 +29,7 @@ const checkinSchema = z.object({
   energyLevel: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1').max(10, 'errors.profile.max10'),
   moodCheck: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1').max(10, 'errors.profile.max10'),
   dailySteps: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1'),
-  imgUrls: z.array(z.string(),'errors.image.invalid').min(3, 'errors.image.invalid').max(3)
+  imgUrls: z.array(z.string(), 'errors.image.invalid').min(3, 'errors.image.invalid').max(3)
 });
 
 export type CheckInFormData = z.infer<typeof checkinSchema>;
@@ -38,6 +41,14 @@ export function CheckInPage() {
   const [searchParams] = useSearchParams();
   const checkinId = searchParams.get('checkinId');
   const checkinData = checkinStore((state) => state.checkins).find(checkin => checkin.id === checkinId);
+  let newCheckinId: string | null = null;
+  const newDocRef = useRef<string>(doc(collection(db, 'checkins')).id);
+  if (!checkinId) {
+    newCheckinId = newDocRef.current;
+  }
+
+  console.log(checkinId);
+  console.log(newCheckinId);
 
   const {
     register,
@@ -57,7 +68,7 @@ export function CheckInPage() {
     try {
       const strategy = !checkinData ? 'add' : 'edit';
       await CheckInStrategyFactory.getStrategy(strategy).checkIn({
-        data: { ...data, id: checkinData?.id ?? '' },
+        data: { ...data, id: checkinData?.id ?? newCheckinId ?? '' },
         userId: user.uid
       });
       navigate('/dashboard/', { replace: true });
@@ -114,22 +125,20 @@ export function CheckInPage() {
                  error={errors.dailySteps?.message && t(errors.dailySteps.message)}></Input>
         </Card>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Check-in Photos</label>
+        <div className="my-2">
           <Controller
             name="imgUrls"
             control={control}
             render={({ field: { onChange, value } }) => (
               <ImageUploader
-                userId={user?.uid}
+                userId={user!.uid!}
+                checkinId={checkinId ?? newCheckinId!}
                 value={value}
                 onChange={onChange}
+                error={errors.imgUrls?.message}
               />
             )}
           />
-          {errors.imgUrls && (
-            <p className="text-red-500 text-xs mt-1">{t('errors.image.invalid')}</p>
-          )}
         </div>
 
         <div className="mt-4">
