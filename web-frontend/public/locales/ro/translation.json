@@ -49,5 +49,10 @@
   "start.dateOfBirth": "Data nașterii:",
   "start.startingWeight": "Greutatea cu care începem:",
   "start.height": "Înăltime:",
-  "start.start": "Începe"
+  "start.start": "Începe",
+  "section.requiredPhotos": "Imagini necesare",
+  "section.upload": "Încarcă",
+  "section.uploadComplete": "încărcare reușită",
+  "section.optimizing": "Optimizare și încărcare...",
+  "section.uploading": "Încarcă și continuă"
 }

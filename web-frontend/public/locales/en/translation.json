@@ -49,5 +49,10 @@
   "start.dateOfBirth": "Date of birth:",
   "start.startingWeight": "Starting weight:",
   "start.height": "Height:",
-  "start.start": "Start journey"
+  "start.start": "Start journey",
+  "section.requiredPhotos": "Required Photos",
+  "section.upload": "Upload",
+  "section.uploadComplete": "Upload Complete",
+  "section.oprimizing": "Optimizing & Uploading...",
+  "sectino.uploading": "Upload & Continue"
 }
