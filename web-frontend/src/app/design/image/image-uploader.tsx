@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Upload, X } from 'lucide-react';
+import { CheckCircle2, Loader2, Upload, X } from 'lucide-react';
 import { uploadImage } from '../../image-manager/image-compressor.manager';
 import { Card } from '../Card';
 import { SectionHeader } from '../section-header';
@@ -25,7 +25,9 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
   });
 
   const [previews, setPreviews] = useState<Record<string, string>>({});
-  const [isUploading, setIsUploading] = useState(false);
+  const [uploadingSlots, setUploadingSlots] = useState<Record<string, boolean>>({
+    front: false, back: false, side: false
+  });
   const [uploadComplete, setUploadComplete] = useState(false);
 
   useEffect(() => {
@@ -62,7 +64,7 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
         lastModified: originalFile.lastModified
       });
       setFileSlots((prev) => ({ ...prev, [slot]: originalFile }));
-      setIsUploading(true);
+      setUploadingSlots(prev => ({ ...prev, [slot]: true }));
 
       try {
         const url = await uploadImage([renamedFile], userId, checkinId);
@@ -72,7 +74,7 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
       } catch (err) {
         console.error('Upload failed', err);
       } finally {
-        setIsUploading(false);
+        setUploadingSlots(prev => ({ ...prev, [slot]: false }));
       }
     }
   };
@@ -106,23 +108,48 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
               <div
                 className="absolute top-3 left-1/2 -translate-x-1/2 z-10 flex items-center justify-center px-4 h-7 bg-black/40 backdrop-blur-md rounded-full border border-white/10">
                 <span className="text-xs uppercase tracking-widest font-bold text-white shadow-sm">
-                  {slot}
+                  <Trans i18nKey={`image.upload.${slot}`}/>
                 </span>
               </div>
 
               {displayUrl ? (
-                <div className="relative h-full w-full">
+                <div className="relative h-full w-full group">
                   <img
                     src={displayUrl}
                     alt={slot}
-                    className="w-full h-full object-cover rounded-2xl border-2 border-gray-100 dark:border-slate-700 shadow-md"
+                    className={`w-full h-full object-cover rounded-2xl border-2 shadow-md transition-all ${
+                      uploadingSlots[slot] ? 'brightness-50 blur-[2px]' : 'border-gray-100 dark:border-slate-700'
+                    }`}
                   />
-                  <button
-                    onClick={() => removeFile(slot)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-2 shadow-xl hover:bg-red-600 transition-transform z-20"
-                  >
-                    <X size={18} />
-                  </button>
+
+                  {uploadingSlots[slot] && (
+                    <div
+                      className="absolute inset-0 flex flex-col items-center justify-center z-30 bg-black/20 rounded-2xl backdrop-blur-[1px]">
+                      <div
+                        className="bg-white/90 dark:bg-slate-900/90 p-3 rounded-full shadow-lg animate-in zoom-in duration-300">
+                        <Loader2 className="text-blue-500 animate-spin" size={24} />
+                      </div>
+                      <span className="mt-2 text-[10px] font-bold text-white uppercase tracking-tighter drop-shadow-md">
+                        <Trans i18nKey="section.optimizing" />
+                      </span>
+                    </div>
+                  )}
+
+                  {!uploadingSlots[slot] && remoteUrls[slot] && (
+                    <div
+                      className="absolute top-2 right-8 bg-emerald-500 text-white rounded-full p-1 shadow-lg animate-in fade-in zoom-in duration-500">
+                      <CheckCircle2 size={14} />
+                    </div>
+                  )}
+
+                  {!uploadingSlots[slot] && (
+                    <button
+                      onClick={() => removeFile(slot)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-2 shadow-xl hover:bg-red-600 transition-transform hover:scale-110 active:scale-90 z-20"
+                    >
+                      <X size={18} />
+                    </button>
+                  )}
                 </div>
               ) : (
                 <label

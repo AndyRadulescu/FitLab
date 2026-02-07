@@ -54,5 +54,8 @@
   "section.upload": "Upload",
   "section.uploadComplete": "Upload Complete",
   "section.oprimizing": "Optimizing & Uploading...",
-  "sectino.uploading": "Upload & Continue"
+  "sectino.uploading": "Upload & Continue",
+  "image.upload.front": "Front",
+  "image.upload.back": "Back",
+  "image.upload.side": "Side"
 }

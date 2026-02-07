@@ -54,5 +54,8 @@
   "section.upload": "Încarcă",
   "section.uploadComplete": "încărcare reușită",
   "section.optimizing": "Optimizare și încărcare...",
-  "section.uploading": "Încarcă și continuă"
+  "section.uploading": "Încarcă și continuă",
+  "image.upload.front": "Față",
+  "image.upload.back": "Spate",
+  "image.upload.side": "Lateral"
 }
