@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { calculateCm } from '../routes/checkIn/calculate-cm';
 import { Bed, Footprints, Ruler, Trash, Weight, Zap } from 'lucide-react';
 import { CheckInStrategyFactory } from '../routes/checkIn/checkin-strategy/checkin-strategy';
+import { ImagesDisplay } from './image/images-display';
 
 export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
   const { i18n, t } = useTranslation();
@@ -37,7 +38,9 @@ export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
           </p>
         </Link>
       </div>
-      <div className="w-1/3"></div>
+      <div className="w-1/3">
+        <ImagesDisplay checkinId={checkin.id} userId={checkin.userId}/>
+      </div>
 
       <div className="absolute right-[-10px] top-[-10px]" onClick={deleteItem}>
         <Trash size="14" />
