@@ -28,20 +28,20 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
 
-  useEffect(() => {
-    if (value && value.length > 0) {
-      const existing: Record<string, string | null> = { front: null, back: null, side: null };
-
-      value.forEach((url) => {
-        if (url.includes('_front.')) existing.front = url;
-        if (url.includes('_back.')) existing.back = url;
-        if (url.includes('_side.')) existing.side = url;
-      });
-
-      setRemoteUrls(existing);
-      if (value.length === 3) setUploadComplete(true);
-    }
-  }, [value]);
+  // useEffect(() => {
+  //   if (value && value.length > 0) {
+  //     const existing: Record<string, string | null> = { front: null, back: null, side: null };
+  //     value.forEach((url) => {
+  //       if (!url) return;
+  //       if (url.includes('_front.')) existing.front = url;
+  //       if (url.includes('_back.')) existing.back = url;
+  //       if (url.includes('_side.')) existing.side = url;
+  //     });
+  //
+  //     setRemoteUrls(existing);
+  //     if (value.length === 3) setUploadComplete(true);
+  //   }
+  // }, [value]);
 
   useEffect(() => {
     const newPreviews: Record<string, string> = {};
@@ -52,27 +52,42 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
     return () => Object.values(newPreviews).forEach((url) => URL.revokeObjectURL(url));
   }, [fileSlots]);
 
+  useEffect(() => {
+    const remoteUrlsArray = SLOTS.map(s => remoteUrls[s]).filter(Boolean) as string[];
+
+    console.log(remoteUrlsArray);
+    if (remoteUrlsArray?.length === 3) {
+      console.log(remoteUrlsArray);
+      onChange(remoteUrlsArray);
+      setUploadComplete(true);
+    }
+  }, [remoteUrls, onChange]);
+
   const handleFileChange = async (slot: string, event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files?.[0]) {
       setUploadComplete(false);
       const originalFile = event.target.files[0];
-      const renamedFile = new File([originalFile], `${slot}.jpg`, { // TODO change this, probaly that's why HEIC is not working
+      const renamedFile = new File([originalFile], `${slot}`, { // TODO change this, probaly that's why HEIC is not working
         type: originalFile.type,
         lastModified: originalFile.lastModified
       });
       setFileSlots((prev) => ({ ...prev, [slot]: renamedFile }));
       const url = await uploadImage([renamedFile], userId, checkinId);
-      const newRemoteUrls = { ...remoteUrls, [slot]: url[0] };
-      setRemoteUrls(newRemoteUrls);
-      console.log(Object.entries(newRemoteUrls).map(([key, value]) => value || '').filter(Boolean) as string[]);
-      onChange(Object.entries(newRemoteUrls).map(([key, value]) => value || '').filter(Boolean) as string[]);
+      setRemoteUrls((prev) => ({ ...prev, [slot]: url[0] }));
       setUploadComplete(true);
     }
   };
 
   const removeFile = (slot: string) => {
     setFileSlots((prev) => ({ ...prev, [slot]: null }));
-    setRemoteUrls((prev) => ({ ...prev, [slot]: null }));
+    const nextRemoteUrls = {
+      ...remoteUrls,
+      [slot]: null
+    };
+    setRemoteUrls(nextRemoteUrls);
+    const finalArray = SLOTS.map(s => nextRemoteUrls[s]).filter(Boolean) as string[];
+
+    onChange(finalArray);
     setUploadComplete(false);
   };
 
