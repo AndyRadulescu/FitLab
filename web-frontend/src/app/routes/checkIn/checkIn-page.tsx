@@ -9,7 +9,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../../design/button';
 import { checkinStore } from '../../store/checkin.store';
 import { ImageUploader } from '../../design/image/image-uploader';
-import { CheckInStrategyFactory } from './checkin-strategy';
+import { CheckInStrategyFactory } from './checkin-strategy/checkin-strategy';
 import { collection, doc } from 'firebase/firestore';
 import { db } from '../../../init-firebase-auth';
 import { useRef } from 'react';
