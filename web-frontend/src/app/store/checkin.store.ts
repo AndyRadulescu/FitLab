@@ -4,14 +4,14 @@ import { devtools } from 'zustand/middleware';
 import firebase from 'firebase/compat/app';
 import Timestamp = firebase.firestore.Timestamp;
 
-export type CheckInFormDataDto = CheckInFormData & {
+export type CheckInFormDataDto = Omit<CheckInFormData, 'imgUrls'> & {
   id: string;
   createdAt: Date;
   updatedAt: Date;
   userId: string;
 };
-export type CheckInPayload = CheckInFormData & {
-  id?: string;
+export type CheckInPayload = Omit<CheckInFormData, 'imgUrls'> & {
+  id: string;
 };
 export type CheckInFormDataDtoFirebase = CheckInFormData & { createdAt: Timestamp, updatedAt: Timestamp, id: string };
 

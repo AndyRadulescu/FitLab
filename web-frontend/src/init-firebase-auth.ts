@@ -3,6 +3,7 @@ import { getAnalytics, isSupported } from 'firebase/analytics';
 import { getFirestore } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { userStore } from './app/store/user.store';
+import { getStorage } from 'firebase/storage';
 
 let initialized = false;
 
@@ -19,6 +20,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
+const storage = getStorage(firebaseApp)
 
 // Optional: Enable analytics only in production + browser
 let analytics: ReturnType<typeof getAnalytics> | null = null;
@@ -47,4 +49,4 @@ export async function initFirebaseAuth() {
   });
 }
 
-export { firebaseApp, analytics, auth, db };
+export { firebaseApp, analytics, auth, db, storage };

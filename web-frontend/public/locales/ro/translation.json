@@ -25,6 +25,7 @@
   "errors.profile.maxHour": "Valoarea trebuie să fie cel mult 12",
   "errors.profile.max10": "Valoarea trebuie să fie cel mult 10",
   "errors.date.invalid": "Data este în format invalid",
+  "errors.image.invalid": "Nu toate imaginile au fost încărcate. 3 imagini sunt necesare.",
   "dashboard.nothingYet": "Încă nu există nimic de afișat",
   "profile.change.language": "Schimbă limba",
   "checkin.measures.kg": "Greutate (kg):",
@@ -48,5 +49,13 @@
   "start.dateOfBirth": "Data nașterii:",
   "start.startingWeight": "Greutatea cu care începem:",
   "start.height": "Înăltime:",
-  "start.start": "Începe"
+  "start.start": "Începe",
+  "section.requiredPhotos": "Imagini necesare",
+  "section.upload": "Încarcă",
+  "section.uploadComplete": "încărcare reușită",
+  "section.optimizing": "Optimizare și încărcare...",
+  "section.uploading": "Încarcă și continuă",
+  "image.upload.front": "Față",
+  "image.upload.back": "Spate",
+  "image.upload.side": "Lateral"
 }

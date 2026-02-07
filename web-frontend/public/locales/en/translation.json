@@ -25,6 +25,7 @@
   "errors.profile.maxHour": "Value must be at max 12",
   "errors.profile.max10": "Value must be at max 10",
   "errors.date.invalid": "Date is invalid",
+  "errors.image.invalid": "Not all images have been uploaded. 3 images are required",
   "dashboard.nothingYet": "Nothing to show yet",
   "profile.change.language": "Change language",
   "checkin.measures.kg": "Weight (kg):",
@@ -48,5 +49,13 @@
   "start.dateOfBirth": "Date of birth:",
   "start.startingWeight": "Starting weight:",
   "start.height": "Height:",
-  "start.start": "Start journey"
+  "start.start": "Start journey",
+  "section.requiredPhotos": "Required Photos",
+  "section.upload": "Upload",
+  "section.uploadComplete": "Upload Complete",
+  "section.oprimizing": "Optimizing & Uploading...",
+  "sectino.uploading": "Upload & Continue",
+  "image.upload.front": "Front",
+  "image.upload.back": "Back",
+  "image.upload.side": "Side"
 }
