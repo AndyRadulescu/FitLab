@@ -4,6 +4,7 @@ import { uploadImage } from '../../image-manager/image-compressor.manager';
 import { Card } from '../Card';
 import { SectionHeader } from '../section-header';
 import { Trans } from 'react-i18next';
+import { SLOTS } from '../../routes/checkIn/checkin-strategy';
 
 interface ImageUploaderProps {
   userId: string;
@@ -12,8 +13,6 @@ interface ImageUploaderProps {
   value?: string[];
   error?: string;
 }
-
-const SLOTS = ['front', 'back', 'side'] as const;
 
 export const ImageUploader = ({ userId, checkinId, onChange, value, error }: ImageUploaderProps) => {
   const [fileSlots, setFileSlots] = useState<Record<string, File | null>>({
