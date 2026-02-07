@@ -5,16 +5,18 @@ import { Card } from '../Card';
 import { SectionHeader } from '../section-header';
 import { Trans } from 'react-i18next';
 import { SLOTS } from '../../routes/checkIn/checkin-strategy/checkin-strategy';
+import { getDownloadURL, getStorage, ref } from 'firebase/storage';
+import { imagePath } from '../../image-manager/image-path';
 
 interface ImageUploaderProps {
   userId: string;
   checkinId: string;
   onChange: (urls: string[]) => void;
-  value?: string[];
+  isEdit?: boolean;
   error?: string;
 }
 
-export const ImageUploader = ({ userId, checkinId, onChange, value, error }: ImageUploaderProps) => {
+export const ImageUploader = ({ userId, checkinId, onChange, isEdit, error }: ImageUploaderProps) => {
   const [fileSlots, setFileSlots] = useState<Record<string, File | null>>({
     front: null, back: null, side: null
   });
@@ -27,32 +29,45 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
   const [uploadingSlots, setUploadingSlots] = useState<Record<string, boolean>>({
     front: false, back: false, side: false
   });
-  const [uploadComplete, setUploadComplete] = useState(false);
 
   useEffect(() => {
-    if (value && value.length > 0) {
+    const fetchAllUrls = async () => {
+      if (!isEdit || !userId || !checkinId) return;
       const existing: Record<string, string | null> = { front: null, back: null, side: null };
 
-      value.forEach((url) => {
-        if (!url) return;
-        if (url.toLowerCase().includes('front')) existing.front = url;
-        else if (url.toLowerCase().includes('back')) existing.back = url;
-        else if (url.toLowerCase().includes('side')) existing.side = url;
-      });
-      setRemoteUrls(existing);
-      const count = Object.values(existing).filter(Boolean).length;
-      if (count === 3) setUploadComplete(true);
-    }
+      try {
+        const fetchPromises = SLOTS.map(async (slot) => {
+          try {
+            const path = imagePath(userId, checkinId, slot);
+            const downloadUrl = await getDownloadURL(ref(getStorage(), path));
+            return { slot, url: downloadUrl };
+          } catch (error) {
+            console.warn(`Could not fetch storage URL for slot: ${slot}`, error);
+            return { slot, url: null };
+          }
+        });
+
+        const results = await Promise.all(fetchPromises);
+        results.forEach(({ slot, url }) => {
+          if (slot in existing) {
+            existing[slot] = url;
+          }
+        });
+
+        setRemoteUrls(existing);
+      } catch (err) {
+        console.error("Error in image sync process:", err);
+      }
+    };
+
+    fetchAllUrls();
   }, []);
 
   useEffect(() => {
     const remoteUrlsArray = SLOTS.map(s => remoteUrls[s]).filter(Boolean) as string[];
-
     if (remoteUrlsArray.length > 0) {
       onChange(remoteUrlsArray);
     }
-
-    setUploadComplete(remoteUrlsArray.length === 3);
   }, [remoteUrls, onChange]);
 
   const handleFileChange = async (slot: string, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,10 +81,8 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
       setUploadingSlots(prev => ({ ...prev, [slot]: true }));
 
       try {
-        const url = await uploadImage([renamedFile], userId, checkinId);
-
-        setRemoteUrls((prev) => ({ ...prev, [slot]: url[0] }));
-        setFileSlots((prev) => ({ ...prev, [slot]: null }));
+        const fileName = await uploadImage([renamedFile], userId, checkinId);
+        setRemoteUrls((prev) => ({ ...prev, [slot]: fileName[0] }));
       } catch (err) {
         console.error('Upload failed', err);
       } finally {

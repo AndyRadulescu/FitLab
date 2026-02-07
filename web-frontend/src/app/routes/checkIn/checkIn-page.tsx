@@ -64,8 +64,9 @@ export function CheckInPage() {
     }
     try {
       const strategy = !checkinData ? 'add' : 'edit';
+      const { imgUrls, ...dataWithNoImgUrls } = data;
       await CheckInStrategyFactory.getStrategy(strategy).checkIn({
-        data: { ...data, id: checkinData?.id ?? newCheckinId ?? '' },
+        data: { ...dataWithNoImgUrls, id: checkinData?.id ?? newCheckinId ?? '' },
         userId: user.uid
       });
       navigate('/dashboard/', { replace: true });
@@ -126,11 +127,11 @@ export function CheckInPage() {
           <Controller
             name="imgUrls"
             control={control}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <ImageUploader
                 userId={user!.uid!}
                 checkinId={checkinId ?? newCheckinId!}
-                value={value}
+                isEdit={!!checkinData}
                 onChange={onChange}
                 error={errors.imgUrls?.message}
               />

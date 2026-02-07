@@ -4,6 +4,7 @@ import { analytics, db, storage } from '../../../../init-firebase-auth';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { deleteObject, listAll, ref } from 'firebase/storage';
+import { getCheckinPath } from '../../../image-manager/image-path';
 
 export class DeleteCheckInStrategy implements CheckInStrategy {
   async checkIn({ data, userId }: { data: CheckInPayload, userId: string }) {
@@ -27,7 +28,7 @@ export class DeleteCheckInStrategy implements CheckInStrategy {
   }
 
   private async deleteFile(checkinId: string, userId: string) {
-    const checkinFolderRef = ref(storage, `checkin-imgs/${userId}/${checkinId}`);
+    const checkinFolderRef = ref(storage, getCheckinPath(userId, checkinId));
     const listResponse = await listAll(checkinFolderRef);
     const deletePromises = listResponse.items.map((item) => deleteObject(item));
     await Promise.allSettled(deletePromises);

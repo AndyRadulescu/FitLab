@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { SLOTS } from '../../routes/checkIn/checkin-strategy/checkin-strategy';
 import { CameraOff, Loader2 } from 'lucide-react';
+import { imagePath } from '../../image-manager/image-path';
 
 const SmallImage = ({ path, label }: { path: string, label: string }) => {
   const [url, setUrl] = useState<string>();
@@ -54,7 +55,7 @@ export function ImagesDisplay({ checkinId, userId }: { checkinId: string, userId
       {SLOTS.map((slot) => (
         <SmallImage
           key={slot}
-          path={`checkin-imgs/${userId}/${checkinId}/${slot}_75x75`}
+          path={imagePath(userId, checkinId, slot)}
           label={slot}
         />
       ))}

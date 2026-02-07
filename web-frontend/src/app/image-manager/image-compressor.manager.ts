@@ -1,6 +1,7 @@
 import imageCompression from 'browser-image-compression';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../../init-firebase-auth';
+import { imagePath } from './image-path';
 
 async function compressImage(imageFiles: File[]): Promise<File[]> {
   const options = {
@@ -25,10 +26,9 @@ async function compressImage(imageFiles: File[]): Promise<File[]> {
 export function uploadToFirebase(compressedFiles: File[], userId: string, checkinId: string) {
   if (!compressedFiles || compressedFiles.length === 0) throw Error('no files uploaded');
   const uploadPromises = compressedFiles.map(async (file, index) => {
-    const storageRef = ref(storage, `checkin-imgs/${userId}/${checkinId}/${file.name}`);
-
-    const snapshot = await uploadBytes(storageRef, file);
-    return await getDownloadURL(snapshot.ref);
+    const storageRef = ref(storage, imagePath(userId, checkinId, file.name));
+    await uploadBytes(storageRef, file);
+    return file.name;
   });
 
   return Promise.all(uploadPromises);
