@@ -28,20 +28,59 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
   const [isUploading, setIsUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
 
-  // useEffect(() => {
-  //   if (value && value.length > 0) {
-  //     const existing: Record<string, string | null> = { front: null, back: null, side: null };
-  //     value.forEach((url) => {
-  //       if (!url) return;
-  //       if (url.includes('_front.')) existing.front = url;
-  //       if (url.includes('_back.')) existing.back = url;
-  //       if (url.includes('_side.')) existing.side = url;
-  //     });
-  //
-  //     setRemoteUrls(existing);
-  //     if (value.length === 3) setUploadComplete(true);
-  //   }
-  // }, [value]);
+  useEffect(() => {
+    if (value && value.length > 0) {
+      const existing: Record<string, string | null> = { front: null, back: null, side: null };
+
+      value.forEach((url) => {
+        if (!url) return;
+        if (url.toLowerCase().includes('front')) existing.front = url;
+        else if (url.toLowerCase().includes('back')) existing.back = url;
+        else if (url.toLowerCase().includes('side')) existing.side = url;
+      });
+      setRemoteUrls(existing);
+      const count = Object.values(existing).filter(Boolean).length;
+      if (count === 3) setUploadComplete(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    const remoteUrlsArray = SLOTS.map(s => remoteUrls[s]).filter(Boolean) as string[];
+
+    if (remoteUrlsArray.length > 0) {
+      onChange(remoteUrlsArray);
+    }
+
+    setUploadComplete(remoteUrlsArray.length === 3);
+  }, [remoteUrls, onChange]);
+
+  const handleFileChange = async (slot: string, event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files?.[0]) {
+      const originalFile = event.target.files[0];
+      const renamedFile = new File([originalFile], `${slot}`, {
+        type: originalFile.type,
+        lastModified: originalFile.lastModified
+      });
+      setFileSlots((prev) => ({ ...prev, [slot]: originalFile }));
+      setIsUploading(true);
+
+      try {
+        const url = await uploadImage([renamedFile], userId, checkinId);
+
+        setRemoteUrls((prev) => ({ ...prev, [slot]: url[0] }));
+        setFileSlots((prev) => ({ ...prev, [slot]: null }));
+      } catch (err) {
+        console.error('Upload failed', err);
+      } finally {
+        setIsUploading(false);
+      }
+    }
+  };
+
+  const removeFile = (slot: string) => {
+    setFileSlots((prev) => ({ ...prev, [slot]: null }));
+    setRemoteUrls((prev) => ({ ...prev, [slot]: null }));
+  };
 
   useEffect(() => {
     const newPreviews: Record<string, string> = {};
@@ -51,45 +90,6 @@ export const ImageUploader = ({ userId, checkinId, onChange, value, error }: Ima
     setPreviews(newPreviews);
     return () => Object.values(newPreviews).forEach((url) => URL.revokeObjectURL(url));
   }, [fileSlots]);
-
-  useEffect(() => {
-    const remoteUrlsArray = SLOTS.map(s => remoteUrls[s]).filter(Boolean) as string[];
-
-    console.log(remoteUrlsArray);
-    if (remoteUrlsArray?.length === 3) {
-      console.log(remoteUrlsArray);
-      onChange(remoteUrlsArray);
-      setUploadComplete(true);
-    }
-  }, [remoteUrls, onChange]);
-
-  const handleFileChange = async (slot: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files?.[0]) {
-      setUploadComplete(false);
-      const originalFile = event.target.files[0];
-      const renamedFile = new File([originalFile], `${slot}`, { // TODO change this, probaly that's why HEIC is not working
-        type: originalFile.type,
-        lastModified: originalFile.lastModified
-      });
-      setFileSlots((prev) => ({ ...prev, [slot]: renamedFile }));
-      const url = await uploadImage([renamedFile], userId, checkinId);
-      setRemoteUrls((prev) => ({ ...prev, [slot]: url[0] }));
-      setUploadComplete(true);
-    }
-  };
-
-  const removeFile = (slot: string) => {
-    setFileSlots((prev) => ({ ...prev, [slot]: null }));
-    const nextRemoteUrls = {
-      ...remoteUrls,
-      [slot]: null
-    };
-    setRemoteUrls(nextRemoteUrls);
-    const finalArray = SLOTS.map(s => nextRemoteUrls[s]).filter(Boolean) as string[];
-
-    onChange(finalArray);
-    setUploadComplete(false);
-  };
 
   const getDisplayUrl = (slot: string) => previews[slot] || remoteUrls[slot];
 
