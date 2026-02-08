@@ -23,11 +23,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch master
+        run: git fetch --no-tags --prune --depth=1 origin master
+
       - name: Install dependencies
         run: npm ci
 
       - name: Run affected tests
-        # We use origin/master as the baseline to see what changed in your feature branch
         run: npx nx affected -t test --base=origin/master --head=HEAD --skip-nx-cache
 
       - name: Build Web Frontend
