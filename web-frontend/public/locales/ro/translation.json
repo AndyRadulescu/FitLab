@@ -10,6 +10,7 @@
   "auth.signin.google": "Înregistrează-te cu Google",
   "errors.unknown": "A apărut o eroare!",
   "errors.credentials.invalid": "Credențialele sunt invalide!",
+  "errors.credentials.exists": "Există deja un cont cu o altă metodă de autentificare. Încearcă să te conectezi folosind un alt furnizor.",
   "errors.email.alreadyExists": "Adresa de e-mail a fost deja utilizată!",
   "errors.email.invalid": "E-mail-ul este invalid",
   "errors.password.min": "Parola trebuie să aibă cel puțin 6 caractere",

@@ -10,6 +10,7 @@
   "auth.signin.google": "Sign in with Google",
   "errors.unknown": "An error occurred!",
   "errors.credentials.invalid": "Credentials are invalid!",
+  "errors.credentials.exists": "Account exists with different credential. Try logging in with different provider.",
   "errors.email.alreadyExists": "The email has already been used!",
   "errors.email.invalid": "Email is invalid",
   "errors.password.min": "Password must be at least 6 characters long",
