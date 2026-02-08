@@ -18,7 +18,7 @@ jobs:
       - run: npm ci
       # 2. Run Tests (If this fails, the build/deploy steps below will NOT run)
       - name: Run affected tests
-        run: npx nx affected -t test --base=origin/master --head=HEAD
+        run: npx nx affected -t test --base=origin/master --head=HEAD --skip-nx-cache
       # 3. Build the frontend
       - run: npx nx build web-frontend
       # 4. Deploy Preview
