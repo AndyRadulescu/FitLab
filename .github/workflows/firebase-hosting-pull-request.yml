@@ -1,0 +1,30 @@
+name: Deploy to Firebase Hosting on PR
+on: pull_request
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+jobs:
+  build_and_preview:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Fetch all history so Nx can compare the current branch to master
+          fetch-depth: 0
+
+      # 1. Install dependencies (Required to run Nx)
+      - run: npm ci
+      # 2. Run Tests (If this fails, the build/deploy steps below will NOT run)
+      - name: Run affected tests
+        run: npx nx affected -t test --base=origin/master --head=HEAD
+      # 3. Build the frontend
+      - run: npx nx build web-frontend
+      # 4. Deploy Preview
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DIANAFITLAB_10ECA }}
+          projectId: dianafitlab-10eca
+
