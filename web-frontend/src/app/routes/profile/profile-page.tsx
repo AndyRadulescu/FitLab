@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { userStore } from '../../store/user.store';
 import { analytics, auth } from '../../../init-firebase-auth';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Card } from '../../design/Card';
 import { LanguageToggle } from '../../design/language-toggle';
 import { logEvent } from 'firebase/analytics';
 
 export function ProfilePage() {
+  useTranslation(); // needed to automatically translate the page
   const setUser = userStore(state => state.setUser);
   const navigate = useNavigate();
 
