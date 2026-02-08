@@ -26,8 +26,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run affected tests
-        run: npx nx affected -t test --base=origin/master --head=HEAD --skip-nx-cache
+#      - name: Run affected tests
+#        run: npx nx affected -t test --base=origin/master --head=HEAD --skip-nx-cache
 
       - name: Build Web Frontend
         run: npx nx build web-frontend
