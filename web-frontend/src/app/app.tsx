@@ -1,62 +1,16 @@
 import { useTranslation } from 'react-i18next';
 import { Main } from './routes/main';
 import { StartPage } from './routes/start-page/start-page';
-import { getDocs } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
-import { StartPageFormDataDto, userStore } from './store/user.store';
-import { useNavigate } from 'react-router-dom';
-import { CheckInFormDataDto, CheckInFormDataDtoFirebase, checkinStore } from './store/checkin.store';
-import { getCheckinQuery, getStartDataQuery } from './firestore/queries';
 import { AnalyticsTracker } from './analytics-tracker';
+import { useAppInitialization } from './custom-hooks/use-app-initialization';
 
 export function App() {
-  const { t } = useTranslation(); // don't remove this; used to init i18n
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const initData = userStore((state) => state.initData);
-  const setInitData = userStore(state => state.setInitData);
-  const setCheckin = checkinStore(state => state.setCheckin);
-  const user = userStore((state) => state.user);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const load = async () => {
-      if (!user) {
-        navigate('/auth/login', { replace: true });
-        return;
-      }
-      setIsLoading(true);
-
-      const snapshotStart = await getDocs(getStartDataQuery(user));
-      const snapshotCheckin = await getDocs(getCheckinQuery(user));
-      const initData = snapshotStart.docs[0]?.data() as StartPageFormDataDto;
-      const checkinData: CheckInFormDataDtoFirebase[] = snapshotCheckin.docs.map(doc => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          createdAt: data.createdAt.toDate(),
-          ...data
-        } as CheckInFormDataDtoFirebase;
-      });
-      const checkinMapped = checkinData.map(checkin => ({
-        ...checkin,
-        createdAt: checkin.createdAt.toDate(),
-        updatedAt: checkin.updatedAt.toDate()
-      })) as CheckInFormDataDto[];
-      if (!initData) {
-        alert(t('errors.unknown'));
-      }
-      setInitData(initData);
-      setCheckin(checkinMapped);
-      setIsLoading(false);
-    };
-
-    void load();
-  }, []);
-
+  useTranslation(); // don't remove this; used to init i18n
+  const { isLoading, hasInitData } = useAppInitialization();
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  if (!initData) {
+  if (!hasInitData) {
     return <StartPage />;
   }
   return (
