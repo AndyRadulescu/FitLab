@@ -55,7 +55,7 @@ export function ImagesDisplay({ checkinId, userId }: { checkinId: string, userId
       {SLOTS.map((slot) => (
         <SmallImage
           key={slot}
-          path={imagePath(userId, checkinId, slot)}
+          path={imagePath(userId, checkinId, slot, true)}
           label={slot}
         />
       ))}

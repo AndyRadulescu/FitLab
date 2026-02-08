@@ -8,10 +8,10 @@ export type CheckInFormDataDto = Omit<CheckInFormData, 'imgUrls'> & {
   id: string;
   createdAt: Date;
   updatedAt: Date;
-  userId: string;
 };
 export type CheckInPayload = Omit<CheckInFormData, 'imgUrls'> & {
   id: string;
+  userId: string;
 };
 export type CheckInFormDataDtoFirebase = CheckInFormData & { createdAt: Timestamp, updatedAt: Timestamp, id: string };
 
