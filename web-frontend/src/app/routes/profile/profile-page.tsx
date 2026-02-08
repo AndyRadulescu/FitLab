@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { userStore } from '../../store/user.store';
 import { analytics, auth } from '../../../init-firebase-auth';
 import { Trans, useTranslation } from 'react-i18next';
-import { Card } from '../../design/Card';
+import { Card } from '../../design/card';
 import { LanguageToggle } from '../../design/language-toggle';
 import { logEvent } from 'firebase/analytics';
 

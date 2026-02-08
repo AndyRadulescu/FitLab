@@ -23,9 +23,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch master
-        run: git fetch --no-tags --prune --depth=1 origin master
-
       - name: Install dependencies
         run: npm ci
 
