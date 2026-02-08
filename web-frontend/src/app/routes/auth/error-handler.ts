@@ -5,6 +5,8 @@ import AuthError = firebase.auth.AuthError;
 
 export const handleAuthErrors = (err: AuthError, translator: TFunction<'translation', undefined>) => {
   switch (err.code) {
+    case AuthErrorCodes.NEED_CONFIRMATION:
+      return alert(translator('errors.credentials.exists'));
     case AuthErrorCodes.INVALID_LOGIN_CREDENTIALS:
       return alert(translator('errors.credentials.invalid'));
     case AuthErrorCodes.EMAIL_EXISTS:

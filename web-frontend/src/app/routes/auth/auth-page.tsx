@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
 import { analytics, auth } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
@@ -7,9 +7,10 @@ import { SocialButton } from '../../design/social-button';
 import { LanguageToggle } from '../../design/language-toggle';
 import { AnalyticsTracker } from '../../analytics-tracker';
 import { logEvent } from 'firebase/analytics';
+import { handleAuthErrors } from './error-handler';
 
 export function AuthPage() {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const isLoggedIn = userStore(state => state.isLoggedIn);
   const location = useLocation();
 
@@ -25,14 +26,20 @@ export function AuthPage() {
     if (analytics) {
       logEvent(analytics, 'google-login');
     }
-    void signInWithPopup(auth, new GoogleAuthProvider());
+    auth.languageCode = i18n.language;
+    void signInWithPopup(auth, new GoogleAuthProvider()).catch((err) => {
+      handleAuthErrors(err, t);
+    });;
   };
 
   const onSignInWithFacebook = () => {
     if (analytics) {
       logEvent(analytics, 'facebook-login');
     }
-    void alert('NOT implemented yet');
+    auth.languageCode = i18n.language;
+    void signInWithPopup(auth, new FacebookAuthProvider()).catch((err) => {
+      handleAuthErrors(err, t);
+    });;
   };
 
   return (
