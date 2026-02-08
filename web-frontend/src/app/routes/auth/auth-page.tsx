@@ -73,9 +73,9 @@ export function AuthPage() {
               <div onClick={onSignInWithGoogle} className="mb-2">
                 <SocialButton socialType="google"></SocialButton>
               </div>
-              <div onClick={onSignInWithFacebook} className="mb-4">
-                <SocialButton socialType="facebook"></SocialButton>
-              </div>
+              {/*<div onClick={onSignInWithFacebook} className="mb-4">*/}
+              {/*  <SocialButton socialType="facebook"></SocialButton>*/}
+              {/*</div>*/}
 
               <div className="flex justify-center w-full mt-6">
                 <LanguageToggle />
