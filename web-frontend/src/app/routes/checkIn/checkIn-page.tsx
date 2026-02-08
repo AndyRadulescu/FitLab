@@ -1,5 +1,5 @@
 import { Input } from '../../design/input';
-import { Card } from '../../design/Card';
+import { Card } from '../../design/card';
 import { z } from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

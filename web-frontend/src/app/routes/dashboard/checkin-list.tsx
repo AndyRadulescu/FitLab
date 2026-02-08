@@ -1,5 +1,5 @@
 import { CheckInFormDataDto } from '../../store/checkin.store';
-import { Card } from '../../design/Card';
+import { Card } from '../../design/card';
 import { CheckinItem } from '../../design/checkin-item';
 
 export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {

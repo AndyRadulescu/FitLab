@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2, Upload, X } from 'lucide-react';
 import { uploadImage } from '../../image-manager/image-compressor.manager';
-import { Card } from '../Card';
+import { Card } from '../card';
 import { SectionHeader } from '../section-header';
 import { Trans } from 'react-i18next';
 import { SLOTS } from '../../routes/checkIn/checkin-strategy/checkin-strategy';
