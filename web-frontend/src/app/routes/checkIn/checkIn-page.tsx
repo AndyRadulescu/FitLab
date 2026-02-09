@@ -13,6 +13,8 @@ import { CheckInStrategyFactory } from './checkin-strategy/checkin-strategy';
 import { collection, doc } from 'firebase/firestore';
 import { db } from '../../../init-firebase-auth';
 import { useRef } from 'react';
+import { Slider } from '../../design/custom-slider/custom-slider';
+import { FormSlider } from '../../design/custom-slider/form-slider';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -106,18 +108,26 @@ export function CheckInPage() {
         </Card>
 
         <Card>
-          <Input label={t('checkin.sleep')} type="number" min="0"
-                 max="12" {...register('hoursSlept', { valueAsNumber: true })}
-                 error={errors.hoursSlept?.message && t(errors.hoursSlept.message)}></Input>
-          <Input label={t('checkin.plan')} type="number" min="1"
-                 max="10" {...register('planAccuracy', { valueAsNumber: true })}
-                 error={errors.planAccuracy?.message && t(errors.planAccuracy.message)}></Input>
-          <Input label={t('checkin.energy')} type="number" min="1"
-                 max="10" {...register('energyLevel', { valueAsNumber: true })}
-                 error={errors.energyLevel?.message && t(errors.energyLevel.message)}></Input>
-          <Input label={t('checkin.mood')} type="number" min="1"
-                 max="10" {...register('moodCheck', { valueAsNumber: true })}
-                 error={errors.moodCheck?.message && t(errors.moodCheck.message)}></Input>
+          <FormSlider
+            name="hoursSlept" control={control} label={t('checkin.sleep')} min={0} max={12} step={0.5}
+            error={errors.hoursSlept?.message ? t(errors.hoursSlept.message) : undefined}
+          />
+
+          <FormSlider
+            name="planAccuracy" control={control} label={t('checkin.plan')} min={1} max={10} step={1}
+            error={errors.planAccuracy?.message ? t(errors.planAccuracy.message) : undefined}
+          />
+
+          <FormSlider
+            name="energyLevel" control={control} label={t('checkin.energy')} min={1} max={10} step={1}
+            error={errors.energyLevel?.message ? t(errors.energyLevel.message) : undefined}
+          />
+
+          <FormSlider
+            name="moodCheck" control={control} label={t('checkin.mood')} min={1} max={10} step={1}
+            error={errors.moodCheck?.message ? t(errors.moodCheck.message) : undefined}
+          />
+
           <Input label={t('checkin.steps')} type="number"
                  min="0" {...register('dailySteps', { valueAsNumber: true })}
                  error={errors.dailySteps?.message && t(errors.dailySteps.message)}></Input>
