@@ -17,14 +17,12 @@ export function useAppInitialization() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (initData) return;
     const load = async () => {
       if (!user) {
         navigate('/auth/login', { replace: true });
         return;
       }
       setIsLoading(true);
-
       const snapshotStart = await getDocs(getStartDataQuery(user));
       const snapshotCheckin = await getDocs(getCheckinQuery(user));
       const initData = snapshotStart.docs[0]?.data() as StartPageFormDataDto;
@@ -50,7 +48,7 @@ export function useAppInitialization() {
     };
 
     void load();
-  }, [navigate, setCheckin, setInitData, user, initData, t]);
+  }, []);
 
   return { isLoading, hasInitData: !!initData };
 }

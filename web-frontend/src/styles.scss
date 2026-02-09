@@ -1,11 +1,13 @@
 @use "tailwindcss";
+@use 'assets/variables';
+@import 'rc-slider/assets/index.css';
+@import 'material-icons/iconfont/material-icons.css';
+
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* You can add global styles to this file, and also import other style files */
 
-@import 'material-icons/iconfont/material-icons.css';
 @layer base {
   body {
     @apply bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100;
@@ -16,17 +18,12 @@
   --color-primary: #5E5441;
 }
 
-.primary-gradient{
-  background: linear-gradient(
-      to right,
-      #A88C65,
-      #F3E5C0,
-      #C7AD72
-  );
+.primary-gradient {
+  background: variables.$primary-gradient-light
 }
 
 @media (prefers-color-scheme: dark) {
   .primary-gradient {
-    background: linear-gradient(to right, #3D3524, #635D4E, #3D3524);
+    background: variables.$primary-gradient-dark
   }
 }
