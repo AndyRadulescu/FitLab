@@ -29,6 +29,8 @@
   "errors.image.invalid": "Nu toate imaginile au fost încărcate. 3 imagini sunt necesare.",
   "dashboard.nothingYet": "Încă nu există nimic de afișat",
   "profile.change.language": "Schimbă limba",
+  "profile.settings": "Setările contului",
+  "profile.danger": "Acțiuni critice",
   "checkin.measures.kg": "Greutate (kg):",
   "checkin.save": "Salvează",
   "checkin.delete": "Sigur dorești să ștergi acest check-in?",
