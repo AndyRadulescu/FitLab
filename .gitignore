@@ -50,3 +50,7 @@ vitest.config.*.timestamp*
 /.vscode/
 /.firebaserc
 /web-frontend/.env
+
+# Next.js
+.next
+out
