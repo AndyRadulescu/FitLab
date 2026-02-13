@@ -67,5 +67,6 @@
   "image.upload.back": "Spate",
   "image.upload.side": "Lateral",
   "danger.delete.account": "Ești sigur că vrei să ștergi contul?",
-  "danger.type": "Te rog scrie \"delete account\" ca să ștergi contul"
+  "danger.type": "Te rog scrie \"delete account\" ca să ștergi contul",
+  "danger.account.error": "O eroare a împiedicat procesul de ștergere a contului. Te rugăm contactează administratorul."
 }

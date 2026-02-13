@@ -5,14 +5,20 @@ import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 import { Card } from '../design/card';
 import { userStore } from '../../store/user.store';
+import { deleteAccount } from '../../routes/profile/danger/delele-account';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../../../init-firebase-auth';
 
 export function DangerZone() {
   const user = userStore(state => state.user);
+  const setUser = userStore(state => state.setUser);
   const [isShown, setShown] = useState<boolean>(false);
-  const {t}= useTranslation();
+  const { t } = useTranslation();
 
-  console.log(user);
-  const removeAccount = () => {
+  const removeAccount = async () => {
+    if (!user) {
+      navigate('/auth/login', { replace: true });
+    }
     if (!confirm(t('danger.delete.account'))) {
       return;
     }
@@ -20,7 +26,13 @@ export function DangerZone() {
     if (string !== 'delete account') {
       return;
     }
+    await deleteAccount(user.uid, t);
+    await auth.signOut();
+    setUser(undefined);
+    navigate('/auth/login', { replace: true });
   };
+
+  const navigate = useNavigate();
 
   return (
     <>

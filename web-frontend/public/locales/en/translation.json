@@ -67,5 +67,6 @@
   "image.upload.back": "Back",
   "image.upload.side": "Side",
   "danger.delete.account": "Are you sure you want to delete your account?",
-  "danger.type": "Please type \"delete account\" to confirm"
+  "danger.type": "Please type \"delete account\" to confirm",
+  "danger.account.error": "Account deletion failed. Please contact the administrator."
 }
