@@ -1,45 +1,33 @@
 import { NavLink } from 'react-router-dom';
+import clsx from 'clsx';
+import { LayoutDashboard, Plus, UserCog } from 'lucide-react';
+
+const NAV_ITEMS = [
+  { to: '/dashboard', icon: LayoutDashboard },
+  { to: '/check-in', icon: Plus },
+  { to: '/profile', icon: UserCog },
+];
 
 export function Navbar() {
   return (
     <div className="fixed bottom-2 left-0 w-full px-8 mb-4 lg:max-w-[80%] lg:ml-[10%] xl:max-w-[60%] xl:ml-[20%]">
-
-      <div className="flex justify-evenly items-center h-[70px] bg-gray-800 dark:bg-pink-700 rounded-full">
-        <NavLink to="/dashboard">
-          {({ isActive }) => (
-            <span
-              className={`material-icons text-5xl ${
-                isActive ? 'bg-amber-600 dark:bg-gray-800 text-white rounded-full p-2' : 'text-white'
-              }`}
-            >
-        send
-      </span>
-          )}
-        </NavLink>
-
-        <NavLink to="/check-in">
-          {({ isActive }) => (
-            <span
-              className={`material-icons text-5xl ${
-                isActive ? 'bg-amber-600 dark:bg-gray-800 text-white rounded-full p-2' : 'text-white'
-              }`}
-            >
-        add
-      </span>
-          )}
-        </NavLink>
-
-        <NavLink to="/profile">
-          {({ isActive }) => (
-            <span
-              className={`material-icons text-5xl ${
-                isActive ? 'bg-amber-600 dark:bg-gray-800 text-white rounded-full p-2' : 'text-white'
-              }`}
-            >
-        manage_accounts
-      </span>
-          )}
-        </NavLink>
+      <div className="flex justify-evenly items-center h-[70px] bg-gray-800 dark:bg-pink-700 rounded-full shadow-lg">
+        {NAV_ITEMS.map(({ to, icon: Icon }) => (
+          <NavLink key={to} to={to}>
+            {({ isActive }) => (
+              <div
+                className={clsx(
+                  'transition-all duration-200 flex items-center justify-center',
+                  isActive
+                    ? 'bg-amber-600 dark:bg-gray-800 text-white rounded-full p-3'
+                    : 'text-white p-3'
+                )}
+              >
+                <Icon size={24} />
+              </div>
+            )}
+          </NavLink>
+        ))}
       </div>
     </div>
   );

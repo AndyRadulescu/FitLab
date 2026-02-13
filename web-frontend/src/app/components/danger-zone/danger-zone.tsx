@@ -1,11 +1,12 @@
 import { Card } from '../design/card';
 import { Trans } from 'react-i18next';
 import { Button } from '../design/button';
+import { SectionHeader } from '../section-header';
 
 export function DangerZone() {
   return (
     <>
-      <h2 className="text-2xl mb-4 dark:text-gray-300"><Trans i18nKey="profile.danger">Danger zone</Trans></h2>
+      <SectionHeader><Trans i18nKey="profile.danger">Danger zone</Trans></SectionHeader>
       <Card isDanger={true}>
         <div className="flex column aling-center justify-center w-full">
           <div className="flex-2">
@@ -15,7 +16,6 @@ export function DangerZone() {
           <div className="flex-1">
             <Button type="danger">Delete account</Button>
           </div>
-
         </div>
       </Card>
     </>

@@ -16,7 +16,7 @@ export function Button({ children, type, disabled }: ButtonProps) {
         type === 'primary' && 'primary-gradient',
         type === 'secondary' && 'bg-secondary',
         type === 'tertiary' && 'bg-tertiary',
-        type === 'danger' && 'hover:bg-red-700 border-gray-700 border-1',
+        type === 'danger' && 'hover:bg-red-700 border-red-700 border-1 bg-red-100 dark:bg-inherit',
         disabled ? 'opacity-50 cursor-not-allowed' : '',
         type === 'tertiary' ? 'text-gray-600 dark:text-gray-100' :
           type === 'danger' ? 'text-red-600 dark:text-red-500 hover:text-white' :

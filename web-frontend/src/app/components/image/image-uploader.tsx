@@ -109,8 +109,6 @@ export const ImageUploader = ({ userId, checkinId, onChange, isEdit, error }: Im
 
   return (
     <Card>
-      <SectionHeader><Trans i18nKey="section.requiredPhotos">Required Photos</Trans></SectionHeader>
-
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
         {SLOTS.map((slot) => {
           const displayUrl = getDisplayUrl(slot);
