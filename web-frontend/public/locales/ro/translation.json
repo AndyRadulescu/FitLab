@@ -65,5 +65,7 @@
   "section.uploading": "Încarcă și continuă",
   "image.upload.front": "Față",
   "image.upload.back": "Spate",
-  "image.upload.side": "Lateral"
+  "image.upload.side": "Lateral",
+  "danger.delete.account": "Ești sigur că vrei să ștergi contul?",
+  "danger.type": "Te rog scrie \"delete account\" ca să ștergi contul"
 }

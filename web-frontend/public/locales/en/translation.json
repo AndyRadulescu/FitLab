@@ -65,5 +65,7 @@
   "sectino.uploading": "Upload & Continue",
   "image.upload.front": "Front",
   "image.upload.back": "Back",
-  "image.upload.side": "Side"
+  "image.upload.side": "Side",
+  "danger.delete.account": "Are you sure you want to delete your account?",
+  "danger.type": "Please type \"delete account\" to confirm"
 }
