@@ -6,15 +6,15 @@ import { SectionHeader } from '../section-header';
 export function DangerZone() {
   return (
     <>
-      <SectionHeader><Trans i18nKey="profile.danger">Danger zone</Trans></SectionHeader>
+      <SectionHeader><Trans i18nKey="profile.danger"/></SectionHeader>
       <Card isDanger={true}>
-        <div className="flex column aling-center justify-center w-full">
+        <div className="flex flex-col md:flex-row gap-4 aling-center justify-center w-full">
           <div className="flex-2">
-            <h3 className="text-lg">Delete account</h3>
-            <p className="text-md">Once you delete this account, there is no going back, all data will be lost.</p>
+            <h3 className="text-lg"><Trans i18nKey="profile.deleteAccount"/></h3>
+            <p className="text-md"><Trans i18nKey="profile.delete.info">tst</Trans></p>
           </div>
-          <div className="flex-1">
-            <Button type="danger">Delete account</Button>
+          <div className="flex-1 flex justify-center items-center">
+            <Button type="danger"><Trans i18nKey="profile.deleteAccount"/></Button>
           </div>
         </div>
       </Card>

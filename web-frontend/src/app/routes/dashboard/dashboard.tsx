@@ -7,7 +7,6 @@ export function Dashboard() {
 
   return (
     <div>
-      <h1 className="text-2xl text-center mb-4">Your journey</h1>
       {checkins.length === 0 ? <div className="h-svh flex justify-center items-center">
         <p><Trans i18nKey="dashboard.nothingYet">Noting to show yet</Trans></p>
       </div> : <CheckinList checkins={checkins}/>}
