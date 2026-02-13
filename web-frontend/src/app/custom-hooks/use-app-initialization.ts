@@ -40,10 +40,10 @@ export function useAppInitialization() {
         updatedAt: checkin.updatedAt.toDate()
       })) as CheckInFormDataDto[];
       if (!initData) {
+        setInitData(initData);
         setIsLoading(false);
         return;
       }
-      setInitData(initData);
       setCheckin(checkinMapped);
       setIsLoading(false);
     };

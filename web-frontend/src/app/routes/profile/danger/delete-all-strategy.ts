@@ -22,7 +22,7 @@ export class DeleteUserAccount {
   }
 
   private async wipeUserStorage(userId: string) {
-    const userFolderRef = ref(storage, `users/${userId}`);
+    const userFolderRef = ref(storage, `checkin-imgs/${userId}`);
 
     const recursiveDelete = async (folderRef: any) => {
       const listResponse = await listAll(folderRef);
@@ -34,19 +34,27 @@ export class DeleteUserAccount {
   }
 
   private async wipeUserFirestore(userId: string) {
-    const checkinsRef = collection(db, 'checkins');
-    const q = query(checkinsRef, where('userId', '==', userId));
-    const querySnapshot = await getDocs(q);
-
     const batch = writeBatch(db);
 
-    querySnapshot.forEach((doc) => {
+    const checkinsRef = collection(db, 'checkins');
+    const startRef = collection(db, 'start');
+    const qCheckins = query(checkinsRef, where('userId', '==', userId));
+    const qStart = query(startRef, where('userId', '==', userId));
+
+    const [checkinsSnap, startSnap] = await Promise.all([
+      getDocs(qCheckins),
+      getDocs(qStart)
+    ]);
+
+    checkinsSnap.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+    startSnap.forEach((doc) => {
       batch.delete(doc.ref);
     });
 
     const profileRef = doc(db, 'users', userId);
     batch.delete(profileRef);
-
     await batch.commit();
 
     localStorage.removeItem("user-store");
