@@ -40,7 +40,8 @@ export function useAppInitialization() {
         updatedAt: checkin.updatedAt.toDate()
       })) as CheckInFormDataDto[];
       if (!initData) {
-        alert(t('errors.unknown'));
+        setIsLoading(false);
+        return;
       }
       setInitData(initData);
       setCheckin(checkinMapped);
