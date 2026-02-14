@@ -1,5 +1,4 @@
 import './global.scss';
-import { useTranslation } from 'react-i18next';
 
 export const metadata = {
   title: 'Amazonia Fitlab',
@@ -9,10 +8,8 @@ export const metadata = {
 export default function RootLayout({ children }: {
   children: React.ReactNode;
 }) {
-  const { i18n } = useTranslation();
-  console.log(i18n.language);
   return (
-    <html lang={i18n.language}>
+    <html lang="en">
     <body>{children}</body>
     </html>
   );

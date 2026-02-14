@@ -1,11 +1,11 @@
-import { useTranslation } from 'react-i18next';
 import { Main } from './routes/main';
 import { StartPage } from './routes/start-page/start-page';
 import { AnalyticsTracker } from './analytics-tracker';
 import { useAppInitialization } from './custom-hooks/use-app-initialization';
+import { useHtmlLang } from './custom-hooks/use-html-lang';
 
 export function App() {
-  useTranslation(); // don't remove this; used to init i18n
+  useHtmlLang();
   const { isLoading, hasInitData } = useAppInitialization();
   if (isLoading) {
     return <div>Loading...</div>;

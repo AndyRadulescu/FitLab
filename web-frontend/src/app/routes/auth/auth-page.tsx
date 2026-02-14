@@ -8,8 +8,10 @@ import { LanguageToggle } from '../../components/language-toggle';
 import { AnalyticsTracker } from '../../analytics-tracker';
 import { logEvent } from 'firebase/analytics';
 import { handleAuthErrors } from './error-handler';
+import { useHtmlLang } from '../../custom-hooks/use-html-lang';
 
 export function AuthPage() {
+  useHtmlLang();
   const { i18n, t } = useTranslation();
   const isLoggedIn = userStore(state => state.isLoggedIn);
   const location = useLocation();
