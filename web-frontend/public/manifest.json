@@ -1,6 +1,6 @@
 {
-  "name": "FitLab",
-  "short_name": "FitLab - Tracker",
+  "name": "Amazonia FitLab",
+  "short_name": "Amazonia",
   "icons": [
     {
       "src": "icons/manifest-icon-192.maskable.png",
@@ -37,7 +37,7 @@
     }
   ],
   "start_url": ".",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "background_color": "#000000",
   "display": "standalone"
 }
