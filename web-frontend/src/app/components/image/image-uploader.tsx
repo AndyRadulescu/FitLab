@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2, Upload, X } from 'lucide-react';
 import { uploadImage } from '../../image-manager/image-compressor.manager';
-import { Card } from '../card';
+import { Card } from '../design/card';
 import { SectionHeader } from '../section-header';
 import { Trans } from 'react-i18next';
 import { SLOTS } from '../../routes/checkIn/checkin-strategy/checkin-strategy';
@@ -109,8 +109,6 @@ export const ImageUploader = ({ userId, checkinId, onChange, isEdit, error }: Im
 
   return (
     <Card>
-      <SectionHeader><Trans i18nKey="section.requiredPhotos">Required Photos</Trans></SectionHeader>
-
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
         {SLOTS.map((slot) => {
           const displayUrl = getDisplayUrl(slot);

@@ -28,7 +28,14 @@
   "errors.date.invalid": "Date is invalid",
   "errors.image.invalid": "Not all images have been uploaded. 3 images are required",
   "dashboard.nothingYet": "Nothing to show yet",
+  "dashboard.journey": "My journey",
   "profile.change.language": "Change language",
+  "profile.settings": "Profile settings",
+  "profile.danger": "Danger zone",
+  "profile.deleteAccount": "Delete account",
+  "profile.delete.info": "Once you delete this account, there is no going back, all data will be lost.",
+  "checkin.measurements": "Measurements",
+  "checkin.lifestyle": "Lifestyle check",
   "checkin.measures.kg": "Weight (kg):",
   "checkin.save": "Edit",
   "checkin.delete": "Are you sure you want to delete this check-in?",
@@ -58,5 +65,8 @@
   "sectino.uploading": "Upload & Continue",
   "image.upload.front": "Front",
   "image.upload.back": "Back",
-  "image.upload.side": "Side"
+  "image.upload.side": "Side",
+  "danger.delete.account": "Are you sure you want to delete your account?",
+  "danger.type": "Please type \"delete account\" to confirm",
+  "danger.account.error": "Account deletion failed. Please contact the administrator."
 }

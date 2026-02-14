@@ -1,11 +1,13 @@
 import { CheckInFormDataDto } from '../../store/checkin.store';
-import { Card } from '../../design/card';
-import { CheckinItem } from '../../design/checkin-item';
+import { Card } from '../../components/design/card';
+import { CheckinItem } from '../../components/checkin-item';
+import { SectionHeader } from '../../components/section-header';
+import { Trans } from 'react-i18next';
 
 export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {
   return (
     <div>
-      <h1 className="text-2xl mb-4 dark:text-gray-300">Check-ins</h1>
+      <SectionHeader><Trans i18nKey="dashboard.journey">My journey</Trans></SectionHeader>
       <Card className="mb-2">
         {checkins.map((checkin, index) => (
           <div key={checkin.id}>

@@ -28,7 +28,14 @@
   "errors.date.invalid": "Data este în format invalid",
   "errors.image.invalid": "Nu toate imaginile au fost încărcate. 3 imagini sunt necesare.",
   "dashboard.nothingYet": "Încă nu există nimic de afișat",
+  "dashboard.journey": "Călătoria mea",
   "profile.change.language": "Schimbă limba",
+  "profile.settings": "Setările contului",
+  "profile.danger": "Acțiuni critice",
+  "profile.deleteAccount": "Șterge contul",
+  "profile.delete.info": "După ștergerea contului, acțiunea este ireversibilă și toate datele tale vor fi eliminate definitiv.",
+  "checkin.measurements": "Măsurători",
+  "checkin.lifestyle": "Stil de viață",
   "checkin.measures.kg": "Greutate (kg):",
   "checkin.save": "Salvează",
   "checkin.delete": "Sigur dorești să ștergi acest check-in?",
@@ -58,5 +65,8 @@
   "section.uploading": "Încarcă și continuă",
   "image.upload.front": "Față",
   "image.upload.back": "Spate",
-  "image.upload.side": "Lateral"
+  "image.upload.side": "Lateral",
+  "danger.delete.account": "Ești sigur că vrei să ștergi contul?",
+  "danger.type": "Te rog scrie \"delete account\" ca să ștergi contul",
+  "danger.account.error": "O eroare a împiedicat procesul de ștergere a contului. Te rugăm contactează administratorul."
 }

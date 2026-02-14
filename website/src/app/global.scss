@@ -1,0 +1,7 @@
+@use "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-white text-black dark:bg-black dark:text-gray-100;
+  }
+}

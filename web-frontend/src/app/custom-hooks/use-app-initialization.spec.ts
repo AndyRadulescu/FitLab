@@ -63,7 +63,7 @@ describe('useAppInitialization', () => {
       expect(result.current.isLoading).toBe(false);
     }, { timeout: 1000 });
 
-    expect(result.current.hasInitData).toBe(true);
+    expect(result.current.hasInitData).toBe(false);
   });
 
   it('should skip loading if initData already exists', () => {

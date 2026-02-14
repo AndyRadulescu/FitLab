@@ -1,20 +1,21 @@
-import { Input } from '../../design/input';
-import { Card } from '../../design/card';
+import { Input } from '../../components/design/input';
+import { Card } from '../../components/design/card';
 import { z } from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
 import { userStore } from '../../store/user.store';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Button } from '../../design/button';
+import { Button } from '../../components/design/button';
 import { checkinStore } from '../../store/checkin.store';
-import { ImageUploader } from '../../design/image/image-uploader';
-import { CheckInStrategyFactory } from './checkin-strategy/checkin-strategy';
+import { ImageUploader } from '../../components/image/image-uploader';
+import { CheckInStrategyFactory, SLOTS } from './checkin-strategy/checkin-strategy';
 import { collection, doc } from 'firebase/firestore';
 import { db } from '../../../init-firebase-auth';
 import { useRef } from 'react';
-import { Slider } from '../../design/custom-slider/custom-slider';
-import { FormSlider } from '../../design/custom-slider/form-slider';
+import { Slider } from '../../components/custom-slider/custom-slider';
+import { FormSlider } from '../../components/custom-slider/form-slider';
+import { SectionHeader } from '../../components/section-header';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -80,13 +81,11 @@ export function CheckInPage() {
 
   return (
     <div>
-      <h1 className="text-center text-2xl mb-4">Check-in</h1>
       <form noValidate className="mt-4" onSubmit={handleSubmit(data => sendCheckin(data))}>
-        <Card className="mb-2">
+        <SectionHeader><Trans i18nKey="checkin.measurements">Measurements</Trans></SectionHeader>
+        <Card className="mb-4">
           <Input label={t('checkin.measures.kg')} type="number" min="0" {...register('kg', { valueAsNumber: true })}
                  error={errors.kg?.message && t(errors.kg.message)}></Input>
-        </Card>
-        <Card className="mb-2">
           <Input label={t('checkin.measures.breast')} type="number" {...register('breastSize', { valueAsNumber: true })}
                  error={errors.breastSize?.message && t(errors.breastSize.message)}></Input>
           <Input label={t('checkin.measures.waist')} type="number" {...register('waistSize', { valueAsNumber: true })}
@@ -107,7 +106,8 @@ export function CheckInPage() {
                  error={errors.rightArm?.message && t(errors.rightArm.message)}></Input>
         </Card>
 
-        <Card>
+        <SectionHeader><Trans i18nKey="checkin.lifestyle">Lifestyle check:</Trans></SectionHeader>
+        <Card className="mb-4">
           <FormSlider
             name="hoursSlept" control={control} label={t('checkin.sleep')} min={0} max={12} step={0.5}
             error={errors.hoursSlept?.message ? t(errors.hoursSlept.message) : undefined}
@@ -133,6 +133,7 @@ export function CheckInPage() {
                  error={errors.dailySteps?.message && t(errors.dailySteps.message)}></Input>
         </Card>
 
+        <SectionHeader><Trans i18nKey="section.requiredPhotos">Required Photos</Trans></SectionHeader>
         <div className="my-2">
           <Controller
             name="imgUrls"

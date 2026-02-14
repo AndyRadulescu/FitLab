@@ -3,13 +3,15 @@ import { analytics, auth } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
-import { SocialButton } from '../../design/social-button';
-import { LanguageToggle } from '../../design/language-toggle';
+import { SocialButton } from '../../components/design/social-button';
+import { LanguageToggle } from '../../components/language-toggle';
 import { AnalyticsTracker } from '../../analytics-tracker';
 import { logEvent } from 'firebase/analytics';
 import { handleAuthErrors } from './error-handler';
+import { useHtmlLang } from '../../custom-hooks/use-html-lang';
 
 export function AuthPage() {
+  useHtmlLang();
   const { i18n, t } = useTranslation();
   const isLoggedIn = userStore(state => state.isLoggedIn);
   const location = useLocation();
@@ -46,9 +48,9 @@ export function AuthPage() {
     <>
       <AnalyticsTracker />
       <div
-        className="w-full min-h-svh flex flex-col lg:flex-row align-center bg-primary dark:bg-gray-800 lg:dark:bg-gray-700 lg:bg-white">
+        className="auth-theme-trigger w-full min-h-svh flex flex-col lg:flex-row align-center bg-primary dark:bg-gray-950 lg:dark:bg-gray-700 lg:bg-white">
         <div
-          className="flex-1 flex justify-center items-center p-8 lg:p-12 dark:bg-gray-800 lg:bg-primary lg:rounded-t-none lg:rounded-r-4xl">
+          className="flex-1 flex justify-center items-center p-8 lg:p-12 dark:bg-gray-950 lg:bg-primary lg:rounded-t-none lg:rounded-r-4xl">
           <img
             src="/images/logo-title.svg"
             alt="Logo"

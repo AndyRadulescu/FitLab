@@ -1,13 +1,15 @@
-import { Input } from '../../design/input';
-import { Card } from '../../design/card';
+import { Input } from '../../components/design/input';
+import { Card } from '../../components/design/card';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
 import { useNavigate } from 'react-router-dom';
+import { SectionHeader } from '../../components/section-header';
+import { Button } from '../../components/design/button';
 
 const startPageSchema = z.object({
   dateOfBirth: z.date('errors.date.invalid'),
@@ -54,14 +56,13 @@ export function StartPage() {
     resolver: zodResolver(startPageSchema)
   });
 
-
   return (
-    <form noValidate className="mx-4 flex flex-col h-svh justify-between"
+    <form noValidate className="mx-4 py-8 flex flex-col h-svh justify-between"
           onSubmit={handleSubmit(data => sendInitData(data))}>
       <div>
+        <SectionHeader><Trans i18nKey="start.title"/></SectionHeader>
+        <p className="mb-4"><Trans i18nKey="start.description"/></p>
         <Card className="my-4">
-          <h1 className="text-2xl mb-2">Salut, bine ai venit la Fitlab!</h1>
-          <p className="mb-4">Ca să incepem, ne trebuie doar câteva informații despre tine:</p>
           <Input
             label={t('start.dateOfBirth')}
             type="date"
@@ -83,11 +84,9 @@ export function StartPage() {
             error={errors.height?.message && t(errors.height.message)} />
         </Card>
       </div>
-      <button
-        disabled={isSubmitting}
-        className="mb-4 w-full hover:bg-amber-500 text-white pointer font-bold py-2 px-4 rounded-full mt-4 text-center bg-linear-to-r from-amber-300 to-red-900">
+      <Button type="primary" disabled={isSubmitting}>
         Start
-      </button>
+      </Button>
     </form>
   );
 }

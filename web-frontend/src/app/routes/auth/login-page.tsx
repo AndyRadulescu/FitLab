@@ -1,13 +1,13 @@
 import { analytics, auth } from '../../../init-firebase-auth';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Link } from 'react-router-dom';
-import { Input } from '../../design/input';
+import { Input } from '../../components/design/input';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
 import { handleAuthErrors } from './error-handler';
-import { Button } from '../../design/button';
+import { Button } from '../../components/design/button';
 import { logEvent } from 'firebase/analytics';
 
 const loginSchema = z.object({
