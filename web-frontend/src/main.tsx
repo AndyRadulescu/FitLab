@@ -5,7 +5,6 @@ import { router } from './app/routes/router';
 import { initFirebaseAuth } from './init-firebase-auth';
 import './i18n';
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import "material-icons/iconfont/material-icons.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
