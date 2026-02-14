@@ -46,7 +46,7 @@ export function AuthPage() {
     <>
       <AnalyticsTracker />
       <div
-        className="w-full min-h-svh flex flex-col lg:flex-row align-center bg-primary dark:bg-gray-900 lg:dark:bg-gray-700 lg:bg-white">
+        className="auth-theme-trigger w-full min-h-svh flex flex-col lg:flex-row align-center bg-primary dark:bg-gray-900 lg:dark:bg-gray-700 lg:bg-white">
         <div
           className="flex-1 flex justify-center items-center p-8 lg:p-12 dark:bg-gray-900 lg:bg-primary lg:rounded-t-none lg:rounded-r-4xl">
           <img
