@@ -3,9 +3,14 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { App } from './app';
 import { useAppInitialization } from './custom-hooks/use-app-initialization';
 import '@testing-library/jest-dom/vitest';
+import { useHtmlLang } from './custom-hooks/use-html-lang';
 
 vi.mock('./custom-hooks/use-app-initialization', () => ({
   useAppInitialization: vi.fn(),
+}));
+
+vi.mock('./custom-hooks/use-html-lang', () => ({
+  useHtmlLang: vi.fn(),
 }));
 
 vi.mock('./routes/main', () => ({ Main: () => <div data-testid="main-route" /> }));
