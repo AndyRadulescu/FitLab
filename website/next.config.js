@@ -7,12 +7,11 @@ const { composePlugins, withNx } = require('@nx/next');
  * @type {import('@nx/next/plugins/with-nx').WithNxOptions}
  **/
 const nextConfig = {
-  output: 'export', // Forces a static build
+  output: 'export',
   images: {
-    unoptimized: true, // Required for static export
+    unoptimized: true,
   },
-  // This helps Next.js align with Nx's dist structure
-  distDir: '../website/',
+  distDir: '../dist/website',
 };
 const plugins = [
   // Add more Next.js plugins to this list if needed.
