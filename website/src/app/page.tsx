@@ -109,6 +109,7 @@ export default function LandingPage() {
           </div>
           <div className="flex gap-8 text-sm font-medium">
             <Link href="/privacy-policy" className="hover:text-white">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white">Terms of use</Link>
             <Link href="/data-deletion" className="hover:text-white">Data Deletion</Link>
             <a href="mailto:andyradulescu@synapselabs.org" className="hover:text-white">Contact</a>
           </div>
