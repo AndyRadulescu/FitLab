@@ -70,7 +70,7 @@ export default function PrivacyPolicyPage() {
               If you have questions about this policy or encountered an error, please contact our team:
             </p>
             <a
-              href="mailto:support@amazonia-fitlab.com"
+              href="mailto:andyradulescu@synapselabs.org"
               className="inline-block mt-4 text-primary hover:text-white transition-colors font-medium underline underline-offset-4"
             >
               support@amazonia-fitlab.com

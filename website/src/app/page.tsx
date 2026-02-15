@@ -110,7 +110,7 @@ export default function LandingPage() {
           <div className="flex gap-8 text-sm font-medium">
             <Link href="/privacy-policy" className="hover:text-white">Privacy Policy</Link>
             <Link href="/data-deletion" className="hover:text-white">Data Deletion</Link>
-            <a href="mailto:support@amazonia-fitlab.com" className="hover:text-white">Contact</a>
+            <a href="mailto:andyradulescu@synapselabs.org" className="hover:text-white">Contact</a>
           </div>
         </div>
       </footer>

@@ -108,7 +108,7 @@ export default function DataDeletionPage() {
 
         <footer className="mt-20 pt-8 border-t border-zinc-900 text-center">
           <p className="text-gray-600 mb-4">Cannot access your account? We can help.</p>
-          <a href="mailto:support@amazonia-fitlab.com" className="bg-white text-black px-8 py-3 rounded-full font-bold">
+          <a href="mailto:andyradulescu@synapselabs.org" className="bg-white text-black px-8 py-3 rounded-full font-bold">
             Contact Support for Manual Deletion
           </a>
         </footer>
