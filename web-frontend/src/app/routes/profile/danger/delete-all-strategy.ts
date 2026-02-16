@@ -37,13 +37,13 @@ export class DeleteUserAccount {
     const batch = writeBatch(db);
 
     const checkinsRef = collection(db, 'checkins');
-    const startRef = collection(db, 'start');
+    const userRef = collection(db, 'user');
     const qCheckins = query(checkinsRef, where('userId', '==', userId));
-    const qStart = query(startRef, where('userId', '==', userId));
+    const qUser = query(userRef, where('userId', '==', userId));
 
     const [checkinsSnap, startSnap] = await Promise.all([
       getDocs(qCheckins),
-      getDocs(qStart)
+      getDocs(qUser)
     ]);
 
     checkinsSnap.forEach((doc) => {

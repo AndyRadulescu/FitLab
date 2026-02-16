@@ -10,8 +10,8 @@ export function useAppInitialization() {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const initData = userStore((state) => state.initData);
-  const setInitData = userStore(state => state.setInitData);
+  const initData = userStore((state) => state.userData);
+  const setUserData = userStore(state => state.setUserData);
   const setCheckin = checkinStore(state => state.setCheckin);
   const user = userStore((state) => state.user);
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ export function useAppInitialization() {
         updatedAt: checkin.updatedAt.toDate()
       })) as CheckInFormDataDto[];
       if (!initData) {
-        setInitData(initData);
+        setUserData(initData);
         setIsLoading(false);
         return;
       }

@@ -22,7 +22,7 @@ export type StartPageFormData = z.infer<typeof startPageSchema>;
 export function StartPage() {
   const { t } = useTranslation();
   const user = userStore((state) => state.user);
-  const setInitData = userStore(state => state.setInitData);
+  const setInitData = userStore(state => state.setUserData);
   const navigate = useNavigate();
 
   const sendInitData = async (data: StartPageFormData) => {

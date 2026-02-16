@@ -7,23 +7,23 @@ export type StartPageFormDataDto = Omit<StartPageFormData, 'dateOfBirth'> & { da
 
 interface UserStore {
   user?: firebase.User;
-  initData?: StartPageFormDataDto;
+  userData?: StartPageFormDataDto;
   isLoggedIn: boolean;
   setUser: (user?: firebase.User) => void,
-  setInitData: (user?: StartPageFormDataDto) => void,
+  setUserData: (user?: StartPageFormDataDto) => void,
 }
 
 export const userStore = create<UserStore>()(
   devtools(
     persist((set) => ({
       user: undefined,
-      initData: undefined,
+      userData: undefined,
       isLoggedIn: false,
       setUser: (user?: firebase.User) => set((state) => {
         return { ...state, user, isLoggedIn: !!user };
       }),
-      setInitData: (initData?: StartPageFormDataDto) => set((state) => {
-        return { ...state, initData: initData };
+      setUserData: (initData?: StartPageFormDataDto) => set((state) => {
+        return { ...state, userData: initData };
       })
     }), {
       name: 'user-store'

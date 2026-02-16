@@ -41,7 +41,7 @@ export function AuthPage() {
     auth.languageCode = i18n.language;
     void signInWithPopup(auth, new FacebookAuthProvider()).catch((err) => {
       handleAuthErrors(err, t);
-    });;
+    });
   };
 
   return (

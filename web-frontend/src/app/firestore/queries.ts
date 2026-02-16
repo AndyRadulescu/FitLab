@@ -4,7 +4,7 @@ import { db } from '../../init-firebase-auth';
 
 export const getStartDataQuery = (user: firebase.User)=> {
   return query(
-    collection(db, 'start'),
+    collection(db, 'user'),
     where('userId', '==', user.uid),
     orderBy('createdAt', 'desc'),
     limit(1)

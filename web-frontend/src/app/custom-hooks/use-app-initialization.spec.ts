@@ -30,7 +30,7 @@ describe('useAppInitialization', () => {
     vi.clearAllMocks();
     vi.mocked(useNavigate).mockReturnValue(mockNavigate);
 
-    userStore.setState({ user: undefined, initData: undefined });
+    userStore.setState({ user: undefined, userData: undefined });
     checkinStore.setState({ checkins: [] });
   });
 
@@ -44,7 +44,7 @@ describe('useAppInitialization', () => {
 
   it('should successfully complete the loading cycle', async () => {
     const mockUser = { uid: '123' };
-    userStore.setState({ user: mockUser as any, initData: undefined });
+    userStore.setState({ user: mockUser as any, userData: undefined });
     vi.mocked(getDocs).mockResolvedValue({
       docs: [
         {
@@ -67,7 +67,7 @@ describe('useAppInitialization', () => {
   });
 
   it('should skip loading if initData already exists', () => {
-    userStore.setState({ initData: { some: 'data' } as any });
+    userStore.setState({ userData: { some: 'data' } as any });
 
     const { result } = renderHook(() => useAppInitialization());
 
