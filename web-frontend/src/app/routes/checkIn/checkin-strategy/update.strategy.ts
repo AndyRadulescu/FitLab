@@ -3,10 +3,11 @@ import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { analytics, db } from '../../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
 import { CheckInStrategy } from './checkin-strategy';
+import { CHECKINS_TABLE } from '../../../firestore/queries';
 
 export class UpdateCheckInStrategy implements CheckInStrategy {
   async checkIn({ data, userId }: { data: CheckInPayload, userId?: string }) {
-    const docRef = doc(db, 'checkins', data.id);
+    const docRef = doc(db, CHECKINS_TABLE, data.id);
     const mappedData = { ...data, updatedAt: new Date() };
     await updateDoc(docRef, {
       ...mappedData,

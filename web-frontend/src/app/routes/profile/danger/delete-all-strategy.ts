@@ -2,6 +2,7 @@ import { collection, query, where, getDocs, writeBatch, doc } from 'firebase/fir
 import { ref, listAll, deleteObject } from 'firebase/storage';
 import { analytics, db, storage } from '../../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
+import { CHECKINS_STORAGE, CHECKINS_TABLE, USERS_TABLE, WEIGHT_TABLE } from '../../../firestore/queries';
 
 export class DeleteUserAccount {
   async deleteAllUserData(userId: string) {
@@ -22,7 +23,7 @@ export class DeleteUserAccount {
   }
 
   private async wipeUserStorage(userId: string) {
-    const userFolderRef = ref(storage, `checkin-imgs/${userId}`);
+    const userFolderRef = ref(storage, `${CHECKINS_STORAGE}${userId}`);
 
     const recursiveDelete = async (folderRef: any) => {
       const listResponse = await listAll(folderRef);
@@ -36,14 +37,17 @@ export class DeleteUserAccount {
   private async wipeUserFirestore(userId: string) {
     const batch = writeBatch(db);
 
-    const checkinsRef = collection(db, 'checkins');
-    const userRef = collection(db, 'user');
+    const checkinsRef = collection(db, CHECKINS_TABLE);
+    const userRef = collection(db, USERS_TABLE);
+    const weightRef = collection(db, WEIGHT_TABLE);
     const qCheckins = query(checkinsRef, where('userId', '==', userId));
     const qUser = query(userRef, where('userId', '==', userId));
+    const qWeight = query(weightRef, where('userId', '==', userId));
 
-    const [checkinsSnap, startSnap] = await Promise.all([
+    const [checkinsSnap, startSnap, weightSnap] = await Promise.all([
       getDocs(qCheckins),
-      getDocs(qUser)
+      getDocs(qUser),
+      getDocs(qWeight)
     ]);
 
     checkinsSnap.forEach((doc) => {
@@ -52,6 +56,9 @@ export class DeleteUserAccount {
     startSnap.forEach((doc) => {
       batch.delete(doc.ref);
     });
+    weightSnap.forEach((doc) => {
+      batch.delete(doc.ref);
+    })
 
     const profileRef = doc(db, 'users', userId);
     batch.delete(profileRef);
