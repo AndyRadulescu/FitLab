@@ -9,6 +9,8 @@ export default [
       '**/dist',
       '**/vite.config.*.timestamp*',
       '**/vitest.config.*.timestamp*',
+      '**/.next/**',
+      '**/dev/**',
     ],
   },
   {
@@ -30,6 +32,13 @@ export default [
     },
   },
   {
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.base.json',
+        },
+      },
+    },
     files: [
       '**/*.ts',
       '**/*.tsx',

@@ -1,5 +1,6 @@
 @use "tailwindcss";
 @use 'assets/variables';
+@import '../libs/shared-ui/src/lib/variables';
 @import 'rc-slider/assets/index.css';
 
 @tailwind base;
@@ -8,8 +9,8 @@
 
 @layer base {
   :root {
-    /* Define the default page background */
     --page-bg: #ffffff;
+    --primary-color: #{$primary-color};
   }
 
   body {
@@ -28,14 +29,4 @@
 
 @theme {
   --color-primary: #5E5441;
-}
-
-.primary-gradient {
-  background: variables.$primary-gradient-light
-}
-
-@media (prefers-color-scheme: dark) {
-  .primary-gradient {
-    background: variables.$primary-gradient-dark
-  }
 }

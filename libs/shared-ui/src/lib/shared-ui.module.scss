@@ -1,0 +1,31 @@
+$primary-gradient-light1: #A88C65;
+$primary-gradient-light2: #F3E5C0;
+$primary-gradient-light3: #C7AD72;
+
+$primary-gradient-dark1: #3D3524;
+$primary-gradient-dark2: #635D4E;
+$primary-gradient-dark3: #3D3524;
+
+$primary-gradient-light: linear-gradient(
+    to right,
+    $primary-gradient-light1,
+    $primary-gradient-light2,
+    $primary-gradient-light3
+);
+
+$primary-gradient-dark: linear-gradient(
+    to right,
+    $primary-gradient-dark1,
+    $primary-gradient-dark2,
+    $primary-gradient-dark3
+);
+
+.primary-gradient {
+  background: $primary-gradient-light
+}
+
+@media (prefers-color-scheme: dark) {
+  .primary-gradient {
+    background: $primary-gradient-dark
+  }
+}
