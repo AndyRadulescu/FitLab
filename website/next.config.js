@@ -12,7 +12,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  distDir: '../website',
 };
 const plugins = [
   // Add more Next.js plugins to this list if needed.
