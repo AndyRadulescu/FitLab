@@ -4,10 +4,8 @@ import { CheckInFormDataDto, CheckInFormDataDtoFirebase, checkinStore } from '..
 import { useNavigate } from 'react-router-dom';
 import { getDocs } from 'firebase/firestore';
 import { getCheckinQuery, getStartDataQuery, getWeightQuery } from '../firestore/queries';
-import { useTranslation } from 'react-i18next';
 
 export function useAppInitialization() {
-  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const userData = userStore((state) => state.userData);
@@ -25,37 +23,41 @@ export function useAppInitialization() {
       }
       setIsLoading(true);
       const snapshotUsers = await getDocs(getStartDataQuery(user));
+      const initData = snapshotUsers.docs[0]?.data() as StartPageFormDataDto;
+
+      if (!initData) {
+        setIsLoading(false);
+        return;
+      }
+
+      setUserData(initData);
+
       const snapshotCheckins = await getDocs(getCheckinQuery(user));
       const snapshotWeights = await getDocs(getWeightQuery(user));
-      const initData = snapshotUsers.docs[0]?.data() as StartPageFormDataDto;
       const checkinData: CheckInFormDataDtoFirebase[] = snapshotCheckins.docs.map(doc => {
         const data = doc.data();
         return {
+          ...data,
           id: doc.id,
-          createdAt: data.createdAt.toDate(),
-          ...data
         } as CheckInFormDataDtoFirebase;
       });
+
       const checkinMapped = checkinData.map(checkin => ({
         ...checkin,
         createdAt: checkin.createdAt.toDate(),
-        updatedAt: checkin.updatedAt.toDate()
+        updatedAt: checkin.updatedAt?.toDate()
       })) as CheckInFormDataDto[];
+      setCheckin(checkinMapped);
 
       const weightMapped = snapshotWeights.docs.map((weight) => {
         return {
+          id: weight.id,
           createdAt: weight.data().createdAt.toDate(),
           weight: weight.data().weight,
           updatedAt: weight.data().updatedAt?.toDate()
         } as Weight;
       });
-      if (!initData) {
-        setUserData(initData);
-        setWeights(weightMapped);
-        setIsLoading(false);
-        return;
-      }
-      setCheckin(checkinMapped);
+      setWeights(weightMapped);
       setIsLoading(false);
     };
 
