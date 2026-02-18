@@ -5,7 +5,7 @@ import { AuthErrorCodes } from '@firebase/auth';
 describe('handleAuthErrors', () => {
   const mockT = vi.fn((key: string) => key) as any;
 
-  const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+  const alertSpy = vi.spyOn(window, 'alert').mockReturnValue();
 
   beforeEach(() => {
     vi.clearAllMocks();

@@ -73,8 +73,8 @@ describe('EditWeightStrategy', () => {
 
   it('should catch errors and notify the user via alert', async () => {
     const mockData: Weight = { id: 'weight-abc', weight: 90.5, createdAt: new Date() };
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {});
+    const consoleSpy = vi.spyOn(console, 'error').mockReturnValue();
+    const alertSpy = vi.spyOn(window, 'alert').mockReturnValue();
 
     (updateDoc as any).mockRejectedValue(new Error('Update Failed'));
 
