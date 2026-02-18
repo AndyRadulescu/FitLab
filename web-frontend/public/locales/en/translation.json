@@ -29,6 +29,9 @@
   "errors.image.invalid": "Not all images have been uploaded. 3 images are required",
   "dashboard.nothingYet": "Nothing to show yet",
   "dashboard.journey": "My journey",
+  "dashboard.weight.title": "Today's Weight",
+  "dashboard.weight.value": "Today's weight is: {{weight}} kg",
+  "dashboard.weight.placeholder": "Enter today's weight",
   "profile.change.language": "Change language",
   "profile.settings": "Profile settings",
   "profile.danger": "Danger zone",
@@ -68,5 +71,7 @@
   "image.upload.side": "Side",
   "danger.delete.account": "Are you sure you want to delete your account?",
   "danger.type": "Please type \"delete account\" to confirm",
-  "danger.account.error": "Account deletion failed. Please contact the administrator."
+  "danger.account.error": "Account deletion failed. Please contact the administrator.",
+  "common.edit": "Edit",
+  "common.save": "Save"
 }

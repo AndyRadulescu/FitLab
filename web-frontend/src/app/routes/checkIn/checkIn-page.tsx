@@ -9,11 +9,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../../components/design/button';
 import { checkinStore } from '../../store/checkin.store';
 import { ImageUploader } from '../../components/image/image-uploader';
-import { CheckInStrategyFactory, SLOTS } from './checkin-strategy/checkin-strategy';
+import { CheckInStrategyFactory } from './checkin-strategy/checkin-strategy';
 import { collection, doc } from 'firebase/firestore';
 import { db } from '../../../init-firebase-auth';
 import { useRef } from 'react';
-import { Slider } from '../../components/custom-slider/custom-slider';
 import { FormSlider } from '../../components/custom-slider/form-slider';
 import { SectionHeader } from '../../components/section-header';
 

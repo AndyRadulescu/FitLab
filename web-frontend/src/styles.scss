@@ -35,7 +35,7 @@
 }
 
 .primary-text-gradient {
-  background: variables.$primary-gradient-light;
+  background: variables.$primary-gradient-dark;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -47,7 +47,7 @@
     background: variables.$primary-gradient-dark
   }
   .primary-text-gradient {
-    background: variables.$primary-gradient-dark;
+    background: variables.$primary-gradient-light;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

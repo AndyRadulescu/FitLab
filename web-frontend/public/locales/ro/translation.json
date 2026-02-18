@@ -29,6 +29,9 @@
   "errors.image.invalid": "Nu toate imaginile au fost încărcate. 3 imagini sunt necesare.",
   "dashboard.nothingYet": "Încă nu există nimic de afișat",
   "dashboard.journey": "Călătoria mea",
+  "dashboard.weight.title": "Greutatea de azi",
+  "dashboard.weight.value": "Greutatea de azi este: {{weight}} kg",
+  "dashboard.weight.placeholder": "Introdu greutatea de azi",
   "profile.change.language": "Schimbă limba",
   "profile.settings": "Setările contului",
   "profile.danger": "Acțiuni critice",
@@ -68,5 +71,7 @@
   "image.upload.side": "Lateral",
   "danger.delete.account": "Ești sigur că vrei să ștergi contul?",
   "danger.type": "Te rog scrie \"delete account\" ca să ștergi contul",
-  "danger.account.error": "O eroare a împiedicat procesul de ștergere a contului. Te rugăm contactează administratorul."
+  "danger.account.error": "O eroare a împiedicat procesul de ștergere a contului. Te rugăm contactează administratorul.",
+  "common.edit": "Editează",
+  "common.save": "Salvează"
 }

@@ -5,6 +5,14 @@ import { SectionHeader } from '../../components/section-header';
 import { Trans } from 'react-i18next';
 
 export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {
+  if (checkins.length === 0) {
+    return (
+      <div className="flex justify-center items-center">
+        <p><Trans i18nKey="dashboard.nothingYet">Noting to show yet</Trans></p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <SectionHeader><Trans i18nKey="dashboard.journey">My journey</Trans></SectionHeader>
