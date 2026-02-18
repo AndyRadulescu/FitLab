@@ -7,7 +7,8 @@ import { TFunction } from 'i18next';
 import { logEvent } from 'firebase/analytics';
 
 export class AddWeightStrategy implements WeightStrategy {
-  async weight(weight: Weight, userId: string, t: TFunction<'translation', undefined>): Promise<void> {
+  async weight(weight: Partial<Weight>, userId: string, t: TFunction<'translation', undefined>): Promise<void> {
+    if (!weight.weight) return;
     try {
       const docRef = await addDoc(collection(db, WEIGHT_TABLE), {
         userId: userId,

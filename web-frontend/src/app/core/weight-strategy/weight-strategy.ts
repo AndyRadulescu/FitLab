@@ -4,8 +4,10 @@ import { TFunction } from 'i18next';
 import { Weight } from '../../store/user.store';
 
 export interface WeightStrategy {
-  weight(weight: Weight, userId: string, t: TFunction<'translation', undefined>): Promise<void>;
+  weight(weight: Partial<Weight>, userId: string, t: TFunction<'translation', undefined>): Promise<void>;
 }
+
+export type PartialWeight = Omit<Weight, 'id'>;
 
 type StrategyType = 'add' | 'edit';
 

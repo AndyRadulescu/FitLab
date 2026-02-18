@@ -6,8 +6,13 @@ import { analytics, db } from '../../../init-firebase-auth';
 import { userStore, Weight } from '../../store/user.store';
 import { logEvent } from 'firebase/analytics';
 
+function isCompleteWeight(data: Partial<Weight>): data is Weight {
+  return data.id !== undefined && data.weight !== undefined && data.createdAt !== undefined;
+}
+
 export class EditWeightStrategy implements WeightStrategy {
-  async weight(data:  Weight, userId: string, t: TFunction<'translation', undefined>): Promise<void> {
+  async weight(data: Partial<Weight>, userId: string, t: TFunction<'translation', undefined>): Promise<void> {
+    if (!isCompleteWeight(data)) return;
     try {
       const weightRef = doc(db, WEIGHT_TABLE, data.id);
       await updateDoc(weightRef, {

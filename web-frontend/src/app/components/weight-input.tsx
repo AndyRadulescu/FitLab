@@ -8,9 +8,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import { Input } from '../components/design/input';
-import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { db } from '../../init-firebase-auth';
-import { WEIGHT_TABLE } from '../firestore/queries';
+import { WeightStrategyFactory } from '../core/weight-strategy/weight-strategy';
 
 const weightSchema = z.object({
   weight: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min')
@@ -26,7 +24,7 @@ const getTodayWeight = (weights: Weight[]): Weight | undefined => {
 
 export function WeightInput() {
   const { t } = useTranslation();
-  const { weights, addWeight, updateWeight, user } = userStore();
+  const { weights, user } = userStore();
   const [todayWeight, setTodayWeight] = useState<Weight | undefined>(undefined);
   const [isEditable, setIsEditable] = useState(false);
 
@@ -52,21 +50,10 @@ export function WeightInput() {
     if (!user) return;
 
     if (todayWeight) {
-      // Update
-      const weightRef = doc(db, WEIGHT_TABLE, todayWeight.id);
-      await updateDoc(weightRef, {
-        weight: data.weight,
-        updatedAt: serverTimestamp()
-      });
-      updateWeight({ ...todayWeight, weight: data.weight, updatedAt: new Date() });
+      const weight: Weight = {...todayWeight, weight: data.weight};
+      await WeightStrategyFactory.getStrategy('edit').weight(weight, user.uid, t);
     } else {
-      // Add
-      const docRef = await addDoc(collection(db, WEIGHT_TABLE), {
-        userId: user.uid,
-        weight: data.weight,
-        createdAt: serverTimestamp()
-      });
-      addWeight({ id: docRef.id, weight: data.weight, createdAt: new Date() });
+      await WeightStrategyFactory.getStrategy('add').weight(data, user.uid, t);
     }
     setIsEditable(false);
   };
@@ -95,7 +82,7 @@ export function WeightInput() {
       <form onSubmit={handleSubmit((data) => handleSave(data))}
             className="relative flex flex-col md:flex-row gap-4 aling-center justify-center w-full">
         <div className="absolute top-0 right-0 z-10" onClick={() => setIsEditable(false)}>
-          <X size={18}/>
+          <X size={18} />
         </div>
         <div className="flex-2">
           <h3 className="text-xl">{t('dashboard.weight.title')}</h3>
