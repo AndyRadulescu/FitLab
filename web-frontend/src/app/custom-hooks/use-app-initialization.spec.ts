@@ -21,6 +21,7 @@ vi.mock('react-i18next', () => ({
 vi.mock('../firestore/queries', () => ({
   getStartDataQuery: vi.fn(),
   getCheckinQuery: vi.fn(),
+  getWeightQuery: vi.fn(),
 }));
 
 describe('useAppInitialization', () => {

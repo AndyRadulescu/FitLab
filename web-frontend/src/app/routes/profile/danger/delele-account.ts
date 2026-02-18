@@ -9,8 +9,8 @@ export const deleteAccount = async (userId: string, t: TFunction<'translation', 
     return;
   }
   try {
-    await new DeleteUserAccount().deleteAllUserData(userId);
     await deleteUser(user);
+    await new DeleteUserAccount().deleteAllUserData(userId);
   } catch (e) {
     console.log(e);
     alert(t('danger.account.error'));

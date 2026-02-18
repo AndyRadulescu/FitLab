@@ -1,4 +1,4 @@
-import { collection, query, where, getDocs, writeBatch, doc } from 'firebase/firestore';
+import { collection, query, where, getDocs, runTransaction, doc } from 'firebase/firestore';
 import { ref, listAll, deleteObject } from 'firebase/storage';
 import { analytics, db, storage } from '../../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
@@ -35,34 +35,33 @@ export class DeleteUserAccount {
   }
 
   private async wipeUserFirestore(userId: string) {
-    const batch = writeBatch(db);
+    await runTransaction(db, async (transaction) => {
+      const checkinsRef = collection(db, CHECKINS_TABLE);
+      const userRef = collection(db, USERS_TABLE);
+      const weightRef = collection(db, WEIGHT_TABLE);
+      const qCheckins = query(checkinsRef, where('userId', '==', userId));
+      const qUser = query(userRef, where('userId', '==', userId));
+      const qWeight = query(weightRef, where('userId', '==', userId));
 
-    const checkinsRef = collection(db, CHECKINS_TABLE);
-    const userRef = collection(db, USERS_TABLE);
-    const weightRef = collection(db, WEIGHT_TABLE);
-    const qCheckins = query(checkinsRef, where('userId', '==', userId));
-    const qUser = query(userRef, where('userId', '==', userId));
-    const qWeight = query(weightRef, where('userId', '==', userId));
+      const [checkinsSnap, startSnap, weightSnap] = await Promise.all([
+        getDocs(qCheckins),
+        getDocs(qUser),
+        getDocs(qWeight)
+      ]);
 
-    const [checkinsSnap, startSnap, weightSnap] = await Promise.all([
-      getDocs(qCheckins),
-      getDocs(qUser),
-      getDocs(qWeight)
-    ]);
+      checkinsSnap.forEach((doc) => {
+        transaction.delete(doc.ref);
+      });
+      startSnap.forEach((doc) => {
+        transaction.delete(doc.ref);
+      });
+      weightSnap.forEach((doc) => {
+        transaction.delete(doc.ref);
+      });
 
-    checkinsSnap.forEach((doc) => {
-      batch.delete(doc.ref);
+      const profileRef = doc(db, 'users', userId);
+      transaction.delete(profileRef);
     });
-    startSnap.forEach((doc) => {
-      batch.delete(doc.ref);
-    });
-    weightSnap.forEach((doc) => {
-      batch.delete(doc.ref);
-    })
-
-    const profileRef = doc(db, 'users', userId);
-    batch.delete(profileRef);
-    await batch.commit();
 
     localStorage.removeItem("user-store");
   }
