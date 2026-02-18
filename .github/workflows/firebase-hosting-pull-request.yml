@@ -30,7 +30,7 @@ jobs:
         run: npx nx lint web-frontend
 
       - name: Run tests
-        run: npx nx text web-frontend
+        run: npx nx test web-frontend
 
       - name: Build Web Frontend
         run: npx nx build web-frontend
