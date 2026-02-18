@@ -1,5 +1,5 @@
-import { collection, query, where, getDocs, runTransaction, doc } from 'firebase/firestore';
-import { ref, listAll, deleteObject } from 'firebase/storage';
+import { collection, getDocs, query, writeBatch, where } from 'firebase/firestore';
+import { deleteObject, listAll, ref } from 'firebase/storage';
 import { analytics, db, storage } from '../../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
 import { CHECKINS_STORAGE, CHECKINS_TABLE, USERS_TABLE, WEIGHT_TABLE } from '../../../firestore/queries';
@@ -11,6 +11,7 @@ export class DeleteUserAccount {
     try {
       await this.wipeUserStorage(userId);
 
+      console.log('enters here');
       await this.wipeUserFirestore(userId);
 
       if (analytics) {
@@ -23,46 +24,47 @@ export class DeleteUserAccount {
   }
 
   private async wipeUserStorage(userId: string) {
-    const userFolderRef = ref(storage, `${CHECKINS_STORAGE}${userId}`);
+    const basePath = `${CHECKINS_STORAGE}/${userId}`
+    const userFolderRef = ref(storage, basePath);
 
     const recursiveDelete = async (folderRef: any) => {
-      const listResponse = await listAll(folderRef);
-      const filePromises = listResponse.items.map((item) => deleteObject(item));
-      const folderPromises = listResponse.prefixes.map((subFolder) => recursiveDelete(subFolder));
-      await Promise.all([...filePromises, ...folderPromises]);
+      console.log(`Deleting ${folderRef.fullPath}`);
+      try {
+        const listResponse = await listAll(folderRef);
+        console.log(listResponse);
+        const filePromises = listResponse.items.map((item) => deleteObject(item));
+        const folderPromises = listResponse.prefixes.map((subFolder) => {
+          console.log(subFolder);
+          return recursiveDelete(subFolder)
+        });
+
+        await Promise.all([...filePromises, ...folderPromises]);
+      } catch (error: any) {
+        console.log(error);
+        if (error.code === 'storage/object-not-found') {
+          console.log(`No storage found at ${folderRef.fullPath}, skipping wipe.`);
+          return;
+        }
+        throw error;
+      }
     };
+
     await recursiveDelete(userFolderRef);
   }
 
   private async wipeUserFirestore(userId: string) {
-    await runTransaction(db, async (transaction) => {
-      const checkinsRef = collection(db, CHECKINS_TABLE);
-      const userRef = collection(db, USERS_TABLE);
-      const weightRef = collection(db, WEIGHT_TABLE);
-      const qCheckins = query(checkinsRef, where('userId', '==', userId));
-      const qUser = query(userRef, where('userId', '==', userId));
-      const qWeight = query(weightRef, where('userId', '==', userId));
+    const batch = writeBatch(db);
 
-      const [checkinsSnap, startSnap, weightSnap] = await Promise.all([
-        getDocs(qCheckins),
-        getDocs(qUser),
-        getDocs(qWeight)
-      ]);
+    const snaps = await Promise.all([
+      getDocs(query(collection(db, CHECKINS_TABLE), where('userId', '==', userId))),
+      getDocs(query(collection(db, USERS_TABLE), where('userId', '==', userId))),
+      getDocs(query(collection(db, WEIGHT_TABLE), where('userId', '==', userId)))
+    ]);
 
-      checkinsSnap.forEach((doc) => {
-        transaction.delete(doc.ref);
-      });
-      startSnap.forEach((doc) => {
-        transaction.delete(doc.ref);
-      });
-      weightSnap.forEach((doc) => {
-        transaction.delete(doc.ref);
-      });
-
-      const profileRef = doc(db, 'users', userId);
-      transaction.delete(profileRef);
+    snaps.forEach(snap => {
+      snap.forEach(doc => batch.delete(doc.ref));
     });
 
-    localStorage.removeItem("user-store");
+    await batch.commit();
   }
 }

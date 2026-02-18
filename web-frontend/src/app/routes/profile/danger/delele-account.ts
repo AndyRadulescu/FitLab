@@ -5,6 +5,7 @@ import { handleAuthErrors } from '../../../core/error-handler';
 import firebase from 'firebase/compat/app';
 import AuthError = firebase.auth.AuthError;
 import { userStore } from '../../../store/user.store';
+import { checkinStore } from '../../../store/checkin.store';
 
 export const deleteAccount = async (userId: string, t: TFunction<'translation', undefined>) => {
   const auth = getAuth();
@@ -13,9 +14,10 @@ export const deleteAccount = async (userId: string, t: TFunction<'translation', 
     return;
   }
   try {
-    await deleteUser(user);
     await new DeleteUserAccount().deleteAllUserData(userId);
+    await deleteUser(user);
     userStore.getState().delete()
+    checkinStore.getState().delete();
   } catch (err: AuthError | any) {
     console.log(err);
     handleAuthErrors(err, t);

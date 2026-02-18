@@ -20,6 +20,7 @@ interface CheckinStore {
   upsertCheckin: (checkin: CheckInFormDataDto) => void;
   deleteCheckin: (id: string) => void;
   setCheckin: (checkin: CheckInFormDataDto[]) => void;
+  delete: () => void;
 }
 
 export const checkinStore = create<CheckinStore>()(
@@ -41,5 +42,6 @@ export const checkinStore = create<CheckinStore>()(
       set((state) => ({
         checkins: state.checkins.filter((item) => item.id !== id)
       })),
-    setCheckin: (checkins) => set((state) => ({ checkins }))
+    setCheckin: (checkins) => set((state) => ({ checkins })),
+    delete: () => set(() => ({ checkins: [] }))
   })));
