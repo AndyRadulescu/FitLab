@@ -16,6 +16,7 @@ interface UserStore {
   setWeights: (user?: Weight[]) => void,
   addWeight: (weight: Weight) => void;
   updateWeight: (weight: Weight) => void;
+  delete(): void;
 }
 
 export const userStore = create<UserStore>()(
@@ -33,6 +34,7 @@ export const userStore = create<UserStore>()(
       }),
       setWeights: (weights?: Weight[]) => set((state) => ({ weights: weights ?? [] })),
       addWeight: (weight: Weight) => set((state) => ({ weights: [...state.weights, weight] })),
+      delete: () => set(() => ({ user: undefined, userData: undefined, weights: [] })),
       updateWeight: (weight: Weight) => set((state) => ({
         weights: state.weights.map(w => w.id === weight.id ? weight : w)
       }))

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Trans, useTranslation } from 'react-i18next';
-import { collection, serverTimestamp, runTransaction, doc } from 'firebase/firestore';
+import { collection, doc, runTransaction, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
 import { useNavigate } from 'react-router-dom';
@@ -37,8 +37,10 @@ export function StartPage() {
       dateOfBirth: data.dateOfBirth.toISOString()
     };
     try {
+      let weightId = null
       await runTransaction(db, async (transaction) => {
         const weightRef = doc(collection(db, WEIGHT_TABLE));
+        weightId = weightRef.id
         const userRef = doc(collection(db, USERS_TABLE));
 
         transaction.set(weightRef, {
@@ -53,7 +55,8 @@ export function StartPage() {
           createdAt: serverTimestamp()
         });
       });
-      addWeight({weight: mappedData.weight, createdAt: new Date()});
+      if(!weightId) return
+      addWeight({ id: weightId, weight: mappedData.weight, createdAt: new Date() });
       setUserData(mappedData);
       navigate('/dashboard/', { replace: true });
     } catch (e) {
