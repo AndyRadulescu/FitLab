@@ -1,6 +1,9 @@
 import { DeleteUserAccount } from './delete-all-strategy';
 import { deleteUser, getAuth } from 'firebase/auth';
 import { TFunction } from 'i18next';
+import { handleAuthErrors } from '../../../core/error-handler';
+import firebase from 'firebase/compat/app';
+import AuthError = firebase.auth.AuthError;
 
 export const deleteAccount = async (userId: string, t: TFunction<'translation', undefined>) => {
   const auth = getAuth();
@@ -11,8 +14,8 @@ export const deleteAccount = async (userId: string, t: TFunction<'translation', 
   try {
     await deleteUser(user);
     await new DeleteUserAccount().deleteAllUserData(userId);
-  } catch (e) {
-    console.log(e);
-    alert(t('danger.account.error'));
+  } catch (err: AuthError | any) {
+    console.log(err);
+    handleAuthErrors(err, t);
   }
 };

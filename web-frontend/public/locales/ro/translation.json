@@ -27,6 +27,7 @@
   "errors.profile.max10": "Valoarea trebuie să fie cel mult 10",
   "errors.date.invalid": "Data este în format invalid",
   "errors.image.invalid": "Nu toate imaginile au fost încărcate. 3 imagini sunt necesare.",
+  "errors.credential.old": "Sesiunea a expirat. Te rugăm să te autentifici din nou.",
   "dashboard.nothingYet": "Încă nu există nimic de afișat",
   "dashboard.journey": "Călătoria mea",
   "dashboard.weight.title": "Greutatea de azi",

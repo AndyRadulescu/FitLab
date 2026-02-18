@@ -27,6 +27,7 @@
   "errors.profile.max10": "Value must be at max 10",
   "errors.date.invalid": "Date is invalid",
   "errors.image.invalid": "Not all images have been uploaded. 3 images are required",
+  "errors.credential.old": "The credential is too old. Please login again.",
   "dashboard.nothingYet": "Nothing to show yet",
   "dashboard.journey": "My journey",
   "dashboard.weight.title": "Today's Weight",

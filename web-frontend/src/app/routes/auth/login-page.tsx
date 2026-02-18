@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
-import { handleAuthErrors } from './error-handler';
+import { handleAuthErrors } from '../../core/error-handler';
 import { Button } from '../../components/design/button';
 import { logEvent } from 'firebase/analytics';
 

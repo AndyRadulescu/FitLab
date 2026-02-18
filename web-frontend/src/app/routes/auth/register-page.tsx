@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
 import { Input } from '../../components/design/input';
 import firebase from 'firebase/compat/app';
-import { handleAuthErrors } from './error-handler';
+import { handleAuthErrors } from '../../core/error-handler';
 import { Button } from '../../components/design/button';
 import AuthError = firebase.auth.AuthError;
 import { logEvent } from 'firebase/analytics';
