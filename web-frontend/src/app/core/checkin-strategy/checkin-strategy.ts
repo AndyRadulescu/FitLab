@@ -1,4 +1,4 @@
-import { CheckInPayload } from '../../../store/checkin.store';
+import { CheckInPayload } from '../../store/checkin.store';
 
 import { UpdateCheckInStrategy } from './update.strategy';
 import { AddCheckInStrategy } from './add.strategy';

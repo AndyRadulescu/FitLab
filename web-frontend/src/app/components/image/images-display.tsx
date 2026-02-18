@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
-import { SLOTS } from '../../routes/checkIn/checkin-strategy/checkin-strategy';
+import { SLOTS } from '../../core/checkin-strategy/checkin-strategy';
 import { CameraOff, Loader2 } from 'lucide-react';
 import { imagePath } from '../../image-manager/image-path';
 

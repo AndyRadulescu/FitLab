@@ -1,9 +1,9 @@
-import { CheckInFormDataDto, CheckInPayload, checkinStore } from '../../../store/checkin.store';
+import { CheckInFormDataDto, CheckInPayload, checkinStore } from '../../store/checkin.store';
 import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { analytics, db } from '../../../../init-firebase-auth';
+import { analytics, db } from '../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
 import { CheckInStrategy } from './checkin-strategy';
-import { CHECKINS_TABLE } from '../../../firestore/queries';
+import { CHECKINS_TABLE } from '../../firestore/queries';
 
 export class UpdateCheckInStrategy implements CheckInStrategy {
   async checkIn({ data, userId }: { data: CheckInPayload, userId?: string }) {

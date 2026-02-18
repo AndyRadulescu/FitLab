@@ -1,11 +1,11 @@
 import { CheckInStrategy } from './checkin-strategy';
-import { CheckInPayload, checkinStore } from '../../../store/checkin.store';
-import { analytics, db, storage } from '../../../../init-firebase-auth';
+import { CheckInPayload, checkinStore } from '../../store/checkin.store';
+import { analytics, db, storage } from '../../../init-firebase-auth';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { deleteObject, listAll, ref } from 'firebase/storage';
-import { getCheckinPath } from '../../../image-manager/image-path';
-import { CHECKINS_TABLE } from '../../../firestore/queries';
+import { getCheckinPath } from '../../image-manager/image-path';
+import { CHECKINS_TABLE } from '../../firestore/queries';
 
 export class DeleteCheckInStrategy implements CheckInStrategy {
   async checkIn({ data, userId }: { data: CheckInPayload, userId: string }) {

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AddCheckInStrategy } from './add.strategy';
 import { doc, setDoc } from 'firebase/firestore';
-import { checkinStore } from '../../../store/checkin.store';
+import { checkinStore } from '../../store/checkin.store';
 import { logEvent } from 'firebase/analytics';
 
 const mockAddCheckin = vi.fn();
