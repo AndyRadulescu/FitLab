@@ -2,12 +2,15 @@ import { useTranslation } from 'react-i18next';
 import { Button } from './design/button';
 import { Card } from './design/card';
 import { useEffect, useState } from 'react';
-import { useWeightStore } from '../store/weight.store';
+import { userStore, Weight } from '../store/user.store';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {X} from 'lucide-react';
-import { Input } from '@web-frontend/app/components/design/input';
+import { X } from 'lucide-react';
+import { Input } from '../components/design/input';
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { db } from '../../init-firebase-auth';
+import { WEIGHT_TABLE } from '../firestore/queries';
 
 const weightSchema = z.object({
   weight: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min')
@@ -15,37 +18,57 @@ const weightSchema = z.object({
 
 export type WeightFormData = z.infer<typeof weightSchema>;
 
+const getTodayWeight = (weights: Weight[]): Weight | undefined => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return weights.find(w => w.createdAt >= today);
+};
+
 export function WeightInput() {
   const { t } = useTranslation();
-  const { weight, isUpdatedToday, fetchWeight, saveWeight } = useWeightStore();
-  const [currentWeight, setCurrentWeight] = useState(weight?.toString() || '');
+  const { weights, addWeight, updateWeight, user } = userStore();
+  const [todayWeight, setTodayWeight] = useState<Weight | undefined>(undefined);
   const [isEditable, setIsEditable] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting }
+    setValue,
+    formState: { errors }
   } = useForm<WeightFormData>({
-    resolver: zodResolver(weightSchema),
-    defaultValues: { weight: currentWeight }
+    resolver: zodResolver(weightSchema)
   });
 
   useEffect(() => {
-    fetchWeight();
-  }, [fetchWeight]);
-
-  useEffect(() => {
-    if (weight) {
-      setCurrentWeight(weight.toString());
+    const foundWeight = getTodayWeight(weights);
+    setTodayWeight(foundWeight);
+    setIsEditable(!foundWeight);
+    if (foundWeight) {
+      setValue('weight', foundWeight.weight);
     }
-    setIsEditable(!isUpdatedToday);
-  }, [weight, isUpdatedToday]);
+  }, [weights, setValue]);
 
-  const handleSave = (data: WeightFormData) => {
-    const newWeight = parseFloat(currentWeight);
-    if (!isNaN(newWeight)) {
-      saveWeight(newWeight);
+  const handleSave = async (data: WeightFormData) => {
+    if (!user) return;
+
+    if (todayWeight) {
+      // Update
+      const weightRef = doc(db, WEIGHT_TABLE, todayWeight.id);
+      await updateDoc(weightRef, {
+        weight: data.weight,
+        updatedAt: serverTimestamp()
+      });
+      updateWeight({ ...todayWeight, weight: data.weight, updatedAt: new Date() });
+    } else {
+      // Add
+      const docRef = await addDoc(collection(db, WEIGHT_TABLE), {
+        userId: user.uid,
+        weight: data.weight,
+        createdAt: serverTimestamp()
+      });
+      addWeight({ id: docRef.id, weight: data.weight, createdAt: new Date() });
     }
+    setIsEditable(false);
   };
 
   if (!isEditable) {
@@ -55,7 +78,7 @@ export function WeightInput() {
           className="flex flex-col md:flex-row gap-4 aling-center justify-center w-full">
           <div className="flex-2">
             <h3 className="text-xl">{t('dashboard.weight.title')}</h3>
-            <p className="text-md">{t('dashboard.weight.value', { weight: currentWeight })}</p>
+            <p className="text-md">{t('dashboard.weight.value', { weight: todayWeight?.weight })}</p>
           </div>
           <div className="flex-1 flex justify-center items-center">
             <div onClick={() => setIsEditable(true)}>
