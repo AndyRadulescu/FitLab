@@ -4,6 +4,7 @@ import { doc, deleteDoc } from 'firebase/firestore';
 import { ref, listAll, deleteObject } from 'firebase/storage';
 import { logEvent } from 'firebase/analytics';
 import { getCheckinPath } from '../../image-manager/image-path';
+import { CHECKINS_TABLE } from '../../firestore/queries';
 
 const mockDeleteCheckin = vi.fn();
 
@@ -18,11 +19,11 @@ vi.mock('firebase/storage', () => ({
   deleteObject: vi.fn(),
 }));
 
-vi.mock('../../../image-manager/image-path', () => ({
+vi.mock('../../image-manager/image-path', () => ({
   getCheckinPath: vi.fn((uid, cid) => `users/${uid}/checkins/${cid}`),
 }));
 
-vi.mock('../../../../init-firebase-auth', () => ({
+vi.mock('../../../init-firebase-auth', () => ({
   db: { type: 'firestore-instance' },
   storage: { type: 'storage-instance' },
   analytics: { type: 'analytics-instance' }
@@ -32,7 +33,7 @@ vi.mock('firebase/analytics', () => ({
   logEvent: vi.fn()
 }));
 
-vi.mock('../../../store/checkin.store', () => ({
+vi.mock('../../store/checkin.store', () => ({
   checkinStore: {
     getState: vi.fn(() => ({
       deleteCheckin: mockDeleteCheckin
@@ -71,7 +72,7 @@ describe('DeleteCheckInStrategy', () => {
     expect(ref).toHaveBeenCalledWith(expect.anything(), `users/${userId}/checkins/${checkinId}`);
     expect(listAll).toHaveBeenCalled();
     expect(deleteObject).toHaveBeenCalledTimes(2);
-    expect(doc).toHaveBeenCalledWith(expect.anything(), 'checkins', checkinId);
+    expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, checkinId);
     expect(deleteDoc).toHaveBeenCalled();
     expect(mockDeleteCheckin).toHaveBeenCalledWith(checkinId);
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'delete-checkin');

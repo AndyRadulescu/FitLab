@@ -1,7 +1,7 @@
 import { Input } from '../../components/design/input';
 import { Card } from '../../components/design/card';
 import { z } from 'zod';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, Resolver, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
 import { userStore } from '../../store/user.store';
@@ -55,7 +55,7 @@ export function CheckInPage() {
     handleSubmit,
     formState: { errors, isSubmitting }
   } = useForm<CheckInFormData>({
-    resolver: zodResolver(checkinSchema),
+    resolver: zodResolver(checkinSchema) as Resolver<CheckInFormData>,
     defaultValues: checkinData
   });
 

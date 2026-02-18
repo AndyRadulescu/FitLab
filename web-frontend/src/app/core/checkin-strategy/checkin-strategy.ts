@@ -1,11 +1,12 @@
-import { CheckInPayload } from '../../store/checkin.store';
-
 import { UpdateCheckInStrategy } from './update.strategy';
 import { AddCheckInStrategy } from './add.strategy';
 import { DeleteCheckInStrategy } from './delete.strategy';
+import { CheckInFormData } from '../../routes/checkIn/checkIn-page';
+
+export type CheckinStrategyType = Omit<CheckInFormData, 'imgUrls'> & { id?: string, createdAt?: Date };
 
 export interface CheckInStrategy {
-  checkIn: ({ data, userId }: { data: CheckInPayload, userId: string }) => Promise<void>;
+  checkIn: ({ data, userId }: { data: CheckinStrategyType, userId: string }) => Promise<void>;
 }
 
 export const SLOTS = ['front', 'back', 'side'] as const;

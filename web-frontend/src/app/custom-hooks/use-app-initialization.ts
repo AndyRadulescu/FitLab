@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StartPageFormDataDto, userStore, Weight } from '../store/user.store';
-import { CheckInFormDataDto, CheckInFormDataDtoFirebase, checkinStore } from '../store/checkin.store';
+import { CheckInFormDataDto, checkinStore } from '../store/checkin.store';
 import { useNavigate } from 'react-router-dom';
 import { getDocs } from 'firebase/firestore';
 import { getCheckinQuery, getStartDataQuery, getWeightQuery } from '../firestore/queries';
@@ -33,20 +33,16 @@ export function useAppInitialization() {
       setUserData(initData);
       const snapshotCheckins = await getDocs(getCheckinQuery(user));
       const snapshotWeights = await getDocs(getWeightQuery(user));
-      const checkinData: CheckInFormDataDtoFirebase[] = snapshotCheckins.docs.map(doc => {
+      const checkinData: CheckInFormDataDto[] = snapshotCheckins.docs.map(doc => {
         const data = doc.data();
         return {
           ...data,
           id: doc.id,
-        } as CheckInFormDataDtoFirebase;
+          createdAt: data.createdAt.toDate(),
+          updatedAt: data.updatedAt?.toDate()
+        } as CheckInFormDataDto;
       });
-
-      const checkinMapped = checkinData.map(checkin => ({
-        ...checkin,
-        createdAt: checkin.createdAt.toDate(),
-        updatedAt: checkin.updatedAt?.toDate()
-      })) as CheckInFormDataDto[];
-      setCheckin(checkinMapped);
+      setCheckin(checkinData);
 
       const weightMapped = snapshotWeights.docs.map((weight) => {
         return {

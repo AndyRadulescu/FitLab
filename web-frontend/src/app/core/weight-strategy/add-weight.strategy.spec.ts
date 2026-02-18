@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { addDoc, collection } from 'firebase/firestore';
 import { AddWeightStrategy } from './add-weight.strategy';
 import { WEIGHT_TABLE } from '../../firestore/queries';
-import { Weight } from '@web-frontend/app/store/user.store';
+import { Weight } from '../../store/user.store';
 
 const mockAddWeight = vi.fn();
 const mockT = vi.fn((key: string) => key) as any;
@@ -71,10 +71,8 @@ describe('AddWeightStrategy', () => {
   it('should handle Firestore errors and show an alert', async () => {
     const weight = { weight: 85.5 } as Weight;
     const userId = 'user-123';
-    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {
-    });
-    const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {
-    });
+    const consoleSpy = vi.spyOn(console, 'error').mockReturnValue();
+    const alertSpy = vi.spyOn(window, 'alert').mockReturnValue();
 
     (addDoc as any).mockRejectedValue(new Error('Firestore Fail'));
     await strategy.weight(weight, userId, mockT);

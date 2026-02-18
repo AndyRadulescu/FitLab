@@ -18,7 +18,7 @@ export function DangerZone() {
     if (!user) {
       navigate('/auth/login', { replace: true });
     }
-    if (!confirm(t('danger.delete.account'))) {
+    if (!window.confirm(t('danger.delete.account'))) {
       return;
     }
     const string = prompt(t('danger.type'));

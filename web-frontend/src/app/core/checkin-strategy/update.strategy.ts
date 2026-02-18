@@ -1,12 +1,13 @@
-import { CheckInFormDataDto, CheckInPayload, checkinStore } from '../../store/checkin.store';
+import { CheckInFormDataDto, checkinStore } from '../../store/checkin.store';
 import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { analytics, db } from '../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
-import { CheckInStrategy } from './checkin-strategy';
+import { CheckInStrategy, CheckinStrategyType } from './checkin-strategy';
 import { CHECKINS_TABLE } from '../../firestore/queries';
 
 export class UpdateCheckInStrategy implements CheckInStrategy {
-  async checkIn({ data, userId }: { data: CheckInPayload, userId?: string }) {
+  async checkIn({ data, userId }: { data: CheckinStrategyType, userId?: string }) {
+    if(data.id === undefined) return;
     const docRef = doc(db, CHECKINS_TABLE, data.id);
     const mappedData = { ...data, updatedAt: new Date() };
     await updateDoc(docRef, {

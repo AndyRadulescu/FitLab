@@ -4,7 +4,7 @@ import { Card } from './design/card';
 import { useEffect, useState } from 'react';
 import { userStore, Weight } from '../store/user.store';
 import { z } from 'zod';
-import { useForm } from 'react-hook-form';
+import { Resolver, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import { Input } from '../components/design/input';
@@ -34,7 +34,8 @@ export function WeightInput() {
     setValue,
     formState: { errors }
   } = useForm<WeightFormData>({
-    resolver: zodResolver(weightSchema)
+    resolver: zodResolver(weightSchema) as Resolver<WeightFormData>,
+    defaultValues: { weight: 0 }
   });
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export function WeightInput() {
     if (!user) return;
 
     if (todayWeight) {
-      const weight: Weight = {...todayWeight, weight: data.weight};
+      const weight: Weight = { ...todayWeight, weight: data.weight };
       await WeightStrategyFactory.getStrategy('edit').weight(weight, user.uid, t);
     } else {
       await WeightStrategyFactory.getStrategy('add').weight(data, user.uid, t);

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 const CACHE_NAME = "app-cache-v1";
 const OFFLINE_URL = "/index.html";
 
