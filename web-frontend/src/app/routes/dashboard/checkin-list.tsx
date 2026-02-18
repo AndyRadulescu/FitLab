@@ -21,7 +21,7 @@ export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {
           <div key={checkin.id}>
             <CheckinItem checkin={checkin} key={checkin.id}></CheckinItem>
             {index < checkins.length - 1 && (
-              <hr className="border-t my-4 border-gray-300 dark:border-gray-600" />
+              <hr className="border-t my-4 mx-[-16px] border-gray-300 dark:border-gray-600" />
             )}
           </div>
         ))}
