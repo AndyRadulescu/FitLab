@@ -31,7 +31,6 @@ export function useAppInitialization() {
       }
 
       setUserData(initData);
-
       const snapshotCheckins = await getDocs(getCheckinQuery(user));
       const snapshotWeights = await getDocs(getWeightQuery(user));
       const checkinData: CheckInFormDataDtoFirebase[] = snapshotCheckins.docs.map(doc => {
