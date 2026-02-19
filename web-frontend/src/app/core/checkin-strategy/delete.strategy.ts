@@ -5,7 +5,7 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { deleteObject, listAll, ref } from 'firebase/storage';
 import { getCheckinPath } from '../../image-manager/image-path';
-import { CHECKINS_TABLE } from '../../firestore/queries';
+import { CHECKINS_TABLE } from '../../firestore/constants';
 
 export class DeleteCheckInStrategy implements CheckInStrategy {
   async checkIn({ data, userId }: { data: CheckinStrategyType, userId: string }) {

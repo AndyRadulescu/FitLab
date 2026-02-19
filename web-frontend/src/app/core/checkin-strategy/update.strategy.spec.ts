@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { doc, updateDoc } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { UpdateCheckInStrategy } from './update.strategy';
-import { CHECKINS_TABLE } from '../../firestore/queries';
+import { CHECKINS_TABLE } from '../../firestore/constants';
 
 const mockUpsertCheckin = vi.fn();
 

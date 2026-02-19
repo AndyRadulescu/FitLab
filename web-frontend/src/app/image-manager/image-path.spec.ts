@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getCheckinPath, imagePath } from './image-path';
+import { CHECKINS_STORAGE } from '../firestore/constants';
 
 describe('Storage Path Utilities', () => {
   const userId = 'user123';
@@ -8,19 +9,19 @@ describe('Storage Path Utilities', () => {
 
   describe('getCheckinPath', () => {
     it('should return the correct folder path for a user check-in', () => {
-      const expected = `checkin-imgs/user123/checkin456`;
+      const expected = `${CHECKINS_STORAGE}/user123/checkin456`;
       expect(getCheckinPath(userId, checkinId)).toBe(expected);
     });
   });
 
   describe('imagePath', () => {
     it('should return the path for a full-sized image when isSmall is false', () => {
-      const expected = `checkin-imgs/user123/checkin456/front`;
+      const expected = `${CHECKINS_STORAGE}/user123/checkin456/front`;
       expect(imagePath(userId, checkinId, slot)).toBe(expected);
     });
 
     it('should return the path with _75x75 suffix when isSmall is true', () => {
-      const expected = `checkin-imgs/user123/checkin456/front_75x75`;
+      const expected = `${CHECKINS_STORAGE}/user123/checkin456/front_75x75`;
       expect(imagePath(userId, checkinId, slot, true)).toBe(expected);
     });
 

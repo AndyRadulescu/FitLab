@@ -3,7 +3,7 @@ import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { analytics, db } from '../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
 import { CheckInStrategy } from './checkin-strategy';
-import { CHECKINS_TABLE } from '../../firestore/queries';
+import { CHECKINS_TABLE } from '../../firestore/constants';
 
 export class AddCheckInStrategy implements CheckInStrategy {
   async checkIn({ data, userId }: { data: Partial<CheckInFormDataDto>, userId: string }) {

@@ -3,7 +3,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { EditWeightStrategy } from './edit-weight.strategy';
 import { Weight } from '../../store/user.store';
-import { WEIGHT_TABLE } from '../../firestore/queries';
+import { WEIGHT_TABLE } from '../../firestore/constants';
 
 const mockUpdateWeight = vi.fn();
 const mockT = vi.fn((key: string) => key) as any;

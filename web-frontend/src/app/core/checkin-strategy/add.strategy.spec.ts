@@ -3,7 +3,7 @@ import { AddCheckInStrategy } from './add.strategy';
 import { doc, setDoc } from 'firebase/firestore';
 import { checkinStore } from '../../store/checkin.store';
 import { logEvent } from 'firebase/analytics';
-import { CHECKINS_TABLE } from '../../firestore/queries';
+import { CHECKINS_TABLE } from '../../firestore/constants';
 
 const mockAddCheckin = vi.fn();
 vi.mock('firebase/firestore', () => ({

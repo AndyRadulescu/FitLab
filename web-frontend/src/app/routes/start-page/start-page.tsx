@@ -10,7 +10,7 @@ import { userStore } from '../../store/user.store';
 import { useNavigate } from 'react-router-dom';
 import { SectionHeader } from '../../components/section-header';
 import { Button } from '../../components/design/button';
-import { USERS_TABLE, WEIGHT_TABLE } from '../../firestore/queries';
+import { USERS_TABLE, WEIGHT_TABLE } from '../../firestore/constants';
 
 const startPageSchema = z.object({
   dateOfBirth: z.date('errors.date.invalid'),

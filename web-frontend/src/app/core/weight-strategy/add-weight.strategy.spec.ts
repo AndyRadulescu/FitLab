@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { addDoc, collection } from 'firebase/firestore';
 import { AddWeightStrategy } from './add-weight.strategy';
-import { WEIGHT_TABLE } from '../../firestore/queries';
+import { WEIGHT_TABLE } from '../../firestore/constants';
 import { Weight } from '../../store/user.store';
 
 const mockAddWeight = vi.fn();

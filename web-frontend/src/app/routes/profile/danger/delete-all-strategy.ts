@@ -2,7 +2,7 @@ import { collection, getDocs, query, writeBatch, where } from 'firebase/firestor
 import { deleteObject, listAll, ref } from 'firebase/storage';
 import { analytics, db, storage } from '../../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
-import { CHECKINS_STORAGE, CHECKINS_TABLE, USERS_TABLE, WEIGHT_TABLE } from '../../../firestore/queries';
+import { CHECKINS_STORAGE, CHECKINS_TABLE, USERS_TABLE, WEIGHT_TABLE } from '../../../firestore/constants';
 
 export class DeleteUserAccount {
   async deleteAllUserData(userId: string) {

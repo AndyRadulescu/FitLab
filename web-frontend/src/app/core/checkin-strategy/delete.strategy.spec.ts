@@ -4,7 +4,7 @@ import { doc, deleteDoc } from 'firebase/firestore';
 import { ref, listAll, deleteObject } from 'firebase/storage';
 import { logEvent } from 'firebase/analytics';
 import { getCheckinPath } from '../../image-manager/image-path';
-import { CHECKINS_TABLE } from '../../firestore/queries';
+import { CHECKINS_TABLE } from '../../firestore/constants';
 
 const mockDeleteCheckin = vi.fn();
 

@@ -1,7 +1,7 @@
 import { WeightStrategy } from './weight-strategy';
 import { TFunction } from 'i18next';
 import { doc, serverTimestamp, updateDoc } from 'firebase/firestore';
-import { WEIGHT_TABLE } from '../../firestore/queries';
+import { WEIGHT_TABLE } from '../../firestore/constants';
 import { analytics, db } from '../../../init-firebase-auth';
 import { userStore, Weight } from '../../store/user.store';
 import { logEvent } from 'firebase/analytics';

@@ -1,4 +1,4 @@
-import { CHECKINS_STORAGE } from '../firestore/queries';
+import { CHECKINS_STORAGE } from '../firestore/constants';
 
 export const getCheckinPath = (userId: string, checkinId: string) => {
   return `${CHECKINS_STORAGE}/${userId}/${checkinId}`;
