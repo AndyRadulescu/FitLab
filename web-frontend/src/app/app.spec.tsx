@@ -16,7 +16,10 @@ vi.mock('./custom-hooks/use-html-lang', () => ({
 vi.mock('./routes/main', () => ({ Main: () => <div data-testid="main-route" /> }));
 vi.mock('./routes/start-page/start-page', () => ({ StartPage: () => <div data-testid="start-page" /> }));
 vi.mock('./analytics-tracker', () => ({ AnalyticsTracker: () => null }));
-vi.mock('react-i18next', () => ({ useTranslation: () => ({ t: (key: string) => key }) }));
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({ t: (key: string) => key }),
+  Trans: ({ i18nKey, defaultValue }: any) => <span>{defaultValue || i18nKey}</span>
+}));
 
 describe('App Component', () => {
   beforeEach(() => {
@@ -30,7 +33,7 @@ describe('App Component', () => {
     });
 
     render(<App />);
-    expect(screen.getByText(/loading.../i)).toBeInTheDocument();
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it('should render StartPage when loading is finished but no data exists', () => {
