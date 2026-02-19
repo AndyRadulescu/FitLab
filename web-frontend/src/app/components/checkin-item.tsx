@@ -8,6 +8,7 @@ import { ImagesDisplay } from './image/images-display';
 
 export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
   const { i18n, t } = useTranslation();
+  if (!checkin.userId) return null;
 
   const deleteItem = () => {
     // eslint-disable-next-line no-restricted-globals
@@ -42,7 +43,7 @@ export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
         <ImagesDisplay checkinId={checkin.id} userId={checkin.userId}/>
       </div>
 
-      <div className="absolute right-[-10px] top-[-10px]" onClick={deleteItem}>
+      <div className="absolute p-2 right-[-25px] top-[-25px] rounded-full bg-gray-200 dark:bg-gray-700 text-red-700" onClick={deleteItem}>
         <Trash size="14" />
       </div>
     </div>
