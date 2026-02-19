@@ -11,10 +11,11 @@ import { checkinStore } from '../../store/checkin.store';
 import { ImageUploader } from '../../components/image/image-uploader';
 import { collection, doc } from 'firebase/firestore';
 import { db } from '../../../init-firebase-auth';
-import { useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { FormSlider } from '../../components/custom-slider/form-slider';
 import { SectionHeader } from '../../components/section-header';
 import { CheckInStrategyFactory } from '../../core/checkin-strategy/checkin-strategy';
+import { X } from 'lucide-react';
 
 const checkinSchema = z.object({
   kg: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
@@ -36,18 +37,42 @@ const checkinSchema = z.object({
 
 export type CheckInFormData = z.infer<typeof checkinSchema>;
 
+const isToday = (date: Date) => {
+  const today = new Date();
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+};
+
 export function CheckInPage() {
   const { t } = useTranslation();
   const user = userStore((state) => state.user);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const checkinId = searchParams.get('checkinId');
-  const checkinData = checkinStore((state) => state.checkins).find(checkin => checkin.id === checkinId);
+  const checkins = checkinStore((state) => state.checkins);
+
+  const todayCheckin = useMemo(() => checkins.find(c => isToday(c.createdAt)), [checkins]);
+
+  const checkinData = useMemo(() => {
+    if (checkinId) {
+      return checkins.find(checkin => checkin.id === checkinId);
+    }
+    return todayCheckin;
+  }, [checkinId, checkins, todayCheckin]);
+
+  const isEditingToday = !checkinId && !!todayCheckin;
+  const [showBanner, setShowBanner] = useState(true);
+
   let newCheckinId: string | null = null;
   const newDocRef = useRef<string>(doc(collection(db, 'checkins')).id);
-  if (!checkinId) {
+  if (!checkinId && !todayCheckin) {
     newCheckinId = newDocRef.current;
   }
+
+  const activeCheckinId = checkinData?.id ?? newCheckinId;
 
   const {
     register,
@@ -65,10 +90,10 @@ export function CheckInPage() {
       return;
     }
     try {
-      const strategy = !checkinData ? 'add' : 'edit';
+      const strategy = !checkinData || !checkinData.id ? 'add' : 'edit';
       const { imgUrls, ...dataWithNoImgUrls } = data;
       await CheckInStrategyFactory.getStrategy(strategy).checkIn({
-        data: { ...dataWithNoImgUrls, id: checkinData?.id ?? newCheckinId ?? '' },
+        data: { ...dataWithNoImgUrls, id: activeCheckinId ?? '' },
         userId: user.uid
       });
       navigate('/dashboard/', { replace: true });
@@ -80,6 +105,20 @@ export function CheckInPage() {
 
   return (
     <div>
+      {isEditingToday && showBanner && (
+        <Card className="mb-4 bg-orange-100 border-orange-500 text-orange-400 p-4 relative pr-12">
+          <p className="font-bold">{t('checkin.alreadyDone')}</p>
+          <p>{t('checkin.onlyOnce')}</p>
+          <button
+            type="button"
+            onClick={() => setShowBanner(false)}
+            className="absolute top-[-10px] right-[-10px] right-2 p-1 text-gray-800 dark:text-white bg-gray-200 dark:bg-gray-600 hover:text-red-700 rounded-full transition-colors"
+            aria-label="Close banner"
+          >
+            <X size={14} />
+          </button>
+        </Card>
+      )}
       <form noValidate className="mt-4" onSubmit={handleSubmit(data => sendCheckin(data))}>
         <SectionHeader><Trans i18nKey="checkin.measurements">Measurements</Trans></SectionHeader>
         <Card className="mb-4">
@@ -140,7 +179,7 @@ export function CheckInPage() {
             render={({ field: { onChange } }) => (
               <ImageUploader
                 userId={user!.uid!}
-                checkinId={checkinId ?? newCheckinId!}
+                checkinId={activeCheckinId!}
                 isEdit={!!checkinData}
                 onChange={onChange}
                 error={errors.imgUrls?.message}

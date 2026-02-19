@@ -56,6 +56,8 @@
   "checkin.energy": "Pe o scară de la 1 la 10, ce energie ai?",
   "checkin.mood": "Pe o scară de la 1 la 10 cum te simți (mood check)?",
   "checkin.steps": "Cați pași ai făcut zilnic, în medie?",
+  "checkin.alreadyDone": "Ai completat deja un check-in pentru astăzi. Acum îl editezi.",
+  "checkin.onlyOnce": "Este permis un singur check-in pe zi.",
   "start.title": "Salut, bine ai venit la Fitlab!",
   "start.description": "Ca să incepem, ne trebuie doar câteva informații despre tine.",
   "start.dateOfBirth": "Data nașterii:",
@@ -74,5 +76,7 @@
   "danger.type": "Te rog scrie \"delete account\" ca să ștergi contul",
   "danger.account.error": "O eroare a împiedicat procesul de ștergere a contului. Te rugăm contactează administratorul.",
   "common.edit": "Editează",
-  "common.save": "Salvează"
+  "common.save": "Salvează",
+  "common.loading": "Încărcare",
+  "common.pleaseWait": "Te rugăm să aștepți..."
 }
