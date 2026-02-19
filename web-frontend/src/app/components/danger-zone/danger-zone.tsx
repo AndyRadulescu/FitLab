@@ -41,7 +41,7 @@ export function DangerZone() {
         <div className="flex flex-col md:flex-row gap-4 aling-center justify-center w-full">
           <div className="flex-2">
             <h3 className="text-lg"><Trans i18nKey="profile.deleteAccount" /></h3>
-            <p className="text-md"><Trans i18nKey="profile.delete.info">tst</Trans></p>
+            <p className="text-md"><Trans i18nKey="profile.delete.info"/></p>
           </div>
           <div className="flex-1 flex justify-center items-center" onClick={removeAccount}>
             <Button type="danger"><Trans i18nKey="profile.deleteAccount" /></Button>
