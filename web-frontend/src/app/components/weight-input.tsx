@@ -63,15 +63,12 @@ export function WeightInput() {
     return (
       <Card>
         <div
-          className="flex flex-col md:flex-row gap-4 aling-center justify-center w-full">
-          <div className="flex-2">
-            <h3 className="text-xl">{t('dashboard.weight.title')}</h3>
+          className="flex aling-center justify-between w-full">
+          <div className="flex items-center">
             <p className="text-md">{t('dashboard.weight.value', { weight: todayWeight?.weight })}</p>
           </div>
-          <div className="flex-1 flex justify-center items-center">
-            <div onClick={() => setIsEditable(true)}>
-              <Button type="tertiary">{t('common.edit')}</Button>
-            </div>
+          <div onClick={() => setIsEditable(true)}>
+            <Button type="tertiary">{t('common.edit')}</Button>
           </div>
         </div>
       </Card>
@@ -86,7 +83,6 @@ export function WeightInput() {
           <X size={18} />
         </div>
         <div className="flex-2">
-          <h3 className="text-xl">{t('dashboard.weight.title')}</h3>
           <Input label={t('dashboard.weight.placeholder')} type="number"
                  min="0" {...register('weight', { valueAsNumber: true })}
                  error={errors.weight?.message && t(errors.weight.message)}></Input>

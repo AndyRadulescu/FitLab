@@ -30,7 +30,7 @@
   "errors.credential.old": "The credential is too old. Please login again.",
   "dashboard.nothingYet": "Nothing to show yet",
   "dashboard.journey": "My journey",
-  "dashboard.weight.title": "Today's Weight",
+  "dashboard.weight.title": "Weight",
   "dashboard.weight.value": "Today's weight is: {{weight}} kg",
   "dashboard.weight.placeholder": "Enter today's weight",
   "profile.change.language": "Change language",
