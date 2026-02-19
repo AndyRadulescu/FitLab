@@ -30,7 +30,7 @@
   "errors.credential.old": "The credential is too old. Please login again.",
   "dashboard.nothingYet": "Nothing to show yet",
   "dashboard.journey": "My journey",
-  "dashboard.weight.title": "Today's Weight",
+  "dashboard.weight.title": "Weight",
   "dashboard.weight.value": "Today's weight is: {{weight}} kg",
   "dashboard.weight.placeholder": "Enter today's weight",
   "profile.change.language": "Change language",
@@ -56,6 +56,9 @@
   "checkin.energy": "On a scale from 1 to 10, how is your energy level?",
   "checkin.mood": "On a scale from 1 to 10, how do you feel (mood check)?",
   "checkin.steps": "How many steps did you take per day on average?",
+  "checkin.button": "Check-in",
+  "checkin.alreadyDone": "You have already completed a check-in for today. You are now editing it.",
+  "checkin.onlyOnce": "Only one check-in per day is allowed.",
   "start.title": "Hi, welcome to Fitlab!",
   "start.description": "To get started, we only need a few pieces of information about you.",
   "start.dateOfBirth": "Date of birth:",
@@ -74,5 +77,7 @@
   "danger.type": "Please type \"delete account\" to confirm",
   "danger.account.error": "Account deletion failed. Please contact the administrator.",
   "common.edit": "Edit",
-  "common.save": "Save"
+  "common.save": "Save",
+  "common.loading": "Loading",
+  "common.pleaseWait": "Please wait..."
 }

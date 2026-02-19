@@ -1,7 +1,7 @@
 import { UpdateCheckInStrategy } from './update.strategy';
 import { AddCheckInStrategy } from './add.strategy';
 import { DeleteCheckInStrategy } from './delete.strategy';
-import { CheckInFormData } from '../../routes/checkIn/checkIn-page';
+import { CheckInFormData } from '../../routes/checkIn/types';
 
 export type CheckinStrategyType = Omit<CheckInFormData, 'imgUrls'> & { id?: string, createdAt?: Date };
 

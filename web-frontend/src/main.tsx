@@ -6,6 +6,8 @@ import { initFirebaseAuth } from './init-firebase-auth';
 import './i18n';
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
+import { LoadingScreen } from './app/components/design/loading-screen';
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
@@ -14,7 +16,7 @@ await initFirebaseAuth();
 
 root.render(
   <StrictMode>
-    <Suspense fallback="loading...">
+    <Suspense fallback={<LoadingScreen />}>
       <RouterProvider router={router} />
     </Suspense>
   </StrictMode>
