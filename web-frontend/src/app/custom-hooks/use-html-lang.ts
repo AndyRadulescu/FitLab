@@ -7,6 +7,5 @@ export function useHtmlLang() {
   useEffect(() => {
     document.documentElement.lang = i18n.language;
     document.documentElement.dir = i18n.dir();
-    console.log(i18n.language);
   }, [i18n.language]);
 }

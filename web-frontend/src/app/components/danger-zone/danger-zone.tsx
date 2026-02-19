@@ -7,7 +7,6 @@ import { Card } from '../design/card';
 import { userStore } from '../../store/user.store';
 import { deleteAccount } from '../../routes/profile/danger/delele-account';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../../../init-firebase-auth';
 
 export function DangerZone() {
   const user = userStore(state => state.user);
@@ -19,15 +18,14 @@ export function DangerZone() {
     if (!user) {
       navigate('/auth/login', { replace: true });
     }
-    if (!confirm(t('danger.delete.account'))) {
+    if (!window.confirm(t('danger.delete.account'))) {
       return;
     }
     const string = prompt(t('danger.type'));
     if (string !== 'delete account') {
       return;
     }
-    await deleteAccount(user.uid, t);
-    await auth.signOut();
+    await deleteAccount(user!.uid, t);
     setUser(undefined);
     navigate('/auth/login', { replace: true });
   };

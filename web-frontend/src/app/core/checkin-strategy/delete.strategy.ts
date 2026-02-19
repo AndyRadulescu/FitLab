@@ -1,13 +1,14 @@
-import { CheckInStrategy } from './checkin-strategy';
-import { CheckInPayload, checkinStore } from '../../../store/checkin.store';
-import { analytics, db, storage } from '../../../../init-firebase-auth';
+import { CheckInStrategy, CheckinStrategyType } from './checkin-strategy';
+import { checkinStore } from '../../store/checkin.store';
+import { analytics, db, storage } from '../../../init-firebase-auth';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { deleteObject, listAll, ref } from 'firebase/storage';
-import { getCheckinPath } from '../../../image-manager/image-path';
+import { getCheckinPath } from '../../image-manager/image-path';
+import { CHECKINS_TABLE } from '../../firestore/constants';
 
 export class DeleteCheckInStrategy implements CheckInStrategy {
-  async checkIn({ data, userId }: { data: CheckInPayload, userId: string }) {
+  async checkIn({ data, userId }: { data: CheckinStrategyType, userId: string }) {
     if (!data.id) throw new Error('Missing Check-in ID for deletion');
 
     try {
@@ -35,7 +36,7 @@ export class DeleteCheckInStrategy implements CheckInStrategy {
   }
 
   private async deleteDoc(checkinId: string) {
-    const docRef = doc(db, 'checkins', checkinId);
+    const docRef = doc(db, CHECKINS_TABLE, checkinId);
     await deleteDoc(docRef);
     checkinStore.getState().deleteCheckin(checkinId);
   }

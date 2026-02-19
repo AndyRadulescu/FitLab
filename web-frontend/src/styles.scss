@@ -1,5 +1,5 @@
 @use "tailwindcss";
-@use 'assets/variables';
+@use '../../libs/shared-ui/src/lib/variables';
 @import 'rc-slider/assets/index.css';
 
 @tailwind base;
@@ -8,8 +8,8 @@
 
 @layer base {
   :root {
-    /* Define the default page background */
     --page-bg: #ffffff;
+    --primary-color-dark: #{variables.$primary-color-dark3};
   }
 
   body {
@@ -22,20 +22,35 @@
 
 @media (prefers-color-scheme: light) {
   body:has(.auth-theme-trigger) {
-    --page-bg: $primary-gradient-light1
+    --page-bg: variables.$primary-color-light1
   }
 }
 
 @theme {
-  --color-primary: #5E5441;
+  --color-primary: var(--primary-color-dark, red);
 }
 
 .primary-gradient {
   background: variables.$primary-gradient-light
 }
 
+.primary-text-gradient {
+  background: variables.$primary-gradient-dark;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
 @media (prefers-color-scheme: dark) {
   .primary-gradient {
     background: variables.$primary-gradient-dark
+  }
+  .primary-text-gradient {
+    background: variables.$primary-gradient-light;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
   }
 }

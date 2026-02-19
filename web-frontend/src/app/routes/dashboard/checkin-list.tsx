@@ -5,6 +5,14 @@ import { SectionHeader } from '../../components/section-header';
 import { Trans } from 'react-i18next';
 
 export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {
+  if (checkins.length === 0) {
+    return (
+      <div className="flex justify-center items-center">
+        <p><Trans i18nKey="dashboard.nothingYet">Noting to show yet</Trans></p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <SectionHeader><Trans i18nKey="dashboard.journey">My journey</Trans></SectionHeader>
@@ -13,7 +21,7 @@ export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {
           <div key={checkin.id}>
             <CheckinItem checkin={checkin} key={checkin.id}></CheckinItem>
             {index < checkins.length - 1 && (
-              <hr className="border-t my-4 border-gray-300 dark:border-gray-600" />
+              <hr className="border-t my-4 mx-[-16px] border-gray-300 dark:border-gray-600" />
             )}
           </div>
         ))}

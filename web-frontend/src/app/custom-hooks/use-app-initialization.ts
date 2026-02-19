@@ -1,17 +1,16 @@
 import { useEffect, useState } from 'react';
-import { StartPageFormDataDto, userStore } from '../store/user.store';
-import { CheckInFormDataDto, CheckInFormDataDtoFirebase, checkinStore } from '../store/checkin.store';
+import { StartPageFormDataDto, userStore, Weight } from '../store/user.store';
+import { CheckInFormDataDto, checkinStore } from '../store/checkin.store';
 import { useNavigate } from 'react-router-dom';
 import { getDocs } from 'firebase/firestore';
-import { getCheckinQuery, getStartDataQuery } from '../firestore/queries';
-import { useTranslation } from 'react-i18next';
+import { getCheckinQuery, getStartDataQuery, getWeightQuery } from '../firestore/queries';
 
 export function useAppInitialization() {
-  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const initData = userStore((state) => state.initData);
-  const setInitData = userStore(state => state.setInitData);
+  const userData = userStore((state) => state.userData);
+  const setUserData = userStore(state => state.setUserData);
+  const setWeights = userStore(state => state.setWeights);
   const setCheckin = checkinStore(state => state.setCheckin);
   const user = userStore((state) => state.user);
   const navigate = useNavigate();
@@ -23,33 +22,42 @@ export function useAppInitialization() {
         return;
       }
       setIsLoading(true);
-      const snapshotStart = await getDocs(getStartDataQuery(user));
-      const snapshotCheckin = await getDocs(getCheckinQuery(user));
-      const initData = snapshotStart.docs[0]?.data() as StartPageFormDataDto;
-      const checkinData: CheckInFormDataDtoFirebase[] = snapshotCheckin.docs.map(doc => {
-        const data = doc.data();
-        return {
-          id: doc.id,
-          createdAt: data.createdAt.toDate(),
-          ...data
-        } as CheckInFormDataDtoFirebase;
-      });
-      const checkinMapped = checkinData.map(checkin => ({
-        ...checkin,
-        createdAt: checkin.createdAt.toDate(),
-        updatedAt: checkin.updatedAt.toDate()
-      })) as CheckInFormDataDto[];
+      const snapshotUsers = await getDocs(getStartDataQuery(user));
+      const initData = snapshotUsers.docs[0]?.data() as StartPageFormDataDto;
+
       if (!initData) {
-        setInitData(initData);
         setIsLoading(false);
         return;
       }
-      setCheckin(checkinMapped);
+
+      setUserData(initData);
+      const snapshotCheckins = await getDocs(getCheckinQuery(user));
+      const snapshotWeights = await getDocs(getWeightQuery(user));
+      const checkinData: CheckInFormDataDto[] = snapshotCheckins.docs.map(doc => {
+        const data = doc.data();
+        return {
+          ...data,
+          id: doc.id,
+          createdAt: data.createdAt.toDate(),
+          updatedAt: data.updatedAt?.toDate()
+        } as CheckInFormDataDto;
+      });
+      setCheckin(checkinData);
+
+      const weightMapped = snapshotWeights.docs.map((weight) => {
+        return {
+          id: weight.id,
+          createdAt: weight.data().createdAt.toDate(),
+          weight: weight.data().weight,
+          updatedAt: weight.data().updatedAt?.toDate()
+        } as Weight;
+      });
+      setWeights(weightMapped);
       setIsLoading(false);
     };
 
     void load();
   }, []);
 
-  return { isLoading, hasInitData: !!initData };
+  return { isLoading, hasInitData: !!userData };
 }

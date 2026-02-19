@@ -7,7 +7,7 @@ import { SocialButton } from '../../components/design/social-button';
 import { LanguageToggle } from '../../components/language-toggle';
 import { AnalyticsTracker } from '../../analytics-tracker';
 import { logEvent } from 'firebase/analytics';
-import { handleAuthErrors } from './error-handler';
+import { handleAuthErrors } from '../../core/error-handler';
 import { useHtmlLang } from '../../custom-hooks/use-html-lang';
 
 export function AuthPage() {
@@ -41,7 +41,7 @@ export function AuthPage() {
     auth.languageCode = i18n.language;
     void signInWithPopup(auth, new FacebookAuthProvider()).catch((err) => {
       handleAuthErrors(err, t);
-    });;
+    });
   };
 
   return (

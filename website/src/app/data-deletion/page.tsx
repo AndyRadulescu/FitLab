@@ -13,7 +13,7 @@ export default function DataDeletionPage() {
 
         <header className="mb-16 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
-            Data Deletion <span className="text-primary">Guide</span>
+            Data Deletion <span className="primary-text-gradient">Guide</span>
           </h1>
           <p className="text-lg text-gray-500 max-w-2xl mx-auto">
             Instructions on how to manage, export, and permanently remove your fitness data and photos from our servers.
@@ -108,7 +108,7 @@ export default function DataDeletionPage() {
 
         <footer className="mt-20 pt-8 border-t border-zinc-900 text-center">
           <p className="text-gray-600 mb-4">Cannot access your account? We can help.</p>
-          <a href="mailto:andyradulescu@synapselabs.org" className="bg-white text-black px-8 py-3 rounded-full font-bold">
+          <a href="mailto:andyradulescu@synapselabs.org" className="primary-gradient text-black px-8 py-3 rounded-full font-bold">
             Contact Support for Manual Deletion
           </a>
         </footer>

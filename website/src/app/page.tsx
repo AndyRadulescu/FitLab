@@ -1,20 +1,18 @@
 import React from 'react';
-import Link from 'next/link';
-import { Beaker, Activity, Camera, LineChart, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+import { Activity, Camera, LineChart, ChevronRight } from 'lucide-react';
 
 export default function LandingPage() {
   return (
     <div className="auth-theme-trigger min-h-screen bg-black text-white selection:bg-primary selection:text-white">
 
-      {/* --- NAVIGATION --- */}
       <nav className="flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-2">
-          {/* LOGO: A minimalist "A" with a lab beaker flask integrated */}
-          <div className="w-10 h-10 bg-primary flex items-center justify-center rounded-xl shadow-lg shadow-primary/20">
-            <Beaker className="text-black w-6 h-6" strokeWidth={2.5} />
+          <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-red">
+            <Image src="/logo.svg" alt="Amazonia FitLab Logo" width={45} height={45} layout="fixed"/>
           </div>
           <span className="text-xl font-black tracking-tighter uppercase italic">
-            Amazonia <span className="text-primary">FitLab</span>
+            Amazonia <span className="primary-text-gradient">FitLab</span>
           </span>
         </div>
         <a
@@ -33,8 +31,8 @@ export default function LandingPage() {
             Precision Fitness Tracking
           </h2>
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1]">
-            Balance is <span className="italic text-primary">everything.</span><br />
-            Science is <span className="text-primary">all.</span>
+            Balance is <span className="italic primary-text-gradient">everything.</span><br />
+            Science is <span className="primary-text-gradient">all.</span>
           </h1>
           <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
             Amazonia FitLab isn't just an app; it's a digital laboratory for your body.
@@ -44,7 +42,7 @@ export default function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="https://app.amazonia-fitlab.ro/auth/register"
-              className="px-8 py-4 bg-white text-black font-bold rounded-full text-lg hover:bg-primary transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+              className="px-8 py-4 text-black font-bold rounded-full text-lg primary-gradient transition-all transform hover:scale-105 flex items-center justify-center gap-2"
             >
               Start Your Lab Report <ChevronRight size={20} />
             </a>
@@ -95,26 +93,11 @@ export default function LandingPage() {
           "The wildest jungle is the human biology. We provide the tools to navigate it with surgical precision."
         </blockquote>
         <div className="mt-8 flex items-center justify-center gap-3">
-          <div className="h-[1px] w-8 bg-primary"></div>
-          <span className="text-primary font-bold tracking-widest uppercase text-sm">Amazonia Philosophy</span>
-          <div className="h-[1px] w-8 bg-primary"></div>
+          <div className="h-[1px] w-8 primary-gradient"></div>
+          <span className="primary-text-gradient font-bold tracking-widest uppercase text-sm">Amazonia Philosophy</span>
+          <div className="h-[1px] w-8 primary-gradient"></div>
         </div>
       </section>
-
-      {/* --- FOOTER --- */}
-      <footer className="px-6 py-12 border-t border-zinc-900 text-gray-600">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-          <div className="text-sm">
-            &copy; 2026 AMAZONIA FITLAB. SCIENCE-BACKED FITNESS.
-          </div>
-          <div className="flex gap-8 text-sm font-medium">
-            <Link href="/privacy-policy" className="hover:text-white">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white">Terms of use</Link>
-            <Link href="/data-deletion" className="hover:text-white">Data Deletion</Link>
-            <a href="mailto:andyradulescu@synapselabs.org" className="hover:text-white">Contact</a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

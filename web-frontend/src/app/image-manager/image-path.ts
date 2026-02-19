@@ -1,5 +1,7 @@
+import { CHECKINS_STORAGE } from '../firestore/constants';
+
 export const getCheckinPath = (userId: string, checkinId: string) => {
-  return `checkin-imgs/${userId}/${checkinId}`;
+  return `${CHECKINS_STORAGE}/${userId}/${checkinId}`;
 };
 
 export const imagePath = (userId: string, checkinId: string, slot: string, isSmall = false) => {

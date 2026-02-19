@@ -4,27 +4,40 @@ import firebase from 'firebase/compat/app';
 import { StartPageFormData } from '../routes/start-page/start-page';
 
 export type StartPageFormDataDto = Omit<StartPageFormData, 'dateOfBirth'> & { dateOfBirth?: string };
+export type Weight = { id: string; weight: number, createdAt: Date, updatedAt?: Date };
 
 interface UserStore {
   user?: firebase.User;
-  initData?: StartPageFormDataDto;
+  weights: Weight[];
+  userData?: StartPageFormDataDto;
   isLoggedIn: boolean;
   setUser: (user?: firebase.User) => void,
-  setInitData: (user?: StartPageFormDataDto) => void,
+  setUserData: (user?: StartPageFormDataDto) => void,
+  setWeights: (user?: Weight[]) => void,
+  addWeight: (weight: Weight) => void;
+  updateWeight: (weight: Weight) => void;
+  delete(): void;
 }
 
 export const userStore = create<UserStore>()(
   devtools(
     persist((set) => ({
       user: undefined,
-      initData: undefined,
+      weights: [],
+      userData: undefined,
       isLoggedIn: false,
       setUser: (user?: firebase.User) => set((state) => {
         return { ...state, user, isLoggedIn: !!user };
       }),
-      setInitData: (initData?: StartPageFormDataDto) => set((state) => {
-        return { ...state, initData: initData };
-      })
+      setUserData: (initData?: StartPageFormDataDto) => set((state) => {
+        return { ...state, userData: initData };
+      }),
+      setWeights: (weights?: Weight[]) => set((state) => ({ weights: weights ?? [] })),
+      addWeight: (weight: Weight) => set((state) => ({ weights: [...state.weights, weight] })),
+      delete: () => set(() => ({ user: undefined, userData: undefined, weights: [] })),
+      updateWeight: (weight: Weight) => set((state) => ({
+        weights: state.weights.map(w => w.id === weight.id ? weight : w)
+      }))
     }), {
       name: 'user-store'
     })));

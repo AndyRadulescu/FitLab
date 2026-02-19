@@ -30,6 +30,13 @@ export default [
     },
   },
   {
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: './tsconfig.base.json',
+        },
+      },
+    },
     files: [
       '**/*.ts',
       '**/*.tsx',

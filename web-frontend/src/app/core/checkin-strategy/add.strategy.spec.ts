@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AddCheckInStrategy } from './add.strategy';
 import { doc, setDoc } from 'firebase/firestore';
-import { checkinStore } from '../../../store/checkin.store';
+import { checkinStore } from '../../store/checkin.store';
 import { logEvent } from 'firebase/analytics';
+import { CHECKINS_TABLE } from '../../firestore/constants';
 
 const mockAddCheckin = vi.fn();
 vi.mock('firebase/firestore', () => ({
@@ -11,7 +12,7 @@ vi.mock('firebase/firestore', () => ({
   serverTimestamp: vi.fn(() => 'mock-server-timestamp')
 }));
 
-vi.mock('../../../../init-firebase-auth', () => ({
+vi.mock('../../../init-firebase-auth', () => ({
   db: { type: 'firestore-instance' },
   analytics: { type: 'analytics-instance' }
 }));
@@ -20,7 +21,7 @@ vi.mock('firebase/analytics', () => ({
   logEvent: vi.fn()
 }));
 
-vi.mock('../../../store/checkin.store', () => {
+vi.mock('../../store/checkin.store', () => {
   return {
     checkinStore: {
       getState: vi.fn(() => ({
@@ -55,7 +56,7 @@ describe('AddCheckInStrategy', () => {
 
     await strategy.checkIn({ data: payload as any, userId });
 
-    expect(doc).toHaveBeenCalledWith(expect.anything(), 'checkins', 'new-id');
+    expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, 'new-id');
     expect(setDoc).toHaveBeenCalledWith(
       mockDocRef,
       expect.objectContaining({
