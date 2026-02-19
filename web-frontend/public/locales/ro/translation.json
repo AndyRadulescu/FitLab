@@ -56,6 +56,7 @@
   "checkin.energy": "Pe o scară de la 1 la 10, ce energie ai?",
   "checkin.mood": "Pe o scară de la 1 la 10 cum te simți (mood check)?",
   "checkin.steps": "Cați pași ai făcut zilnic, în medie?",
+  "checkin.button": "Check-in",
   "checkin.alreadyDone": "Ai completat deja un check-in pentru astăzi. Acum îl editezi.",
   "checkin.onlyOnce": "Este permis un singur check-in pe zi.",
   "start.title": "Salut, bine ai venit la Fitlab!",

@@ -98,7 +98,7 @@ export function CheckInForm({ formMethods, onSubmit, user, activeCheckinId, isEd
 
       <div className="mt-4">
         <Button disabled={isSubmitting} type="primary">
-          {!isEdit ? 'Check-in' : <Trans i18nKey="checkin.save">Save</Trans>}
+          {!isEdit ? t('checkin.button') : <Trans i18nKey="checkin.save">Save</Trans>}
         </Button>
       </div>
     </form>

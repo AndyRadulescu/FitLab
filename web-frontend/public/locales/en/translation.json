@@ -56,6 +56,7 @@
   "checkin.energy": "On a scale from 1 to 10, how is your energy level?",
   "checkin.mood": "On a scale from 1 to 10, how do you feel (mood check)?",
   "checkin.steps": "How many steps did you take per day on average?",
+  "checkin.button": "Check-in",
   "checkin.alreadyDone": "You have already completed a check-in for today. You are now editing it.",
   "checkin.onlyOnce": "Only one check-in per day is allowed.",
   "start.title": "Hi, welcome to Fitlab!",

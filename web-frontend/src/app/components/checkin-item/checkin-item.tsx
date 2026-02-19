@@ -1,10 +1,10 @@
-import { CheckInFormDataDto } from '../store/checkin.store';
+import { CheckInFormDataDto } from '../../store/checkin.store';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { calculateCm } from '../routes/checkIn/calculate-cm';
+import { calculateCm } from './calculate-cm';
 import { Bed, Footprints, Ruler, Trash, Weight, Zap } from 'lucide-react';
-import { CheckInStrategyFactory } from '../core/checkin-strategy/checkin-strategy';
-import { ImagesDisplay } from './image/images-display';
+import { CheckInStrategyFactory } from '../../core/checkin-strategy/checkin-strategy';
+import { ImagesDisplay } from '../image/images-display';
 
 export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
   const { i18n, t } = useTranslation();
