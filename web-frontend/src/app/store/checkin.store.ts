@@ -1,4 +1,4 @@
-import { CheckInFormData } from '../routes/checkIn/checkIn-page';
+import { CheckInFormData } from '../routes/checkIn/types';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
