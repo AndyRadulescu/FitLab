@@ -9,11 +9,12 @@ export function LanguageToggle() {
   const { i18n } = useTranslation();
 
   const toggleLanguage = async () => {
-    const switcher = i18n.language === 'en-US' ? 'ro' : 'en-US';
+    const switcher = i18n.language.startsWith('en') ? 'ro' : 'en';
     await i18n.changeLanguage(switcher);
+    localStorage.setItem('language', switcher);
     if (analytics) {
       logEvent(analytics, 'language-switch', {
-        language: switcher
+        language: switcher,
       });
     }
   };
@@ -27,10 +28,10 @@ export function LanguageToggle() {
         size={16}
         className="text-primary"
       />
-      <span className="dark:text-gray-800">{i18n.language === 'en-US' ? 'English' : 'Română'}</span>
+      <span className="dark:text-gray-800">{i18n.language.startsWith('en') ? 'English' : 'Română'}</span>
       <span className="text-xs text-primary border-l pl-2 ml-1">
-                {i18n.language === 'en-US' ? 'RO' : 'EN'}
-            </span>
+        {i18n.language.startsWith('en') ? 'RO' : 'EN'}
+      </span>
     </button>
   );
 }
