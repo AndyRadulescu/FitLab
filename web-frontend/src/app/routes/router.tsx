@@ -2,7 +2,7 @@ import ErrorPage from './error-page';
 import { AuthPage } from './auth/auth-page';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../app';
-import { isAuthenticated } from './auth/isAuthenticated';
+import { isAuthenticated } from './auth/is-authenticated';
 import { LoginPage } from './auth/login-page';
 import { RegisterPage } from './auth/register-page';
 import { CheckInPage } from './checkIn/checkIn-page';

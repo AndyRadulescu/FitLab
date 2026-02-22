@@ -5,8 +5,8 @@ export async function isAuthenticated() {
   if(!userStore){
     return redirect("/auth/login");
   }
-  const isLoggedIn = JSON.parse(userStore).state.isLoggedIn;
-  if (!isLoggedIn) {
+  const userUid = JSON.parse(userStore).state.uid;
+  if (!userUid) {
     return redirect("/auth/login");
   }
   return { isAuthenticated: true };
