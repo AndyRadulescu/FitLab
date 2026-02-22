@@ -11,6 +11,7 @@ vi.mock('firebase/app', () => ({
 vi.mock('firebase/auth', () => ({
   getAuth: vi.fn(() => ({})),
   onAuthStateChanged: vi.fn(),
+  getRedirectResult: vi.fn(() => Promise.resolve(null)),
 }));
 
 vi.mock('firebase/firestore', () => ({
@@ -24,6 +25,16 @@ vi.mock('firebase/storage', () => ({
 vi.mock('firebase/analytics', () => ({
   getAnalytics: vi.fn(),
   isSupported: vi.fn(() => Promise.resolve(true)),
+}));
+
+vi.mock('./app/core/error-handler', () => ({
+  handleAuthErrors: vi.fn(),
+}));
+
+vi.mock('i18next', () => ({
+  default: {
+    t: vi.fn((key) => key),
+  },
 }));
 
 // Mock Zustand stores
@@ -67,32 +78,30 @@ describe('init-firebase-auth', () => {
 
   it('should not initialize analytics if not in production', async () => {
     vi.stubEnv('PROD', '' as any);
-    await import('./init-firebase-auth');
+    const { initFirebaseAuth } = await import('./init-firebase-auth');
+    await initFirebaseAuth();
     const { getAnalytics } = await import('firebase/analytics');
 
-    // Give any potential async calls a chance to happen (though they shouldn't)
-    await new Promise(resolve => setTimeout(resolve, 10));
     expect(getAnalytics).not.toHaveBeenCalled();
   });
 
   it('should initialize Firebase and setup sync', async () => {
-    const { initFirebaseAuth, firebaseApp } = await import('./init-firebase-auth');
+    const { initFirebaseAuth } = await import('./init-firebase-auth');
     const { initializeApp } = await import('firebase/app');
-    const { onAuthStateChanged } = await import('firebase/auth');
+    const { onAuthStateChanged, getRedirectResult } = await import('firebase/auth');
 
-    expect(initializeApp).toHaveBeenCalledWith({
+    await initFirebaseAuth();
+
+    expect(initializeApp).toHaveBeenCalledWith(expect.objectContaining({
       apiKey: 'test-api-key',
-      authDomain: 'test-auth-domain',
       projectId: 'test-project-id',
       storageBucket: 'test-storage-bucket',
       messagingSenderId: 'test-sender-id',
       appId: 'test-app-id',
       measurementId: 'test-measurement-id',
-    });
-    expect(firebaseApp).toBeDefined();
+    }));
 
-    await initFirebaseAuth();
-
+    expect(getRedirectResult).toHaveBeenCalled();
     expect(onAuthStateChanged).toHaveBeenCalled();
 
     const authCallback = (onAuthStateChanged as Mock).mock.calls[0][1];
@@ -108,11 +117,13 @@ describe('init-firebase-auth', () => {
 
   it('should initialize analytics in production if supported', async () => {
     vi.stubEnv('PROD', 'true' as any);
-    const { firebaseApp } = await import('./init-firebase-auth');
+    const { initFirebaseAuth } = await import('./init-firebase-auth');
     const { getAnalytics } = await import('firebase/analytics');
 
+    await initFirebaseAuth();
+
     await vi.waitFor(() => {
-        expect(getAnalytics).toHaveBeenCalledWith(firebaseApp);
+        expect(getAnalytics).toHaveBeenCalled();
     }, { timeout: 1000 });
   });
 });

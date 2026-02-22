@@ -5,7 +5,7 @@ import { render, screen, fireEvent, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 import { AuthPage } from './auth-page';
 import { userStore } from '../../store/user.store';
-import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth';
+import { signInWithRedirect, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth';
 import { logEvent } from 'firebase/analytics';
 import { handleAuthErrors } from '../../core/error-handler';
 import { useLocation, Navigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ import { auth } from '../../../init-firebase-auth';
 import '@testing-library/jest-dom/vitest';
 
 vi.mock('firebase/auth', () => ({
-  signInWithPopup: vi.fn(),
+  signInWithRedirect: vi.fn(() => Promise.resolve()),
   GoogleAuthProvider: vi.fn(),
   FacebookAuthProvider: vi.fn(),
 }));
@@ -103,8 +103,8 @@ describe('AuthPage', () => {
     );
   });
 
-  it('should call signInWithPopup with Google provider when Google button is clicked', async () => {
-    (signInWithPopup as Mock).mockResolvedValue({});
+  it('should call signInWithRedirect with Google provider when Google button is clicked', async () => {
+    (signInWithRedirect as Mock).mockResolvedValue({});
     render(<AuthPage />);
 
     const googleButton = screen.getByTestId('social-button-google').parentElement!;
@@ -112,11 +112,11 @@ describe('AuthPage', () => {
 
     expect(auth.languageCode).toBe('en');
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'google-login');
-    expect(signInWithPopup).toHaveBeenCalledWith(expect.anything(), expect.any(GoogleAuthProvider));
+    expect(signInWithRedirect).toHaveBeenCalledWith(expect.anything(), expect.any(GoogleAuthProvider));
   });
 
-  it('should call signInWithPopup with Facebook provider when Facebook button is clicked', async () => {
-    (signInWithPopup as Mock).mockResolvedValue({});
+  it('should call signInWithRedirect with Facebook provider when Facebook button is clicked', async () => {
+    (signInWithRedirect as Mock).mockResolvedValue({});
     render(<AuthPage />);
 
     const facebookButton = screen.getByTestId('social-button-facebook').parentElement!;
@@ -124,12 +124,12 @@ describe('AuthPage', () => {
 
     expect(auth.languageCode).toBe('en');
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'facebook-login');
-    expect(signInWithPopup).toHaveBeenCalledWith(expect.anything(), expect.any(FacebookAuthProvider));
+    expect(signInWithRedirect).toHaveBeenCalledWith(expect.anything(), expect.any(FacebookAuthProvider));
   });
 
-  it('should handle errors when signInWithPopup fails', async () => {
+  it('should handle errors when signInWithRedirect fails', async () => {
     const error = new Error('Auth failed');
-    (signInWithPopup as Mock).mockRejectedValue(error);
+    (signInWithRedirect as Mock).mockRejectedValue(error);
     render(<AuthPage />);
 
     const googleButton = screen.getByTestId('social-button-google').parentElement!;
