@@ -8,7 +8,7 @@ import { db } from '../../../../init-firebase-auth';
 import { useMemo, useRef } from 'react';
 import { CheckInStrategyFactory } from '../../../core/checkin-strategy/checkin-strategy';
 import { CheckInFormData, checkinSchema } from '../types';
-import { assertAuthenticated } from '../../../components/shared/user.guard';
+import { assertAuthenticated } from '@web-frontend/app/shared/user.guard';
 
 const isToday = (date: Date) => {
   const today = new Date();

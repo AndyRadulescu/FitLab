@@ -7,7 +7,7 @@ import { Card } from '../design/card';
 import { userStore } from '../../store/user.store';
 import { deleteAccount } from '../../routes/profile/danger/delele-account';
 import { useNavigate } from 'react-router-dom';
-import { assertAuthenticated } from '../shared/user.guard';
+import { assertAuthenticated } from '@web-frontend/app/shared/user.guard';
 
 export function DangerZone() {
   const user = userStore(state => state.user);

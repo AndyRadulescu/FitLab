@@ -4,7 +4,7 @@ import { userStore } from '../../store/user.store';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
 import { SocialButton } from '../../components/design/social-button';
-import { LanguageToggle } from '../../components/language-toggle';
+import { LanguageToggle } from '../../components/language-toggle/language-toggle';
 import { AnalyticsTracker } from '../../analytics-tracker';
 import { logEvent } from 'firebase/analytics';
 import { handleAuthErrors } from '../../core/error-handler';

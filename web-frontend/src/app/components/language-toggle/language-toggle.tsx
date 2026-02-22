@@ -2,7 +2,7 @@
 
 import { Languages } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { analytics } from '../../init-firebase-auth';
+import { analytics } from '../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
 
 export function LanguageToggle() {
