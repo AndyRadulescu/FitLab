@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { EditWeightStrategy } from './edit-weight.strategy';
 import { Weight } from '../../store/user.store';
@@ -92,7 +92,7 @@ describe('EditWeightStrategy', () => {
 
     expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, 'checkin-abc');
     expect(updateDoc).toHaveBeenCalledWith(mockDocRef, {
-      weight: 88.0,
+      kg: 88.0,
       updatedAt: 'mock-timestamp'
     });
 

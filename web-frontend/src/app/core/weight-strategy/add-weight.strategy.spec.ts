@@ -1,8 +1,9 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest';
 import { addDoc, collection } from 'firebase/firestore';
 import { AddWeightStrategy } from './add-weight.strategy';
 import { WEIGHT_TABLE } from '../../firestore/constants';
 import { Weight } from '../../store/user.store';
+import { logEvent } from 'firebase/analytics';
 
 const mockAddWeight = vi.fn();
 const mockT = vi.fn((key: string) => key) as any;
@@ -15,7 +16,9 @@ vi.mock('../../store/user.store', () => ({
   }
 }));
 
-vi.mock('react-i18next', () => ({}));
+vi.mock('firebase/analytics', () => ({
+  logEvent: vi.fn(),
+}));
 
 vi.mock('firebase/firestore', () => ({
   addDoc: vi.fn(),
@@ -25,7 +28,7 @@ vi.mock('firebase/firestore', () => ({
 
 vi.mock('../../../init-firebase-auth', () => ({
   db: {},
-  analytics: {}
+  analytics: { id: 'mock-analytics' }
 }));
 
 describe('AddWeightStrategy', () => {
@@ -66,6 +69,8 @@ describe('AddWeightStrategy', () => {
       weight: weight.weight,
       createdAt: MOCK_DATE
     });
+
+    expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'add-weight');
   });
 
   it('should handle Firestore errors and show an alert', async () => {

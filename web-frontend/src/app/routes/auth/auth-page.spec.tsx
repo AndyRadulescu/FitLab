@@ -53,7 +53,7 @@ vi.mock('../../components/design/social-button', () => ({
   SocialButton: ({ socialType }: any) => <div data-testid={`social-button-${socialType}`} />,
 }));
 
-vi.mock('../../components/language-toggle', () => ({
+vi.mock('../../components/language-toggle/language-toggle', () => ({
   LanguageToggle: () => <div data-testid="language-toggle" />,
 }));
 

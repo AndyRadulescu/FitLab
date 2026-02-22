@@ -37,7 +37,7 @@ vi.mock('react-i18next', () => ({
   Trans: ({ i18nKey }: any) => <span>{i18nKey}</span>,
 }));
 
-vi.mock('../../components/language-toggle', () => ({
+vi.mock('../../components/language-toggle/language-toggle', () => ({
   LanguageToggle: () => <div data-testid="language-toggle" />,
 }));
 
@@ -51,6 +51,7 @@ vi.mock('../../components/section-header', () => ({
 
 vi.mock('lucide-react', () => ({
   LogOutIcon: () => <div data-testid="logout-icon" />,
+  Languages: () => <div data-testid="languages-icon" />,
 }));
 
 describe('ProfilePage', () => {
