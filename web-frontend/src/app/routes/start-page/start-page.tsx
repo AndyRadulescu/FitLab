@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { SectionHeader } from '../../components/section-header';
 import { Button } from '../../components/design/button';
 import { USERS_TABLE, WEIGHT_TABLE } from '../../firestore/constants';
+import { assertAuthenticated } from '../../components/shared/user.guard';
 
 const startPageSchema = z.object({
   dateOfBirth: z.date('errors.date.invalid'),
@@ -28,10 +29,7 @@ export function StartPage() {
   const navigate = useNavigate();
 
   const sendInitData = async (data: StartPageFormData) => {
-    if (!user) {
-      navigate('/auth/login', { replace: true });
-      return;
-    }
+    assertAuthenticated(navigate, user);
     const mappedData = {
       ...data,
       dateOfBirth: data.dateOfBirth.toISOString()

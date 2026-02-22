@@ -7,17 +7,17 @@ import { Card } from '../design/card';
 import { userStore } from '../../store/user.store';
 import { deleteAccount } from '../../routes/profile/danger/delele-account';
 import { useNavigate } from 'react-router-dom';
+import { assertAuthenticated } from '../shared/user.guard';
 
 export function DangerZone() {
   const user = userStore(state => state.user);
   const setUser = userStore(state => state.setUser);
   const [isShown, setShown] = useState<boolean>(false);
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const removeAccount = async () => {
-    if (!user) {
-      navigate('/auth/login', { replace: true });
-    }
+    assertAuthenticated(navigate, user);
     if (!window.confirm(t('danger.delete.account'))) {
       return;
     }
@@ -29,8 +29,6 @@ export function DangerZone() {
     setUser(undefined);
     navigate('/auth/login', { replace: true });
   };
-
-  const navigate = useNavigate();
 
   return (
     <>
