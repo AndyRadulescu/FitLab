@@ -1,6 +1,6 @@
 import { checkinStore } from '../../store/checkin.store';
 import { CheckinList } from './checkin-list';
-import { WeightInput } from '../../components/weight-input';
+import { WeightInput } from '../../components/weight-input/weight-input';
 import { WeightChart } from './components/weight-chart';
 import { SectionHeader } from '../../components/section-header';
 import { Trans } from 'react-i18next';

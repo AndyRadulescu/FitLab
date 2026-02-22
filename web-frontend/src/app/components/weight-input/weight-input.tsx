@@ -1,26 +1,21 @@
 import { useTranslation } from 'react-i18next';
-import { Button } from './design/button';
-import { Card } from './design/card';
+import { Button } from '../design/button';
+import { Card } from '../design/card';
 import { useEffect, useState } from 'react';
-import { userStore, Weight } from '../store/user.store';
+import { userStore, Weight } from '../../store/user.store';
 import { z } from 'zod';
 import { Resolver, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
-import { Input } from '../components/design/input';
-import { WeightStrategyFactory } from '../core/weight-strategy/weight-strategy';
+import { Input } from '../design/input';
+import { WeightStrategyFactory } from '../../core/weight-strategy/weight-strategy';
+import { getTodayWeight } from './utils';
 
 const weightSchema = z.object({
   weight: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min')
 });
 
 export type WeightFormData = z.infer<typeof weightSchema>;
-
-const getTodayWeight = (weights: Weight[]): Weight | undefined => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return weights.find(w => w.createdAt >= today);
-};
 
 export function WeightInput() {
   const { t } = useTranslation();

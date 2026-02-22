@@ -18,7 +18,6 @@ export function useAppInitialization() {
 
   useEffect(() => {
     const load = async () => {
-      console.log('enteres');
       try {
         assertAuthenticated(navigate, user);
       } catch {
