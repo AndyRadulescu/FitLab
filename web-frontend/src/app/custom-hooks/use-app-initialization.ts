@@ -4,7 +4,7 @@ import { CheckInFormDataDto, checkinStore } from '../store/checkin.store';
 import { useNavigate } from 'react-router-dom';
 import { getDocs } from 'firebase/firestore';
 import { getCheckinQuery, getStartDataQuery, getWeightQuery } from '../firestore/queries';
-import { assertAuthenticated } from '@web-frontend/app/shared/user.guard';
+import { assertAuthenticated } from '../shared/user.guard';
 
 export function useAppInitialization() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -18,6 +18,7 @@ export function useAppInitialization() {
 
   useEffect(() => {
     const load = async () => {
+      console.log('enteres');
       try {
         assertAuthenticated(navigate, user);
       } catch {
