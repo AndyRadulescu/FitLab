@@ -30,7 +30,8 @@ export const transformCheckinsToWeights = (checkins: CheckInFormDataDto[]): Weig
   return checkins.map((checkin) => ({
     id: checkin.id,
     weight: checkin.kg,
+    from: 'checkin',
     createdAt: checkin.createdAt,
     updatedAt: checkin.updatedAt
   }));
-}
+};

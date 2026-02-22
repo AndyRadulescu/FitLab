@@ -37,6 +37,7 @@ export function WeightInput() {
 
   useEffect(() => {
     const foundWeight = getTodayWeight([...weights, ...transformCheckinsToWeights(checkins)]);
+    console.log(foundWeight);
     setTodayWeight(foundWeight);
     setIsEditable(!foundWeight);
     if (foundWeight) {
@@ -46,7 +47,7 @@ export function WeightInput() {
 
   const handleSave = async (data: WeightFormData) => {
     if (!user) return;
-
+    console.log(todayWeight);
     if (todayWeight) {
       const weight: Weight = { ...todayWeight, weight: data.weight };
       await WeightStrategyFactory.getStrategy('edit').weight(weight, user.uid, t);

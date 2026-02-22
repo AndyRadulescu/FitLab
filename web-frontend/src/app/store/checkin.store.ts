@@ -37,7 +37,7 @@ export const checkinStore = create<CheckinStore>()(
       set((state) => ({
         checkins: state.checkins.map((checkin) =>
           checkin.id === id
-            ? { ...checkin, weight: newWeight, updatedAt }
+            ? { ...checkin, kg: newWeight, updatedAt }
             : checkin
         )
       })),

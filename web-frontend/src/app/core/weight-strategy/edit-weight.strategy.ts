@@ -42,7 +42,7 @@ export class EditWeightStrategy implements WeightStrategy {
   private async updateCheckin(data: Weight) {
     const weightRef = doc(db, CHECKINS_TABLE, data.id);
     await updateDoc(weightRef, {
-      weight: data.weight,
+      kg: data.weight,
       updatedAt: serverTimestamp()
     });
     checkinStore.getState().updateWeight(data.id, data.weight, new Date());
