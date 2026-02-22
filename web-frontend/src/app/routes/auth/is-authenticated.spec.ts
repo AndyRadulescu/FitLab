@@ -23,26 +23,30 @@ describe('isAuthenticated()', () => {
     const mockStore = JSON.stringify({ state: { user: { uid: null } } });
     localStorage.setItem('user-store', mockStore);
 
-    await isAuthenticated();
+    const result = await isAuthenticated();
     expect(redirect).toHaveBeenCalledWith('/auth/login');
+    expect(result).toEqual(redirect('/auth/login'));
   });
 
   it('should redirect if user-store is malformed JSON', async () => {
     localStorage.setItem('user-store', '{ malformed json }');
 
-    await isAuthenticated();
+    const result = await isAuthenticated();
     expect(redirect).toHaveBeenCalledWith('/auth/login');
+    expect(result).toEqual(redirect('/auth/login'));
   });
 
   it('should redirect if state or user is missing', async () => {
     localStorage.setItem('user-store', JSON.stringify({ someOther: 'data' }));
-    await isAuthenticated();
+    let result = await isAuthenticated();
     expect(redirect).toHaveBeenCalledWith('/auth/login');
+    expect(result).toEqual(redirect('/auth/login'));
 
     vi.clearAllMocks();
     localStorage.setItem('user-store', JSON.stringify({ state: { something: 'else' } }));
-    await isAuthenticated();
+    result = await isAuthenticated();
     expect(redirect).toHaveBeenCalledWith('/auth/login');
+    expect(result).toEqual(redirect('/auth/login'));
   });
 
   it('should return isAuthenticated true if uid exists', async () => {
@@ -52,6 +56,6 @@ describe('isAuthenticated()', () => {
     const result = await isAuthenticated();
 
     expect(result).toEqual({ isAuthenticated: true });
-    expect(redirect).not.all;
+    expect(redirect).not.toHaveBeenCalled();
   });
 });
