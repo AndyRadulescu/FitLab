@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { SectionHeader } from '../../components/section-header';
 import { Button } from '../../components/design/button';
 import { USERS_TABLE, WEIGHT_TABLE } from '../../firestore/constants';
-import { assertAuthenticated } from '@web-frontend/app/shared/user.guard';
+import { assertAuthenticated } from '../../shared/user.guard';
 
 const startPageSchema = z.object({
   dateOfBirth: z.date('errors.date.invalid'),

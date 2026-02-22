@@ -1,22 +1,22 @@
-import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { ImagesDisplay } from './images-display';
-import { getDownloadURL, ref, getStorage } from 'firebase/storage';
+import { getDownloadURL, ref } from 'firebase/storage';
 import '@testing-library/jest-dom/vitest';
 
 vi.mock('firebase/storage', () => ({
   getStorage: vi.fn(),
   ref: vi.fn((_, path) => path), // Return path to check it in getDownloadURL
-  getDownloadURL: vi.fn(),
+  getDownloadURL: vi.fn()
 }));
 
 vi.mock('../../image-manager/image-path', () => ({
-  imagePath: vi.fn((userId, checkinId, slot) => `path/${userId}/${checkinId}/${slot}`),
+  imagePath: vi.fn((userId, checkinId, slot) => `path/${userId}/${checkinId}/${slot}`)
 }));
 
 vi.mock('lucide-react', () => ({
   CameraOff: () => <div data-testid="camera-off-icon" />,
-  Loader2: () => <div data-testid="loader-icon" />,
+  Loader2: () => <div data-testid="loader-icon" />
 }));
 
 describe('ImagesDisplay', () => {
@@ -29,7 +29,7 @@ describe('ImagesDisplay', () => {
 
   it('should render loaders initially for each slot', async () => {
     // Return a promise that doesn't resolve immediately to keep it in loading state
-    vi.mocked(getDownloadURL).mockReturnValue(new Promise(() => {}));
+    vi.mocked(getDownloadURL).mockReturnValue(new Promise(() => 'url'));
 
     render(<ImagesDisplay userId={mockUserId} checkinId={mockCheckinId} />);
 
