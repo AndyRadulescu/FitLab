@@ -3,9 +3,9 @@ import { CheckCircle2, Loader2, Upload, X } from 'lucide-react';
 import { uploadImage } from '../../image-manager/image-compressor.manager';
 import { Card } from '../design/card';
 import { Trans } from 'react-i18next';
-import { SLOTS } from '../../core/checkin-strategy/checkin-strategy';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { imagePath } from '../../image-manager/image-path';
+import { SLOTS } from '../../core/constants';
 
 interface ImageUploaderProps {
   userId: string;
