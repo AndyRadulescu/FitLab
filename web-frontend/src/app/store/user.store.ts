@@ -10,7 +10,6 @@ interface UserStore {
   user?: firebase.User;
   weights: Weight[];
   userData?: StartPageFormDataDto;
-  isLoggedIn: boolean;
   setUser: (user?: firebase.User) => void,
   setUserData: (user?: StartPageFormDataDto) => void,
   setWeights: (user?: Weight[]) => void,
@@ -25,7 +24,6 @@ export const userStore = create<UserStore>()(
       user: undefined,
       weights: [],
       userData: undefined,
-      isLoggedIn: false,
       setUser: (user?: firebase.User) => set((state) => {
         return { ...state, user, isLoggedIn: !!user };
       }),

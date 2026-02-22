@@ -13,15 +13,11 @@ import { useHtmlLang } from '../../custom-hooks/use-html-lang';
 export function AuthPage() {
   useHtmlLang();
   const { i18n, t } = useTranslation();
-  const isLoggedIn = userStore(state => state.isLoggedIn);
+  const user = userStore(state => state.user);
   const location = useLocation();
 
-  if (isLoggedIn) return (
-    <Navigate
-      to="/"
-      replace
-      state={{ from: location }}
-    />
+  if (user && user.uid) return (
+    <Navigate to="/" replace state={{ from: location }} />
   );
 
   const onSignInWithGoogle = () => {
