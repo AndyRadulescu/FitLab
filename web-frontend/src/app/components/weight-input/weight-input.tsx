@@ -9,7 +9,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import { Input } from '../design/input';
 import { WeightStrategyFactory } from '../../core/weight-strategy/weight-strategy';
-import { getTodayWeight } from './utils';
+import { getTodayWeight, transformCheckinsToWeights } from './utils';
+import { checkinStore } from '../../store/checkin.store';
 
 const weightSchema = z.object({
   weight: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min')
@@ -20,6 +21,7 @@ export type WeightFormData = z.infer<typeof weightSchema>;
 export function WeightInput() {
   const { t } = useTranslation();
   const { weights, user } = userStore();
+  const { checkins } = checkinStore();
   const [todayWeight, setTodayWeight] = useState<Weight | undefined>(undefined);
   const [isEditable, setIsEditable] = useState(false);
 
@@ -34,13 +36,13 @@ export function WeightInput() {
   });
 
   useEffect(() => {
-    const foundWeight = getTodayWeight(weights);
+    const foundWeight = getTodayWeight([...weights, ...transformCheckinsToWeights(checkins)]);
     setTodayWeight(foundWeight);
     setIsEditable(!foundWeight);
     if (foundWeight) {
       setValue('weight', foundWeight.weight);
     }
-  }, [weights, setValue]);
+  }, [weights, checkins, setValue]);
 
   const handleSave = async (data: WeightFormData) => {
     if (!user) return;

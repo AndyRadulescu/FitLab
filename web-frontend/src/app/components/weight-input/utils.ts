@@ -1,4 +1,5 @@
 import { Weight } from '../../store/user.store';
+import { CheckInFormDataDto } from '../../store/checkin.store';
 
 export const getTodayWeight = (weights: Weight[]): Weight | undefined => {
   const today = new Date();
@@ -24,3 +25,12 @@ export const getTodayWeight = (weights: Weight[]): Weight | undefined => {
       : latest;
   });
 };
+
+export const transformCheckinsToWeights = (checkins: CheckInFormDataDto[]): Weight[] => {
+  return checkins.map((checkin) => ({
+    id: checkin.id,
+    weight: checkin.kg,
+    createdAt: checkin.createdAt,
+    updatedAt: checkin.updatedAt
+  }));
+}
