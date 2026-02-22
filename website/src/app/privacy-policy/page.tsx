@@ -49,7 +49,7 @@ export default function PrivacyPolicyPage() {
 
           <section className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-2xl">
             <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <span className="text-red-500 font-bold">4.</span> Data Retention & Deletion
+              <span className="text-red-500 font-bold">3.</span> Data Retention & Deletion
             </h2>
             <p className="mb-4">You have full control over your data:</p>
             <div className="grid gap-4 md:grid-cols-2">
@@ -63,9 +63,37 @@ export default function PrivacyPolicyPage() {
               </div>
             </div>
           </section>
-
+          <section className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-2xl mt-6">
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <span className="text-red-500 font-bold">4.</span> Google API Disclosure
+            </h2>
+            <p className="mb-4">
+              Our application integrates with Google Services to provide a seamless login experience. To comply with
+              Google's security standards:
+            </p>
+            <div className="grid gap-4 md:grid-cols-1">
+              <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
+                <h3 className="text-white font-medium mb-2">Google Limited Use Policy</h3>
+                <p className="text-sm leading-relaxed">
+                  Amazonia FitLab's use and transfer of information received from Google APIs to any other app will
+                  adhere to
+                  <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank"
+                     className="text-red-400 hover:underline">Google API Services User Data Policy</a>,
+                  including the Limited Use requirements. We do not sell your Google user data to third parties or use
+                  it for serving advertisements.
+                </p>
+              </div>
+              <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
+                <h3 className="text-white font-medium mb-1">Data Accessed</h3>
+                <p className="text-sm">
+                  We only access your Google <strong>email address</strong> and <strong>profile picture</strong> to
+                  create your account and personalize your fitness dashboard.
+                </p>
+              </div>
+            </div>
+          </section>
           <section className="border-t border-gray-800 pt-8">
-            <h2 className="text-xl font-semibold text-white mb-4">7. Contact Us</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">5. Contact Us</h2>
             <p>
               If you have questions about this policy or encountered an error, please contact our team:
             </p>
@@ -73,7 +101,7 @@ export default function PrivacyPolicyPage() {
               href="mailto:andyradulescu@synapselabs.org"
               className="inline-block mt-4 text-primary hover:text-white transition-colors font-medium underline underline-offset-4"
             >
-              support@amazonia-fitlab.com
+              andyradulescu@synapselabs.org
             </a>
           </section>
         </main>
