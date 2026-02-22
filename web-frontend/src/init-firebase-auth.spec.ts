@@ -66,10 +66,10 @@ describe('init-firebase-auth', () => {
   });
 
   it('should not initialize analytics if not in production', async () => {
-    vi.stubEnv('PROD', ''); 
+    vi.stubEnv('PROD', '' as any);
     await import('./init-firebase-auth');
     const { getAnalytics } = await import('firebase/analytics');
-    
+
     // Give any potential async calls a chance to happen (though they shouldn't)
     await new Promise(resolve => setTimeout(resolve, 10));
     expect(getAnalytics).not.toHaveBeenCalled();
@@ -92,25 +92,25 @@ describe('init-firebase-auth', () => {
     expect(firebaseApp).toBeDefined();
 
     await initFirebaseAuth();
-    
+
     expect(onAuthStateChanged).toHaveBeenCalled();
-    
+
     const authCallback = (onAuthStateChanged as Mock).mock.calls[0][1];
-    
+
     const mockUser = { uid: '123' };
     await authCallback(mockUser);
     expect(mockUserStoreState.setUser).toHaveBeenCalledWith(mockUser);
-    
+
     await authCallback(null);
     expect(mockUserStoreState.delete).toHaveBeenCalled();
     expect(mockCheckinStoreState.delete).toHaveBeenCalled();
   });
 
   it('should initialize analytics in production if supported', async () => {
-    vi.stubEnv('PROD', 'true');
+    vi.stubEnv('PROD', 'true' as any);
     const { firebaseApp } = await import('./init-firebase-auth');
     const { getAnalytics } = await import('firebase/analytics');
-    
+
     await vi.waitFor(() => {
         expect(getAnalytics).toHaveBeenCalledWith(firebaseApp);
     }, { timeout: 1000 });
