@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
-import { SLOTS } from '../../core/checkin-strategy/checkin-strategy';
 import { CameraOff, Loader2 } from 'lucide-react';
 import { imagePath } from '../../image-manager/image-path';
+import { SLOTS } from '../../core/constants';
 
 const SmallImage = ({ path, label }: { path: string, label: string }) => {
   const [url, setUrl] = useState<string>();

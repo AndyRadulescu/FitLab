@@ -8,6 +8,7 @@ import { db } from '../../../../init-firebase-auth';
 import { useMemo, useRef } from 'react';
 import { CheckInStrategyFactory } from '../../../core/checkin-strategy/checkin-strategy';
 import { CheckInFormData, checkinSchema } from '../types';
+import { assertAuthenticated } from '../../../shared/user.guard';
 
 const isToday = (date: Date) => {
   const today = new Date();
@@ -46,10 +47,7 @@ export function useCheckInForm() {
   });
 
   const onSubmit = async (data: CheckInFormData) => {
-    if (!user) {
-      navigate('/auth/login', { replace: true });
-      return;
-    }
+    assertAuthenticated(navigate, user);
     try {
       const strategy = !checkinData || !checkinData.id ? 'add' : 'edit';
       const { imgUrls, ...dataWithNoImgUrls } = data;

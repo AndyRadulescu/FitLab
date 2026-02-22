@@ -9,7 +9,6 @@ export interface CheckInStrategy {
   checkIn: ({ data, userId }: { data: CheckinStrategyType, userId: string }) => Promise<void>;
 }
 
-export const SLOTS = ['front', 'back', 'side'] as const;
 type StrategyType = 'add' | 'edit' | 'delete';
 
 export class CheckInStrategyFactory {

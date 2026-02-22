@@ -4,7 +4,7 @@ import { userStore } from '../../store/user.store';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
 import { SocialButton } from '../../components/design/social-button';
-import { LanguageToggle } from '../../components/language-toggle';
+import { LanguageToggle } from '../../components/language-toggle/language-toggle';
 import { AnalyticsTracker } from '../../analytics-tracker';
 import { logEvent } from 'firebase/analytics';
 import { handleAuthErrors } from '../../core/error-handler';
@@ -13,15 +13,11 @@ import { useHtmlLang } from '../../custom-hooks/use-html-lang';
 export function AuthPage() {
   useHtmlLang();
   const { i18n, t } = useTranslation();
-  const isLoggedIn = userStore(state => state.isLoggedIn);
+  const user = userStore(state => state.user);
   const location = useLocation();
 
-  if (isLoggedIn) return (
-    <Navigate
-      to="/"
-      replace
-      state={{ from: location }}
-    />
+  if (user && user.uid) return (
+    <Navigate to="/" replace state={{ from: location }} />
   );
 
   const onSignInWithGoogle = () => {

@@ -67,12 +67,26 @@ describe('useAppInitialization', () => {
     expect(result.current.hasInitData).toBe(true);
   });
 
-  it('should skip loading if initData already exists', () => {
-    userStore.setState({ userData: { some: 'data' } as any });
+  it('should still fetch data if initData already exists', async () => {
+    const mockUser = { uid: '123' };
+    userStore.setState({ user: mockUser as any, userData: { some: 'data' } as any });
+    vi.mocked(getDocs).mockResolvedValue({
+      docs: [
+        {
+          id: 'mock-id',
+          data: () => ({
+            some: 'data',
+            createdAt: { toDate: () => new Date() },
+            updatedAt: { toDate: () => new Date() },
+          }),
+        },
+      ],
+    } as any);
 
-    const { result } = renderHook(() => useAppInitialization());
+    renderHook(() => useAppInitialization());
 
-    expect(result.current.isLoading).toBe(false);
-    expect(getDocs).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(getDocs).toHaveBeenCalled();
+    });
   });
 });

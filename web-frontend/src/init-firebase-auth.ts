@@ -3,6 +3,7 @@ import { getAnalytics, isSupported } from 'firebase/analytics';
 import { getFirestore } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { userStore } from './app/store/user.store';
+import { checkinStore } from './app/store/checkin.store';
 import { getStorage } from 'firebase/storage';
 
 let initialized = false;
@@ -32,19 +33,19 @@ if (import.meta.env.PROD) {
     }
   });
 }
-
+const userSt = userStore.getState();
+const checkinSt = checkinStore.getState();
 export async function initFirebaseAuth() {
   if (initialized) return;
   initialized = true;
 
   // Sync Firebase → Zustand
   onAuthStateChanged(auth, async (user) => {
-    const store = userStore.getState();
-
     if (user) {
-      store.setUser(user as any);
+      userSt.setUser(user as any);
     } else {
-      store.setUser(undefined);
+      userSt.delete();
+      checkinSt.delete();
     }
   });
 }

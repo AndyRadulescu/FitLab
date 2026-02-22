@@ -91,7 +91,11 @@ describe('useCheckInForm', () => {
     const { result } = renderHook(() => useCheckInForm());
 
     await act(async () => {
-      await result.current.onSubmit({ kg: 70 } as any);
+      try {
+        await result.current.onSubmit({ kg: 70 } as any);
+      } catch (e) {
+        // Expected Auth Assertion Error
+      }
     });
 
     expect(mockNavigate).toHaveBeenCalledWith('/auth/login', { replace: true });

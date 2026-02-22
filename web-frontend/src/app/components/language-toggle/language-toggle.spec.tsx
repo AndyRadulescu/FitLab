@@ -1,49 +1,32 @@
 // @vitest-environment jsdom
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LanguageToggle } from './language-toggle';
 import { useTranslation } from 'react-i18next';
 import { logEvent } from 'firebase/analytics';
 import '@testing-library/jest-dom/vitest';
 
 vi.mock('react-i18next', () => ({
-  useTranslation: vi.fn(),
+  useTranslation: vi.fn()
 }));
 
 vi.mock('firebase/analytics', () => ({
-  logEvent: vi.fn(),
+  logEvent: vi.fn()
 }));
 
-vi.mock('../../init-firebase-auth', () => ({
-  analytics: {},
+vi.mock('../../../init-firebase-auth', () => ({
+  analytics: {}
 }));
 
 describe('LanguageToggle', () => {
   const mockI18n = {
     language: 'ro',
-    changeLanguage: vi.fn().mockResolvedValue(undefined),
+    changeLanguage: vi.fn().mockResolvedValue(undefined)
   };
-
-  const localStorageMock = (() => {
-    let store: Record<string, string> = {};
-    return {
-      getItem: vi.fn((key: string) => store[key] || null),
-      setItem: vi.fn((key: string, value: string) => {
-        store[key] = value;
-      }),
-      clear: vi.fn(() => {
-        store = {};
-      }),
-    };
-  })();
-
-  Object.defineProperty(window, 'localStorage', {
-    value: localStorageMock,
-  });
 
   beforeEach(() => {
     vi.clearAllMocks();
-    localStorageMock.clear();
+    localStorage.clear();
     (useTranslation as any).mockReturnValue({ i18n: mockI18n });
   });
 
@@ -73,9 +56,9 @@ describe('LanguageToggle', () => {
     });
 
     expect(mockI18n.changeLanguage).toHaveBeenCalledWith('en');
-    expect(localStorageMock.setItem).toHaveBeenCalledWith('language', 'en');
+    expect(localStorage.getItem('language')).toBe('en');
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'language-switch', {
-      language: 'en',
+      language: 'en'
     });
   });
 
@@ -89,9 +72,9 @@ describe('LanguageToggle', () => {
     });
 
     expect(mockI18n.changeLanguage).toHaveBeenCalledWith('ro');
-    expect(localStorageMock.setItem).toHaveBeenCalledWith('language', 'ro');
+    expect(localStorage.getItem('language')).toBe('ro');
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'language-switch', {
-      language: 'ro',
+      language: 'ro'
     });
   });
 
@@ -100,7 +83,7 @@ describe('LanguageToggle', () => {
     render(<LanguageToggle />);
 
     expect(screen.getByText('English')).toBeInTheDocument();
-    
+
     const button = screen.getByRole('button');
     await act(async () => {
       fireEvent.click(button);

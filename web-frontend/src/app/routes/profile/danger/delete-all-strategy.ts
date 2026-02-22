@@ -10,8 +10,6 @@ export class DeleteUserAccount {
 
     try {
       await this.wipeUserStorage(userId);
-
-      console.log('enters here');
       await this.wipeUserFirestore(userId);
 
       if (analytics) {
@@ -28,13 +26,10 @@ export class DeleteUserAccount {
     const userFolderRef = ref(storage, basePath);
 
     const recursiveDelete = async (folderRef: any) => {
-      console.log(`Deleting ${folderRef.fullPath}`);
       try {
         const listResponse = await listAll(folderRef);
-        console.log(listResponse);
         const filePromises = listResponse.items.map((item) => deleteObject(item));
         const folderPromises = listResponse.prefixes.map((subFolder) => {
-          console.log(subFolder);
           return recursiveDelete(subFolder)
         });
 

@@ -4,13 +4,12 @@ import firebase from 'firebase/compat/app';
 import { StartPageFormData } from '../routes/start-page/start-page';
 
 export type StartPageFormDataDto = Omit<StartPageFormData, 'dateOfBirth'> & { dateOfBirth?: string };
-export type Weight = { id: string; weight: number, createdAt: Date, updatedAt?: Date };
+export type Weight = { id: string; weight: number, createdAt: Date, updatedAt?: Date, from?: 'checkin' | 'weight' };
 
 interface UserStore {
   user?: firebase.User;
   weights: Weight[];
   userData?: StartPageFormDataDto;
-  isLoggedIn: boolean;
   setUser: (user?: firebase.User) => void,
   setUserData: (user?: StartPageFormDataDto) => void,
   setWeights: (user?: Weight[]) => void,
@@ -25,7 +24,6 @@ export const userStore = create<UserStore>()(
       user: undefined,
       weights: [],
       userData: undefined,
-      isLoggedIn: false,
       setUser: (user?: firebase.User) => set((state) => {
         return { ...state, user, isLoggedIn: !!user };
       }),

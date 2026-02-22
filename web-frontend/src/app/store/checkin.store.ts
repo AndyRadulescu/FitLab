@@ -12,6 +12,7 @@ export type CheckInFormDataDto = Omit<CheckInFormData, 'imgUrls'> & {
 interface CheckinStore {
   checkins: CheckInFormDataDto[];
   upsertCheckin: (checkin: CheckInFormDataDto) => void;
+  updateWeight: (id: string, newWeight: number, updatedAt: Date) => void;
   deleteCheckin: (id: string) => void;
   setCheckin: (checkin: CheckInFormDataDto[]) => void;
   delete: () => void;
@@ -32,6 +33,14 @@ export const checkinStore = create<CheckinStore>()(
             )
         };
       }),
+    updateWeight: (id: string, newWeight: number, updatedAt: Date) =>
+      set((state) => ({
+        checkins: state.checkins.map((checkin) =>
+          checkin.id === id
+            ? { ...checkin, kg: newWeight, updatedAt }
+            : checkin
+        )
+      })),
     deleteCheckin: (id: string) =>
       set((state) => ({
         checkins: state.checkins.filter((item) => item.id !== id)

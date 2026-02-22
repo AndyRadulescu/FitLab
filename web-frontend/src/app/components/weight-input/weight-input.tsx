@@ -1,14 +1,16 @@
 import { useTranslation } from 'react-i18next';
-import { Button } from './design/button';
-import { Card } from './design/card';
+import { Button } from '../design/button';
+import { Card } from '../design/card';
 import { useEffect, useState } from 'react';
-import { userStore, Weight } from '../store/user.store';
+import { userStore, Weight } from '../../store/user.store';
 import { z } from 'zod';
 import { Resolver, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
-import { Input } from '../components/design/input';
-import { WeightStrategyFactory } from '../core/weight-strategy/weight-strategy';
+import { Input } from '../design/input';
+import { WeightStrategyFactory } from '../../core/weight-strategy/weight-strategy';
+import { getTodayWeight, transformCheckinsToWeights } from './utils';
+import { checkinStore } from '../../store/checkin.store';
 
 const weightSchema = z.object({
   weight: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min')
@@ -16,15 +18,10 @@ const weightSchema = z.object({
 
 export type WeightFormData = z.infer<typeof weightSchema>;
 
-const getTodayWeight = (weights: Weight[]): Weight | undefined => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return weights.find(w => w.createdAt >= today);
-};
-
 export function WeightInput() {
   const { t } = useTranslation();
   const { weights, user } = userStore();
+  const { checkins } = checkinStore();
   const [todayWeight, setTodayWeight] = useState<Weight | undefined>(undefined);
   const [isEditable, setIsEditable] = useState(false);
 
@@ -39,17 +36,18 @@ export function WeightInput() {
   });
 
   useEffect(() => {
-    const foundWeight = getTodayWeight(weights);
+    const foundWeight = getTodayWeight([...weights, ...transformCheckinsToWeights(checkins)]);
+    console.log(foundWeight);
     setTodayWeight(foundWeight);
     setIsEditable(!foundWeight);
     if (foundWeight) {
       setValue('weight', foundWeight.weight);
     }
-  }, [weights, setValue]);
+  }, [weights, checkins, setValue]);
 
   const handleSave = async (data: WeightFormData) => {
     if (!user) return;
-
+    console.log(todayWeight);
     if (todayWeight) {
       const weight: Weight = { ...todayWeight, weight: data.weight };
       await WeightStrategyFactory.getStrategy('edit').weight(weight, user.uid, t);
