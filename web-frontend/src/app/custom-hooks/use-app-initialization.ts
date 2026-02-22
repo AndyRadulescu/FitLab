@@ -17,16 +17,13 @@ export function useAppInitialization() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const load = async () => {
+    const initialize = async () => {
       try {
         assertAuthenticated(navigate, user);
       } catch {
         return;
       }
 
-      if (userData) {
-        return;
-      }
       setIsLoading(true);
       try {
         const [snapshotUsers, snapshotCheckins, snapshotWeights] = await Promise.all([
@@ -67,8 +64,8 @@ export function useAppInitialization() {
       }
     };
 
-    void load();
-  }, [user, navigate, setUserData, setWeights, setCheckin, userData]);
+    void initialize();
+  }, []);
 
   return { isLoading, hasInitData: !!userData };
 }
