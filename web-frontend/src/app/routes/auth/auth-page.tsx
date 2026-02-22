@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from 'firebase/auth';
+import { GoogleAuthProvider, FacebookAuthProvider, signInWithRedirect } from 'firebase/auth';
 import { analytics, auth } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
@@ -25,7 +25,7 @@ export function AuthPage() {
       logEvent(analytics, 'google-login');
     }
     auth.languageCode = i18n.language;
-    void signInWithPopup(auth, new GoogleAuthProvider()).catch((err) => {
+    void signInWithRedirect(auth, new GoogleAuthProvider()).catch((err) => {
       handleAuthErrors(err, t);
     });
   };
@@ -35,7 +35,7 @@ export function AuthPage() {
       logEvent(analytics, 'facebook-login');
     }
     auth.languageCode = i18n.language;
-    void signInWithPopup(auth, new FacebookAuthProvider()).catch((err) => {
+    void signInWithRedirect(auth, new FacebookAuthProvider()).catch((err) => {
       handleAuthErrors(err, t);
     });
   };
