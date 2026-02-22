@@ -4,7 +4,7 @@ import firebase from 'firebase/compat/app';
 import { StartPageFormData } from '../routes/start-page/start-page';
 
 export type StartPageFormDataDto = Omit<StartPageFormData, 'dateOfBirth'> & { dateOfBirth?: string };
-export type Weight = { id: string; weight: number, createdAt: Date, updatedAt?: Date };
+export type Weight = { id: string; weight: number, createdAt: Date, updatedAt?: Date, from?: 'checkin' | 'weight' };
 
 interface UserStore {
   user?: firebase.User;

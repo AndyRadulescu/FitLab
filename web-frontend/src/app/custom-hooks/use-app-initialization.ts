@@ -29,7 +29,7 @@ export function useAppInitialization() {
         const [snapshotUsers, snapshotCheckins, snapshotWeights] = await Promise.all([
           getDocs(getStartDataQuery(user)),
           getDocs(getCheckinQuery(user)),
-          getDocs(getWeightQuery(user)),
+          getDocs(getWeightQuery(user))
         ]);
 
         const initData = snapshotUsers.docs[0]?.data() as StartPageFormDataDto | undefined;
@@ -43,7 +43,7 @@ export function useAppInitialization() {
             ...data,
             id: doc.id,
             createdAt: data.createdAt.toDate(),
-            updatedAt: data.updatedAt?.toDate(),
+            updatedAt: data.updatedAt?.toDate()
           } as CheckInFormDataDto;
         });
         setCheckin(checkinData);
@@ -54,6 +54,7 @@ export function useAppInitialization() {
             createdAt: data.createdAt.toDate(),
             weight: data.weight,
             updatedAt: data.updatedAt?.toDate(),
+            from: 'weight'
           } as Weight;
         });
         setWeights(weightMapped);

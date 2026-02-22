@@ -1,17 +1,26 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { doc, updateDoc } from 'firebase/firestore';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { doc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { EditWeightStrategy } from './edit-weight.strategy';
 import { Weight } from '../../store/user.store';
-import { WEIGHT_TABLE } from '../../firestore/constants';
+import { CHECKINS_TABLE, WEIGHT_TABLE } from '../../firestore/constants';
 
-const mockUpdateWeight = vi.fn();
+const mockUpdateWeightLocal = vi.fn();
+const mockUpdateCheckinLocal = vi.fn();
 const mockT = vi.fn((key: string) => key) as any;
 
 vi.mock('../../store/user.store', () => ({
   userStore: {
     getState: vi.fn(() => ({
-      updateWeight: mockUpdateWeight
+      updateWeight: mockUpdateWeightLocal
+    }))
+  }
+}));
+
+vi.mock('../../store/checkin.store', () => ({
+  checkinStore: {
+    getState: vi.fn(() => ({
+      updateWeight: mockUpdateCheckinLocal
     }))
   }
 }));
@@ -46,7 +55,7 @@ describe('EditWeightStrategy', () => {
     vi.useRealTimers();
   });
 
-  it('should update weight in Firestore, local store, and log analytics', async () => {
+  it('should update weight in WEIGHT_TABLE when from is weight or missing', async () => {
     const mockData: Weight = { id: 'weight-abc', weight: 90.5, createdAt: new Date() };
     const userId = 'user-123';
     const mockDocRef = { id: 'weight-abc' };
@@ -62,12 +71,32 @@ describe('EditWeightStrategy', () => {
       updatedAt: 'mock-timestamp'
     });
 
-    expect(mockUpdateWeight).toHaveBeenCalledWith({
+    expect(mockUpdateWeightLocal).toHaveBeenCalledWith({
       ...mockData,
       weight: 90.5,
       updatedAt: MOCK_DATE
     });
 
+    expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'edit-weight');
+  });
+
+  it('should update weight in CHECKINS_TABLE when from is checkin', async () => {
+    const mockData: Weight = { id: 'checkin-abc', weight: 88.0, createdAt: new Date(), from: 'checkin' };
+    const userId = 'user-123';
+    const mockDocRef = { id: 'checkin-abc' };
+
+    (doc as any).mockReturnValue(mockDocRef);
+    (updateDoc as any).mockResolvedValue(undefined);
+
+    await strategy.weight(mockData, userId, mockT);
+
+    expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, 'checkin-abc');
+    expect(updateDoc).toHaveBeenCalledWith(mockDocRef, {
+      weight: 88.0,
+      updatedAt: 'mock-timestamp'
+    });
+
+    expect(mockUpdateCheckinLocal).toHaveBeenCalledWith('checkin-abc', 88.0, MOCK_DATE);
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'edit-weight');
   });
 
@@ -82,7 +111,7 @@ describe('EditWeightStrategy', () => {
 
     expect(consoleSpy).toHaveBeenCalled();
     expect(alertSpy).toHaveBeenCalledWith('errors.unknown');
-    expect(mockUpdateWeight).not.toHaveBeenCalled();
+    expect(mockUpdateWeightLocal).not.toHaveBeenCalled();
 
     consoleSpy.mockRestore();
     alertSpy.mockRestore();
