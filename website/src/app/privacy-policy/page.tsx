@@ -38,12 +38,12 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
               <span className="text-primary">2.</span> How We Use Your Photos
             </h2>
-            <p>Your privacy is our priority. Photos uploaded to Amazonia - FitLab are used <span className="italic text-white underline decoration-primary underline-offset-4">strictly</span> for:</p>
+            <p>Your privacy is our priority. Photos uploaded to Amazonia - FitLab are stored securely and used <span className="italic text-white underline decoration-primary underline-offset-4">strictly</span> for:</p>
             <ul className="list-disc ml-6 mt-4 space-y-3 marker:text-primary">
               <li>Displaying your progress within your private dashboard.</li>
               <li>Generating side-by-side comparisons of your fitness journey.</li>
               <li className="text-gray-400 italic">
-                Note: We do not use your photos for marketing, AI training, or public display without your explicit, separate consent.
+                Note: Photos are never shared with third-party analytics (like Google Analytics) or used for marketing, AI training, or public display without your explicit, separate consent.
               </li>
             </ul>
           </section>
@@ -65,7 +65,7 @@ export default function PrivacyPolicyPage() {
 
                 <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
                   <h3 className="text-white font-medium mb-1 text-sm">Account Wipe</h3>
-                  <p className="text-xs text-zinc-400">Use the "Danger Zone" in settings to permanently erase your entire history.</p>
+                  <p className="text-xs text-zinc-400">Use the "Danger Zone" in settings to permanently erase your entire history, including all social login associations.</p>
                 </div>
               </div>
 
