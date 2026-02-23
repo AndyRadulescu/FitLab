@@ -57,3 +57,4 @@ vitest.config.*.timestamp*
 out
 /apps/website/dev/
 /apps/website/out/
+/.firebase
