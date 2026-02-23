@@ -32,7 +32,7 @@ export default function Footer() {
               {label}
             </Link>
           ))}
-          <a href="mailto:radulescu.eduard.andrei@gmail.com" className="hover:text-white">Contact</a>
+          <a href="mailto:andyradulescu@synapselabs.org" className="hover:text-white">Contact</a>
         </div>
       </div>
     </footer>

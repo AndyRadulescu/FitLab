@@ -76,10 +76,10 @@ export default function PrivacyPolicyPage() {
                   <p className="text-xs text-zinc-400">For a full account purge, contact our support team:</p>
                 </div>
                 <a
-                  href="mailto:radulescu.eduard.andrei@gmail.com"
+                  href="mailto:andyradulescu@synapselabs.org"
                   className="text-[13px] md:text-sm font-mono text-red-500 hover:underline bg-black/20 px-3 py-1.5 rounded border border-red-900/20 break-words text-center sm:text-left"
                 >
-                  radulescu.eduard.andrei@gmail.com
+                  andyradulescu@synapselabs.org
                 </a>
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function PrivacyPolicyPage() {
                   Your Google data is stored only as long as your account is active. You may revoke access at any time
                   via your Google Security Settings. To permanently delete your Amazonia - FitLab account and all
                   associated Google data from our servers, please contact us at
-                  <span className="text-red-400 ml-1">radulescu.eduard.andrei@gmail.com</span>,
+                  <span className="text-red-400 ml-1">andyradulescu@synapselabs.org</span>,
                   or do it yourself by following the instructions in our <Link href="/data-deletion" className="text-red-400 ml-1 hover:underline">Data Deletion Guide</Link>.
                 </p>
               </div>
@@ -163,7 +163,7 @@ export default function PrivacyPolicyPage() {
                   According to Meta's Platform Terms, we provide a way for you to request the deletion of your data.
                   Your Facebook data is stored only as long as your account is active. To permanently delete your
                   Amazonia - FitLab account and all associated Facebook data from our servers, please contact us at
-                  <span className="text-blue-400 ml-1 break-all">radulescu.eduard.andrei@gmail.com</span>,
+                  <span className="text-blue-400 ml-1 break-all">andyradulescu@synapselabs.org</span>,
                   or do it yourself by following the instructions in our
                   <Link href="/data-deletion" className="text-blue-400 ml-1 hover:underline">Data Deletion Guide</Link>.
                 </p>
@@ -216,10 +216,10 @@ export default function PrivacyPolicyPage() {
               If you have questions about this policy or encountered an error, please contact our team:
             </p>
             <a
-              href="mailto:radulescu.eduard.andrei@gmail.com"
+              href="mailto:andyradulescu@synapselabs.org"
               className="inline-block mt-4 text-primary hover:text-white transition-colors font-medium underline underline-offset-4"
             >
-              radulescu.eduard.andrei@gmail.com
+              andyradulescu@synapselabs.org
             </a>
           </section>
         </main>
