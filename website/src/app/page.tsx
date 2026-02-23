@@ -9,7 +9,7 @@ export default function LandingPage() {
       <nav className="flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-red">
-            <Image src="/logo.svg" alt="Amazonia FitLab Logo" width={45} height={45} layout="fixed"/>
+            <Image src="/logo.svg" alt="Amazonia - FitLab Logo" width={45} height={45} layout="fixed"/>
           </div>
           <span className="text-xl font-black tracking-tighter uppercase italic">
             Amazonia <span className="primary-text-gradient">FitLab</span>
@@ -35,7 +35,7 @@ export default function LandingPage() {
             Science is <span className="primary-text-gradient">all.</span>
           </h1>
           <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
-            Amazonia FitLab isn't just an app; it's a digital laboratory for your body.
+            Amazonia - FitLab isn't just an app; it's a digital laboratory for your body.
             Quantify your mood, track every centimeter of progress, and master the metrics that matter.
           </p>
 
