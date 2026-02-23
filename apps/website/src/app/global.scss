@@ -1,33 +1,21 @@
 @use "tailwindcss";
-@use '../../libs/shared-ui/src/lib/variables';
-@import 'rc-slider/assets/index.css';
+@use '../../../../libs/shared-ui/src/lib/variables';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --page-bg: #ffffff;
+  :root{
     --primary-color-dark: #{variables.$primary-color-dark3};
   }
-
   body {
-    @media (prefers-color-scheme: light) {
-      background-color: var(--page-bg);
-    }
-    @apply text-gray-900 dark:bg-gray-950 dark:text-gray-100;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  body:has(.auth-theme-trigger) {
-    --page-bg: variables.$primary-color-light1
+    @apply bg-white text-black dark:bg-black dark:text-gray-100;
   }
 }
 
 @theme {
-  --color-primary: var(--primary-color-dark, red);
+  --color-primary: var(--primary-color-dark);
 }
 
 .primary-gradient {
@@ -35,7 +23,7 @@
 }
 
 .primary-text-gradient {
-  background: variables.$primary-gradient-dark;
+  background: variables.$primary-gradient-light;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -47,7 +35,7 @@
     background: variables.$primary-gradient-dark
   }
   .primary-text-gradient {
-    background: variables.$primary-gradient-light;
+    background: variables.$primary-gradient-dark;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

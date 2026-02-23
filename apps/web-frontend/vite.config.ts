@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(() => ({
   root: __dirname,
-  cacheDir: '../node_modules/.vite/web-frontend',
+  cacheDir: '../../node_modules/.vite/web-frontend',
   server: {
     port: 4200,
     host: 'localhost',
@@ -22,7 +22,7 @@ export default defineConfig(() => ({
   //  plugins: [ nxViteTsPaths() ],
   // },
   build: {
-    outDir: '../dist/web-frontend',
+    outDir: '../../dist/apps/web-frontend',
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
@@ -37,7 +37,7 @@ export default defineConfig(() => ({
     include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../coverage/web-frontend',
+      reportsDirectory: '../../coverage/web-frontend',
       provider: 'v8' as const,
     },
   },
