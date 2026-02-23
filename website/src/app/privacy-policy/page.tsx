@@ -187,8 +187,31 @@ export default function PrivacyPolicyPage() {
             </div>
           </section>
 
+          <section>
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <span className="text-primary">6.</span> Third-Party Service Providers
+            </h2>
+            <p>We use trusted third-party services to operate our laboratory:</p>
+            <ul className="list-disc ml-6 mt-4 space-y-3 marker:text-primary">
+              <li><strong className="text-white">Google Firebase:</strong> For authentication, database hosting, and secure photo storage.</li>
+              <li><strong className="text-white">Google Analytics:</strong> To understand app performance and improve user experience.</li>
+              <li><strong className="text-white">Meta (Facebook):</strong> To facilitate optional social authentication.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <span className="text-primary">7.</span> Children's Privacy
+            </h2>
+            <p>
+              Amazonia - FitLab is not intended for individuals under the age of 18. We do not knowingly collect personal identifiable
+              information from children under 13. If we discover that a child under 13 has provided us with personal information,
+              we immediately delete this from our servers.
+            </p>
+          </section>
+
           <section className="border-t border-gray-800 pt-8">
-            <h2 className="text-xl font-semibold text-white mb-4">5. Contact Us</h2>
+            <h2 className="text-xl font-semibold text-white mb-4">8. Contact Us</h2>
             <p>
               If you have questions about this policy or encountered an error, please contact our team:
             </p>

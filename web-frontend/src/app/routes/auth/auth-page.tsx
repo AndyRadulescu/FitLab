@@ -75,8 +75,14 @@ export function AuthPage() {
                 <SocialButton socialType="facebook"></SocialButton>
               </div>
 
-              <div className="flex justify-center w-full mt-6">
+              <div className="flex justify-center w-full mt-6 flex-col items-center gap-4">
                 <LanguageToggle />
+                <a href="https://amazonia-fitlab.ro/privacy-policy/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="text-xs text-gray-500 hover:text-primary transition-colors underline underline-offset-4 mt-2">
+                  <Trans i18nKey="profile.privacy_policy">Privacy Policy</Trans>
+                </a>
               </div>
             </div>
           </div>
