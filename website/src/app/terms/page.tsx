@@ -68,7 +68,7 @@ export default function TermsOfUse() {
           <p>
             Questions regarding these terms should be sent to:
             <br />
-            <span className="font-semibold">andyradulescu@synapselabs.org</span>
+            <span className="font-semibold">radulescu.eduard.andrei@gmail.com</span>
           </p>
         </section>
       </div>
