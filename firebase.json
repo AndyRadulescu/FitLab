@@ -7,7 +7,7 @@
   },
   "hosting": [
     {
-      "target": "web-frontend",
+      "site": "dianafitlab-10eca",
       "public": "dist/apps/web-frontend",
       "ignore": [
         "firebase.json",
@@ -25,7 +25,7 @@
       }
     },
     {
-      "target": "admin-portal",
+      "site": "dianafitlab-10eca-648c5",
       "public": "dist/apps/admin-portal",
       "ignore": [
         "firebase.json",

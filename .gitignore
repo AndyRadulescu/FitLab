@@ -48,7 +48,6 @@ vitest.config.*.timestamp*
 .firebase/
 .nx/
 /.vscode/
-/.firebaserc
 /apps/web-frontend/.env
 /apps/admin-portal/.env
 
