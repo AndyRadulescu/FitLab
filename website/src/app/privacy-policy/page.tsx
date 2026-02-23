@@ -1,8 +1,9 @@
 import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy - Amazonia FitLab',
+  title: 'Privacy Policy - Amazonia - FitLab',
 };
 
 export default function PrivacyPolicyPage() {
@@ -47,51 +48,145 @@ export default function PrivacyPolicyPage() {
             </ul>
           </section>
 
-          <section className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-2xl">
+          {/*GENERAL deletion*/}
+          <section className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-2xl overflow-hidden">
             <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
               <span className="text-red-500 font-bold">3.</span> Data Retention & Deletion
             </h2>
-            <p className="mb-4">You have full control over your data:</p>
-            <div className="grid gap-4 md:grid-cols-2">
-              <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
-                <h3 className="text-white font-medium mb-1">Manual Deletion</h3>
-                <p className="text-sm">Delete individual check-ins or photos at any time within the app.</p>
+            <p className="mb-4 text-zinc-300 text-sm">You have full control over your data and how long we keep it:</p>
+
+            <div className="flex flex-col gap-4">
+              {/* Top Row: Responsive Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
+                  <h3 className="text-white font-medium mb-1 text-sm">Manual Deletion</h3>
+                  <p className="text-xs text-zinc-400">Delete individual check-ins or photos at any time within the app.</p>
+                </div>
+
+                <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
+                  <h3 className="text-white font-medium mb-1 text-sm">Account Wipe</h3>
+                  <p className="text-xs text-zinc-400">Use the "Danger Zone" in settings to permanently erase your entire history.</p>
+                </div>
               </div>
-              <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
-                <h3 className="text-white font-medium mb-1">Account Wipe</h3>
-                <p className="text-sm">Use the "Danger Zone" in settings to permanently erase your entire history.</p>
+
+              {/* Bottom Row: Contact - Fixed for mobile overflow */}
+              <div className="p-4 bg-red-900/10 rounded-lg border border-red-900/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 overflow-hidden">
+                <div className="min-w-0">
+                  <h3 className="text-white font-medium text-sm">Request Manual Data Deletion</h3>
+                  <p className="text-xs text-zinc-400">For a full account purge, contact our support team:</p>
+                </div>
+                <a
+                  href="mailto:andyradulescu@synapselabs.org"
+                  className="text-[13px] md:text-sm font-mono text-red-500 hover:underline bg-black/20 px-3 py-1.5 rounded border border-red-900/20 break-words text-center sm:text-left"
+                >
+                  andyradulescu@synapselabs.org
+                </a>
               </div>
             </div>
           </section>
+
+          {/*GOOGLE*/}
           <section className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-2xl mt-6">
             <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <span className="text-red-500 font-bold">4.</span> Google API Disclosure
+              <span className="text-red-400 font-bold">4.</span> Google API Disclosure & Privacy
             </h2>
-            <p className="mb-4">
-              Our application integrates with Google Services to provide a seamless login experience. To comply with
-              Google's security standards:
+
+            <p className="mb-4 text-zinc-300">
+              Amazonia - FitLab integrates with Google Services to provide a secure and seamless authentication experience.
+              To comply with Google's security standards and ensure your data remains private, we adhere to the following:
             </p>
+
             <div className="grid gap-4 md:grid-cols-1">
               <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
                 <h3 className="text-white font-medium mb-2">Google Limited Use Policy</h3>
-                <p className="text-sm leading-relaxed">
-                  Amazonia FitLab's use and transfer of information received from Google APIs to any other app will
-                  adhere to
-                  <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank"
-                     className="text-red-400 hover:underline">Google API Services User Data Policy</a>,
-                  including the Limited Use requirements. We do not sell your Google user data to third parties or use
-                  it for serving advertisements.
+                <p className="text-sm leading-relaxed text-zinc-400">
+                  Amazonia - FitLab's use and transfer of information received from Google APIs to any other app will adhere to the
+                  <a
+                    href="https://developers.google.com/terms/api-services-user-data-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-red-400 hover:underline ml-1"
+                  >
+                    Google API Services User Data Policy
+                  </a>,
+                  including the Limited Use requirements. We do not sell your Google user data to third parties,
+                  nor do we use it for serving advertisements or performing credit worthiness checks.
                 </p>
               </div>
+
               <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
-                <h3 className="text-white font-medium mb-1">Data Accessed</h3>
-                <p className="text-sm">
-                  We only access your Google <strong>email address</strong> and <strong>profile picture</strong> to
-                  create your account and personalize your fitness dashboard.
+                <h3 className="text-white font-medium mb-1">Data Accessed & Purpose</h3>
+                <p className="text-sm text-zinc-400">
+                  We only access your Google <strong>email address</strong> and <strong>profile picture</strong>.
+                  This data is used exclusively to create your secure account, facilitate logins, and personalize
+                  your fitness dashboard. We do not request access to your contacts, files, or any other sensitive scopes.
+                </p>
+              </div>
+
+              <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
+                <h3 className="text-white font-medium mb-1">Data Retention & Deletion</h3>
+                <p className="text-sm text-zinc-400">
+                  Your Google data is stored only as long as your account is active. You may revoke access at any time
+                  via your Google Security Settings. To permanently delete your Amazonia - FitLab account and all
+                  associated Google data from our servers, please contact us at
+                  <span className="text-red-400 ml-1">andyradulescu@synapselabs.org</span>,
+                  or do it yourself by following the instructions in our <Link href="/data-deletion" className="text-red-400 ml-1 hover:underline">Data Deletion Guide</Link>.
                 </p>
               </div>
             </div>
           </section>
+
+          {/*FACEBOOK*/}
+          <section className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-2xl mt-6">
+            <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
+              <span className="text-blue-500 font-bold">5.</span> Facebook API Disclosure
+            </h2>
+
+            <p className="mb-4 text-zinc-300">
+              Our application provides an option to sign in using your Facebook account. To protect your data and comply with
+              Meta's Platform Terms, we disclose the following:
+            </p>
+
+            <div className="grid gap-4 md:grid-cols-1">
+              <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
+                <h3 className="text-white font-medium mb-1">Information Received</h3>
+                <p className="text-sm text-zinc-400">
+                  When you use "Login with Facebook," we receive your <strong>public profile</strong> (name and profile picture)
+                  and <strong>email address</strong>. This information is used solely to authenticate your account and
+                  set up your Amazonia - FitLab profile. We do not post to your timeline or access your friends list.
+                </p>
+              </div>
+
+              <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
+                <h3 className="text-white font-medium mb-1 text-sm">Data Retention & Deletion</h3>
+                <p className="text-sm text-zinc-400">
+                  According to Meta's Platform Terms, we provide a way for you to request the deletion of your data.
+                  Your Facebook data is stored only as long as your account is active. To permanently delete your
+                  Amazonia - FitLab account and all associated Facebook data from our servers, please contact us at
+                  <span className="text-blue-400 ml-1 break-all">andyradulescu@synapselabs.org</span>,
+                  or do it yourself by following the instructions in our
+                  <Link href="/data-deletion" className="text-blue-400 ml-1 hover:underline">Data Deletion Guide</Link>.
+                </p>
+              </div>
+
+              <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
+                <h3 className="text-white font-medium mb-1">Compliance & Sharing</h3>
+                <p className="text-sm text-zinc-400">
+                  We do not sell, trade, or otherwise transfer your Facebook user data to outside parties.
+                  Our data handling practices comply with the
+                  <a
+                    href="https://developers.facebook.com/terms/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:underline ml-1"
+                  >
+                    Meta Platform Terms
+                  </a>.
+                </p>
+              </div>
+            </div>
+          </section>
+
           <section className="border-t border-gray-800 pt-8">
             <h2 className="text-xl font-semibold text-white mb-4">5. Contact Us</h2>
             <p>

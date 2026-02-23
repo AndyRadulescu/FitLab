@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Data Deletion Instructions - Amazonia FitLab',
+  title: 'Data Deletion Instructions - Amazonia - FitLab',
 };
 
 export default function DataDeletionPage() {
@@ -30,7 +30,7 @@ export default function DataDeletionPage() {
               <ol className="space-y-6">
                 <li className="flex gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-zinc-800 text-white flex items-center justify-center font-bold">1</span>
-                  <p>Open the <strong className="text-white">Amazonia FitLab</strong> app and log in to your account.</p>
+                  <p>Open the <strong className="text-white">Amazonia - FitLab</strong> app and log in to your account.</p>
                 </li>
                 <li className="flex gap-4">
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-zinc-800 text-white flex items-center justify-center font-bold">2</span>

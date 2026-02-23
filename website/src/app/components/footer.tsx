@@ -17,7 +17,7 @@ export default function Footer() {
     <footer className="px-6 py-12 border-t border-zinc-900 text-gray-600">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="text-sm">
-          &copy; 2026 AMAZONIA FITLAB. SCIENCE-BACKED FITNESS.
+          &copy; 2026 AMAZONIA - FITLAB. SCIENCE-BACKED FITNESS.
         </div>
         <div className="flex gap-8 text-sm font-medium">
           {navLinks.map(({ href, label }) => (
