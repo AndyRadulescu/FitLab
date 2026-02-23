@@ -13,6 +13,7 @@
   "errors.credentials.exists": "Există deja un cont cu o altă metodă de autentificare. Încearcă să te conectezi folosind un alt furnizor.",
   "errors.email.alreadyExists": "Adresa de e-mail a fost deja utilizată!",
   "errors.email.invalid": "E-mail-ul este invalid",
+  "errors.profile.number": "Valoarea trebuie să fie un număr",
   "errors.password.min": "Parola trebuie să aibă cel puțin 6 caractere",
   "errors.password.max": "Parola trebuie să aibă cel mult 30 de caractere",
   "errors.password.uppercase": "Parola trebuie să conțină o literă mare",

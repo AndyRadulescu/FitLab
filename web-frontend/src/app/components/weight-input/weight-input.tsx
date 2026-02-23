@@ -13,7 +13,7 @@ import { getTodayWeight, transformCheckinsToWeights } from './utils';
 import { checkinStore } from '../../store/checkin.store';
 
 const weightSchema = z.object({
-  weight: z.coerce.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min')
+  weight: z.number({ message: 'errors.profile.number' }).min(0, 'errors.profile.min')
 });
 
 export type WeightFormData = z.infer<typeof weightSchema>;
@@ -81,7 +81,7 @@ export function WeightInput() {
           <X size={18} />
         </div>
         <div className="flex-2">
-          <Input label={t('dashboard.weight.placeholder')} type="number"
+          <Input label={t('dashboard.weight.placeholder')}
                  min="0" {...register('weight', { valueAsNumber: true })}
                  error={errors.weight?.message && t(errors.weight.message)}></Input>
         </div>

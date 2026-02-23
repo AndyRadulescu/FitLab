@@ -21,6 +21,7 @@
   "errors.password.special": "Password must contain a special character",
   "errors.password.mismatch": "Passwords do not match",
   "errors.profile.min": "Value must be at least 0",
+  "errors.profile.number": "Value must be number",
   "errors.profile.empty": "Value cannot be empty",
   "errors.profile.min1": "Value must be at least 1",
   "errors.profile.maxHour": "Value must be at max 12",
