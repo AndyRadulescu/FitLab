@@ -17,6 +17,9 @@ export const metadata = {
       },
     ],
     type: 'website',
+  },
+  verification: {
+    google: 'cWpDXCgw5xLtm1XLCUipCC5Q1kG7TZKqrBvofMsMy6k',
   }
 };
 
