@@ -43,13 +43,13 @@ All commands should be run from the root of the monorepo. The workspace is manag
     ```bash
     npx nx build web-frontend
     ```
-    The output is generated in `dist/web-frontend`, which is the public directory for Firebase Hosting.
+    The output is generated in `dist/apps/web-frontend`, which is the public directory for Firebase Hosting.
 
 *   **Build the Website for production:**
     ```bash
     npx nx build website
     ```
-    The output is generated in `dist/website`.
+    The output is generated in `dist/apps/website`.
 
 ### Testing
 
@@ -77,8 +77,8 @@ All commands should be run from the root of the monorepo. The workspace is manag
 
 ## Code Conventions
 
-*   **Structure:** The `web-frontend` project is organized by feature under `src/app`, with dedicated directories for components, routes, custom hooks, and state management (`store`).
-*   **Styling:** Global styles and variables are located in `web-frontend/src/assets`. Component-specific styles are co-located with their components. Tailwind CSS is also used for utility-first styling.
-*   **State Management:** Global state is managed with Zustand. See `web-frontend/src/app/store` for existing stores.
-*   **Routing:** Application routes are defined in `web-frontend/src/app/routes/router.tsx`.
-*   **Firebase:** Firestore queries are located in `web-frontend/src/app/firestore/queries.ts`. Firebase initialization is handled in `web-frontend/src/init-firebase-auth.ts`.
+*   **Structure:** The `web-frontend` project is organized by feature under `apps/web-frontend/src/app`, with dedicated directories for components, routes, custom hooks, and state management (`store`).
+*   **Styling:** Global styles and variables are located in `apps/web-frontend/src/assets`. Component-specific styles are co-located with their components. Tailwind CSS is also used for utility-first styling.
+*   **State Management:** Global state is managed with Zustand. See `apps/web-frontend/src/app/store` for existing stores.
+*   **Routing:** Application routes are defined in `apps/web-frontend/src/app/routes/router.tsx`.
+*   **Firebase:** Firestore queries are located in `apps/web-frontend/src/app/firestore/queries.ts`. Firebase initialization is handled in `apps/web-frontend/src/init-firebase-auth.ts`.

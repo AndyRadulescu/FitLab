@@ -15,8 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@web-frontend/*": ["web-frontend/src/*"],
-      "@website/*": ["website/src/app/*"],
+      "@web-frontend/*": ["apps/web-frontend/src/*"],
+      "@website/*": ["apps/website/src/app/*"],
       "@my-org/shared-ui": ["libs/shared-ui/src/index.ts"]
     }
   },
