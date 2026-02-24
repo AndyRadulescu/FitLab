@@ -7,6 +7,7 @@ export const metadata = {
   openGraph: {
     title: 'Amazonia - FitLab',
     description: 'Amazonia - FitLab isn\'t just an app; it\'s a digital laboratory for your body. Quantify your mood, track every centimeter of progress, and master the metrics that matter.',
+    url: 'https://amazonia-fitlab.ro/',
     images: [
       {
         url: 'https://amazonia-fitlab.ro/amazonia-fitlab.jpg',
