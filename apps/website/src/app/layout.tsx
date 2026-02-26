@@ -1,5 +1,6 @@
 import './global.scss';
 import Footer from './components/footer';
+import CookieBanner from './components/cookie-banner';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: {
     <body>
     {children}
     <Footer />
+    <CookieBanner />
     </body>
     </html>
   );
