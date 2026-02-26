@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import firebase from 'firebase/compat/app';
-import { StartPageFormData } from '../routes/start-page/start-page';
+import { StartPageFormData } from '../routes/start-page/types';
 
 export type StartPageFormDataDto = Omit<StartPageFormData, 'dateOfBirth'> & { dateOfBirth?: string };
 export type Weight = { id: string; weight: number, createdAt: Date, updatedAt?: Date, from?: 'checkin' | 'weight' };
