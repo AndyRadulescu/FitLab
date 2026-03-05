@@ -9,6 +9,8 @@ import { Trans, useTranslation } from 'react-i18next';
 import { handleAuthErrors } from '../../core/error-handler';
 import { Button } from '../../components/design/button';
 import { logEvent } from 'firebase/analytics';
+import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.email('errors.email.invalid'),
@@ -20,6 +22,8 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginPage() {
   const { t } = useTranslation();
+  const [showPassword, setShowPassword] = useState(false);
+
   const onLogInWithEmailAndPassword = (data: LoginFormData) => {
     if (analytics) {
       logEvent(analytics, 'email-password-login');
@@ -64,14 +68,23 @@ export function LoginPage() {
         {...register('email')}
         error={errors.email?.message && t(errors.email.message)}
       />
-      <Input
-        placeholder={t('auth.password', 'Password')}
-        type="password"
-        {...register('password')}
-        error={errors.password?.message && t(errors.password.message)}
-      />
-      <div className={'mb-4 flex flex-row justify-end'} onClick={onForgotPassword}>
-        <button type="button"  className="text-sm text-gray-900 underline font-semibold -mt-2">
+      <div className="relative">
+        <Input
+          placeholder={t('auth.password', 'Password')}
+          type={showPassword ? 'text' : 'password'}
+          {...register('password')}
+          error={errors.password?.message && t(errors.password.message)}
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute right-3 top-[10px] text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+        >
+          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        </button>
+      </div>
+      <div className={'mb-4 flex flex-row justify-end'}>
+        <button type="button" onClick={() => void onForgotPassword()} className="text-sm text-gray-900 underline font-semibold -mt-2">
           <Trans i18nKey="auth.forgot">Forgot Password?</Trans>
         </button>
       </div>
