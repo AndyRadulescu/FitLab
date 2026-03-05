@@ -1,5 +1,7 @@
 {
   "auth.login": "Autentificare",
+  "auth.forgot": "Ai uitat parola?",
+  "auth.forgot.emailSent": "E-mail-ul de resetare a parolei a fost trimis. Te rugăm să îți verifici căsuța poștală.",
   "auth.email": "E-mail",
   "auth.password": "Parolă",
   "auth.confirm-password": "Confirmă parola",

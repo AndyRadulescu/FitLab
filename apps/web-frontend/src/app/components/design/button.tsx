@@ -6,11 +6,15 @@ type ButtonProps = {
   className?: string;
   type: 'primary' | 'secondary' | 'tertiary' | 'danger';
   disabled?: boolean;
+  onClick?: () => void;
+  buttonType?: 'button' | 'submit' | 'reset';
 };
 
-export function Button({ children, type, disabled }: ButtonProps) {
+export function Button({ children, type, disabled, onClick, buttonType }: ButtonProps) {
   return (
     <button
+      type={buttonType}
+      onClick={onClick}
       className={clsx(
         'w-full pointer py-3 px-4 rounded-full text-center transition-colors font-bold text-lg',
         type === 'primary' && 'primary-gradient',

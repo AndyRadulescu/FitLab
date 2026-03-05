@@ -1,5 +1,7 @@
 {
   "auth.login": "Login",
+  "auth.forgot": "Forgot Password?",
+  "auth.forgot.emailSent": "Password reset email sent. Please check your inbox.",
   "auth.email": "E-mail",
   "auth.password": "Password",
   "auth.confirm-password": "Confirm password",

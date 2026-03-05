@@ -1,5 +1,5 @@
 import { analytics, auth } from '../../../init-firebase-auth';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { sendPasswordResetEmail, signInWithEmailAndPassword, AuthError } from 'firebase/auth';
 import { Link } from 'react-router-dom';
 import { Input } from '../../components/design/input';
 import { useForm } from 'react-hook-form';
@@ -32,10 +32,29 @@ export function LoginPage() {
   const {
     register,
     handleSubmit,
+    getValues,
+    trigger,
     formState: { errors, isSubmitting }
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema)
   });
+
+  const onForgotPassword = async () => {
+    const email = getValues('email');
+    const isValid = await trigger('email');
+    if (!isValid) return;
+
+    if (analytics) {
+      logEvent(analytics, 'forgot-password');
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert(t('auth.forgot.emailSent'));
+    } catch (err: unknown) {
+      handleAuthErrors(err as AuthError, t);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit(data => onLogInWithEmailAndPassword(data))}>
@@ -51,10 +70,15 @@ export function LoginPage() {
         {...register('password')}
         error={errors.password?.message && t(errors.password.message)}
       />
-      <Button disabled={isSubmitting} type="primary">
+      <div className={'mb-4 flex flex-row justify-end'} onClick={onForgotPassword}>
+        <button type="button"  className="text-sm text-gray-900 underline font-semibold -mt-2">
+          <Trans i18nKey="auth.forgot">Forgot Password?</Trans>
+        </button>
+      </div>
+      <Button disabled={isSubmitting} type="primary" buttonType={'submit'}>
         <Trans i18nKey="auth.login">Login</Trans>
       </Button>
-      <Button type="tertiary">
+      <Button type="tertiary" buttonType={'button'}>
         <Link to={'/auth/register'}>
           <Trans i18nKey="auth.register">Register</Trans>
         </Link>
