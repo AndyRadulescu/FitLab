@@ -1,5 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+/**
+ * @vitest-environment jsdom
+ */
+import { render, screen, waitFor, fireEvent, cleanup, within } from '@testing-library/react';
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { ImagesDisplay } from './images-display';
 import { getDownloadURL, ref } from 'firebase/storage';
 import '@testing-library/jest-dom/vitest';
@@ -11,12 +14,23 @@ vi.mock('firebase/storage', () => ({
 }));
 
 vi.mock('../../image-manager/image-path', () => ({
-  imagePath: vi.fn((userId, checkinId, slot) => `path/${userId}/${checkinId}/${slot}`)
+  imagePath: vi.fn((userId, checkinId, slot, isSmall) => 
+    `path/${userId}/${checkinId}/${slot}${isSmall ? '_small' : ''}`)
 }));
 
 vi.mock('lucide-react', () => ({
   CameraOff: () => <div data-testid="camera-off-icon" />,
-  Loader2: () => <div data-testid="loader-icon" />
+  Loader2: () => <div data-testid="loader-icon" />,
+  X: () => <div data-testid="close-icon" />
+}));
+
+vi.mock('@my-org/shared-ui', () => ({
+  Modal: ({ isOpen, onClose, children }: any) => isOpen ? (
+    <div data-testid="modal">
+      <button onClick={onClose}>Close</button>
+      {children}
+    </div>
+  ) : null
 }));
 
 describe('ImagesDisplay', () => {
@@ -27,9 +41,13 @@ describe('ImagesDisplay', () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   it('should render loaders initially for each slot', async () => {
     // Return a promise that doesn't resolve immediately to keep it in loading state
-    vi.mocked(getDownloadURL).mockReturnValue(new Promise(() => 'url'));
+    vi.mocked(getDownloadURL).mockReturnValue(new Promise(() => {}));
 
     render(<ImagesDisplay userId={mockUserId} checkinId={mockCheckinId} />);
 
@@ -38,8 +56,8 @@ describe('ImagesDisplay', () => {
   });
 
   it('should render images when download URLs are successfully fetched', async () => {
-    vi.mocked(getDownloadURL).mockImplementation((storageRef) => {
-      return Promise.resolve(`http://mock-url.com/${storageRef}`);
+    vi.mocked(getDownloadURL).mockImplementation((path: any) => {
+      return Promise.resolve(`http://mock-url.com/${path}`);
     });
 
     render(<ImagesDisplay userId={mockUserId} checkinId={mockCheckinId} />);
@@ -47,7 +65,26 @@ describe('ImagesDisplay', () => {
     await waitFor(() => {
       const images = screen.getAllByRole('img');
       expect(images).toHaveLength(3);
-      expect(images[0]).toHaveAttribute('src', expect.stringContaining('http://mock-url.com/'));
+      expect(images[0]).toHaveAttribute('src', expect.stringContaining('http://mock-url.com/path/user123/checkin456/front_small'));
+    });
+  });
+
+  it('should open modal with high-res image when a thumbnail is clicked', async () => {
+    vi.mocked(getDownloadURL).mockImplementation((path: any) => {
+      return Promise.resolve(`http://mock-url.com/${path}`);
+    });
+
+    render(<ImagesDisplay userId={mockUserId} checkinId={mockCheckinId} />);
+
+    const thumbnail = await screen.findByAltText('front');
+    fireEvent.click(thumbnail.parentElement!);
+
+    await waitFor(() => {
+      const modal = screen.getByTestId('modal');
+      expect(modal).toBeInTheDocument();
+      const modalImg = within(modal).getByRole('img', { name: 'front' });
+      // High-res path shouldn't have _small
+      expect(modalImg).toHaveAttribute('src', 'http://mock-url.com/path/user123/checkin456/front');
     });
   });
 
@@ -78,9 +115,9 @@ describe('ImagesDisplay', () => {
     render(<ImagesDisplay userId={mockUserId} checkinId={mockCheckinId} />);
 
     await waitFor(() => {
-      expect(ref).toHaveBeenCalledWith(undefined, `path/${mockUserId}/${mockCheckinId}/front`);
-      expect(ref).toHaveBeenCalledWith(undefined, `path/${mockUserId}/${mockCheckinId}/back`);
-      expect(ref).toHaveBeenCalledWith(undefined, `path/${mockUserId}/${mockCheckinId}/side`);
+      expect(ref).toHaveBeenCalledWith(undefined, `path/${mockUserId}/${mockCheckinId}/front_small`);
+      expect(ref).toHaveBeenCalledWith(undefined, `path/${mockUserId}/${mockCheckinId}/back_small`);
+      expect(ref).toHaveBeenCalledWith(undefined, `path/${mockUserId}/${mockCheckinId}/side_small`);
     });
   });
 });
