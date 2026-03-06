@@ -1,5 +1,7 @@
 {
   "auth.login": "Autentificare",
+  "auth.forgot": "Ai uitat parola?",
+  "auth.forgot.emailSent": "E-mail-ul de resetare a parolei a fost trimis. Te rugăm să îți verifici căsuța poștală.",
   "auth.email": "E-mail",
   "auth.password": "Parolă",
   "auth.confirm-password": "Confirmă parola",
@@ -41,6 +43,7 @@
   "profile.danger": "Acțiuni critice",
   "profile.deleteAccount": "Șterge contul",
   "profile.delete.info": "După ștergerea contului, acțiunea este ireversibilă și toate datele tale vor fi eliminate definitiv.",
+  "checkin.checkins": "Checkin-uri",
   "checkin.measurements": "Măsurători",
   "checkin.lifestyle": "Stil de viață",
   "checkin.measures.kg": "Greutate (kg):",

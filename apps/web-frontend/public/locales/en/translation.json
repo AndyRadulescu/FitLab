@@ -1,5 +1,7 @@
 {
   "auth.login": "Login",
+  "auth.forgot": "Forgot Password?",
+  "auth.forgot.emailSent": "Password reset email sent. Please check your inbox.",
   "auth.email": "E-mail",
   "auth.password": "Password",
   "auth.confirm-password": "Confirm password",
@@ -40,6 +42,7 @@
   "profile.danger": "Danger zone",
   "profile.deleteAccount": "Delete account",
   "profile.delete.info": "Once you delete this account, there is no going back, all data will be lost.",
+  "checkin.checkins": "Check-ins",
   "checkin.measurements": "Measurements",
   "checkin.lifestyle": "Lifestyle check",
   "checkin.measures.kg": "Weight (kg):",

@@ -19,10 +19,16 @@ export function ProfilePage() {
     }
     navigate('/auth/login', { replace: true });
   };
-
+  console.log(auth.currentUser?.displayName ?? auth.currentUser?.email);
   return (
     <div>
-      <SectionHeader><Trans i18nKey="profile.settings">Profile settings</Trans></SectionHeader>
+      <SectionHeader>
+        <div>
+          <Trans i18nKey="profile.settings">Profile settings</Trans>
+          <p
+            className="text-xs md:text-xl text-ellipsis">{auth.currentUser?.displayName ?? auth.currentUser?.email}</p>
+        </div>
+      </SectionHeader>
       <Card className="mb-4">
         <div className="flex justify-center w-full mb-4">
           <div className="text-center">

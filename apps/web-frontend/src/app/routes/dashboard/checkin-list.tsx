@@ -15,7 +15,7 @@ export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {
 
   return (
     <div>
-      <SectionHeader><Trans i18nKey="dashboard.journey">My journey</Trans></SectionHeader>
+      <SectionHeader><Trans i18nKey="checkin.checkins">Check-ins</Trans></SectionHeader>
       <Card className="mb-2">
         {checkins.map((checkin, index) => (
           <div key={checkin.id}>
