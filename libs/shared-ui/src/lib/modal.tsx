@@ -20,7 +20,6 @@ export function Modal({ isOpen, onClose, children, className, showCloseButton = 
     if (isOpen) {
       if (!dialog.open) {
         dialog.showModal();
-        // Prevent body scroll when modal is open
         document.body.style.overflow = 'hidden';
       }
     } else {
@@ -47,8 +46,8 @@ export function Modal({ isOpen, onClose, children, className, showCloseButton = 
       onClose={onClose}
       onClick={handleBackdropClick}
       className={clsx(
-        "m-auto bg-transparent p-0 outline-none backdrop:bg-black/80 backdrop:backdrop-blur-sm",
-        "w-full h-full md:w-[80vw] md:h-[80vh] md:max-w-5xl md:max-h-[90vh]",
+        "fixed inset-0 m-auto bg-transparent p-0 outline-none backdrop:bg-black/80 backdrop:backdrop-blur-sm",
+        "w-full h-full md:w-[80vw] md:h-[80vh] md:max-w-5xl md:max-h-[90vh] max-w-none max-h-none",
         className
       )}
     >
@@ -63,7 +62,7 @@ export function Modal({ isOpen, onClose, children, className, showCloseButton = 
               <X size={24} />
             </button>
           )}
-          <div className="flex h-full w-full items-center justify-center p-2 md:p-4">
+          <div className="flex h-full w-full items-center justify-center p-2 md:p-4 rounded-lg">
             {children}
           </div>
         </div>

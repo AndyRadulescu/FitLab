@@ -82,7 +82,7 @@ export function ImagesDisplay({ checkinId, userId }: { checkinId: string, userId
         <img
           src={selectedImage?.url || ''}
           alt={selectedImage?.label || ''}
-          className="max-w-full max-h-[90vh] object-contain"
+          className="max-w-full max-h-full object-contain rounded-lg"
         />
       </Modal>
     </div>
