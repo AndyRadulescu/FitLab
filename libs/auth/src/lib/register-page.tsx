@@ -57,18 +57,21 @@ export function RegisterPage() {
       <Input
         placeholder={t('auth.email', 'Email')}
         type="email"
+        autoComplete="email"
         {...register('email')}
         error={errors.email?.message && t(errors.email.message)}
       />
       <Input
         placeholder={t('auth.password', 'Password')}
         type="password"
+        autoComplete="new-password"
         {...register('password')}
         error={errors.password?.message && t(errors.password.message)}
       />
       <Input
         placeholder={t('auth.confirm-password', 'Confirm password')}
         type="password"
+        autoComplete="new-password"
         {...register('confirmPassword')}
         error={errors.confirmPassword?.message && t(errors.confirmPassword.message)}
       />

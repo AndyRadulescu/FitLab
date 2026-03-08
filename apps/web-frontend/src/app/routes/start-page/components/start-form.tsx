@@ -27,6 +27,7 @@ export function StartForm({ formMethods, onSubmit }: StartFormProps) {
           <Input
             label={t('start.dateOfBirth')}
             type="date"
+            autoComplete="bday"
             {...register('dateOfBirth', { valueAsDate: true })}
             error={errors.dateOfBirth?.message && t(errors.dateOfBirth.message)} />
 

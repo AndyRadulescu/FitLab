@@ -64,6 +64,7 @@ export function LoginPage() {
       <Input
         placeholder={t('auth.email', 'Email')}
         type="email"
+        autoComplete="email"
         {...register('email')}
         error={errors.email?.message && t(errors.email.message)}
       />
@@ -71,6 +72,7 @@ export function LoginPage() {
         <Input
           placeholder={t('auth.password', 'Password')}
           type={showPassword ? 'text' : 'password'}
+          autoComplete="current-password"
           {...register('password')}
           error={errors.password?.message && t(errors.password.message)}
         />
