@@ -1,6 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Button } from '../../design/button';
-import { Card } from '../../design/card';
+import { Button, Card } from '@my-org/shared-ui';
 import { Weight } from '../../../store/user.store';
 
 interface WeightInputViewProps {

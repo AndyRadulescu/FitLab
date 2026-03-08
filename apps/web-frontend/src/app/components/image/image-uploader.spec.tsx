@@ -8,7 +8,7 @@ import '@testing-library/jest-dom/vitest';
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key }),
-  Trans: ({ i18nKey, children }: any) => <span>{i18nKey || children}</span>,
+  Trans: ({ i18nKey, children }: any) => i18nKey || children,
 }));
 
 vi.mock('firebase/storage', () => ({
@@ -23,6 +23,10 @@ vi.mock('../../image-manager/image-compressor.manager', () => ({
 
 vi.mock('../../image-manager/image-path', () => ({
   imagePath: vi.fn((userId, checkinId, slot) => `path/${userId}/${checkinId}/${slot}`),
+}));
+
+vi.mock('@my-org/shared-ui', () => ({
+  Card: ({ children }: any) => <div data-testid="card">{children}</div>,
 }));
 
 describe('ImageUploader', () => {
@@ -102,9 +106,8 @@ describe('ImageUploader', () => {
       // The checkmark should appear once upload is successful
       const checkmark = document.querySelector('.lucide-circle-check');
       expect(checkmark).toBeInTheDocument();
+      expect(mockOnChange).toHaveBeenCalledWith(['uploaded-url-front']);
     });
-
-    expect(mockOnChange).toHaveBeenCalledWith(['uploaded-url-front']);
   });
 
   it('handles removal of an image', async () => {

@@ -45,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: 'register',
         element: <RegisterPage />
+      },
+      {
+        index: true,
+        element: <Navigate to="/auth/login" replace />
       }
     ]
   }

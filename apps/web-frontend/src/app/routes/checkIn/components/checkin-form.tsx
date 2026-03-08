@@ -1,11 +1,9 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { SectionHeader } from '../../../components/section-header';
-import { Card } from '../../../components/design/card';
-import { Input } from '../../../components/design/input';
+import { Card, Input, Button } from '../../../components/design';
 import { FormSlider } from '../../../components/custom-slider/form-slider';
 import { ImageUploader } from '../../../components/image/image-uploader';
-import { Button } from '../../../components/design/button';
 import { CheckInFormData } from '../types';
 import firebase from 'firebase/compat/app';
 

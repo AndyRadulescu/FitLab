@@ -1,9 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { SectionHeader } from '../../../components/section-header';
-import { Card } from '../../../components/design/card';
-import { Input } from '../../../components/design/input';
-import { Button } from '../../../components/design/button';
+import { Card, Input, Button } from '../../../components/design';
 import { StartPageFormData } from '../types';
 
 interface StartFormProps {

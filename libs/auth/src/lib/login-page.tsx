@@ -1,16 +1,14 @@
-import { analytics, auth } from '../../../init-firebase-auth';
 import { sendPasswordResetEmail, signInWithEmailAndPassword, AuthError } from 'firebase/auth';
 import { Link } from 'react-router-dom';
-import { Input } from '../../components/design/input';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
-import { handleAuthErrors } from '../../core/error-handler';
-import { Button } from '../../components/design/button';
 import { logEvent } from 'firebase/analytics';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { Input, Button } from '@my-org/shared-ui';
+import { useAuth } from './types';
 
 const loginSchema = z.object({
   email: z.string().email('errors.email.invalid'),
@@ -22,6 +20,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginPage() {
   const { t } = useTranslation();
+  const { auth, analytics, handleAuthErrors } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const onLogInWithEmailAndPassword = (data: LoginFormData) => {

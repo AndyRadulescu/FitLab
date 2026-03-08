@@ -17,7 +17,8 @@
     "paths": {
       "@web-frontend/*": ["apps/web-frontend/src/*"],
       "@website/*": ["apps/website/src/app/*"],
-      "@my-org/shared-ui": ["libs/shared-ui/src/index.ts"]
+      "@my-org/shared-ui": ["libs/shared-ui/src/index.ts"],
+      "@my-org/auth": ["libs/auth/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

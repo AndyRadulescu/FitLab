@@ -37,8 +37,9 @@ vi.mock('react-i18next', () => ({
   Trans: ({ i18nKey }: any) => <span>{i18nKey}</span>,
 }));
 
-vi.mock('../../components/language-toggle/language-toggle', () => ({
+vi.mock('@my-org/shared-ui', () => ({
   LanguageToggle: () => <div data-testid="language-toggle" />,
+  Card: ({ children }: any) => <div data-testid="card">{children}</div>,
 }));
 
 vi.mock('../../components/danger-zone/danger-zone', () => ({
