@@ -1,9 +1,9 @@
-import { Auth, getAuth, onAuthStateChanged, getRedirectResult } from 'firebase/auth';
+import { Auth, getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Analytics, getAnalytics, isSupported } from 'firebase/analytics';
 import { Firestore, getFirestore } from "firebase/firestore";
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
-import i18next from 'i18next';
+import { userStore } from './app/store/user.store';
 
 let firebaseApp: FirebaseApp;
 let auth: Auth;
@@ -27,7 +27,6 @@ export async function initFirebaseAuth() {
     measurementId: import.meta.env.VITE_FIREBASE_ADMIN_MEASUREMENT_ID
   };
 
-  console.log(firebaseConfig);
   firebaseApp = initializeApp(firebaseConfig);
   auth = getAuth(firebaseApp);
   db = getFirestore(firebaseApp);
@@ -40,26 +39,18 @@ export async function initFirebaseAuth() {
     }
   }
 
-  initialized = true;
+  const userSt = userStore.getState();
 
-  // try {
-  //   const result = await getRedirectResult(auth);
-  //   console.log(result);
-  // } catch (err: any) {
-  //   console.log(err);
-  //   handleAuthErrors(err, i18next.t);
-  // }
-  //
-  // const userSt = userStore.getState();
-  //
-  // // Sync Firebase → Zustand
-  // onAuthStateChanged(auth, async (user) => {
-  //   if (user) {
-  //     userSt.setUser(user as any);
-  //   } else {
-  //     userSt.delete();
-  //   }
-  // });
+  // Sync Firebase → Zustand
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      userSt.setUser(user);
+    } else {
+      userSt.delete();
+    }
+  });
+
+  initialized = true;
 }
 
 export { firebaseApp, analytics, auth, db, storage };
