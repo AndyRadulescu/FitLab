@@ -6,7 +6,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { LoginPage } from './login-page';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { logEvent } from 'firebase/analytics';
-import { handleAuthErrors } from '../../core/error-handler';
+import { handleAuthErrors } from '@my-org/core';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom/vitest';
 
@@ -25,7 +25,7 @@ vi.mock('../../../init-firebase-auth', () => ({
   analytics: {},
 }));
 
-vi.mock('../../core/error-handler', () => ({
+vi.mock('@my-org/core', () => ({
   handleAuthErrors: vi.fn(),
 }));
 

@@ -27,7 +27,7 @@ vi.mock('firebase/analytics', () => ({
   isSupported: vi.fn(() => Promise.resolve(true)),
 }));
 
-vi.mock('./app/core/error-handler', () => ({
+vi.mock('@my-org/core', () => ({
   handleAuthErrors: vi.fn(),
 }));
 

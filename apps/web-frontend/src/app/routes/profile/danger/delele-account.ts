@@ -1,7 +1,7 @@
 import { DeleteUserAccount } from './delete-all-strategy';
 import { deleteUser, getAuth } from 'firebase/auth';
 import { TFunction } from 'i18next';
-import { handleAuthErrors } from '../../../core/error-handler';
+import { handleAuthErrors } from '@my-org/core';
 import firebase from 'firebase/compat/app';
 import { userStore } from '../../../store/user.store';
 import { checkinStore } from '../../../store/checkin.store';

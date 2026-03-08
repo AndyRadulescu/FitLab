@@ -22,7 +22,7 @@ export function AuthPage() {
       analytics={analytics}
       handleAuthErrors={handleAuthErrors}
       redirectPath="/dashboard"
-      logoSrc="/logo.svg"
+      logoSrc="/images/logo-title.svg"
     />
   );
 }

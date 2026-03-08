@@ -5,7 +5,7 @@ import { FirebaseApp, initializeApp } from 'firebase/app';
 import { userStore } from './app/store/user.store';
 import { checkinStore } from './app/store/checkin.store';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
-import { handleAuthErrors } from './app/core/error-handler';
+import { handleAuthErrors } from '@my-org/core';
 import i18next from 'i18next';
 
 let firebaseApp: FirebaseApp;

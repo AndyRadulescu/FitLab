@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { deleteAccount } from './delele-account';
 import { getAuth, deleteUser } from 'firebase/auth';
 import { DeleteUserAccount } from './delete-all-strategy';
-import { handleAuthErrors } from '../../../core/error-handler';
+import { handleAuthErrors } from '@my-org/core';
 
 vi.mock('firebase/auth', () => ({
   getAuth: vi.fn(),
@@ -15,7 +15,7 @@ vi.mock('./delete-all-strategy', () => {
   return { DeleteUserAccount };
 });
 
-vi.mock('../../../core/error-handler', () => ({
+vi.mock('@my-org/core', () => ({
   handleAuthErrors: vi.fn(),
 }));
 

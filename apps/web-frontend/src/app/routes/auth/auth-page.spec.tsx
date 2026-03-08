@@ -7,7 +7,7 @@ import { AuthPage } from './auth-page';
 import { userStore } from '../../store/user.store';
 import { signInWithRedirect, GoogleAuthProvider, FacebookAuthProvider } from 'firebase/auth';
 import { logEvent } from 'firebase/analytics';
-import { handleAuthErrors } from '../../core/error-handler';
+import { handleAuthErrors } from '@my-org/core';
 import { useLocation, Navigate } from 'react-router-dom';
 import { auth } from '../../../init-firebase-auth';
 import '@testing-library/jest-dom/vitest';
@@ -61,7 +61,7 @@ vi.mock('../../analytics-tracker', () => ({
   AnalyticsTracker: () => <div data-testid="analytics-tracker" />,
 }));
 
-vi.mock('../../core/error-handler', () => ({
+vi.mock('@my-org/core', () => ({
   handleAuthErrors: vi.fn(),
 }));
 

@@ -7,7 +7,7 @@ import { SocialButton } from '../../components/design/social-button';
 import { LanguageToggle } from '../../components/language-toggle/language-toggle';
 import { AnalyticsTracker } from '../../analytics-tracker';
 import { logEvent } from 'firebase/analytics';
-import { handleAuthErrors } from '../../core/error-handler';
+import { handleAuthErrors } from '@my-org/core';
 import { useHtmlLang } from '../../custom-hooks/use-html-lang';
 
 export function AuthPage() {

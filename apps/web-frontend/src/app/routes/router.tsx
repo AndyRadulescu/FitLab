@@ -2,7 +2,7 @@ import { ErrorPage } from '@my-org/shared-ui';
 import { AuthPage } from './auth/auth-page';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../app';
-import { isAuthenticated } from './auth/is-authenticated';
+import { isAuthenticated } from '@my-org/core';
 import { LoginPage } from './auth/login-page';
 import { RegisterPage } from './auth/register-page';
 import { CheckInPage } from './checkIn/checkIn-page';
