@@ -1,4 +1,4 @@
-import ErrorPage from './error-page';
+import { ErrorPage } from '@my-org/shared-ui';
 import { AuthPage } from './auth/auth-page';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../app';
