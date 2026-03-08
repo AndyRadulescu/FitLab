@@ -7,12 +7,13 @@ import { LoginPage, RegisterPage } from '@my-org/auth';
 import { CheckInPage } from './checkIn/checkIn-page';
 import { Dashboard } from './dashboard/dashboard';
 import { ProfilePage } from './profile/profile-page';
+import { userStore } from '../store/user.store';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    loader: isAuthenticated,
+    loader: () => isAuthenticated(!!userStore.getState().user),
     errorElement: <ErrorPage />,
     children: [
       {
