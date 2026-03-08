@@ -4,6 +4,7 @@ import * as ReactDOM from 'react-dom/client';
 import { initFirebaseAuth } from './init-firebase-auth';
 import { router } from './app/routes/router';
 import './i18n';
+import './styles.scss';
 import { LoadingScreen } from '@my-org/shared-ui';
 
 const root = ReactDOM.createRoot(
