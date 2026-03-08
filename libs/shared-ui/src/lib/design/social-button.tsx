@@ -10,6 +10,7 @@ export function SocialButton({ socialType, onClick }: SocialButtonProps) {
     return (
       <button 
         type="button"
+        data-testid="social-button-facebook"
         onClick={onClick}
         className="w-full text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 box-border border border-transparent font-medium leading-5 rounded-full text-sm px-4 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-[#3b5998]/55"
       >
@@ -26,6 +27,7 @@ export function SocialButton({ socialType, onClick }: SocialButtonProps) {
   return (
     <button 
       type="button"
+      data-testid="social-button-google"
       onClick={onClick}
       className="w-full text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 box-border border border-transparent font-medium leading-5 rounded-full text-sm px-4 py-2.5 inline-flex items-center justify-center dark:focus:ring-[#4285F4]/55"
     >

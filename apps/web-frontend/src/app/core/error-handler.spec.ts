@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { handleAuthErrors } from './error-handler'
+import { handleAuthErrors } from '@my-org/core';
 import { AuthErrorCodes } from '@firebase/auth';
 
 describe('handleAuthErrors', () => {

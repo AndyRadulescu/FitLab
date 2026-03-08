@@ -19,7 +19,6 @@ export function ProfilePage() {
     }
     navigate('/auth/login', { replace: true });
   };
-  console.log(auth.currentUser?.displayName ?? auth.currentUser?.email);
   return (
     <div>
       <SectionHeader>

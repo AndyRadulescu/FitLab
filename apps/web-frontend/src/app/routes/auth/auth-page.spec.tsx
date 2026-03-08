@@ -44,17 +44,9 @@ vi.mock('react-router-dom', async () => {
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
-    i18n: { language: 'en' },
+    i18n: { language: 'en', changeLanguage: vi.fn() },
   }),
   Trans: ({ i18nKey, children }: any) => <span>{children || i18nKey}</span>,
-}));
-
-vi.mock('../../components/design/social-button', () => ({
-  SocialButton: ({ socialType }: any) => <div data-testid={`social-button-${socialType}`} />,
-}));
-
-vi.mock('../../components/language-toggle/language-toggle', () => ({
-  LanguageToggle: () => <div data-testid="language-toggle" />,
 }));
 
 vi.mock('../../analytics-tracker', () => ({
@@ -107,7 +99,7 @@ describe('AuthPage', () => {
     (signInWithRedirect as Mock).mockResolvedValue({});
     render(<AuthPage />);
 
-    const googleButton = screen.getByTestId('social-button-google').parentElement!;
+    const googleButton = screen.getByTestId('social-button-google');
     fireEvent.click(googleButton);
 
     expect(auth.languageCode).toBe('en');
@@ -119,7 +111,7 @@ describe('AuthPage', () => {
     (signInWithRedirect as Mock).mockResolvedValue({});
     render(<AuthPage />);
 
-    const facebookButton = screen.getByTestId('social-button-facebook').parentElement!;
+    const facebookButton = screen.getByTestId('social-button-facebook');
     fireEvent.click(facebookButton);
 
     expect(auth.languageCode).toBe('en');
@@ -132,7 +124,7 @@ describe('AuthPage', () => {
     (signInWithRedirect as Mock).mockRejectedValue(error);
     render(<AuthPage />);
 
-    const googleButton = screen.getByTestId('social-button-google').parentElement!;
+    const googleButton = screen.getByTestId('social-button-google');
     fireEvent.click(googleButton);
 
     // Wait for the promise to reject

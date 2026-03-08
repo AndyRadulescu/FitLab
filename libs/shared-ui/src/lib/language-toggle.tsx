@@ -23,6 +23,7 @@ export function LanguageToggle({ analytics }: LanguageToggleProps) {
   return (
     <button
       onClick={() => void toggleLanguage()}
+      data-testid="language-toggle"
       className="flex items-center gap-2 px-4 py-2 border-gray-400 dark:border-gray-700 dark:bg-slate-400 border-solid border-1 rounded-full shadow-sm transition-colors text-sm font-medium"
     >
       <Languages
