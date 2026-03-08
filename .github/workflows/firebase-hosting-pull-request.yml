@@ -27,10 +27,10 @@ jobs:
         run: npm ci
 
       - name: Run lint
-        run: npx nx lint web-frontend && npx nx lint admin-portal
+        run: npx nx affected -t lint
 
       - name: Run tests
-        run: npx nx test web-frontend && npx nx test admin-portal
+        run: npx nx affected -t test
 
       - name: Build Web Frontend
         run: npx nx build web-frontend
