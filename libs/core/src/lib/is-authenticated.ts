@@ -1,17 +1,17 @@
 import { redirect } from "react-router";
 
-export async function isAuthenticated(storeName = "user-store", loginPath = "/auth/login") {
-  const userStore = localStorage.getItem(storeName);
+export async function isAuthenticated() {
+  const userStore = localStorage.getItem("user-store");
   if(!userStore){
-    return redirect(loginPath);
+    return redirect("/auth/login");
   }
   try {
     const userUid = JSON.parse(userStore)?.state?.user?.uid;
     if (!userUid) {
-      return redirect(loginPath);
+      return redirect("/auth/login");
     }
   } catch {
-    return redirect(loginPath);
+    return redirect("/auth/login");
   }
   return { isAuthenticated: true };
 }
