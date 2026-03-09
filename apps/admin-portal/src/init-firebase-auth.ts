@@ -1,6 +1,6 @@
 import { Auth, getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Analytics, getAnalytics, isSupported } from 'firebase/analytics';
-import { Firestore, getFirestore } from "firebase/firestore";
+import { Firestore, getFirestore, doc, getDoc } from "firebase/firestore";
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
 import { userStore } from './app/store/user.store';
@@ -42,9 +42,16 @@ export async function initFirebaseAuth() {
   const userSt = userStore.getState();
 
   // Sync Firebase → Zustand
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
       userSt.setUser(user);
+      try {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        userSt.setAdmin(userDoc.exists() && userDoc.data()?.isAdmin === true);
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        userSt.setAdmin(false);
+      }
     } else {
       userSt.delete();
     }
