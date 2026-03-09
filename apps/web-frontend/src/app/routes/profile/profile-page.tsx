@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { analytics, auth } from '../../../init-firebase-auth';
 import { Trans, useTranslation } from 'react-i18next';
-import { Card } from '../../components/design/card';
+import { Card } from '../../components/design';
 import { LanguageToggle } from '../../components/language-toggle/language-toggle';
 import { logEvent } from 'firebase/analytics';
 import { DangerZone } from '../../components/danger-zone/danger-zone';
@@ -19,7 +19,6 @@ export function ProfilePage() {
     }
     navigate('/auth/login', { replace: true });
   };
-  console.log(auth.currentUser?.displayName ?? auth.currentUser?.email);
   return (
     <div>
       <SectionHeader>

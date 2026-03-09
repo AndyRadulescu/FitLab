@@ -1,9 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
 import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Card } from '../../design/card';
-import { Input } from '../../design/input';
-import { Button } from '../../design/button';
+import { Button, Card, Input } from '@my-org/shared-ui';
 import { WeightFormData } from '../types';
 
 interface WeightInputFormProps {

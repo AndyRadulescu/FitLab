@@ -1,19 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { analytics, auth } from '../../../init-firebase-auth';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, AuthError } from 'firebase/auth';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Trans, useTranslation } from 'react-i18next';
-import { Input } from '../../components/design/input';
-import firebase from 'firebase/compat/app';
-import { handleAuthErrors } from '../../core/error-handler';
-import { Button } from '../../components/design/button';
-import AuthError = firebase.auth.AuthError;
 import { logEvent } from 'firebase/analytics';
+import { Input, Button } from '@my-org/shared-ui';
+import { useAuth } from './types';
 
 const registerSchema = z.object({
-  email: z.email('errors.email.invalid'),
+  email: z.string().email('errors.email.invalid'),
   password: z.string()
     .min(6, 'errors.password.min')
     .max(30, 'errors.password.max')
@@ -37,6 +33,7 @@ type RegisterFormData = z.infer<typeof registerSchema>;
 
 export function RegisterPage() {
   const { t } = useTranslation();
+  const { auth, analytics, handleAuthErrors } = useAuth();
 
   const onRegisterWithEmailAndPassword = (data: RegisterFormData) => {
     if (analytics) {
@@ -60,25 +57,28 @@ export function RegisterPage() {
       <Input
         placeholder={t('auth.email', 'Email')}
         type="email"
+        autoComplete="email"
         {...register('email')}
         error={errors.email?.message && t(errors.email.message)}
       />
       <Input
         placeholder={t('auth.password', 'Password')}
         type="password"
+        autoComplete="new-password"
         {...register('password')}
         error={errors.password?.message && t(errors.password.message)}
       />
       <Input
         placeholder={t('auth.confirm-password', 'Confirm password')}
         type="password"
+        autoComplete="new-password"
         {...register('confirmPassword')}
         error={errors.confirmPassword?.message && t(errors.confirmPassword.message)}
       />
-      <Button type="primary" disabled={isSubmitting}>
+      <Button type="primary" disabled={isSubmitting} buttonType={'submit'}>
         <Trans i18nKey="auth.register">Register</Trans>
       </Button>
-      <Button type="tertiary">
+      <Button type="tertiary" buttonType={'button'}>
         <Link to={'/auth/login'}><Trans i18nKey="auth.login">Login</Trans></Link>
       </Button>
     </form>

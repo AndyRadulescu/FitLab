@@ -1,16 +1,22 @@
-import { StrictMode } from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { StrictMode, Suspense } from 'react';
+import { RouterProvider } from 'react-router-dom';
 import * as ReactDOM from 'react-dom/client';
-import App from './app/app';
+import { initFirebaseAuth } from './init-firebase-auth';
+import { router } from './app/routes/router';
+import './i18n';
+import './styles.scss';
+import { LoadingScreen } from '@my-org/shared-ui';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 
+await initFirebaseAuth();
+
 root.render(
   <StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <Suspense fallback={<LoadingScreen />}>
+      <RouterProvider router={router} />
+    </Suspense>
   </StrictMode>,
 );

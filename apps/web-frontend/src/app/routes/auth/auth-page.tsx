@@ -1,93 +1,27 @@
-import { GoogleAuthProvider, FacebookAuthProvider, signInWithRedirect } from 'firebase/auth';
 import { analytics, auth } from '../../../init-firebase-auth';
 import { userStore } from '../../store/user.store';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { Trans, useTranslation } from 'react-i18next';
-import { SocialButton } from '../../components/design/social-button';
-import { LanguageToggle } from '../../components/language-toggle/language-toggle';
+import { useTranslation } from 'react-i18next';
 import { AnalyticsTracker } from '../../analytics-tracker';
-import { logEvent } from 'firebase/analytics';
-import { handleAuthErrors } from '../../core/error-handler';
+import { handleAuthErrors } from '@my-org/core';
 import { useHtmlLang } from '../../custom-hooks/use-html-lang';
+import { AuthPage as BaseAuthPage } from '@my-org/auth';
 
 export function AuthPage() {
   useHtmlLang();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
   const user = userStore(state => state.user);
-  const location = useLocation();
-
-  if (user && user.uid) return (
-    <Navigate to="/" replace state={{ from: location }} />
-  );
-
-  const onSignInWithGoogle = () => {
-    if (analytics) {
-      logEvent(analytics, 'google-login');
-    }
-    auth.languageCode = i18n.language;
-    void signInWithRedirect(auth, new GoogleAuthProvider()).catch((err) => {
-      handleAuthErrors(err, t);
-    });
-  };
-
-  const onSignInWithFacebook = () => {
-    if (analytics) {
-      logEvent(analytics, 'facebook-login');
-    }
-    auth.languageCode = i18n.language;
-    void signInWithRedirect(auth, new FacebookAuthProvider()).catch((err) => {
-      handleAuthErrors(err, t);
-    });
-  };
 
   return (
     <>
       <AnalyticsTracker />
-      <div
-        className="auth-theme-trigger w-full min-h-svh flex flex-col lg:flex-row align-center bg-primary dark:bg-gray-950 lg:dark:bg-gray-700 lg:bg-white">
-        <div
-          className="flex-1 flex justify-center items-center p-8 lg:p-12 dark:bg-gray-950 lg:bg-primary lg:rounded-t-none lg:rounded-r-4xl">
-          <img
-            src="/images/logo-title.svg"
-            alt="Logo"
-            className="max-h-64 lg:max-h-[80%] object-contain"
-          />
-        </div>
-
-        <div
-          className="w-full md:w-[80%] md:ml-[10%] lg:ml-0 lg:max-w-xl bg-white dark:bg-gray-700 rounded-t-4xl lg:rounded-none flex flex-col justify-center">
-          <div className="w-full py-16 px-6 md:px-12 lg:px-16">
-            <Outlet />
-
-            <div className="flex items-center gap-4 w-full my-4">
-              <div className="flex-1 h-px bg-gray-300" />
-              <span className="text-sm text-gray-500 dark:text-gray-100 whitespace-nowrap">
-              <Trans i18nKey="auth.social">Social</Trans>
-            </span>
-              <div className="flex-1 h-px bg-gray-300" />
-            </div>
-
-            <div className="w-full">
-              <div onClick={onSignInWithGoogle} className="mb-2">
-                <SocialButton socialType="google"></SocialButton>
-              </div>
-              <div onClick={onSignInWithFacebook} className="mb-4">
-                <SocialButton socialType="facebook"></SocialButton>
-              </div>
-
-              <div className="flex justify-center w-full mt-6 flex-col items-center gap-4">
-                <LanguageToggle />
-                <a href="https://amazonia-fitlab.ro/privacy-policy/"
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   className="text-xs text-gray-500 hover:text-primary transition-colors underline underline-offset-4 mt-2">
-                  <Trans i18nKey="profile.privacy_policy">Privacy Policy</Trans>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <BaseAuthPage
+        user={user}
+        auth={auth}
+        analytics={analytics}
+        handleAuthErrors={(err) => handleAuthErrors(err, t)}
+        redirectPath="/"
+        logoSrc="/images/logo-title.svg"
+      />
     </>
   );
 }

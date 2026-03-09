@@ -7,7 +7,7 @@ import {
   Area,
   AreaChart,
 } from 'recharts';
-import { Card } from '../../../components/design/card';
+import { Card } from '../../../components/design';
 import { useTranslation } from 'react-i18next';
 import { useWeightChartData } from '../hooks/use-weight-chart-data';
 

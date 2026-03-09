@@ -8,7 +8,7 @@ export async function startTransaction(userId: string, mappedData: StartMappedWe
   await runTransaction(db, async (transaction) => {
     const weightRef = doc(collection(db, WEIGHT_TABLE));
     weightId = weightRef.id;
-    const userRef = doc(collection(db, USERS_TABLE));
+    const userRef = doc(db, USERS_TABLE, userId);
 
     transaction.set(weightRef, {
       userId: userId,

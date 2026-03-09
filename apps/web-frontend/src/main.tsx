@@ -6,7 +6,7 @@ import { initFirebaseAuth } from './init-firebase-auth';
 import './i18n';
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
-import { LoadingScreen } from './app/components/design/loading-screen';
+import { LoadingScreen } from './app/components/design';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

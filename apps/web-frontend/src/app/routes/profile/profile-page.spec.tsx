@@ -4,7 +4,7 @@
 import { render, screen, fireEvent, cleanup, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 import { ProfilePage } from './profile-page';
-import { auth, analytics } from '../../../init-firebase-auth';
+import { auth } from '../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
 import { useNavigate } from 'react-router-dom';
 import '@testing-library/jest-dom/vitest';
@@ -33,12 +33,17 @@ vi.mock('react-router-dom', () => ({
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key: string) => key,
+    i18n: { language: 'en', changeLanguage: vi.fn() },
   }),
-  Trans: ({ i18nKey }: any) => <span>{i18nKey}</span>,
+  Trans: ({ i18nKey, children }: any) => <span data-testid={i18nKey}>{children || i18nKey}</span>,
 }));
 
 vi.mock('../../components/language-toggle/language-toggle', () => ({
   LanguageToggle: () => <div data-testid="language-toggle" />,
+}));
+
+vi.mock('../../components/design', () => ({
+  Card: ({ children, className }: any) => <div data-testid="card" className={className}>{children}</div>,
 }));
 
 vi.mock('../../components/danger-zone/danger-zone', () => ({
@@ -69,27 +74,28 @@ describe('ProfilePage', () => {
 
   it('should render correctly', () => {
     render(<ProfilePage />);
-    
-    expect(screen.getByTestId('section-header')).toHaveTextContent('profile.settings');
-    expect(screen.getByText('profile.change.language')).toBeInTheDocument();
+
+    expect(screen.getByTestId('section-header')).toBeInTheDocument();
+    expect(screen.getByTestId('profile.settings')).toBeInTheDocument();
+    expect(screen.getByTestId('profile.change.language')).toBeInTheDocument();
     expect(screen.getByTestId('language-toggle')).toBeInTheDocument();
     expect(screen.getByTestId('logout-icon')).toBeInTheDocument();
-    expect(screen.getByText('auth.signout')).toBeInTheDocument();
+    expect(screen.getByTestId('auth.signout')).toBeInTheDocument();
     expect(screen.getByTestId('danger-zone')).toBeInTheDocument();
   });
 
   it('should call signOut, log logout event and navigate to login on logout click', async () => {
     render(<ProfilePage />);
-    
-    const logoutButton = screen.getByRole('button', { name: /auth.signout/i });
-    
+
+    const logoutButton = screen.getByTestId('auth.signout').closest('button')!;
+
     await act(async () => {
         fireEvent.click(logoutButton);
     });
 
     expect(auth.signOut).toHaveBeenCalled();
     expect(logEvent).toHaveBeenCalledWith(mockState.analytics, 'logout');
-    
+
     expect(mockNavigate).toHaveBeenCalledWith('/auth/login', { replace: true });
   });
 
@@ -97,16 +103,16 @@ describe('ProfilePage', () => {
     mockState.analytics = null;
 
     render(<ProfilePage />);
-    
-    const logoutButton = screen.getByRole('button', { name: /auth.signout/i });
-    
+
+    const logoutButton = screen.getByTestId('auth.signout').closest('button')!;
+
     await act(async () => {
         fireEvent.click(logoutButton);
     });
 
     expect(auth.signOut).toHaveBeenCalled();
     expect(logEvent).not.toHaveBeenCalled();
-    
+
     expect(mockNavigate).toHaveBeenCalledWith('/auth/login', { replace: true });
   });
 });

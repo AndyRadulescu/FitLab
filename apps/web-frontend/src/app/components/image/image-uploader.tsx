@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2, Upload, X } from 'lucide-react';
 import { uploadImage } from '../../image-manager/image-compressor.manager';
-import { Card } from '../design/card';
+import { Card } from '../design';
 import { Trans } from 'react-i18next';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { imagePath } from '../../image-manager/image-path';

@@ -1,9 +1,8 @@
 import { Trans, useTranslation } from 'react-i18next';
-import { Button } from '../design/button';
+import { Button, Card } from '../design';
 import { SectionHeader } from '../section-header';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
-import { Card } from '../design/card';
 import { userStore } from '../../store/user.store';
 import { deleteAccount } from '../../routes/profile/danger/delele-account';
 import { useNavigate } from 'react-router-dom';

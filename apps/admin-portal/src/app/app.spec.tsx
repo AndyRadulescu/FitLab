@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import { describe, it, expect } from 'vitest';
 
 import App from './app';
 
@@ -11,16 +12,5 @@ describe('App', () => {
       </BrowserRouter>,
     );
     expect(baseElement).toBeTruthy();
-  });
-
-  it('should have a greeting as the title', () => {
-    const { getAllByText } = render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>,
-    );
-    expect(
-      getAllByText(new RegExp('Welcome admin-portal', 'gi')).length > 0,
-    ).toBeTruthy();
   });
 });

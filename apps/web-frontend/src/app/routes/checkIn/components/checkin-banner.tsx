@@ -1,4 +1,4 @@
-import { Card } from '../../../components/design/card';
+import { Card } from '../../../components/design';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 import { useState } from 'react';
