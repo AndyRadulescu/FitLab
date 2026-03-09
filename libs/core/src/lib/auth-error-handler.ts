@@ -1,7 +1,7 @@
 import { AuthErrorCodes, AuthError } from 'firebase/auth';
 import { TFunction } from 'i18next';
 
-export const handleAuthErrors = (err: AuthError, translator: TFunction<'translation', any>) => {
+export const handleAuthErrors = (err: AuthError, translator: TFunction<'translation', unknown>) => {
   switch (err.code) {
     case AuthErrorCodes.NEED_CONFIRMATION:
       return alert(translator('errors.credentials.exists'));
