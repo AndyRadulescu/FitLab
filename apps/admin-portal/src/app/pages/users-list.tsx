@@ -1,37 +1,48 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, limit } from 'firebase/firestore';
 import { db } from '../../init-firebase-auth';
 import { userStore } from '../store/user.store';
 
 export const UsersList = () => {
   const [users, setUsers] = useState<any[]>([]);
-  const [fetchingUsers, setFetchingUsers] = useState(false);
-  const isAdmin = userStore((state) => state.isAdmin);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const currentUser = userStore((state) => state.user);
 
   useEffect(() => {
     const fetchUsers = async () => {
-      if (isAdmin === true) {
-        setFetchingUsers(true);
-        try {
-          const usersSnapshot = await getDocs(collection(db, 'users'));
-          const usersList = usersSnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-          setUsers(usersList);
-        } catch (error) {
-          console.error('Error fetching users:', error);
-        } finally {
-          setFetchingUsers(false);
+      if (!currentUser) {
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+      try {
+        const usersQuery = query(collection(db, 'users'), limit(50));
+        const usersSnapshot = await getDocs(usersQuery);
+        const usersList = usersSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUsers(usersList);
+      } catch (err: any) {
+        console.error('Error fetching users:', err);
+        // Handle "Permission Denied" specifically if possible, otherwise generic error
+        if (err.code === 'permission-denied') {
+          setError('Permission Required: You must have administrative privileges to view the registered users list.');
+        } else {
+          setError(`An error occurred: ${err.message || 'Unknown error'}`);
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUsers();
-  }, [isAdmin]);
+  }, [currentUser]);
 
-  if (isAdmin === null || fetchingUsers) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
@@ -39,7 +50,7 @@ export const UsersList = () => {
     );
   }
 
-  if (isAdmin === false) {
+  if (error) {
     return (
       <div className="bg-red-50 border-l-4 border-red-400 p-4 mt-4 shadow-sm rounded-r-md">
         <div className="flex items-center">
@@ -49,10 +60,8 @@ export const UsersList = () => {
             </svg>
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-bold text-red-800 uppercase tracking-wide">Permission Required</h3>
-            <p className="text-sm text-red-700 mt-1">
-              You must have administrative privileges to view the registered users list.
-            </p>
+            <h3 className="text-sm font-bold text-red-800 uppercase tracking-wide">Access Restricted</h3>
+            <p className="text-sm text-red-700 mt-1">{error}</p>
           </div>
         </div>
       </div>
