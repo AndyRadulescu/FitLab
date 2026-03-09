@@ -42,16 +42,9 @@ export async function initFirebaseAuth() {
   const userSt = userStore.getState();
 
   // Sync Firebase → Zustand
-  onAuthStateChanged(auth, async (user) => {
+  onAuthStateChanged(auth, (user) => {
     if (user) {
       userSt.setUser(user);
-      try {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
-        userSt.setAdmin(userDoc.exists() && userDoc.data()?.isAdmin === true);
-      } catch (error) {
-        console.error('Error checking admin status:', error);
-        userSt.setAdmin(false);
-      }
     } else {
       userSt.delete();
     }
