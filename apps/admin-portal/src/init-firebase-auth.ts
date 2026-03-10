@@ -16,7 +16,7 @@ export async function initFirebaseAuth() {
   if (initialized) return;
 
   const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    apiKey: import.meta.env.VITE_FIREBASE_ADMIN_API_KEY,
     authDomain: window.location.hostname === 'localhost'
       ? import.meta.env.VITE_FIREBASE_AUTH_DOMAIN
       : window.location.hostname,
@@ -26,6 +26,8 @@ export async function initFirebaseAuth() {
     appId: import.meta.env.VITE_FIREBASE_ADMIN_APP_ID,
     measurementId: import.meta.env.VITE_FIREBASE_ADMIN_MEASUREMENT_ID
   };
+
+  console.log(firebaseConfig);
 
   firebaseApp = initializeApp(firebaseConfig);
   auth = getAuth(firebaseApp);

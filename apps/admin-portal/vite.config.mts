@@ -9,11 +9,11 @@ export default defineConfig(() => ({
   root: import.meta.dirname,
   cacheDir: '../../node_modules/.vite/apps/admin-portal',
   server: {
-    port: 5000,
+    port: 5050,
     host: 'localhost',
   },
   preview: {
-    port: 5000,
+    port: 5050,
     host: 'localhost',
   },
   plugins: [react(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md']), tailwindcss()],
