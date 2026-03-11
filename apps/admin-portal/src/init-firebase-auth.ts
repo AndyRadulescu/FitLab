@@ -27,6 +27,7 @@ export async function initFirebaseAuth() {
     measurementId: import.meta.env.VITE_FIREBASE_ADMIN_MEASUREMENT_ID
   };
 
+
   console.log(firebaseConfig);
 
   firebaseApp = initializeApp(firebaseConfig);
