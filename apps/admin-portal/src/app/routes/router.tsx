@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import App from '../app';
 import { Layout } from '../pages/layout';
 import { UsersList } from '../pages/users-list';
+import { UserDashboard } from '../pages/user-dashboard';
 import { ErrorPage } from '@my-org/shared-ui';
 import { AuthPage } from './auth-page';
 import { LoginPage, RegisterPage } from '@my-org/auth';
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <UsersList />
+          },
+          {
+            path: ':userId',
+            element: <UserDashboard />
           }
         ]
       }
