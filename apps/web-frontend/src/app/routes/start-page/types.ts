@@ -9,7 +9,9 @@ export const startPageSchema = z.object({
 export type StartPageFormData = z.infer<typeof startPageSchema>;
 
 export type StartMappedWeightData = {
-  dateOfBirth: string
-  weight: number
-  height: number
-}
+  dateOfBirth: string;
+  weight: number;
+  height: number;
+  displayName?: string | null;
+  email?: string | null;
+};

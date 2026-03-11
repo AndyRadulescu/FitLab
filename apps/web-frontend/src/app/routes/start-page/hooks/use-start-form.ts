@@ -20,7 +20,9 @@ export function useStartForm() {
     assertAuthenticated(navigate, user);
     const mappedData = {
       ...data,
-      dateOfBirth: data.dateOfBirth.toISOString()
+      dateOfBirth: data.dateOfBirth.toISOString(),
+      displayName: user.displayName,
+      email: user.email,
     };
     try {
       const weightId = await startTransaction(user.uid, mappedData);
