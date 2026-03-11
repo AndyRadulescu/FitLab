@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
 import { CameraOff, Loader2 } from 'lucide-react';
-import { imagePath } from '../../image-manager/image-path';
 import { SLOTS } from '../../core/constants';
 import { Modal } from '@my-org/shared-ui';
+import { imagePath } from '@my-org/core';
 
 const SmallImage = ({ path, label, onClick }: { path: string, label: string, onClick: (url: string) => void }) => {
   const [url, setUrl] = useState<string>();

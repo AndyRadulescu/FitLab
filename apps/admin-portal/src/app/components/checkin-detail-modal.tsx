@@ -1,4 +1,8 @@
 import { Modal } from '@my-org/shared-ui';
+import { useEffect, useState } from 'react';
+import { getDownloadURL, ref } from 'firebase/storage';
+import { storage } from '../../init-firebase-auth';
+import { imagePath, SLOTS } from '@my-org/core';
 
 interface CheckinDetailModalProps {
   checkin: any;
@@ -8,6 +12,33 @@ interface CheckinDetailModalProps {
 }
 
 export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: CheckinDetailModalProps) => {
+  const [imgUrls, setImgUrls] = useState<Record<string, string>>({});
+  const [loadingImages, setLoadingImages] = useState(false);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      if (!checkin || !isOpen) return;
+      setLoadingImages(true);
+      const urls: Record<string, string> = {};
+      
+      const fetchPromises = SLOTS.map(async (slot) => {
+        try {
+          const path = imagePath(checkin.userId, checkin.id, slot);
+          const url = await getDownloadURL(ref(storage, path));
+          urls[slot] = url;
+        } catch (e) {
+          console.warn(`Failed to fetch image for slot ${slot}:`, e);
+        }
+      });
+
+      await Promise.all(fetchPromises);
+      setImgUrls(urls);
+      setLoadingImages(false);
+    };
+
+    fetchImages();
+  }, [checkin, isOpen]);
+
   const formatDate = (date: any) => {
     if (date?.toDate) return date.toDate().toLocaleDateString('en-US', {
       weekday: 'long',
@@ -35,8 +66,8 @@ export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: Checki
         <span className="text-sm text-indigo-400 mb-1">/ {max}</span>
       </div>
       <div className="w-full bg-indigo-200 h-1.5 rounded-full mt-2 overflow-hidden">
-        <div
-          className="bg-indigo-600 h-full rounded-full"
+        <div 
+          className="bg-indigo-600 h-full rounded-full" 
           style={{ width: `${(value / max) * 100}%` }}
         ></div>
       </div>
@@ -64,28 +95,28 @@ export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: Checki
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  Progress Photos
+                  Progress Photos {loadingImages && <Loader2Icon className="animate-spin inline-block h-4 w-4 ml-2" />}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {['Front', 'Back', 'Side'].map((label, index) => (
-                    <div key={label} className="space-y-2">
+                  {SLOTS.map((slot) => (
+                    <div key={slot} className="space-y-2">
                       <div className="aspect-[3/4] rounded-xl bg-gray-100 overflow-hidden border-2 border-gray-100 shadow-inner group relative">
-                        {checkin.imgUrls?.[index] ? (
-                          <img
-                            src={checkin.imgUrls[index]}
-                            alt={label}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        {imgUrls[slot] ? (
+                          <img 
+                            src={imgUrls[slot]} 
+                            alt={slot} 
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-gray-400 italic text-sm">
-                            No photo
+                            {loadingImages ? 'Loading...' : 'No photo'}
                           </div>
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                          <span className="text-white text-xs font-bold uppercase">{label} View</span>
+                          <span className="text-white text-xs font-bold uppercase">{slot} View</span>
                         </div>
                       </div>
-                      <p className="text-center text-xs font-bold text-gray-500 uppercase">{label}</p>
+                      <p className="text-center text-xs font-bold text-gray-500 uppercase">{slot}</p>
                     </div>
                   ))}
                 </div>
@@ -133,7 +164,7 @@ export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: Checki
             </div>
 
             <footer className="bg-gray-50 px-8 py-4 border-t border-gray-200 flex justify-end shrink-0">
-              <button
+              <button 
                 onClick={onClose}
                 className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-lg transition-colors uppercase tracking-widest text-xs"
               >
@@ -151,3 +182,27 @@ export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: Checki
     </Modal>
   );
 };
+
+const Loader2Icon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M12 2v4" />
+    <path d="m16.2 7.8 2.9-2.9" />
+    <path d="M18 12h4" />
+    <path d="m16.2 16.2 2.9 2.9" />
+    <path d="M12 18v4" />
+    <path d="m4.9 19.1 2.9-2.9" />
+    <path d="M2 12h4" />
+    <path d="m4.9 4.9 2.9 2.9" />
+  </svg>
+);
