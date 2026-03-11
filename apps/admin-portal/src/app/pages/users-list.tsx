@@ -106,10 +106,10 @@ export const UsersList = () => {
                   <td className="px-6 py-5 whitespace-nowrap">
                     <div className="flex items-center">
                       <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold">
-                        {(user.userId || user.id).substring(0, 2).toUpperCase()}
+                        {(user.displayName || user.email || user.id).substring(0, 2).toUpperCase()}
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-bold text-gray-900">{user.userId || user.id}</div>
+                        <div className="text-sm font-bold text-gray-900">{user.displayName || user.email || user.userId || user.id}</div>
                         <div className="text-xs text-gray-400 font-mono">ID: {user.id}</div>
                       </div>
                     </div>
