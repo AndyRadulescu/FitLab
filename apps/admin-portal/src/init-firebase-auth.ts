@@ -1,6 +1,6 @@
 import { Auth, getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Analytics, getAnalytics, isSupported } from 'firebase/analytics';
-import { Firestore, getFirestore, doc, getDoc } from "firebase/firestore";
+import { Firestore, getFirestore } from "firebase/firestore";
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
 import { userStore } from './app/store/user.store';
@@ -26,6 +26,9 @@ export async function initFirebaseAuth() {
     appId: import.meta.env.VITE_FIREBASE_ADMIN_APP_ID,
     measurementId: import.meta.env.VITE_FIREBASE_ADMIN_MEASUREMENT_ID
   };
+
+
+  console.log(firebaseConfig);
 
   firebaseApp = initializeApp(firebaseConfig);
   auth = getAuth(firebaseApp);

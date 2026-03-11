@@ -45,8 +45,7 @@ export async function initFirebaseAuth() {
   initialized = true;
 
   try {
-    const result = await getRedirectResult(auth);
-    console.log(result);
+    await getRedirectResult(auth);
   } catch (err: any) {
     console.log(err);
     handleAuthErrors(err, i18next.t);
