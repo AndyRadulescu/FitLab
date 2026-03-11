@@ -13,8 +13,8 @@ vi.mock('firebase/storage', () => ({
   getDownloadURL: vi.fn()
 }));
 
-vi.mock('../../image-manager/image-path', () => ({
-  imagePath: vi.fn((userId, checkinId, slot, isSmall) => 
+vi.mock('@my-org/core', () => ({
+  imagePath: vi.fn((userId, checkinId, slot, isSmall) =>
     `path/${userId}/${checkinId}/${slot}${isSmall ? '_small' : ''}`)
 }));
 

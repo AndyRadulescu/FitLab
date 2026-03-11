@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { getCheckinPath, imagePath } from './image-path';
-import { CHECKINS_STORAGE } from '../firestore/constants';
+import { CHECKINS_STORAGE } from './constants';
 
 describe('Storage Path Utilities', () => {
   const userId = 'user123';

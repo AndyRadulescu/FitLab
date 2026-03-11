@@ -21,7 +21,7 @@ vi.mock('../../image-manager/image-compressor.manager', () => ({
   uploadImage: vi.fn(),
 }));
 
-vi.mock('../../image-manager/image-path', () => ({
+vi.mock('@my-org/core', () => ({
   imagePath: vi.fn((userId, checkinId, slot) => `path/${userId}/${checkinId}/${slot}`),
 }));
 
@@ -84,7 +84,7 @@ describe('ImageUploader', () => {
 
   it('handles file upload for a slot', async () => {
     (uploadImage as any).mockResolvedValue(['uploaded-url-front']);
-    
+
     render(
       <ImageUploader
         userId={mockUserId}
@@ -95,7 +95,7 @@ describe('ImageUploader', () => {
 
     const file = new File(['image'], 'front.png', { type: 'image/png' });
     const inputs = document.querySelectorAll('input[type="file"]');
-    
+
     fireEvent.change(inputs[0], { target: { files: [file] } });
 
     // Should show loader while uploading

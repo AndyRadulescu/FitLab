@@ -3,7 +3,7 @@ import { DeleteCheckInStrategy } from './delete.strategy';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { ref, listAll, deleteObject } from 'firebase/storage';
 import { logEvent } from 'firebase/analytics';
-import { getCheckinPath } from '../../image-manager/image-path';
+import { getCheckinPath } from '@my-org/core';
 import { CHECKINS_TABLE } from '../../firestore/constants';
 
 const mockDeleteCheckin = vi.fn();
@@ -19,7 +19,7 @@ vi.mock('firebase/storage', () => ({
   deleteObject: vi.fn(),
 }));
 
-vi.mock('../../image-manager/image-path', () => ({
+vi.mock('@my-org/core', () => ({
   getCheckinPath: vi.fn((uid, cid) => `users/${uid}/checkins/${cid}`),
 }));
 

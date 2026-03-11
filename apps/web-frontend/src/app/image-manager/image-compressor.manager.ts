@@ -1,7 +1,7 @@
 import imageCompression from 'browser-image-compression';
 import { ref, uploadBytes } from 'firebase/storage';
 import { storage } from '../../init-firebase-auth';
-import { imagePath } from './image-path';
+import { imagePath } from '@my-org/core';
 
 async function compressImage(imageFiles: File[]): Promise<File[]> {
   const options = {

@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { collection, getDocs, query, limit } from 'firebase/firestore';
 import { db } from '../../init-firebase-auth';
 import { userStore } from '../store/user.store';
+import { useNavigate } from 'react-router-dom';
 
 export const UsersList = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const currentUser = userStore((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -28,7 +30,6 @@ export const UsersList = () => {
         setUsers(usersList);
       } catch (err: any) {
         console.error('Error fetching users:', err);
-        // Handle "Permission Denied" specifically if possible, otherwise generic error
         if (err.code === 'permission-denied') {
           setError('Permission Required: You must have administrative privileges to view the registered users list.');
         } else {
@@ -41,6 +42,10 @@ export const UsersList = () => {
 
     fetchUsers();
   }, [currentUser]);
+
+  const handleUserClick = (userId: string) => {
+    navigate(userId);
+  };
 
   if (loading) {
     return (
@@ -102,11 +107,19 @@ export const UsersList = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
               {users.map((user) => (
-                <tr key={user.id} className="hover:bg-indigo-50/30 transition-colors duration-150">
+                <tr 
+                  key={user.id} 
+                  onClick={() => handleUserClick(user.id)}
+                  className="hover:bg-indigo-50/30 transition-colors duration-150 cursor-pointer"
+                >
                   <td className="px-6 py-5 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold">
-                        {(user.displayName || user.email || user.id).substring(0, 2).toUpperCase()}
+                      <div className="flex-shrink-0 h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold overflow-hidden">
+                        {user.photoUrl ? (
+                          <img src={user.photoUrl} alt="" className="h-full w-full object-cover" />
+                        ) : (
+                          (user.displayName || user.email || user.id).substring(0, 2).toUpperCase()
+                        )}
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-bold text-gray-900">{user.displayName || user.email || user.userId || user.id}</div>
