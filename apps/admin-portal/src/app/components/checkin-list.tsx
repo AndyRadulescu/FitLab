@@ -1,13 +1,9 @@
-import { useState } from 'react';
-import { CheckinDetailModal } from './checkin-detail-modal';
-
 interface CheckinListProps {
   checkins: any[];
+  onSelectCheckin: (id: string) => void;
 }
 
-export const CheckinList = ({ checkins }: CheckinListProps) => {
-  const [selectedCheckin, setSelectedCheckin] = useState<any | null>(null);
-
+export const CheckinList = ({ checkins, onSelectCheckin }: CheckinListProps) => {
   if (checkins.length === 0) {
     return (
       <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border-2 border-dashed border-gray-200">
@@ -22,7 +18,7 @@ export const CheckinList = ({ checkins }: CheckinListProps) => {
         {checkins.map((checkin) => (
           <div
             key={checkin.id}
-            onClick={() => setSelectedCheckin(checkin)}
+            onClick={() => onSelectCheckin(checkin.id)}
             className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:border-indigo-400 hover:shadow-md cursor-pointer transition-all duration-200"
           >
             <div className="flex items-center gap-4">
@@ -51,14 +47,6 @@ export const CheckinList = ({ checkins }: CheckinListProps) => {
           </div>
         ))}
       </div>
-
-      {selectedCheckin && (
-        <CheckinDetailModal 
-          checkin={selectedCheckin} 
-          isOpen={!!selectedCheckin} 
-          onClose={() => setSelectedCheckin(null)} 
-        />
-      )}
     </div>
   );
 };

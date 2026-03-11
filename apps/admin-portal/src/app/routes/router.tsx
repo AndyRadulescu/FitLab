@@ -30,7 +30,13 @@ export const router = createBrowserRouter([
           },
           {
             path: ':userId',
-            element: <UserDashboard />
+            element: <UserDashboard />,
+            children: [
+              {
+                path: ':checkinId',
+                element: <UserDashboard /> // We can reuse UserDashboard or handle it inside
+              }
+            ]
           }
         ]
       }

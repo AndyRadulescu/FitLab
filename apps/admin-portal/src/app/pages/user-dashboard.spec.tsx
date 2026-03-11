@@ -65,6 +65,7 @@ describe('UserDashboard', () => {
     );
 
     expect(await screen.findByText("John Doe's Dashboard")).toBeTruthy();
+    expect(await screen.findByText('john@example.com')).toBeTruthy();
     expect(await screen.findByText('Check-in History')).toBeTruthy();
     expect(await screen.findByText('Weight: 80 kg')).toBeTruthy();
   });
