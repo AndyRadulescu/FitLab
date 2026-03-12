@@ -5,10 +5,14 @@ import { calculateCm } from './calculate-cm';
 import { Bed, Footprints, Ruler, Trash, Weight, Zap } from 'lucide-react';
 import { CheckInStrategyFactory } from '../../core/checkin-strategy/checkin-strategy';
 import { ImagesDisplay } from '../image/images-display';
+import { userStore } from '../../store/user.store';
 
 export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
   const { i18n, t } = useTranslation();
+  const weights = userStore((state) => state.weights);
   if (!checkin.userId) return null;
+
+  const weight = weights.find(w => w.id === checkin.weightId);
 
   const deleteItem = () => {
     // eslint-disable-next-line no-restricted-globals
@@ -28,7 +32,7 @@ export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
           })}</h1>
           <p
             className="text-gray-500 dark:text-gray-300 flex">
-            <span className="mr-1 text-xs"><Weight className="inline" strokeWidth="1" size="14" /> {checkin.kg}</span>
+            <span className="mr-1 text-xs"><Weight className="inline" strokeWidth="1" size="14" /> {weight?.weight ?? '-'}</span>
             <span className="mr-1 text-xs"><Ruler className="inline" strokeWidth="1" size="14" /> {calculateCm(checkin)}</span>
             <span className="mr-1 text-xs"><Bed className="inline" strokeWidth="1"
                                                 size="14" /> {checkin.hoursSlept}</span>

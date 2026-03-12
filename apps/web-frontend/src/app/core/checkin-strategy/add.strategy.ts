@@ -2,12 +2,12 @@ import { CheckInFormDataDto, checkinStore } from '../../store/checkin.store';
 import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { analytics, db } from '../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
-import { CheckInStrategy } from './checkin-strategy';
+import { CheckInStrategy, CheckinStrategyType } from './checkin-strategy';
 import { CHECKINS_TABLE, WEIGHT_TABLE } from '@my-org/core';
 import { userStore } from '../../store/user.store';
 
 export class AddCheckInStrategy implements CheckInStrategy {
-  async checkIn({ data, userId }: { data: any, userId: string }) {
+  async checkIn({ data, userId }: { data: Partial<CheckinStrategyType>, userId: string }) {
     if (!data.id) return;
     const now = new Date();
     const batch = writeBatch(db);
@@ -15,6 +15,7 @@ export class AddCheckInStrategy implements CheckInStrategy {
     // 1. Handle Weight
     let weightId = data.weightId;
     const weightValue = data.kg;
+    if (weightValue === undefined) return;
 
     if (!weightId) {
       const weightRef = doc(collection(db, WEIGHT_TABLE));
@@ -54,7 +55,7 @@ export class AddCheckInStrategy implements CheckInStrategy {
     const { kg, ...checkinDataWithoutKg } = data;
     const mappedData = {
       ...checkinDataWithoutKg,
-      weightId,
+      weightId: weightId as string,
       createdAt: now,
       updatedAt: now,
       userId

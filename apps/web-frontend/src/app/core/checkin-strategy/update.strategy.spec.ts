@@ -86,7 +86,7 @@ describe('UpdateCheckInStrategy', () => {
   });
 
   it('should handle Firestore update failures gracefully', async () => {
-    const mockData = { id: 'checkin-123' };
+    const mockData = { id: 'checkin-123', weightId: 'w-456' };
     mockBatch.commit.mockRejectedValueOnce(new Error('Firestore Error'));
 
     await expect(strategy.checkIn({ data: mockData as any }))

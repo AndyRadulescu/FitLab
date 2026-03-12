@@ -7,9 +7,10 @@ import { CHECKINS_TABLE, WEIGHT_TABLE } from '@my-org/core';
 import { userStore } from '../../store/user.store';
 
 export class UpdateCheckInStrategy implements CheckInStrategy {
-  async checkIn({ data, userId }: { data: CheckinStrategyType, userId?: string }) {
-    if (data.id === undefined) return;
+  async checkIn({ data, userId }: { data: any, userId?: string }) {
+    if (data.id === undefined || data.weightId === undefined) return;
     const batch = writeBatch(db);
+
     const now = new Date();
 
     // 1. Update weight if exists
@@ -31,7 +32,11 @@ export class UpdateCheckInStrategy implements CheckInStrategy {
     // 2. Update checkin document
     const docRef = doc(db, CHECKINS_TABLE, data.id);
     const { kg, ...checkinDataWithoutKg } = data;
-    const mappedData = { ...checkinDataWithoutKg, updatedAt: now };
+    const mappedData = { 
+      ...checkinDataWithoutKg, 
+      weightId: data.weightId,
+      updatedAt: now 
+    };
 
     batch.update(docRef, {
       ...checkinDataWithoutKg,
