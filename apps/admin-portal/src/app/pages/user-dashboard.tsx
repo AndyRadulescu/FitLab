@@ -5,11 +5,13 @@ import { db } from '../../init-firebase-auth';
 import { CheckinList } from '../components/checkin-list';
 import { Button } from '@my-org/shared-ui';
 import { CheckinDetailModal } from '../components/checkin-detail-modal';
+import { WeightChart } from '../components/weight-chart';
 
 export const UserDashboard = () => {
   const { userId, checkinId } = useParams<{ userId: string; checkinId?: string }>();
   const navigate = useNavigate();
   const [checkins, setCheckins] = useState<any[]>([]);
+  const [weights, setWeights] = useState<any[]>([]);
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,10 +40,13 @@ export const UserDashboard = () => {
         // Fetch weights
         const weightsQuery = query(
           collection(db, 'weights'),
-          where('userId', '==', userId)
+          where('userId', '==', userId),
+          orderBy('createdAt', 'asc')
         );
         const weightsSnapshot = await getDocs(weightsQuery);
-        const weightsMap = new Map(weightsSnapshot.docs.map(doc => [doc.id, doc.data().weight]));
+        const weightsList = weightsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as any));
+        const weightsMap = new Map(weightsList.map(w => [w.id, w.weight]));
+        setWeights(weightsList);
 
         const list = snapshot.docs.map(doc => {
           const data = doc.data();
@@ -125,6 +130,11 @@ export const UserDashboard = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      <div className="bg-white shadow-xl rounded-xl p-6 border border-gray-100">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">Weight Fluctuation</h3>
+        <WeightChart weights={weights} />
       </div>
 
       <div className="bg-white shadow-xl rounded-xl p-6 border border-gray-100">
