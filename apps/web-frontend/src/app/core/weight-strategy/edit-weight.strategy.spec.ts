@@ -3,7 +3,7 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { EditWeightStrategy } from './edit-weight.strategy';
 import { Weight } from '../../store/user.store';
-import { CHECKINS_TABLE, WEIGHT_TABLE } from '../../firestore/constants';
+import { WEIGHT_TABLE } from '@my-org/core';
 
 const mockUpdateWeightLocal = vi.fn();
 const mockUpdateCheckinLocal = vi.fn();
@@ -80,23 +80,27 @@ describe('EditWeightStrategy', () => {
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'edit-weight');
   });
 
-  it('should update weight in CHECKINS_TABLE when from is checkin', async () => {
-    const mockData: Weight = { id: 'checkin-abc', weight: 88.0, createdAt: new Date(), from: 'checkin' };
+  it('should update weight in WEIGHT_TABLE even if from is checkin', async () => {
+    const mockData: Weight = { id: 'weight-123', weight: 88.0, createdAt: new Date(), from: 'checkin' };
     const userId = 'user-123';
-    const mockDocRef = { id: 'checkin-abc' };
+    const mockDocRef = { id: 'weight-123' };
 
     (doc as any).mockReturnValue(mockDocRef);
     (updateDoc as any).mockResolvedValue(undefined);
 
     await strategy.weight(mockData, userId, mockT);
 
-    expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, 'checkin-abc');
+    expect(doc).toHaveBeenCalledWith(expect.anything(), WEIGHT_TABLE, 'weight-123');
     expect(updateDoc).toHaveBeenCalledWith(mockDocRef, {
-      kg: 88.0,
+      weight: 88.0,
       updatedAt: 'mock-timestamp'
     });
 
-    expect(mockUpdateCheckinLocal).toHaveBeenCalledWith('checkin-abc', 88.0, MOCK_DATE);
+    expect(mockUpdateWeightLocal).toHaveBeenCalledWith({
+      ...mockData,
+      weight: 88.0,
+      updatedAt: MOCK_DATE
+    });
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'edit-weight');
   });
 

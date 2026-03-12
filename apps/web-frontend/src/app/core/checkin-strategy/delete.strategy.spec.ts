@@ -1,16 +1,25 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest';
 import { DeleteCheckInStrategy } from './delete.strategy';
-import { doc, deleteDoc } from 'firebase/firestore';
+import { doc, writeBatch } from 'firebase/firestore';
 import { ref, listAll, deleteObject } from 'firebase/storage';
 import { logEvent } from 'firebase/analytics';
 import { getCheckinPath } from '@my-org/core';
-import { CHECKINS_TABLE } from '../../firestore/constants';
+import { CHECKINS_TABLE, WEIGHT_TABLE } from '../../firestore/constants';
 
 const mockDeleteCheckin = vi.fn();
+const mockDeleteWeight = vi.fn();
+
+const mockBatch = {
+  delete: vi.fn(),
+  commit: vi.fn().mockResolvedValue(undefined),
+};
 
 vi.mock('firebase/firestore', () => ({
-  doc: vi.fn(),
-  deleteDoc: vi.fn(),
+  doc: vi.fn((...args) => {
+    if (args.length === 3) return { id: args[2], table: args[1] };
+    return { id: 'random-id' };
+  }),
+  writeBatch: vi.fn(() => mockBatch),
 }));
 
 vi.mock('firebase/storage', () => ({
@@ -21,6 +30,8 @@ vi.mock('firebase/storage', () => ({
 
 vi.mock('@my-org/core', () => ({
   getCheckinPath: vi.fn((uid, cid) => `users/${uid}/checkins/${cid}`),
+  CHECKINS_TABLE: 'checkins',
+  WEIGHT_TABLE: 'weights',
 }));
 
 vi.mock('../../../init-firebase-auth', () => ({
@@ -41,6 +52,14 @@ vi.mock('../../store/checkin.store', () => ({
   }
 }));
 
+vi.mock('../../store/user.store', () => ({
+  userStore: {
+    getState: vi.fn(() => ({
+      deleteWeight: mockDeleteWeight
+    }))
+  }
+}));
+
 global.alert = vi.fn();
 
 describe('DeleteCheckInStrategy', () => {
@@ -51,10 +70,11 @@ describe('DeleteCheckInStrategy', () => {
     strategy = new DeleteCheckInStrategy();
   });
 
-  it('should delete all files in storage and the firestore document', async () => {
+  it('should delete all files in storage and the firestore documents (checkin and weight)', async () => {
     const userId = 'user-123';
     const checkinId = 'checkin-456';
-    const payload = { id: checkinId };
+    const weightId = 'weight-789';
+    const payload = { id: checkinId, weightId };
 
     const mockFiles = {
       items: [
@@ -64,7 +84,6 @@ describe('DeleteCheckInStrategy', () => {
     };
     (listAll as any).mockResolvedValue(mockFiles);
     (deleteObject as any).mockResolvedValue(undefined);
-    (deleteDoc as any).mockResolvedValue(undefined);
 
     await strategy.checkIn({ data: payload as any, userId });
 
@@ -72,10 +91,30 @@ describe('DeleteCheckInStrategy', () => {
     expect(ref).toHaveBeenCalledWith(expect.anything(), `users/${userId}/checkins/${checkinId}`);
     expect(listAll).toHaveBeenCalled();
     expect(deleteObject).toHaveBeenCalledTimes(2);
+
+    // Verify batch deletes
     expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, checkinId);
-    expect(deleteDoc).toHaveBeenCalled();
+    expect(doc).toHaveBeenCalledWith(expect.anything(), WEIGHT_TABLE, weightId);
+    expect(mockBatch.delete).toHaveBeenCalledTimes(2);
+    expect(mockBatch.commit).toHaveBeenCalled();
+
     expect(mockDeleteCheckin).toHaveBeenCalledWith(checkinId);
+    expect(mockDeleteWeight).toHaveBeenCalledWith(weightId);
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'delete-checkin');
+  });
+
+  it('should only delete checkin if weightId is missing', async () => {
+    const userId = 'user-123';
+    const checkinId = 'checkin-456';
+    const payload = { id: checkinId };
+
+    (listAll as any).mockResolvedValue({ items: [] });
+
+    await strategy.checkIn({ data: payload as any, userId });
+
+    expect(mockBatch.delete).toHaveBeenCalledTimes(1);
+    expect(mockDeleteCheckin).toHaveBeenCalledWith(checkinId);
+    expect(mockDeleteWeight).not.toHaveBeenCalled();
   });
 
   it('should throw error if checkin ID is missing', async () => {
@@ -100,11 +139,10 @@ describe('DeleteCheckInStrategy', () => {
     const mockFiles = { items: [{ name: 'img1.jpg' }] };
     (listAll as any).mockResolvedValue(mockFiles);
     (deleteObject as any).mockRejectedValue(new Error('File locked')); // This fails
-    (deleteDoc as any).mockResolvedValue(undefined); // This succeeds
 
     await strategy.checkIn({ data: { id: 'id-1' } as any, userId: 'u1' });
 
-    expect(deleteDoc).toHaveBeenCalled();
+    expect(mockBatch.delete).toHaveBeenCalled();
     expect(mockDeleteCheckin).toHaveBeenCalledWith('id-1');
   });
 });

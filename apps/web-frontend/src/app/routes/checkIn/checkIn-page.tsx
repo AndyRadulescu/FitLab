@@ -20,7 +20,7 @@ export function CheckInPage() {
         onSubmit={onSubmit}
         user={user!}
         activeCheckinId={activeCheckinId}
-        isEdit={!!checkinData}
+        isEdit={!!checkinData?.id}
       />
     </div>
   );

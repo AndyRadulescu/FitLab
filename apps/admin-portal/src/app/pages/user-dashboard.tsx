@@ -34,10 +34,23 @@ export const UserDashboard = () => {
           orderBy('createdAt', 'desc')
         );
         const snapshot = await getDocs(checkinsQuery);
-        const list = snapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data()
-        }));
+        
+        // Fetch weights
+        const weightsQuery = query(
+          collection(db, 'weights'),
+          where('userId', '==', userId)
+        );
+        const weightsSnapshot = await getDocs(weightsQuery);
+        const weightsMap = new Map(weightsSnapshot.docs.map(doc => [doc.id, doc.data().weight]));
+
+        const list = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            kg: weightsMap.get(data.weightId) || data.kg // Fallback to data.kg for legacy checkins
+          };
+        });
         setCheckins(list);
       } catch (err: any) {
         console.error('Error fetching user data:', err);

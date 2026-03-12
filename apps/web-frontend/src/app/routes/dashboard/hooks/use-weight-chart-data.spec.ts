@@ -3,14 +3,9 @@ import { renderHook } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useWeightChartData } from './use-weight-chart-data';
 import { userStore } from '../../../store/user.store';
-import { checkinStore } from '../../../store/checkin.store';
 
 vi.mock('../../../store/user.store', () => ({
   userStore: vi.fn(),
-}));
-
-vi.mock('../../../store/checkin.store', () => ({
-  checkinStore: vi.fn(),
 }));
 
 describe('useWeightChartData', () => {
@@ -20,23 +15,19 @@ describe('useWeightChartData', () => {
 
   it('should return an empty array when no data is present', () => {
     (userStore as any).mockImplementation((selector: any) => selector({ weights: [] }));
-    (checkinStore as any).mockImplementation((selector: any) => selector({ checkins: [] }));
 
     const { result } = renderHook(() => useWeightChartData());
     expect(result.current).toEqual([]);
   });
 
-  it('should merge and sort weights from both stores', () => {
+  it('should sort weights from the store', () => {
     const weights = [
       { createdAt: new Date('2026-02-10'), weight: 70 },
-    ];
-    const checkins = [
-      { createdAt: new Date('2026-02-11'), kg: 71 },
-      { createdAt: new Date('2026-02-09'), kg: 69 },
+      { createdAt: new Date('2026-02-11'), weight: 71 },
+      { createdAt: new Date('2026-02-09'), weight: 69 },
     ];
 
     (userStore as any).mockImplementation((selector: any) => selector({ weights }));
-    (checkinStore as any).mockImplementation((selector: any) => selector({ checkins }));
 
     const { result } = renderHook(() => useWeightChartData());
 
@@ -49,13 +40,10 @@ describe('useWeightChartData', () => {
   it('should deduplicate entries for the same day, keeping the latest', () => {
     const weights = [
       { createdAt: new Date('2026-02-10T08:00:00'), weight: 70 },
-    ];
-    const checkins = [
-      { createdAt: new Date('2026-02-10T10:00:00'), kg: 72 },
+      { createdAt: new Date('2026-02-10T10:00:00'), weight: 72 },
     ];
 
     (userStore as any).mockImplementation((selector: any) => selector({ weights }));
-    (checkinStore as any).mockImplementation((selector: any) => selector({ checkins }));
 
     const { result } = renderHook(() => useWeightChartData());
 
@@ -70,7 +58,6 @@ describe('useWeightChartData', () => {
     }));
 
     (userStore as any).mockImplementation((selector: any) => selector({ weights }));
-    (checkinStore as any).mockImplementation((selector: any) => selector({ checkins: [] }));
 
     const { result } = renderHook(() => useWeightChartData());
 
