@@ -79,11 +79,14 @@ export function ImagesDisplay({ checkinId, userId }: { checkinId: string, userId
         isOpen={!!selectedImage}
         onClose={() => setSelectedImage(null)}
       >
-        <img
-          src={selectedImage?.url || ''}
-          alt={selectedImage?.label || ''}
-          className="max-w-full max-h-full object-contain rounded-lg"
-        />
+        {
+          selectedImage?.url &&
+          <img
+            src={selectedImage?.url}
+            alt={selectedImage?.label || ''}
+            className="max-w-full max-h-full object-contain rounded-lg"
+          />
+        }
       </Modal>
     </div>
   );
