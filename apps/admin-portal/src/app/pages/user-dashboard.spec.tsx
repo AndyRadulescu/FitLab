@@ -44,17 +44,27 @@ describe('UserDashboard', () => {
       data: () => ({ displayName: 'John Doe', email: 'john@example.com' })
     });
 
-    (getDocs as any).mockResolvedValue({
-      docs: [
-        {
-          id: 'checkin1',
-          data: () => ({
-            kg: 80,
-            createdAt: { toDate: () => new Date('2024-01-01') }
-          })
-        }
-      ]
-    });
+    // First getDocs call for checkins, second for weights
+    (getDocs as any)
+      .mockResolvedValueOnce({
+        docs: [
+          {
+            id: 'checkin1',
+            data: () => ({
+              weightId: 'weight1',
+              createdAt: { toDate: () => new Date('2024-01-01') }
+            })
+          }
+        ]
+      })
+      .mockResolvedValueOnce({
+        docs: [
+          {
+            id: 'weight1',
+            data: () => ({ weight: 85 })
+          }
+        ]
+      });
 
     render(
       <MemoryRouter initialEntries={['/dashboard/user123']}>
@@ -67,6 +77,6 @@ describe('UserDashboard', () => {
     expect(await screen.findByText("John Doe's Dashboard")).toBeTruthy();
     expect(await screen.findByText('john@example.com')).toBeTruthy();
     expect(await screen.findByText('Check-in History')).toBeTruthy();
-    expect(await screen.findByText('Weight: 80 kg')).toBeTruthy();
+    expect(await screen.findByText('Weight: 85 kg')).toBeTruthy();
   });
 });
