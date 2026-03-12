@@ -21,7 +21,8 @@ vi.mock('@my-org/core', () => ({
 vi.mock('lucide-react', () => ({
   CameraOff: () => <div data-testid="camera-off-icon" />,
   Loader2: () => <div data-testid="loader-icon" />,
-  X: () => <div data-testid="close-icon" />
+  X: () => <div data-testid="close-icon" />,
+  Image: () => <div data-testid="image-icon" />
 }));
 
 vi.mock('@my-org/shared-ui', () => ({

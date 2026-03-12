@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getDownloadURL, getStorage, ref } from 'firebase/storage';
-import { CameraOff, Loader2 } from 'lucide-react';
+import { CameraOff, Loader2, Image as ImageIcon } from 'lucide-react';
 import { SLOTS } from '../../core/constants';
 import { Modal } from '@my-org/shared-ui';
 import { imagePath } from '@my-org/core';
@@ -79,11 +79,20 @@ export function ImagesDisplay({ checkinId, userId }: { checkinId: string, userId
         isOpen={!!selectedImage}
         onClose={() => setSelectedImage(null)}
       >
-        <img
-          src={selectedImage?.url || ''}
-          alt={selectedImage?.label || ''}
-          className="max-w-full max-h-full object-contain rounded-lg"
-        />
+        <div className="flex items-center justify-center min-h-[300px] w-full">
+          {selectedImage?.url ? (
+            <img
+              src={selectedImage.url}
+              alt={selectedImage.label || ''}
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+          ) : (
+            <div className="flex flex-col items-center gap-2 text-gray-400">
+              <ImageIcon size={48} strokeWidth={1} />
+              <span className="text-sm italic">Image not available</span>
+            </div>
+          )}
+        </div>
       </Modal>
     </div>
   );

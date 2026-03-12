@@ -18,6 +18,10 @@ vi.mock('../../init-firebase-auth', () => ({
   db: {},
 }));
 
+vi.mock('../components/weight-chart', () => ({
+  WeightChart: () => <div data-testid="weight-chart">Weight Chart Mock</div>,
+}));
+
 describe('UserDashboard', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -76,6 +80,8 @@ describe('UserDashboard', () => {
 
     expect(await screen.findByText("John Doe's Dashboard")).toBeTruthy();
     expect(await screen.findByText('john@example.com')).toBeTruthy();
+    expect(await screen.findByText('Weight Fluctuation')).toBeTruthy();
+    expect(screen.getByTestId('weight-chart')).toBeTruthy();
     expect(await screen.findByText('Check-in History')).toBeTruthy();
     expect(await screen.findByText('Weight: 85 kg')).toBeTruthy();
   });
