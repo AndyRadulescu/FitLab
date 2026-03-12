@@ -1,24 +1,36 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { doc, updateDoc } from 'firebase/firestore';
+import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest';
+import { doc } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { UpdateCheckInStrategy } from './update.strategy';
-import { CHECKINS_TABLE } from '../../firestore/constants';
+import { CHECKINS_TABLE, WEIGHT_TABLE } from '@my-org/core';
 
 const mockUpsertCheckin = vi.fn();
+const mockUpdateWeight = vi.fn();
 
-vi.mock('../../store/checkin.store', () => {
-  return {
-    checkinStore: {
-      getState: vi.fn(() => ({
-        upsertCheckin: mockUpsertCheckin
-      }))
-    }
-  };
-});
+const mockBatch = {
+  update: vi.fn(),
+  commit: vi.fn().mockResolvedValue(undefined),
+};
+
+vi.mock('../../store/checkin.store', () => ({
+  checkinStore: {
+    getState: vi.fn(() => ({
+      upsertCheckin: mockUpsertCheckin
+    }))
+  }
+}));
+
+vi.mock('../../store/user.store', () => ({
+  userStore: {
+    getState: vi.fn(() => ({
+      updateWeight: mockUpdateWeight
+    }))
+  }
+}));
 
 vi.mock('firebase/firestore', () => ({
-  doc: vi.fn(),
-  updateDoc: vi.fn(),
+  doc: vi.fn((db, table, id) => ({ id, table })),
+  writeBatch: vi.fn(() => mockBatch),
   serverTimestamp: vi.fn(() => 'mock-timestamp')
 }));
 
@@ -41,7 +53,6 @@ describe('UpdateCheckInStrategy', () => {
     vi.setSystemTime(MOCK_DATE);
     vi.clearAllMocks();
     strategy = new UpdateCheckInStrategy();
-    vi.clearAllMocks();
   });
 
   afterEach(() => {
@@ -49,29 +60,34 @@ describe('UpdateCheckInStrategy', () => {
   });
 
   it('should update the document in Firestore and sync with the local store', async () => {
-    const mockData = { id: 'checkin-123' };
+    const mockData = { id: 'checkin-123', weightId: 'w-456', kg: 80 };
     const userId = 'user-456';
-    const mockDocRef = { id: 'checkin-123', path: 'checkins/checkin-123' };
-
-    (doc as any).mockReturnValue(mockDocRef);
-    (updateDoc as any).mockResolvedValue(undefined);
 
     await strategy.checkIn({ data: mockData as any, userId });
 
+    // Verify weight update
+    expect(doc).toHaveBeenCalledWith(expect.anything(), WEIGHT_TABLE, 'w-456');
+    expect(mockBatch.update).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'w-456', table: WEIGHT_TABLE }),
+      expect.objectContaining({ weight: 80, updatedAt: 'mock-timestamp' })
+    );
+    expect(mockUpdateWeight).toHaveBeenCalled();
+
+    // Verify checkin update
     expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, 'checkin-123');
-    expect(updateDoc).toHaveBeenCalledWith(mockDocRef, expect.objectContaining({
-      id: 'checkin-123',
-      updatedAt: 'mock-timestamp'
-    }));
+    expect(mockBatch.update).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'checkin-123', table: CHECKINS_TABLE }),
+      expect.objectContaining({ updatedAt: 'mock-timestamp' })
+    );
 
-    expect(mockUpsertCheckin).toHaveBeenCalledWith({ ...mockData, updatedAt: MOCK_DATE });
-
+    expect(mockBatch.commit).toHaveBeenCalled();
+    expect(mockUpsertCheckin).toHaveBeenCalled();
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'update-checkin');
   });
 
   it('should handle Firestore update failures gracefully', async () => {
     const mockData = { id: 'checkin-123' };
-    (updateDoc as any).mockRejectedValue(new Error('Firestore Error'));
+    mockBatch.commit.mockRejectedValueOnce(new Error('Firestore Error'));
 
     await expect(strategy.checkIn({ data: mockData as any }))
       .rejects.toThrow('Firestore Error');

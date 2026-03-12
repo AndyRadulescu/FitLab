@@ -3,7 +3,7 @@ import { AddCheckInStrategy } from './add.strategy';
 import { DeleteCheckInStrategy } from './delete.strategy';
 import { CheckInFormData } from '../../routes/checkIn/types';
 
-export type CheckinStrategyType = Omit<CheckInFormData, 'imgUrls'> & { id?: string, createdAt?: Date };
+export type CheckinStrategyType = Omit<CheckInFormData, 'imgUrls'> & { id?: string, createdAt?: Date, weightId?: string };
 
 export interface CheckInStrategy {
   checkIn: ({ data, userId }: { data: CheckinStrategyType, userId: string }) => Promise<void>;

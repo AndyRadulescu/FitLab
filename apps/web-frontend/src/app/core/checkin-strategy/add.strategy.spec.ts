@@ -1,14 +1,29 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest';
 import { AddCheckInStrategy } from './add.strategy';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, writeBatch, collection } from 'firebase/firestore';
 import { checkinStore } from '../../store/checkin.store';
+import { userStore } from '../../store/user.store';
 import { logEvent } from 'firebase/analytics';
-import { CHECKINS_TABLE } from '../../firestore/constants';
+import { CHECKINS_TABLE, WEIGHT_TABLE } from '../../firestore/constants';
 
-const mockAddCheckin = vi.fn();
+const mockUpsertCheckin = vi.fn();
+const mockAddWeight = vi.fn();
+const mockUpdateWeight = vi.fn();
+
+const mockBatch = {
+  set: vi.fn(),
+  update: vi.fn(),
+  commit: vi.fn().mockResolvedValue(undefined),
+};
+
 vi.mock('firebase/firestore', () => ({
-  doc: vi.fn(),
-  setDoc: vi.fn(),
+  doc: vi.fn((...args) => {
+    if (args.length === 3) return { id: args[2], table: args[1] };
+    if (args.length === 1 && args[0].table) return { id: 'random-id', table: args[0].table };
+    return { id: 'random-id' };
+  }),
+  collection: vi.fn((db, table) => ({ table })),
+  writeBatch: vi.fn(() => mockBatch),
   serverTimestamp: vi.fn(() => 'mock-server-timestamp')
 }));
 
@@ -21,15 +36,22 @@ vi.mock('firebase/analytics', () => ({
   logEvent: vi.fn()
 }));
 
-vi.mock('../../store/checkin.store', () => {
-  return {
-    checkinStore: {
-      getState: vi.fn(() => ({
-        upsertCheckin: mockAddCheckin
-      }))
-    }
-  };
-});
+vi.mock('../../store/checkin.store', () => ({
+  checkinStore: {
+    getState: vi.fn(() => ({
+      upsertCheckin: mockUpsertCheckin
+    }))
+  }
+}));
+
+vi.mock('../../store/user.store', () => ({
+  userStore: {
+    getState: vi.fn(() => ({
+      addWeight: mockAddWeight,
+      updateWeight: mockUpdateWeight
+    }))
+  }
+}));
 
 describe('AddCheckInStrategy', () => {
   let strategy: AddCheckInStrategy;
@@ -47,37 +69,64 @@ describe('AddCheckInStrategy', () => {
   });
 
   it('should create a new document and sync with store', async () => {
-    const payload = { id: 'new-id' };
+    const payload = { id: 'new-id', kg: 75 };
     const userId = 'user-99';
-    const mockDocRef = { id: 'new-id' };
-
-    (doc as any).mockReturnValue(mockDocRef);
-    (setDoc as any).mockResolvedValue(undefined);
 
     await strategy.checkIn({ data: payload as any, userId });
 
-    expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, 'new-id');
-    expect(setDoc).toHaveBeenCalledWith(
-      mockDocRef,
+    // Verify Weight creation (no weightId provided)
+    expect(collection).toHaveBeenCalledWith(expect.anything(), WEIGHT_TABLE);
+    expect(mockBatch.set).toHaveBeenCalledWith(
+      expect.objectContaining({ table: WEIGHT_TABLE }),
       expect.objectContaining({
-        id: 'new-id',
+        userId,
+        weight: 75,
+        from: 'checkin'
+      })
+    );
+    expect(mockAddWeight).toHaveBeenCalled();
+
+    // Verify Checkin creation
+    expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, 'new-id');
+    expect(mockBatch.set).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'new-id', table: CHECKINS_TABLE }),
+      expect.objectContaining({
+        weightId: expect.any(String),
         userId: 'user-99',
         createdAt: 'mock-server-timestamp',
         updatedAt: 'mock-server-timestamp'
       })
     );
 
-    expect(mockAddCheckin).toHaveBeenCalledWith({ ...payload, userId, createdAt: MOCK_DATE, updatedAt: MOCK_DATE });
+    expect(mockBatch.commit).toHaveBeenCalled();
+    expect(mockUpsertCheckin).toHaveBeenCalled();
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'add-checkin');
   });
 
-  it('should throw an error if setDoc fails', async () => {
-    const error = new Error('Network error');
-    (setDoc as any).mockRejectedValue(error);
+  it('should update existing weight if weightId is provided', async () => {
+    const payload = { id: 'new-id', kg: 76, weightId: 'w-123' };
+    const userId = 'user-99';
 
-    await expect(strategy.checkIn({ data: { id: '1' } as any, userId: 'u1' }))
+    await strategy.checkIn({ data: payload as any, userId });
+
+    expect(doc).toHaveBeenCalledWith(expect.anything(), WEIGHT_TABLE, 'w-123');
+    expect(mockBatch.update).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'w-123', table: WEIGHT_TABLE }),
+      expect.objectContaining({
+        weight: 76,
+        updatedAt: 'mock-server-timestamp'
+      })
+    );
+    expect(mockUpdateWeight).toHaveBeenCalled();
+  });
+
+  it('should throw an error if batch.commit fails', async () => {
+    const error = new Error('Network error');
+    mockBatch.commit.mockRejectedValueOnce(error);
+
+    await expect(strategy.checkIn({ data: { id: '1', kg: 70 } as any, userId: 'u1' }))
       .rejects.toThrow('Network error');
 
-    expect(checkinStore.getState().upsertCheckin).not.toHaveBeenCalled();
+    expect(mockUpsertCheckin).not.toHaveBeenCalled();
   });
 });

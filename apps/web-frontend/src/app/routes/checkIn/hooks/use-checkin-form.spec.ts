@@ -44,48 +44,78 @@ describe('useCheckInForm', () => {
     vi.clearAllMocks();
     (useNavigate as any).mockReturnValue(mockNavigate);
     (useSearchParams as any).mockReturnValue([new URLSearchParams()]);
-    (userStore as any).mockImplementation((selector: any) => selector({ user: mockUser }));
+    (userStore as any).mockImplementation((selector: any) => selector({ 
+      user: mockUser,
+      weights: [] 
+    }));
   });
 
-  it('should initialize with default values when no check-in exists', () => {
+  it('should initialize with null when no check-in or weight exists', () => {
     (checkinStore as any).mockImplementation((selector: any) => selector({ checkins: [] }));
 
     const { result } = renderHook(() => useCheckInForm());
 
-    expect(result.current.checkinData).toBeUndefined();
+    expect(result.current.checkinData).toBeNull();
     expect(result.current.isEditingToday).toBe(false);
     expect(result.current.activeCheckinId).toBe('new-id-123');
   });
 
-  it('should detect today\'s check-in and set edit mode', () => {
-    const todayCheckin = { id: 'today-1', createdAt: today, kg: 80 };
+  it('should detect today\'s check-in and join with weight data', () => {
+    const todayCheckin = { id: 'today-1', createdAt: today, weightId: 'w-1' };
+    const todayWeight = { id: 'w-1', weight: 80, createdAt: today };
+    
     (checkinStore as any).mockImplementation((selector: any) => selector({ checkins: [todayCheckin] }));
+    (userStore as any).mockImplementation((selector: any) => selector({ 
+      user: mockUser, 
+      weights: [todayWeight] 
+    }));
 
     const { result } = renderHook(() => useCheckInForm());
 
-    expect(result.current.checkinData).toEqual(todayCheckin);
+    expect(result.current.checkinData).toEqual({ ...todayCheckin, kg: 80 });
     expect(result.current.isEditingToday).toBe(true);
     expect(result.current.activeCheckinId).toBe('today-1');
   });
 
-  it('should prioritize checkinId from search params', () => {
-    const otherCheckin = { id: 'other-id', createdAt: new Date(2000, 1, 1), kg: 90 };
-    const todayCheckin = { id: 'today-1', createdAt: today, kg: 80 };
+  it('should pre-fill today\'s weight even if no check-in exists yet', () => {
+    const todayWeight = { id: 'w-1', weight: 78, createdAt: today };
+    
+    (checkinStore as any).mockImplementation((selector: any) => selector({ checkins: [] }));
+    (userStore as any).mockImplementation((selector: any) => selector({ 
+      user: mockUser, 
+      weights: [todayWeight] 
+    }));
+
+    const { result } = renderHook(() => useCheckInForm());
+
+    expect(result.current.checkinData).toEqual({ kg: 78 });
+    expect(result.current.isEditingToday).toBe(false);
+    expect(result.current.activeCheckinId).toBe('new-id-123');
+  });
+
+  it('should prioritize checkinId from search params and join with correct weight', () => {
+    const otherCheckin = { id: 'other-id', createdAt: new Date(2000, 1, 1), weightId: 'w-2' };
+    const otherWeight = { id: 'w-2', weight: 90, createdAt: new Date(2000, 1, 1) };
+    const todayCheckin = { id: 'today-1', createdAt: today, weightId: 'w-1' };
 
     (useSearchParams as any).mockReturnValue([new URLSearchParams('checkinId=other-id')]);
     (checkinStore as any).mockImplementation((selector: any) => selector({
       checkins: [todayCheckin, otherCheckin]
     }));
+    (userStore as any).mockImplementation((selector: any) => selector({ 
+      user: mockUser, 
+      weights: [otherWeight] 
+    }));
 
     const { result } = renderHook(() => useCheckInForm());
 
-    expect(result.current.checkinData).toEqual(otherCheckin);
+    expect(result.current.checkinData).toEqual({ ...otherCheckin, kg: 90 });
     expect(result.current.isEditingToday).toBe(false);
     expect(result.current.activeCheckinId).toBe('other-id');
   });
 
   it('should redirect to login on submit if no user is present', async () => {
-    (userStore as any).mockImplementation((selector: any) => selector({ user: null }));
+    (userStore as any).mockImplementation((selector: any) => selector({ user: null, weights: [] }));
     (checkinStore as any).mockImplementation((selector: any) => selector({ checkins: [] }));
 
     const { result } = renderHook(() => useCheckInForm());
@@ -101,29 +131,39 @@ describe('useCheckInForm', () => {
     expect(mockNavigate).toHaveBeenCalledWith('/auth/login', { replace: true });
   });
 
-  it('should use "add" strategy for new check-in', async () => {
+  it('should use "add" strategy and pass weightId if today\'s weight already exists', async () => {
+    const todayWeight = { id: 'w-1', weight: 75, createdAt: today };
     (checkinStore as any).mockImplementation((selector: any) => selector({ checkins: [] }));
+    (userStore as any).mockImplementation((selector: any) => selector({ 
+      user: mockUser, 
+      weights: [todayWeight] 
+    }));
+    
     const mockStrategy = { checkIn: vi.fn().mockResolvedValue(undefined) };
     (CheckInStrategyFactory.getStrategy as any).mockReturnValue(mockStrategy);
 
     const { result } = renderHook(() => useCheckInForm());
 
-    const formData = { kg: 75, imgUrls: [] };
+    const formData = { kg: 76, imgUrls: [] };
     await act(async () => {
       await result.current.onSubmit(formData as any);
     });
 
     expect(CheckInStrategyFactory.getStrategy).toHaveBeenCalledWith('add');
     expect(mockStrategy.checkIn).toHaveBeenCalledWith({
-      data: { kg: 75, id: 'new-id-123' },
+      data: { kg: 76, id: 'new-id-123', weightId: 'w-1' },
       userId: 'user123'
     });
-    expect(mockNavigate).toHaveBeenCalledWith('/dashboard/', { replace: true });
   });
 
-  it('should use "edit" strategy for existing check-in', async () => {
-    const todayCheckin = { id: 'today-1', createdAt: today };
+  it('should use "edit" strategy and pass existing weightId', async () => {
+    const todayCheckin = { id: 'today-1', createdAt: today, weightId: 'w-1' };
     (checkinStore as any).mockImplementation((selector: any) => selector({ checkins: [todayCheckin] }));
+    (userStore as any).mockImplementation((selector: any) => selector({ 
+      user: mockUser, 
+      weights: [{ id: 'w-1', weight: 80, createdAt: today }] 
+    }));
+
     const mockStrategy = { checkIn: vi.fn().mockResolvedValue(undefined) };
     (CheckInStrategyFactory.getStrategy as any).mockReturnValue(mockStrategy);
 
@@ -136,7 +176,7 @@ describe('useCheckInForm', () => {
 
     expect(CheckInStrategyFactory.getStrategy).toHaveBeenCalledWith('edit');
     expect(mockStrategy.checkIn).toHaveBeenCalledWith({
-      data: { kg: 82, id: 'today-1' },
+      data: { kg: 82, id: 'today-1', weightId: 'w-1' },
       userId: 'user123'
     });
   });

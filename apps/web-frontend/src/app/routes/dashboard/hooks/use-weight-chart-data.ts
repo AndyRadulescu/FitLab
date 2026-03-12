@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { userStore } from '../../../store/user.store';
-import { checkinStore } from '../../../store/checkin.store';
 
 export interface ChartDataPoint {
   date: string;
@@ -10,7 +9,6 @@ export interface ChartDataPoint {
 
 export function useWeightChartData() {
   const weights = userStore((state) => state.weights);
-  const checkins = checkinStore((state) => state.checkins);
 
   return useMemo(() => {
     const data: ChartDataPoint[] = [];
@@ -21,16 +19,6 @@ export function useWeightChartData() {
         weight: weight.weight,
         timestamp: new Date(weight.createdAt).getTime()
       });
-    });
-
-    checkins.forEach((checkin) => {
-      if (checkin.kg) {
-        data.push({
-          date: new Date(checkin.createdAt).toLocaleDateString(),
-          weight: checkin.kg,
-          timestamp: new Date(checkin.createdAt).getTime()
-        });
-      }
     });
 
     data.sort((a, b) => a.timestamp - b.timestamp);
@@ -46,5 +34,5 @@ export function useWeightChartData() {
     }
 
     return uniqueData.slice(-10);
-  }, [weights, checkins]);
+  }, [weights]);
 }

@@ -3,15 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { Resolver, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userStore, Weight } from '../../../store/user.store';
-import { checkinStore } from '../../../store/checkin.store';
 import { WeightStrategyFactory } from '../../../core/weight-strategy/weight-strategy';
-import { getTodayWeight, transformCheckinsToWeights } from '../utils';
+import { getTodayWeight } from '../utils';
 import { WeightFormData, weightSchema } from '../types';
 
 export function useWeightInputForm() {
   const { t } = useTranslation();
   const { weights, user } = userStore();
-  const { checkins } = checkinStore();
   const [todayWeight, setTodayWeight] = useState<Weight | undefined>(undefined);
   const [isEditable, setIsEditable] = useState(false);
 
@@ -23,13 +21,13 @@ export function useWeightInputForm() {
   const { setValue } = formMethods;
 
   useEffect(() => {
-    const foundWeight = getTodayWeight([...weights, ...transformCheckinsToWeights(checkins)]);
+    const foundWeight = getTodayWeight(weights);
     setTodayWeight(foundWeight);
     setIsEditable(!foundWeight);
     if (foundWeight) {
       setValue('weight', foundWeight.weight);
     }
-  }, [weights, checkins, setValue]);
+  }, [weights, setValue]);
 
   const handleSave = async (data: WeightFormData) => {
     if (!user) return;
