@@ -1,6 +1,6 @@
 import { useUserDashboard } from '../hooks/use-user-dashboard';
 import { CheckinList } from '../../components/checkin-list';
-import { Button } from '@my-org/shared-ui';
+import { Button, LoadingScreen } from '@my-org/shared-ui';
 import { CheckinDetailModal } from '../../components/checkin-detail-modal';
 import { WeightChart } from '../../components/weight-chart';
 import { UserDashboardHeader } from './user-dashboard-header';
@@ -21,11 +21,7 @@ export const UserDashboard = () => {
   } = useUserDashboard();
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
-      </div>
-    );
+    return <LoadingScreen fullScreen={false} />;
   }
 
   if (error) {

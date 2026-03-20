@@ -1,8 +1,9 @@
-import { Modal } from '@my-org/shared-ui';
+import { LoadingScreen, Modal } from '@my-org/shared-ui';
 import { useEffect, useState } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../../init-firebase-auth';
 import { imagePath, SLOTS } from '@my-org/core';
+import { Loader2 } from 'lucide-react';
 
 interface CheckinDetailModalProps {
   checkin: any;
@@ -78,9 +79,7 @@ export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: Checki
     <Modal isOpen={isOpen} onClose={onClose} className="!max-w-4xl">
       <div className="bg-white rounded-2xl w-full h-full overflow-hidden flex flex-col shadow-2xl min-h-[400px]">
         {loading ? (
-           <div className="flex-1 flex items-center justify-center">
-             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
-           </div>
+           <LoadingScreen fullScreen={false} />
         ) : checkin ? (
           <>
             <header className="bg-indigo-600 px-8 py-6 text-white shrink-0">
@@ -95,7 +94,7 @@ export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: Checki
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  Progress Photos {loadingImages && <Loader2Icon className="animate-spin inline-block h-4 w-4 ml-2" />}
+                  Progress Photos {loadingImages && <Loader2 className="animate-spin inline-block h-4 w-4 ml-2" />}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {SLOTS.map((slot) => (
@@ -182,27 +181,3 @@ export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: Checki
     </Modal>
   );
 };
-
-const Loader2Icon = ({ className }: { className?: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M12 2v4" />
-    <path d="m16.2 7.8 2.9-2.9" />
-    <path d="M18 12h4" />
-    <path d="m16.2 16.2 2.9 2.9" />
-    <path d="M12 18v4" />
-    <path d="m4.9 19.1 2.9-2.9" />
-    <path d="M2 12h4" />
-    <path d="m4.9 4.9 2.9 2.9" />
-  </svg>
-);
