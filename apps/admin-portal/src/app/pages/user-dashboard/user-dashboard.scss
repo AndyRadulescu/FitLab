@@ -1,0 +1,43 @@
+@reference "../../../styles.scss";
+
+.user-dashboard {
+  &__header {
+    @apply flex items-center justify-between pb-4 border-b border-gray-200;
+  }
+
+  &__user-info {
+    @apply flex items-center gap-4;
+  }
+
+  &__back-button {
+    @apply p-2 hover:bg-gray-100 rounded-full transition-colors;
+  }
+
+  &__title {
+    @apply text-2xl font-extrabold text-gray-900 tracking-tight;
+  }
+
+  &__metadata {
+    @apply flex flex-col md:flex-row md:items-center gap-x-6 gap-y-1 mt-1;
+  }
+
+  &__label {
+    @apply font-bold text-gray-400 uppercase text-[10px] tracking-widest mr-1.5 whitespace-nowrap;
+  }
+
+  &__value {
+    @apply font-medium text-gray-600 truncate max-w-xs;
+  }
+
+  &__id-badge {
+    @apply bg-gray-100/80 px-1.5 py-0.5 rounded text-xs font-mono text-gray-600 border border-gray-200/50;
+  }
+
+  &__section {
+    @apply bg-white shadow-xl rounded-xl p-6 border border-gray-100;
+  }
+
+  &__section-title {
+    @apply text-lg font-bold text-gray-900 mb-4;
+  }
+}

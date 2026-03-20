@@ -6,19 +6,19 @@ import { getDoc, getDocs } from 'firebase/firestore';
 
 vi.mock('firebase/firestore', () => ({
   collection: vi.fn(),
-  getDocs: vi.fn(),
+  getDocs: vi.fn(() => Promise.resolve({ docs: [] })),
   query: vi.fn(),
   where: vi.fn(),
   orderBy: vi.fn(),
   doc: vi.fn(),
-  getDoc: vi.fn(),
+  getDoc: vi.fn(() => Promise.resolve({ exists: () => false })),
 }));
 
-vi.mock('../../init-firebase-auth', () => ({
+vi.mock('../../../init-firebase-auth', () => ({
   db: {},
 }));
 
-vi.mock('../components/weight-chart', () => ({
+vi.mock('../../components/weight-chart', () => ({
   WeightChart: () => <div data-testid="weight-chart">Weight Chart Mock</div>,
 }));
 

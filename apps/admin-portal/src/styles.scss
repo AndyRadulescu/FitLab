@@ -1,5 +1,5 @@
 @use '../../../libs/shared-ui/src/lib/variables';
-@use "tailwindcss";
+@import "tailwindcss";
 @source "../../../libs/shared-ui/src/lib/**/*.{ts,tsx}";
 @source "../../../libs/auth/src/lib/**/*.{ts,tsx}";
 @import 'rc-slider/assets/index.css';
