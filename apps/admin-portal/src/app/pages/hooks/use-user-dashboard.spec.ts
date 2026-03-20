@@ -22,6 +22,13 @@ describe('useUserDashboard', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (useNavigate as any).mockReturnValue(mockNavigate);
+    // Mock console.error to suppress expected error logs in tests
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    
+    // Default mocks for fetchers to avoid unhandled promises
+    (fetchUserInfo as any).mockResolvedValue({});
+    (fetchCheckins as any).mockResolvedValue([]);
+    (fetchWeights as any).mockResolvedValue([]);
   });
 
   it('should initialize with loading state', async () => {
@@ -73,6 +80,7 @@ describe('useUserDashboard', () => {
 
     expect(result.current.error).toBe('Failed to load user data: Network error');
     expect(result.current.user).toBeNull();
+    expect(console.error).toHaveBeenCalled();
   });
 
   it('should provide selectedCheckin when checkinId is present', async () => {
@@ -93,6 +101,7 @@ describe('useUserDashboard', () => {
   it('should handle navigation: handleCloseModal', async () => {
     (useParams as any).mockReturnValue({ userId: 'user123' });
     const { result } = renderHook(() => useUserDashboard());
+    await waitFor(() => expect(result.current.loading).toBe(false));
 
     result.current.handleCloseModal();
     expect(mockNavigate).toHaveBeenCalledWith('/dashboard/user123');
@@ -101,6 +110,7 @@ describe('useUserDashboard', () => {
   it('should handle navigation: handleSelectCheckin', async () => {
     (useParams as any).mockReturnValue({ userId: 'user123' });
     const { result } = renderHook(() => useUserDashboard());
+    await waitFor(() => expect(result.current.loading).toBe(false));
 
     result.current.handleSelectCheckin('c55');
     expect(mockNavigate).toHaveBeenCalledWith('/dashboard/user123/c55');
@@ -109,6 +119,7 @@ describe('useUserDashboard', () => {
   it('should handle navigation: handleGoBack', async () => {
     (useParams as any).mockReturnValue({ userId: 'user123' });
     const { result } = renderHook(() => useUserDashboard());
+    await waitFor(() => expect(result.current.loading).toBe(false));
 
     result.current.handleGoBack();
     expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
