@@ -4,6 +4,8 @@ import { db } from '../../init-firebase-auth';
 import { userStore } from '../store/user.store';
 import { useNavigate } from 'react-router-dom';
 
+import { LoadingScreen } from '@my-org/shared-ui';
+
 export const UsersList = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -48,11 +50,7 @@ export const UsersList = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500"></div>
-      </div>
-    );
+    return <LoadingScreen fullScreen={false} />;
   }
 
   if (error) {
