@@ -7,6 +7,7 @@ import { userStore } from '../../store/user.store';
 import { deleteAccount } from '../../routes/profile/danger/delele-account';
 import { useNavigate } from 'react-router-dom';
 import { assertAuthenticated } from '../../shared/user.guard';
+import { isAuthSessionStale } from '../../core/auth-session';
 
 export function DangerZone() {
   const user = userStore(state => state.user);
@@ -17,6 +18,11 @@ export function DangerZone() {
 
   const removeAccount = async () => {
     assertAuthenticated(navigate, user);
+
+    if (await isAuthSessionStale(t, navigate, () => setUser(undefined))) {
+      return;
+    }
+
     if (!window.confirm(t('danger.delete.account'))) {
       return;
     }
@@ -24,9 +30,12 @@ export function DangerZone() {
     if (string !== 'delete account') {
       return;
     }
-    await deleteAccount(user!.uid, t);
-    setUser(undefined);
-    navigate('/auth/login', { replace: true });
+    
+    const success = await deleteAccount(user!.uid, t);
+    if (success) {
+      setUser(undefined);
+      navigate('/auth/login', { replace: true });
+    }
   };
 
   return (
@@ -41,7 +50,7 @@ export function DangerZone() {
             <p className="text-md"><Trans i18nKey="profile.delete.info"/></p>
           </div>
           <div className="flex-1 flex justify-center items-center" onClick={removeAccount}>
-            <Button type="danger"><Trans i18nKey="profile.deleteAccount" /></Button>
+            <Button type="danger" data-testid="delete-account-button"><Trans i18nKey="profile.deleteAccount" /></Button>
           </div>
         </div>
       </Card>
