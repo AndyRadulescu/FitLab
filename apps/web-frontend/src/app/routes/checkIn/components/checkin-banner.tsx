@@ -1,4 +1,4 @@
-import { Card } from '../../../components/design';
+import { Card } from '@my-org/shared-ui';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 import { useState } from 'react';

@@ -1,5 +1,5 @@
 import { Trans, useTranslation } from 'react-i18next';
-import { Button, Card } from '../design';
+import { Button, Card } from '@my-org/shared-ui';
 import { SectionHeader } from '../section-header';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
