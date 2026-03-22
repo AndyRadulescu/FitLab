@@ -1,7 +1,7 @@
 import { UseFormReturn } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { SectionHeader } from '../../../components/section-header';
-import { Card, Input, Button } from '../../../components/design';
+import { Card, Input, Button } from '@my-org/shared-ui';
 import { StartPageFormData } from '../types';
 
 interface StartFormProps {

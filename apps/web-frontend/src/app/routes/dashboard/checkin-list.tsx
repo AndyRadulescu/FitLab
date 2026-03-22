@@ -1,5 +1,5 @@
 import { CheckInFormDataDto } from '../../store/checkin.store';
-import { Card } from '../../components/design';
+import { Card } from '@my-org/shared-ui';
 import { CheckinItem } from '../../components/checkin-item/checkin-item';
 import { SectionHeader } from '../../components/section-header';
 import { Trans } from 'react-i18next';

@@ -1,16 +1,16 @@
-import { ReactNode } from 'react';
+import { ButtonHTMLAttributes, ReactNode } from 'react';
 import clsx from 'clsx';
 
-export type ButtonProps = {
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
   children: ReactNode;
   className?: string;
   type: 'primary' | 'secondary' | 'tertiary' | 'danger';
   disabled?: boolean;
   onClick?: () => void;
   buttonType?: 'button' | 'submit' | 'reset';
-};
+}
 
-export function Button({ children, type, disabled, onClick, buttonType }: ButtonProps) {
+export function Button({ children, type, disabled, onClick, buttonType, className, ...rest }: ButtonProps) {
   return (
     <button
       type={buttonType}
@@ -24,9 +24,11 @@ export function Button({ children, type, disabled, onClick, buttonType }: Button
         disabled ? 'opacity-50 cursor-not-allowed' : '',
         type === 'tertiary' ? 'text-gray-600 dark:text-gray-100' :
           type === 'danger' ? 'text-red-600 dark:text-red-500 hover:text-white' :
-            'text-gray-800 dark:text-gray-950'
+            'text-gray-800 dark:text-gray-950',
+        className
       )}
       disabled={disabled}
+      {...rest}
     >
       {children}
     </button>

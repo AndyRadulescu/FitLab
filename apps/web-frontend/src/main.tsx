@@ -8,17 +8,23 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 import { LoadingScreen } from '@my-org/shared-ui';
 
+import { setupGlobalErrorHandlers } from './app/core/error-logger';
+import { GlobalErrorBoundary } from './app/core/global-error-boundary';
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 await initFirebaseAuth();
+setupGlobalErrorHandlers();
 
 root.render(
   <StrictMode>
-    <Suspense fallback={<LoadingScreen />}>
-      <RouterProvider router={router} />
-    </Suspense>
+    <GlobalErrorBoundary>
+      <Suspense fallback={<LoadingScreen />}>
+        <RouterProvider router={router} />
+      </Suspense>
+    </GlobalErrorBoundary>
   </StrictMode>
 );
 

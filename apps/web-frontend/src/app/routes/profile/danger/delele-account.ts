@@ -7,17 +7,19 @@ import { userStore } from '../../../store/user.store';
 import { checkinStore } from '../../../store/checkin.store';
 import AuthError = firebase.auth.AuthError;
 
-export const deleteAccount = async (userId: string, t: TFunction<'translation', undefined>) => {
+export const deleteAccount = async (userId: string, t: TFunction<'translation', undefined>): Promise<boolean> => {
   const auth = getAuth();
   const user = auth.currentUser;
-  if (!user) return;
+  if (!user) return false;
   try {
     await new DeleteUserAccount().deleteAllUserData(userId);
     await deleteUser(user);
     userStore.getState().delete();
     checkinStore.getState().delete();
+    return true;
   } catch (err: AuthError | any) {
     console.log(err);
     handleAuthErrors(err, t);
+    return false;
   }
 };
