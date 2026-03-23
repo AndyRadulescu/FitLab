@@ -1,5 +1,6 @@
 @use '../../../libs/shared-ui/src/lib/variables';
 @use "tailwindcss";
+
 @source "../../../libs/shared-ui/src/lib/**/*.{ts,tsx}";
 @source "../../../libs/auth/src/lib/**/*.{ts,tsx}";
 @import 'rc-slider/assets/index.css';
@@ -14,7 +15,7 @@
     @media (prefers-color-scheme: light) {
       background-color: var(--page-bg);
     }
-    @apply text-gray-900 dark:bg-gray-950 dark:text-gray-100;
+    @apply text-gray-900 dark:bg-neutral-950 dark:text-gray-100;
   }
 }
 
@@ -43,6 +44,9 @@
 @media (prefers-color-scheme: dark) {
   .primary-gradient {
     background: variables.$primary-gradient-dark
+  }
+  .primary-text-dark {
+    color: variables.$primary-color-dark1;
   }
   .primary-text-gradient {
     background: variables.$primary-gradient-light;

@@ -29,8 +29,8 @@ export function WeightChart() {
           <AreaChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="colorWeight" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                <stop offset="5%" stopColor="#E3CDA1" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="#E3CDA1" stopOpacity={0}/>
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
@@ -38,13 +38,13 @@ export function WeightChart() {
               dataKey="date"
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 10, fill: '#9ca3af' }}
+              tick={{ fontSize: 10, fill: '#E3CDA1' }}
               minTickGap={30}
             />
             <YAxis
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 10, fill: '#9ca3af' }}
+              tick={{ fontSize: 10, fill: '#E3CDA1' }}
               domain={['auto', 'auto']}
             />
             <Tooltip
@@ -54,12 +54,12 @@ export function WeightChart() {
                 border: 'none',
                 boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
               }}
-              labelStyle={{ fontWeight: 'bold', color: '#374151' }}
+              labelStyle={{ fontWeight: 'bold', color: '#E3CDA1' }}
             />
             <Area
               type="monotone"
               dataKey="weight"
-              stroke="#3b82f6"
+              stroke="#E3CDA1"
               strokeWidth={3}
               fillOpacity={1}
               fill="url(#colorWeight)"

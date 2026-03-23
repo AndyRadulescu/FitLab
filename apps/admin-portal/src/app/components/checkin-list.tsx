@@ -29,7 +29,7 @@ export const CheckinList = ({ checkins, onSelectCheckin }: CheckinListProps) => 
               </div>
               <div>
                 <p className="font-bold text-gray-900">
-                  {checkin.createdAt?.toDate 
+                  {checkin.createdAt?.toDate
                     ? checkin.createdAt.toDate().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
                     : 'Unknown Date'}
                 </p>
