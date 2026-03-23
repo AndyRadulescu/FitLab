@@ -30,7 +30,9 @@ export function LanguageToggle() {
         </div>
         <div>
           <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100"><Trans i18nKey="profile.change.language" /></h3>
-          <p className="tracking-widest text-[10px] font-bold text-amber-300/80 uppercase">Localization</p>
+          <p className="tracking-widest text-[10px] font-bold text-indigo-300/80 primary-text-dark uppercase">
+            <Trans i18nKey="profile.localization" />
+          </p>
         </div>
       </div>
 
@@ -38,13 +40,13 @@ export function LanguageToggle() {
         <div className="flex flex-col items-center">
           <button
             onClick={toggleLanguage}
-            className="relative flex items-center w-56 h-12 p-1 bg-gray-200/50 dark:bg-zinc-800/50 rounded-full transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-amber-500/10 group"
+            className="relative flex items-center w-56 h-12 p-1 bg-gray-300/50 dark:bg-black rounded-full transition-all duration-300 focus:outline-none"
             aria-label="Toggle Language"
           >
             {/* Sliding Pill */}
             <div
               className={clsx(
-                "absolute h-10 w-[108px] bg-white dark:bg-zinc-700 rounded-full shadow-lg transition-all duration-300 ease-out transform",
+                "absolute h-10 w-[108px] bg-white dark:bg-zinc-900 rounded-full shadow-lg transition-all duration-300 ease-out transform",
                 isEn ? "translate-x-0" : "translate-x-[108px]"
               )}
             />
@@ -53,13 +55,13 @@ export function LanguageToggle() {
             <div className="relative flex w-full items-center z-10">
               <div className={clsx(
                 "flex-1 text-center text-xs font-black tracking-widest transition-colors duration-300",
-                isEn ? "text-amber-600 primary-text-dark" : "text-gray-400 dark:text-gray-500"
+                isEn ? "text-gray-800 primary-text-dark" : "text-gray-400 dark:text-gray-500"
               )}>
                 ENGLISH
               </div>
               <div className={clsx(
                 "flex-1 text-center text-xs font-black tracking-widest transition-colors duration-300",
-                !isEn ? "text-amber-600 primary-text-dark" : "text-gray-400 dark:text-gray-500"
+                !isEn ? "text-gray-800 primary-text-dark" : "text-gray-400 dark:text-gray-500"
               )}>
                 ROMÂNĂ
               </div>

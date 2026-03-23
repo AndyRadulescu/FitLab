@@ -38,6 +38,7 @@
   "dashboard.weight.value": "Greutatea de azi este: {{weight}} kg",
   "dashboard.weight.placeholder": "Introdu greutatea de azi",
   "profile.change.language": "Schimbă limba",
+  "profile.localization": "Localizare",
   "profile.settings": "Setările contului",
   "profile.privacy_policy": "Politica de Confidențialitate",
   "profile.danger": "Acțiuni critice",

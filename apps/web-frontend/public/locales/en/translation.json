@@ -37,6 +37,7 @@
   "dashboard.weight.value": "Today's weight is: {{weight}} kg",
   "dashboard.weight.placeholder": "Enter today's weight",
   "profile.change.language": "Change language",
+  "profile.localization": "Localization",
   "profile.settings": "Profile settings",
   "profile.privacy_policy": "Privacy Policy",
   "profile.danger": "Danger zone",
