@@ -36,11 +36,11 @@ export function AuthPage({ user, auth, analytics, handleAuthErrors, redirectPath
   return (
     <AuthProvider auth={auth} analytics={analytics} handleAuthErrors={handleAuthErrors} redirectPath={redirectPath}>
       <div
-        className="auth-theme-trigger w-full min-h-svh flex flex-col lg:flex-row align-center bg-primary dark:bg-gray-950 lg:dark:bg-gray-700 lg:bg-white">
-        
+        className="auth-theme-trigger w-full min-h-svh flex flex-col lg:flex-row align-center bg-primary dark:bg-zinc-950 lg:dark:bg-neutral-700 lg:bg-white">
+
         {/* Left side - Logo/Image */}
         <div
-          className="flex-1 flex justify-center items-center p-8 lg:p-12 dark:bg-gray-950 lg:bg-primary lg:rounded-t-none lg:rounded-r-4xl">
+          className="flex-1 flex justify-center items-center p-8 lg:p-12 dark:bg-zinc-950 lg:bg-primary lg:rounded-t-none lg:rounded-r-4xl">
           <img
             src={logoSrc}
             alt="Logo"
@@ -50,7 +50,7 @@ export function AuthPage({ user, auth, analytics, handleAuthErrors, redirectPath
 
         {/* Right side - Form */}
         <div
-          className="w-full md:w-[80%] md:ml-[10%] lg:ml-0 lg:max-w-xl bg-white dark:bg-gray-700 rounded-t-4xl lg:rounded-none flex flex-col justify-center">
+          className="w-full md:w-[80%] md:ml-[10%] lg:ml-0 lg:max-w-xl bg-white dark:bg-neutral-700 rounded-t-4xl lg:rounded-none flex flex-col justify-center">
           <div className="w-full py-16 px-6 md:px-12 lg:px-16">
             <Outlet />
 

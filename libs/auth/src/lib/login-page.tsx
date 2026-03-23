@@ -11,7 +11,7 @@ import { Input, Button } from '@my-org/shared-ui';
 import { useAuth } from './types';
 
 const loginSchema = z.object({
-  email: z.string().email('errors.email.invalid'),
+  email: z.email('errors.email.invalid'),
   password: z.string().min(6, 'errors.password.min')
     .max(30, 'errors.password.max')
 });

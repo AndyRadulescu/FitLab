@@ -182,7 +182,7 @@ export const ImageUploader = ({ userId, checkinId, onChange, isEdit, error }: Im
         })}
       </div>
       {error && (
-        <p className="text-red-500 text-xs mt-1"><Trans i18nKey="errors.image.invalid" /></p>
+        <p className="text-red-500 text-xs mt-1"><Trans i18nKey={error} /></p>
       )}
     </Card>
   );
