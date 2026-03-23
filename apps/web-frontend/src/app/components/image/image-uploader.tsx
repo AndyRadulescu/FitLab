@@ -162,10 +162,10 @@ export const ImageUploader = ({ userId, checkinId, onChange, isEdit, error }: Im
                 </div>
               ) : (
                 <label
-                  className="flex flex-col items-center justify-center h-full w-full border-2 border-dashed rounded-2xl cursor-pointer bg-gray-50/50 dark:bg-slate-800/50 hover:bg-gray-100 dark:hover:bg-slate-800 border-gray-300 dark:border-slate-700 transition-all group">
+                  className="flex flex-col items-center justify-center h-full w-full border-2 border-dashed rounded-2xl cursor-pointer bg-gray-50/50 dark:bg-zinc-800/50 hover:bg-gray-100 dark:hover:bg-zinc-800 border-gray-300 dark:border-zinc-700 transition-all group">
                   <div
-                    className="p-4 rounded-full bg-white dark:bg-slate-700 shadow-sm group-hover:scale-110 transition-transform">
-                    <Upload className="text-blue-500" size={28} />
+                    className="p-4 rounded-full bg-white dark:bg-zinc-700 shadow-sm group-hover:scale-110 transition-transform">
+                    <Upload className="text-blue-500 primary-text-dark" size={28} />
                   </div>
                   <span className="mt-3 text-sm text-gray-500 font-semibold"><Trans
                     i18nKey="section.upload" /> {slot}</span>
