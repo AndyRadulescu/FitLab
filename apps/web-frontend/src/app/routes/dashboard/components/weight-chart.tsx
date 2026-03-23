@@ -20,7 +20,7 @@ export function WeightChart() {
   }
 
   return (
-    <Card className="p-4 mb-4 h-[300px] w-full bg-white dark:bg-gray-900 overflow-hidden">
+    <Card className="p-4 mb-4 h-[300px] w-full bg-white dark:bg-gray-900 overflow-hidden [--chart-stroke:#6b7280] dark:[--chart-stroke:#E3CDA1] [--chart-tick:#9ca3af] dark:[--chart-tick:#E3CDA1] [--chart-stop-color:#9ca3af] dark:[--chart-stop-color:#E3CDA1] [--chart-grid:#e5e7eb] dark:[--chart-grid:#374151]">
       <h3 className="text-lg font-bold mb-4 text-gray-700 dark:text-gray-100">
         {t('dashboard.journey')}
       </h3>
@@ -29,22 +29,22 @@ export function WeightChart() {
           <AreaChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="colorWeight" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#E3CDA1" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="#E3CDA1" stopOpacity={0}/>
+                <stop offset="5%" stopColor="var(--chart-stop-color)" stopOpacity={0.3}/>
+                <stop offset="95%" stopColor="var(--chart-stop-color)" stopOpacity={0}/>
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e5e7eb" />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--chart-grid)" />
             <XAxis
               dataKey="date"
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 10, fill: '#E3CDA1' }}
+              tick={{ fontSize: 10, fill: 'var(--chart-tick)' }}
               minTickGap={30}
             />
             <YAxis
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 10, fill: '#E3CDA1' }}
+              tick={{ fontSize: 10, fill: 'var(--chart-tick)' }}
               domain={['auto', 'auto']}
             />
             <Tooltip
@@ -54,12 +54,12 @@ export function WeightChart() {
                 border: 'none',
                 boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
               }}
-              labelStyle={{ fontWeight: 'bold', color: '#E3CDA1' }}
+              labelStyle={{ fontWeight: 'bold', color: 'var(--chart-stroke)' }}
             />
             <Area
               type="monotone"
               dataKey="weight"
-              stroke="#E3CDA1"
+              stroke="var(--chart-stroke)"
               strokeWidth={3}
               fillOpacity={1}
               fill="url(#colorWeight)"
