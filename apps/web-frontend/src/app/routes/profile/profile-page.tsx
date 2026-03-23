@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { analytics, auth } from '../../../init-firebase-auth';
 import { Trans, useTranslation } from 'react-i18next';
-import { Card } from '@my-org/shared-ui';
+import { Card, Button } from '@my-org/shared-ui';
 import { LanguageToggle } from '../../components/language-toggle/language-toggle';
 import { logEvent } from 'firebase/analytics';
 import { DangerZone } from '../../components/danger-zone/danger-zone';
@@ -34,13 +34,14 @@ export function ProfilePage() {
         <LanguageToggle />
       </div>
 
-      <div className="mb-4">
-        <button type="button"
-                onClick={logout}
-                className="w-full bg-gray-200 dark:bg-gray-600 box-border border border-transparent font-medium leading-5 rounded-full text-sm px-4 py-2.5 text-center inline-flex items-center justify-center dark:focus:ring-[#3b5998]/55">
-          <LogOutIcon className="mr-2" />
+      <div className="mb-6">
+        <Button 
+          type="secondary"
+          onClick={logout}
+          icon={<LogOutIcon size={20} />}
+        >
           <Trans i18nKey="auth.signout">Log out</Trans>
-        </button>
+        </Button>
       </div>
 
       <Card className="mb-4">
