@@ -30,23 +30,21 @@ export function CheckInForm({ formMethods, onSubmit, user, activeCheckinId, isEd
       <Card className="mb-4">
         <Input label={t('checkin.measures.kg')} type="number" min="0" {...register('kg', { valueAsNumber: true })}
                error={errors.kg?.message && t(errors.kg.message)}></Input>
-        <Input label={t('checkin.measures.breast')} type="number" {...register('breastSize', { valueAsNumber: true })}
+        <Input label={t('checkin.measures.breast')} infoText={t('checkin.measures.info.breast')} type="number" {...register('breastSize', { valueAsNumber: true })}
                error={errors.breastSize?.message && t(errors.breastSize.message)}></Input>
-        <Input label={t('checkin.measures.waist')} type="number" {...register('waistSize', { valueAsNumber: true })}
+        <Input label={t('checkin.measures.waist')} infoText={t('checkin.measures.info.waist')} type="number" {...register('waistSize', { valueAsNumber: true })}
                error={errors.waistSize?.message && t(errors.waistSize.message)}></Input>
-        <Input label={t('checkin.measures.hips')} type="number" {...register('hipSize', { valueAsNumber: true })}
+        <Input label={t('checkin.measures.hips')} infoText={t('checkin.measures.info.hips')} type="number" {...register('hipSize', { valueAsNumber: true })}
                error={errors.hipSize?.message && t(errors.hipSize.message)}></Input>
-        <Input label={t('checkin.measures.butt')} type="number" {...register('buttSize', { valueAsNumber: true })}
+        <Input label={t('checkin.measures.butt')} infoText={t('checkin.measures.info.butt')} type="number" {...register('buttSize', { valueAsNumber: true })}
                error={errors.buttSize?.message && t(errors.buttSize.message)}></Input>
-        <Input label={t('checkin.measures.leftThigh')}
-               type="number" {...register('leftThigh', { valueAsNumber: true })}
+        <Input label={t('checkin.measures.leftThigh')} infoText={t('checkin.measures.info.thigh')} type="number" {...register('leftThigh', { valueAsNumber: true })}
                error={errors.leftThigh?.message && t(errors.leftThigh.message)}></Input>
-        <Input label={t('checkin.measures.rightThigh')}
-               type="number" {...register('rightThigh', { valueAsNumber: true })}
+        <Input label={t('checkin.measures.rightThigh')} infoText={t('checkin.measures.info.thigh')} type="number" {...register('rightThigh', { valueAsNumber: true })}
                error={errors.rightThigh?.message && t(errors.rightThigh.message)}></Input>
-        <Input label={t('checkin.measures.leftArm')} type="number" {...register('leftArm', { valueAsNumber: true })}
+        <Input label={t('checkin.measures.leftArm')} infoText={t('checkin.measures.info.arm')} type="number" {...register('leftArm', { valueAsNumber: true })}
                error={errors.leftArm?.message && t(errors.leftArm.message)}></Input>
-        <Input label={t('checkin.measures.rightArm')} type="number" {...register('rightArm', { valueAsNumber: true })}
+        <Input label={t('checkin.measures.rightArm')} infoText={t('checkin.measures.info.arm')} type="number" {...register('rightArm', { valueAsNumber: true })}
                error={errors.rightArm?.message && t(errors.rightArm.message)}></Input>
       </Card>
 
