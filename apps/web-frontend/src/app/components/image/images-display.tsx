@@ -29,13 +29,13 @@ const SmallImage = ({ path, label, onClick }: { path: string, label: string, onC
     <div className="flex flex-col items-center">
       <div
         onClick={() => url && onClick(url)}
-        className={`relative h-15 w-7 sm:h-20 sm:w-13 lg:h-30 lg:w-17 overflow-hidden rounded-lg bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 flex items-center justify-center ${url ? 'cursor-pointer hover:opacity-80' : ''}`}>
+        className={`relative h-15 w-7 sm:h-20 sm:w-13 lg:h-30 lg:w-17 overflow-hidden rounded-lg bg-gray-100 dark:bg-zinc-800 border border-zinc-200 dark:border-slate-700 flex items-center justify-center ${url ? 'cursor-pointer hover:opacity-80' : ''}`}>
         {loading && (
-          <Loader2 className="absolute h-4 w-4 animate-spin text-blue-500 opacity-50" />
+          <Loader2 className="absolute h-4 w-4 animate-spin text-zinc-900 primary-text-dark opacity-50" />
         )}
 
         {error && !loading && (
-          <CameraOff className="h-4 w-4 text-gray-300" />
+          <CameraOff className="h-4 w-4 text-zinc-300" />
         )}
 
         {url && (
@@ -87,7 +87,7 @@ export function ImagesDisplay({ checkinId, userId }: { checkinId: string, userId
               className="max-w-full max-h-full object-contain rounded-lg"
             />
           ) : (
-            <div className="flex flex-col items-center gap-2 text-gray-400">
+            <div className="flex flex-col items-center gap-2 text-zinc-400">
               <ImageIcon size={48} strokeWidth={1} />
               <span className="text-sm italic">Image not available</span>
             </div>

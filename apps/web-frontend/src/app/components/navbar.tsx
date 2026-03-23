@@ -11,7 +11,7 @@ const NAV_ITEMS = [
 export function Navbar() {
   return (
     <div className="fixed bottom-2 left-0 w-full px-8 mb-4 lg:max-w-[80%] lg:ml-[10%] xl:max-w-[60%] xl:ml-[20%] z-50">
-      <div className="flex justify-evenly items-center h-[70px] bg-gray-800/80 dark:bg-gray-950/80 backdrop-blur-md border-1 border-gray-500 rounded-full shadow-lg">
+      <div className="flex justify-evenly items-center h-[70px] bg-gray-800/80 dark:bg-neutral-800/80 backdrop-blur-md border-1 border-amber-300/15 rounded-full shadow-lg shadow-gray-900/50 dark:shadow-black">
         {NAV_ITEMS.map(({ to, icon: Icon }) => (
           <NavLink key={to} to={to}>
             {({ isActive }) => (
@@ -19,7 +19,7 @@ export function Navbar() {
                 className={clsx(
                   'transition-all duration-200 flex items-center justify-center',
                   isActive
-                    ? 'bg-gray-100 dark:bg-gray-900 text-black dark:text-white rounded-full p-3'
+                    ? 'bg-gray-100 dark:bg-zinc-900 text-black primary-text-dark rounded-full p-3'
                     : 'text-white p-3'
                 )}
               >

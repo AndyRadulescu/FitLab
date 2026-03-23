@@ -47,7 +47,7 @@ export function CheckinItem({ checkin }: { checkin: CheckInFormDataDto }) {
         <ImagesDisplay checkinId={checkin.id} userId={checkin.userId}/>
       </div>
 
-      <div className="absolute p-2 right-[-25px] top-[-25px] rounded-full bg-gray-200 dark:bg-gray-700 text-red-700" onClick={deleteItem}>
+      <div className="absolute p-2 right-[-25px] top-[-25px] rounded-full bg-zinc-200 dark:bg-zinc-700 text-red-700 dark:text-red-900" onClick={deleteItem}>
         <Trash size="14" />
       </div>
     </div>

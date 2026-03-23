@@ -42,8 +42,14 @@ vi.mock('../../components/language-toggle/language-toggle', () => ({
   LanguageToggle: () => <div data-testid="language-toggle" />,
 }));
 
-vi.mock('../../components/design', () => ({
+vi.mock('@my-org/shared-ui', () => ({
   Card: ({ children, className }: any) => <div data-testid="card" className={className}>{children}</div>,
+  Button: ({ children, onClick, icon, type }: any) => (
+    <button data-testid={`button-${type}`} onClick={onClick}>
+      {icon}
+      {children}
+    </button>
+  ),
 }));
 
 vi.mock('../../components/danger-zone/danger-zone', () => ({
@@ -77,17 +83,17 @@ describe('ProfilePage', () => {
 
     expect(screen.getByTestId('section-header')).toBeInTheDocument();
     expect(screen.getByTestId('profile.settings')).toBeInTheDocument();
-    expect(screen.getByTestId('profile.change.language')).toBeInTheDocument();
     expect(screen.getByTestId('language-toggle')).toBeInTheDocument();
     expect(screen.getByTestId('logout-icon')).toBeInTheDocument();
     expect(screen.getByTestId('auth.signout')).toBeInTheDocument();
+    expect(screen.getByTestId('button-secondary')).toBeInTheDocument();
     expect(screen.getByTestId('danger-zone')).toBeInTheDocument();
   });
 
   it('should call signOut, log logout event and navigate to login on logout click', async () => {
     render(<ProfilePage />);
 
-    const logoutButton = screen.getByTestId('auth.signout').closest('button')!;
+    const logoutButton = screen.getByTestId('button-secondary');
 
     await act(async () => {
         fireEvent.click(logoutButton);
@@ -104,7 +110,7 @@ describe('ProfilePage', () => {
 
     render(<ProfilePage />);
 
-    const logoutButton = screen.getByTestId('auth.signout').closest('button')!;
+    const logoutButton = screen.getByTestId('button-secondary');
 
     await act(async () => {
         fireEvent.click(logoutButton);

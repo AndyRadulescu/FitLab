@@ -41,7 +41,7 @@ export const CustomSlider = forwardRef<HTMLInputElement, SliderProps>(
               {label}
             </label>
           )}
-          <span className="text-xs font-mono font-bold text-gray-700 dark:text-white bg-indigo-50 dark:bg-gray-800 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-700">
+          <span className="text-xs font-mono font-bold text-gray-700 primary-text-dark bg-indigo-50 dark:bg-neutral-800 px-2 py-0.5 rounded border border-gray-200 dark:border-gray-700">
             {currentValue}
           </span>
         </div>
