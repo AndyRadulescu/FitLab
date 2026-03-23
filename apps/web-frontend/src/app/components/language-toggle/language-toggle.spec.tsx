@@ -2,12 +2,20 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LanguageToggle } from './language-toggle';
-import { useTranslation } from 'react-i18next';
 import { logEvent } from 'firebase/analytics';
 import '@testing-library/jest-dom/vitest';
 
+const mockI18n = {
+  language: 'en',
+  changeLanguage: vi.fn().mockResolvedValue(undefined),
+};
+
 vi.mock('react-i18next', () => ({
-  useTranslation: vi.fn()
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: mockI18n,
+  }),
+  Trans: ({ i18nKey, children }: any) => <span data-testid={i18nKey}>{children || i18nKey}</span>,
 }));
 
 vi.mock('firebase/analytics', () => ({
@@ -19,31 +27,28 @@ vi.mock('../../../init-firebase-auth', () => ({
 }));
 
 describe('LanguageToggle', () => {
-  const mockI18n = {
-    language: 'ro',
-    changeLanguage: vi.fn().mockResolvedValue(undefined)
-  };
-
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
-    (useTranslation as any).mockReturnValue({ i18n: mockI18n });
+    mockI18n.language = 'en';
   });
 
-  it('should render Română (EN) when language is ro', () => {
+  it('should render correct status when language is ro', () => {
     mockI18n.language = 'ro';
     render(<LanguageToggle />);
 
-    expect(screen.getByText('Română')).toBeInTheDocument();
-    expect(screen.getByText('EN')).toBeInTheDocument();
+    expect(screen.getByText('ENGLISH')).toBeInTheDocument();
+    expect(screen.getByText('ROMÂNĂ')).toBeInTheDocument();
+    expect(screen.getByText('Acum vizualizezi în Română')).toBeInTheDocument();
   });
 
-  it('should render English (RO) when language is en', () => {
+  it('should render correct status when language is en', () => {
     mockI18n.language = 'en';
     render(<LanguageToggle />);
 
-    expect(screen.getByText('English')).toBeInTheDocument();
-    expect(screen.getByText('RO')).toBeInTheDocument();
+    expect(screen.getByText('ENGLISH')).toBeInTheDocument();
+    expect(screen.getByText('ROMÂNĂ')).toBeInTheDocument();
+    expect(screen.getByText('Currently viewing in English')).toBeInTheDocument();
   });
 
   it('should toggle language from ro to en and save to localStorage', async () => {
@@ -82,7 +87,7 @@ describe('LanguageToggle', () => {
     mockI18n.language = 'en-US';
     render(<LanguageToggle />);
 
-    expect(screen.getByText('English')).toBeInTheDocument();
+    expect(screen.getByText('Currently viewing in English')).toBeInTheDocument();
 
     const button = screen.getByRole('button');
     await act(async () => {
