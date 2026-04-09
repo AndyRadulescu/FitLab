@@ -20,6 +20,7 @@ export interface WeightChartProps {
   height?: number | string;
   className?: string;
   emptyMessage?: string;
+  emptyStateClassName?: string;
   margin?: { top: number; right: number; left: number; bottom: number };
   animationDuration?: number;
   showDot?: boolean;
@@ -32,6 +33,7 @@ export interface WeightChartProps {
   xAxisMinTickGap?: number;
   xAxisDy?: number;
   tooltipFormatter?: (value: any) => [string, string];
+  tooltipContentStyle?: React.CSSProperties;
 }
 
 export function WeightChart({
@@ -39,6 +41,7 @@ export function WeightChart({
   height = 300,
   className = '',
   emptyMessage,
+  emptyStateClassName,
   margin = { top: 10, right: 10, left: -20, bottom: 0 },
   animationDuration = 1500,
   showDot = false,
@@ -51,13 +54,17 @@ export function WeightChart({
   xAxisMinTickGap = 30,
   xAxisDy = 0,
   tooltipFormatter,
+  tooltipContentStyle,
 }: WeightChartProps) {
   if (data.length === 0) {
     if (emptyMessage) {
       return (
         <div
           className={clsx(
-            'flex items-center justify-center text-gray-400 italic bg-gray-50 rounded-xl border border-gray-100',
+            'flex items-center justify-center text-gray-400 italic rounded-xl border',
+            emptyStateClassName
+              ? emptyStateClassName
+              : 'bg-gray-50 dark:bg-zinc-800/50 border-gray-100 dark:border-zinc-700/50',
             className
           )}
           style={{ height }}
@@ -96,10 +103,11 @@ export function WeightChart({
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: 'rgba(255, 255, 255, 0.9)',
+              backgroundColor: 'var(--tooltip-bg, rgba(255, 255, 255, 0.9))',
               borderRadius: '8px',
               border: 'none',
               boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)',
+              ...tooltipContentStyle,
             }}
             labelStyle={{ fontWeight: 'bold', color: strokeColor }}
             formatter={tooltipFormatter}
