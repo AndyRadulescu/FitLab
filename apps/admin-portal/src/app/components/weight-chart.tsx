@@ -38,7 +38,12 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-end">
-        <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
+        <TimeRangeSelector
+          value={timeRange}
+          onChange={setTimeRange}
+          triggerClassName="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-indigo-500"
+          activeOptionClassName="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-bold"
+        />
       </div>
       <SharedWeightChart
         data={data}

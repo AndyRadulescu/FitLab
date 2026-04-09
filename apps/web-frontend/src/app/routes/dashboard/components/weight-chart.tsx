@@ -18,7 +18,12 @@ export function WeightChart() {
         <h3 className="text-lg font-bold text-gray-700 dark:text-gray-100">
           {t('dashboard.journey')}
         </h3>
-        <TimeRangeSelector value={timeRange} onChange={setTimeRange} />
+        <TimeRangeSelector
+          value={timeRange}
+          onChange={setTimeRange}
+          triggerClassName="border border-gray-200 dark:border-amber-300/15 bg-gray-50 dark:bg-zinc-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-zinc-700 focus:ring-amber-300"
+          activeOptionClassName="bg-amber-100 dark:bg-amber-300/20 text-amber-900 dark:text-amber-300 font-bold"
+        />
       </div>
       <div className="h-[220px] w-full">
         <SharedWeightChart
