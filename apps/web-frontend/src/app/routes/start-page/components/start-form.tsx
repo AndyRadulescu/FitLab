@@ -28,6 +28,7 @@ export function StartForm({ formMethods, onSubmit }: StartFormProps) {
             label={t('start.dateOfBirth')}
             type="date"
             autoComplete="bday"
+            max={new Date().toISOString().split('T')[0]}
             {...register('dateOfBirth', { valueAsDate: true })}
             error={errors.dateOfBirth?.message && t(errors.dateOfBirth.message)} />
 
