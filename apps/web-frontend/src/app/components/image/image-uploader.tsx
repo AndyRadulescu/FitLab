@@ -55,7 +55,7 @@ export const ImageUploader = ({ userId, checkinId, onChange, isEdit, error }: Im
 
         setRemoteUrls(existing);
       } catch (err) {
-        console.error("Error in image sync process:", err);
+        console.error('Error in image sync process:', err);
       }
     };
 
@@ -117,7 +117,7 @@ export const ImageUploader = ({ userId, checkinId, onChange, isEdit, error }: Im
               <div
                 className="absolute top-3 left-1/2 -translate-x-1/2 z-10 flex items-center justify-center px-4 h-7 bg-black/40 backdrop-blur-md rounded-full border border-white/10">
                 <span className="text-xs uppercase tracking-widest font-bold text-white shadow-sm">
-                  <Trans i18nKey={`image.upload.${slot}`}/>
+                  <Trans i18nKey={`image.upload.${slot}`} />
                 </span>
               </div>
 
@@ -167,8 +167,12 @@ export const ImageUploader = ({ userId, checkinId, onChange, isEdit, error }: Im
                     className="p-4 rounded-full bg-white dark:bg-zinc-700 shadow-sm group-hover:scale-110 transition-transform">
                     <Upload className="text-gray-500 primary-text-dark" size={28} />
                   </div>
-                  <span className="mt-3 text-sm text-gray-500 font-semibold"><Trans
-                    i18nKey="section.upload" /> {slot}</span>
+                  <span className="mt-3 text-sm text-gray-500 font-semibold">
+                    <Trans i18nKey="section.upload" />
+                    <span className="uppercase ml-1">
+                      <Trans i18nKey={`image.upload.${slot}`} />
+                    </span>
+                  </span>
                   <input
                     type="file"
                     className="hidden"

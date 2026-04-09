@@ -29,6 +29,7 @@
   "errors.profile.maxHour": "Valoarea trebuie să fie cel mult 12",
   "errors.profile.max10": "Valoarea trebuie să fie cel mult 10",
   "errors.date.invalid": "Data este în format invalid",
+  "errors.date.max": "Data nașterii nu poate fi în viitor",
   "errors.image.invalid": "Nu toate imaginile au fost încărcate. 3 imagini sunt necesare.",
   "errors.credential.old": "Sesiunea a expirat. Te rugăm să te autentifici din nou.",
   "dashboard.nothingYet": "Încă nu există nimic de afișat",
