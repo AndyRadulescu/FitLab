@@ -6,24 +6,31 @@ import { useWeightChartData } from '../hooks/use-weight-chart-data';
 export function WeightChart() {
   const { t } = useTranslation();
   const [timeRange, setTimeRange] = useState<TimeRange>('1w');
-  const { chartData, weightDiff } = useWeightChartData(timeRange);
+  const { chartData, weightDiff, averageWeight } = useWeightChartData(timeRange);
 
   if (chartData.length === 0 && timeRange === 'all') {
     return null;
   }
 
   return (
-    <Card className="p-4 mb-4 h-[300px] w-full bg-white dark:bg-zinc-900 overflow-hidden [--chart-stroke:#6b7280] dark:[--chart-stroke:#E3CDA1] [--chart-tick:#9ca3af] dark:[--chart-tick:#E3CDA1] [--chart-stop-color:#9ca3af] dark:[--chart-stop-color:#E3CDA1] [--chart-grid:#e5e7eb] dark:[--chart-grid:#374151] [--tooltip-bg:rgba(255,255,255,0.9)] dark:[--tooltip-bg:rgba(17,24,39,0.9)]">
+    <Card className="p-4 mb-4 h-[300px] w-full bg-white dark:bg-gray-900 overflow-hidden [--chart-stroke:#6b7280] dark:[--chart-stroke:#E3CDA1] [--chart-tick:#9ca3af] dark:[--chart-tick:#E3CDA1] [--chart-stop-color:#9ca3af] dark:[--chart-stop-color:#E3CDA1] [--chart-grid:#e5e7eb] dark:[--chart-grid:#374151] [--tooltip-bg:rgba(255,255,255,0.9)] dark:[--tooltip-bg:rgba(17,24,39,0.9)]">
       <div className="flex justify-between items-center mb-4">
         <div className="flex flex-col">
           <h3 className="text-lg font-bold text-gray-700 dark:text-gray-100 leading-tight">
             {t('dashboard.journey')}
           </h3>
-          {chartData.length >= 2 && (
-            <span className="text-sm font-semibold primary-text-gradient">
-              {weightDiff > 0 ? `+${weightDiff.toFixed(1)}` : weightDiff.toFixed(1)} kg
-            </span>
-          )}
+          <div className="flex gap-4">
+            {chartData.length >= 1 && (
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Avg: {averageWeight.toFixed(1)} kg
+              </span>
+            )}
+            {chartData.length >= 2 && (
+              <span className="text-sm font-semibold primary-text-gradient">
+                {weightDiff > 0 ? `+${weightDiff.toFixed(1)}` : weightDiff.toFixed(1)} kg
+              </span>
+            )}
+          </div>
         </div>
         <TimeRangeSelector
           value={timeRange}
@@ -38,7 +45,7 @@ export function WeightChart() {
           height="100%"
           margin={{ top: 5, right: 5, left: -20, bottom: 0 }}
           emptyMessage={chartData.length === 0 ? "No weight data available to display chart." : undefined}
-          emptyStateClassName="bg-gray-50 dark:bg-zinc-800/30 border-gray-100 dark:border-amber-300/10"
+          emptyStateClassName="bg-gray-50 dark:bg-gray-800/30 border-gray-100 dark:border-amber-300/10"
         />
       </div>
     </Card>

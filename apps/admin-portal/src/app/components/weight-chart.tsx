@@ -9,7 +9,7 @@ interface WeightChartProps {
 export const WeightChart = ({ weights }: WeightChartProps) => {
   const [timeRange, setTimeRange] = useState<TimeRange>('4w');
 
-  const { chartData, weightDiff } = useMemo(() => {
+  const { chartData, weightDiff, averageWeight } = useMemo(() => {
     const now = new Date();
 
     const filteredWeights = weights
@@ -31,10 +31,19 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
       .sort((a, b) => a.createdAt.toDate().getTime() - b.createdAt.toDate().getTime());
 
     let diff = 0;
-    if (filteredWeights.length >= 2) {
-      const firstWeight = filteredWeights[0].weight;
-      const lastWeight = filteredWeights[filteredWeights.length - 1].weight;
-      diff = lastWeight - firstWeight;
+    let avg = 0;
+    if (filteredWeights.length >= 1) {
+      const sum = filteredWeights.reduce((acc, curr) => acc + curr.weight, 0);
+      console.log(sum);
+      console.log(filteredWeights.length);
+      console.log(sum/ filteredWeights.length);
+      avg = sum / filteredWeights.length;
+
+      if (filteredWeights.length >= 2) {
+        const firstWeight = filteredWeights[0].weight;
+        const lastWeight = filteredWeights[filteredWeights.length - 1].weight;
+        diff = lastWeight - firstWeight;
+      }
     }
 
     const data = filteredWeights.map((w) => ({
@@ -43,13 +52,21 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
       fullDate: w.createdAt.toDate().toLocaleDateString(),
     }));
 
-    return { chartData: data, weightDiff: diff };
+    return { chartData: data, weightDiff: diff, averageWeight: avg };
   }, [weights, timeRange]);
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-end">
-        <div>
+        <div className="flex gap-8">
+          {chartData.length >= 1 && (
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500 uppercase font-semibold tracking-wider">Average</span>
+              <span className="text-2xl font-bold text-gray-700 dark:text-gray-200">
+                {averageWeight.toFixed(1)} kg
+              </span>
+            </div>
+          )}
           {chartData.length >= 2 && (
             <div className="flex flex-col">
               <span className="text-xs text-gray-500 uppercase font-semibold tracking-wider">Weight Change</span>

@@ -46,13 +46,20 @@ export function useWeightChartData(timeRange?: TimeRange) {
     }
 
     let diff = 0;
-    if (filteredData.length >= 2) {
-      diff = filteredData[filteredData.length - 1].weight - filteredData[0].weight;
+    let avg = 0;
+    if (filteredData.length >= 1) {
+      const sum = filteredData.reduce((acc, curr) => acc + curr.weight, 0);
+      avg = sum / filteredData.length;
+      
+      if (filteredData.length >= 2) {
+        diff = filteredData[filteredData.length - 1].weight - filteredData[0].weight;
+      }
     }
 
     return {
       chartData: filteredData,
-      weightDiff: diff
+      weightDiff: diff,
+      averageWeight: avg
     };
   }, [weights, timeRange]);
 }

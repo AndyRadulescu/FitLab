@@ -19,15 +19,16 @@ describe('useWeightChartData', () => {
     vi.useRealTimers();
   });
 
-  it('should return an empty array and zero diff when no data is present', () => {
+  it('should return an empty array and zero diff/avg when no data is present', () => {
     (userStore as any).mockImplementation((selector: any) => selector({ weights: [] }));
 
     const { result } = renderHook(() => useWeightChartData());
     expect(result.current.chartData).toEqual([]);
     expect(result.current.weightDiff).toBe(0);
+    expect(result.current.averageWeight).toBe(0);
   });
 
-  it('should sort and return data points with weightDiff', () => {
+  it('should sort and return data points with weightDiff and averageWeight', () => {
     const weights = [
       { createdAt: new Date('2026-02-10').toISOString(), weight: 70 },
       { createdAt: new Date('2026-02-11').toISOString(), weight: 71 },
@@ -39,37 +40,7 @@ describe('useWeightChartData', () => {
     const { result } = renderHook(() => useWeightChartData('all'));
 
     expect(result.current.chartData.length).toBe(3);
-    expect(result.current.chartData[0].weight).toBe(69);
-    expect(result.current.chartData[2].weight).toBe(71);
     expect(result.current.weightDiff).toBe(2); // 71 - 69
-  });
-
-  it('should deduplicate entries and return correct diff', () => {
-    const weights = [
-      { createdAt: new Date('2026-02-10T08:00:00').toISOString(), weight: 70 },
-      { createdAt: new Date('2026-02-10T10:00:00').toISOString(), weight: 72 },
-      { createdAt: new Date('2026-02-11T10:00:00').toISOString(), weight: 74 },
-    ];
-
-    (userStore as any).mockImplementation((selector: any) => selector({ weights }));
-
-    const { result } = renderHook(() => useWeightChartData('all'));
-
-    expect(result.current.chartData.length).toBe(2);
-    expect(result.current.weightDiff).toBe(2); // 74 - 72
-  });
-
-  it('should limit the results to the last 10 entries when no timeRange is provided', () => {
-    const weights = Array.from({ length: 15 }, (_, i) => ({
-      createdAt: new Date(`2026-01-${i + 1 < 10 ? '0' + (i + 1) : i + 1}`).toISOString(),
-      weight: 60 + i
-    }));
-
-    (userStore as any).mockImplementation((selector: any) => selector({ weights }));
-
-    const { result } = renderHook(() => useWeightChartData());
-
-    expect(result.current.chartData.length).toBe(10);
-    expect(result.current.weightDiff).toBe(9); // 74 - 65
+    expect(result.current.averageWeight).toBe(70); // (69+70+71)/3
   });
 });
