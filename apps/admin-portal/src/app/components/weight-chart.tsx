@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { WeightChart as SharedWeightChart, TimeRangeSelector, TimeRange } from '@my-org/shared-ui';
+import clsx from 'clsx';
 
 interface WeightChartProps {
   weights: any[];
@@ -8,36 +9,59 @@ interface WeightChartProps {
 export const WeightChart = ({ weights }: WeightChartProps) => {
   const [timeRange, setTimeRange] = useState<TimeRange>('4w');
 
-  const data = useMemo(() => {
+  const { chartData, weightDiff } = useMemo(() => {
     const now = new Date();
 
-    const filteredWeights = weights.filter((w) => {
-      if (!w.createdAt?.toDate) return false;
-      const weightDate = w.createdAt.toDate();
-      const diffTime = Math.abs(now.getTime() - weightDate.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const filteredWeights = weights
+      .filter((w) => {
+        if (!w.createdAt?.toDate) return false;
+        const weightDate = w.createdAt.toDate();
+        const diffTime = Math.abs(now.getTime() - weightDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-      if (timeRange === '1w') {
-        return diffDays <= 7;
-      } else if (timeRange === '4w') {
-        return diffDays <= 28;
-      } else if (timeRange === '6m') {
-        return diffDays <= 180;
-      }
-      // 'all'
-      return true;
-    });
+        if (timeRange === '1w') {
+          return diffDays <= 7;
+        } else if (timeRange === '4w') {
+          return diffDays <= 28;
+        } else if (timeRange === '6m') {
+          return diffDays <= 180;
+        }
+        return true;
+      })
+      .sort((a, b) => a.createdAt.toDate().getTime() - b.createdAt.toDate().getTime());
 
-    return filteredWeights.map((w) => ({
+    let diff = 0;
+    if (filteredWeights.length >= 2) {
+      const firstWeight = filteredWeights[0].weight;
+      const lastWeight = filteredWeights[filteredWeights.length - 1].weight;
+      diff = lastWeight - firstWeight;
+    }
+
+    const data = filteredWeights.map((w) => ({
       date: w.createdAt.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       weight: w.weight,
       fullDate: w.createdAt.toDate().toLocaleDateString(),
     }));
+
+    return { chartData: data, weightDiff: diff };
   }, [weights, timeRange]);
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-end">
+      <div className="flex justify-between items-end">
+        <div>
+          {chartData.length >= 2 && (
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500 uppercase font-semibold tracking-wider">Weight Change</span>
+              <span className={clsx(
+                "text-2xl font-bold",
+                weightDiff > 0 ? "text-red-500" : weightDiff < 0 ? "text-green-500" : "text-gray-700 dark:text-gray-200"
+              )}>
+                {weightDiff > 0 ? `+${weightDiff.toFixed(1)}` : weightDiff.toFixed(1)} kg
+              </span>
+            </div>
+          )}
+        </div>
         <TimeRangeSelector
           value={timeRange}
           onChange={setTimeRange}
@@ -46,7 +70,7 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
         />
       </div>
       <SharedWeightChart
-        data={data}
+        data={chartData}
         emptyMessage="No weight data available to display chart."
         stopOpacity={0.1}
         showDot={true}

@@ -34,18 +34,25 @@ export function useWeightChartData(timeRange?: TimeRange) {
       }
     }
 
+    let filteredData = uniqueData;
+
     if (!timeRange) {
-      return uniqueData.slice(-10);
+      filteredData = uniqueData.slice(-10);
+    } else if (timeRange !== 'all') {
+      const now = new Date().getTime();
+      const days = timeRange === '1w' ? 7 : timeRange === '4w' ? 28 : 180;
+      const ms = days * 24 * 60 * 60 * 1000;
+      filteredData = uniqueData.filter(d => (now - d.timestamp) <= ms);
     }
 
-    if (timeRange === 'all') {
-      return uniqueData;
+    let diff = 0;
+    if (filteredData.length >= 2) {
+      diff = filteredData[filteredData.length - 1].weight - filteredData[0].weight;
     }
 
-    const now = new Date().getTime();
-    const days = timeRange === '1w' ? 7 : timeRange === '4w' ? 28 : 180;
-    const ms = days * 24 * 60 * 60 * 1000;
-
-    return uniqueData.filter(d => (now - d.timestamp) <= ms);
+    return {
+      chartData: filteredData,
+      weightDiff: diff
+    };
   }, [weights, timeRange]);
 }

@@ -35,27 +35,28 @@ describe('WeightChart', () => {
     vi.clearAllMocks();
   });
 
-  it('should return null when there is no chart data and range is "all" (simulated)', () => {
-    // In the component, it returns null only if data is empty AND range is 'all'
-    // But initially it's '1w', so it would render the card with "No data" message
-    (useWeightChartData as any).mockReturnValue([]);
-    
-    // We can't easily change the internal state from here without more complex mocking or using a prop
-    // But we can check the default state '1w'
-    render(<WeightChart />);
-    expect(screen.getByText('No weight data available to display chart.')).toBeInTheDocument();
-  });
-
   it('should render the chart and selector when data is present', () => {
-    (useWeightChartData as any).mockReturnValue([
-      { date: '2/10/2026', weight: 70, timestamp: 123 }
-    ]);
+    (useWeightChartData as any).mockReturnValue({
+      chartData: [{ date: '2/10/2026', weight: 70, timestamp: 123 }],
+      weightDiff: 0
+    });
 
     render(<WeightChart />);
     expect(screen.getByText('dashboard.journey')).toBeInTheDocument();
     expect(screen.getByTestId('area-chart')).toBeInTheDocument();
-    
-    // Check if TimeRangeSelector is present (it displays the current label '1w')
     expect(screen.getByText('1w')).toBeInTheDocument();
+  });
+
+  it('should render the weight difference when data exists', () => {
+    (useWeightChartData as any).mockReturnValue({
+      chartData: [
+        { date: '2/10/2026', weight: 70, timestamp: 123 },
+        { date: '2/11/2026', weight: 72, timestamp: 456 }
+      ],
+      weightDiff: 2
+    });
+
+    render(<WeightChart />);
+    expect(screen.getByText('+2.0 kg')).toBeInTheDocument();
   });
 });
