@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { WeightChart } from './weight-chart';
 
 // Mock ResponsiveContainer because it doesn't work well in JSDOM
@@ -16,16 +16,25 @@ vi.mock('recharts', async () => {
 });
 
 describe('WeightChart', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2024-01-10T10:00:00Z'));
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   const mockWeights = [
     {
       id: 'w1',
       weight: 80.5,
-      createdAt: { toDate: () => new Date('2024-01-01T10:00:00Z') },
+      createdAt: { toDate: () => new Date('2024-01-01T10:00:00Z') }, // 9 days ago (filtered out by 1w)
     },
     {
       id: 'w2',
       weight: 79.8,
-      createdAt: { toDate: () => new Date('2024-01-08T10:00:00Z') },
+      createdAt: { toDate: () => new Date('2024-01-08T10:00:00Z') }, // 2 days ago (included in 1w)
     },
   ];
 
@@ -34,7 +43,7 @@ describe('WeightChart', () => {
     expect(screen.getByText(/No weight data available to display chart/i)).toBeTruthy();
   });
 
-  it('should render the chart container when data is provided', () => {
+  it('should render the chart container when data is provided within the default 1w range', () => {
     const { container } = render(<WeightChart weights={mockWeights} />);
     
     // Check for the presence of Recharts elements
