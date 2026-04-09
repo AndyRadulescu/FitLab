@@ -1,85 +1,100 @@
-import { useMemo } from 'react';
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Area,
-  AreaChart,
-} from 'recharts';
+import { useMemo, useState } from 'react';
+import { WeightChart as SharedWeightChart, TimeRangeSelector, TimeRange } from '@my-org/shared-ui';
+import clsx from 'clsx';
 
 interface WeightChartProps {
   weights: any[];
 }
 
 export const WeightChart = ({ weights }: WeightChartProps) => {
-  const data = useMemo(() => {
-    return weights.map((w) => ({
-      date: w.createdAt?.toDate
-        ? w.createdAt.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-        : 'N/A',
-      weight: w.weight,
-      fullDate: w.createdAt?.toDate ? w.createdAt.toDate().toLocaleDateString() : 'N/A',
-    }));
-  }, [weights]);
+  const [timeRange, setTimeRange] = useState<TimeRange>('4w');
 
-  if (weights.length === 0) {
-    return (
-      <div className="h-[300px] flex items-center justify-center text-gray-400 italic bg-gray-50 rounded-xl border border-gray-100">
-        No weight data available to display chart.
-      </div>
-    );
-  }
+  const { chartData, weightDiff, averageWeight } = useMemo(() => {
+    const now = new Date();
+
+    const filteredWeights = weights
+      .filter((w) => {
+        if (!w.createdAt?.toDate) return false;
+        const weightDate = w.createdAt.toDate();
+        const diffTime = Math.abs(now.getTime() - weightDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (timeRange === '1w') {
+          return diffDays <= 7;
+        } else if (timeRange === '4w') {
+          return diffDays <= 28;
+        } else if (timeRange === '6m') {
+          return diffDays <= 180;
+        }
+        return true;
+      })
+      .sort((a, b) => a.createdAt.toDate().getTime() - b.createdAt.toDate().getTime());
+
+    let diff = 0;
+    let avg = 0;
+    if (filteredWeights.length >= 1) {
+      const sum = filteredWeights.reduce((acc, curr) => acc + curr.weight, 0);
+      console.log(sum);
+      console.log(filteredWeights.length);
+      console.log(sum/ filteredWeights.length);
+      avg = sum / filteredWeights.length;
+
+      if (filteredWeights.length >= 2) {
+        const firstWeight = filteredWeights[0].weight;
+        const lastWeight = filteredWeights[filteredWeights.length - 1].weight;
+        diff = lastWeight - firstWeight;
+      }
+    }
+
+    const data = filteredWeights.map((w) => ({
+      date: w.createdAt.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      weight: w.weight,
+      fullDate: w.createdAt.toDate().toLocaleDateString(),
+    }));
+
+    return { chartData: data, weightDiff: diff, averageWeight: avg };
+  }, [weights, timeRange]);
 
   return (
-    <div className="h-[300px] w-full">
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-          <defs>
-            <linearGradient id="colorWeight" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.1} />
-              <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-          <XAxis
-            dataKey="date"
-            axisLine={false}
-            tickLine={false}
-            tick={{ fill: '#9ca3af', fontSize: 12 }}
-            dy={10}
-          />
-          <YAxis
-            axisLine={false}
-            tickLine={false}
-            tick={{ fill: '#9ca3af', fontSize: 12 }}
-            domain={['dataMin - 5', 'dataMax + 5']}
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: '#fff',
-              border: 'none',
-              borderRadius: '8px',
-              boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-            }}
-            labelStyle={{ fontWeight: 'bold', marginBottom: '4px', color: '#111827' }}
-            formatter={(value: any) => [`${value} kg`, 'Weight']}
-          />
-          <Area
-            type="monotone"
-            dataKey="weight"
-            stroke="#4f46e5"
-            strokeWidth={3}
-            fillOpacity={1}
-            fill="url(#colorWeight)"
-            dot={{ r: 4, fill: '#4f46e5', strokeWidth: 2, stroke: '#fff' }}
-            activeDot={{ r: 6, strokeWidth: 0 }}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-between items-end">
+        <div className="flex gap-8">
+          {chartData.length >= 1 && (
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500 uppercase font-semibold tracking-wider">Average</span>
+              <span className="text-2xl font-bold text-gray-700 dark:text-gray-200">
+                {averageWeight.toFixed(1)} kg
+              </span>
+            </div>
+          )}
+          {chartData.length >= 2 && (
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-500 uppercase font-semibold tracking-wider">Weight Change</span>
+              <span className={clsx(
+                "text-2xl font-bold",
+                weightDiff > 0 ? "text-red-500" : weightDiff < 0 ? "text-green-500" : "text-gray-700 dark:text-gray-200"
+              )}>
+                {weightDiff > 0 ? `+${weightDiff.toFixed(1)}` : weightDiff.toFixed(1)} kg
+              </span>
+            </div>
+          )}
+        </div>
+        <TimeRangeSelector
+          value={timeRange}
+          onChange={setTimeRange}
+          triggerClassName="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-indigo-500"
+          activeOptionClassName="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-bold"
+        />
+      </div>
+      <SharedWeightChart
+        data={chartData}
+        emptyMessage="No weight data available to display chart."
+        stopOpacity={0.1}
+        showDot={true}
+        xAxisDy={10}
+        yAxisDomain={['dataMin - 5', 'dataMax + 5']}
+        tooltipFormatter={(value: any) => [`${value} kg`, 'Weight']}
+      />
     </div>
   );
 };

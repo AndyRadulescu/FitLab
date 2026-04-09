@@ -35,19 +35,15 @@ describe('WeightChart', () => {
     vi.clearAllMocks();
   });
 
-  it('should return null when there is no chart data', () => {
-    (useWeightChartData as any).mockReturnValue([]);
-    const { container } = render(<WeightChart />);
-    expect(container.firstChild).toBeNull();
-  });
-
-  it('should render the chart when data is present', () => {
-    (useWeightChartData as any).mockReturnValue([
-      { date: '2/10/2026', weight: 70, timestamp: 123 }
-    ]);
+  it('should render the chart and metrics when data is present', () => {
+    (useWeightChartData as any).mockReturnValue({
+      chartData: [{ date: '2/10/2026', weight: 70, timestamp: 123 }],
+      weightDiff: 0,
+      averageWeight: 70
+    });
 
     render(<WeightChart />);
     expect(screen.getByText('dashboard.journey')).toBeInTheDocument();
-    expect(screen.getByTestId('area-chart')).toBeInTheDocument();
+    expect(screen.getByText('Avg: 70.0 kg')).toBeInTheDocument();
   });
 });

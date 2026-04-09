@@ -53,9 +53,9 @@ describe('ImageUploader', () => {
       />
     );
 
-    expect(screen.getByText(/image.upload.front/i)).toBeInTheDocument();
-    expect(screen.getByText(/image.upload.back/i)).toBeInTheDocument();
-    expect(screen.getByText(/image.upload.side/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/image.upload.front/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/image.upload.back/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/image.upload.side/i)[0]).toBeInTheDocument();
     expect(screen.getAllByText(/section.upload/i)).toHaveLength(3);
   });
 

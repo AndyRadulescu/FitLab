@@ -1,72 +1,52 @@
-import {
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Area,
-  AreaChart,
-} from 'recharts';
-import { Card } from '@my-org/shared-ui';
+import { useState } from 'react';
+import { Card, WeightChart as SharedWeightChart, TimeRangeSelector, TimeRange } from '@my-org/shared-ui';
 import { useTranslation } from 'react-i18next';
 import { useWeightChartData } from '../hooks/use-weight-chart-data';
 
 export function WeightChart() {
   const { t } = useTranslation();
-  const chartData = useWeightChartData();
+  const [timeRange, setTimeRange] = useState<TimeRange>('1w');
+  const { chartData, weightDiff, averageWeight } = useWeightChartData(timeRange);
 
-  if (chartData.length === 0) {
+  if (chartData.length === 0 && timeRange === 'all') {
     return null;
   }
 
   return (
-    <Card className="p-4 mb-4 h-[300px] w-full bg-white dark:bg-gray-900 overflow-hidden [--chart-stroke:#6b7280] dark:[--chart-stroke:#E3CDA1] [--chart-tick:#9ca3af] dark:[--chart-tick:#E3CDA1] [--chart-stop-color:#9ca3af] dark:[--chart-stop-color:#E3CDA1] [--chart-grid:#e5e7eb] dark:[--chart-grid:#374151]">
-      <h3 className="text-lg font-bold mb-4 text-gray-700 dark:text-gray-100">
-        {t('dashboard.journey')}
-      </h3>
-      <div className="h-[220px] w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
-            <defs>
-              <linearGradient id="colorWeight" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--chart-stop-color)" stopOpacity={0.3}/>
-                <stop offset="95%" stopColor="var(--chart-stop-color)" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--chart-grid)" />
-            <XAxis
-              dataKey="date"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 10, fill: 'var(--chart-tick)' }}
-              minTickGap={30}
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={{ fontSize: 10, fill: 'var(--chart-tick)' }}
-              domain={['auto', 'auto']}
-            />
-            <Tooltip
-              contentStyle={{
-                backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                borderRadius: '8px',
-                border: 'none',
-                boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
-              }}
-              labelStyle={{ fontWeight: 'bold', color: 'var(--chart-stroke)' }}
-            />
-            <Area
-              type="monotone"
-              dataKey="weight"
-              stroke="var(--chart-stroke)"
-              strokeWidth={3}
-              fillOpacity={1}
-              fill="url(#colorWeight)"
-              animationDuration={1500}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+    <Card className="p-4 mb-4 h-[300px] w-full bg-white dark:bg-gray-900 overflow-hidden [--chart-stroke:#6b7280] dark:[--chart-stroke:#E3CDA1] [--chart-tick:#9ca3af] dark:[--chart-tick:#E3CDA1] [--chart-stop-color:#9ca3af] dark:[--chart-stop-color:#E3CDA1] [--chart-grid:#e5e7eb] dark:[--chart-grid:#374151] [--tooltip-bg:rgba(255,255,255,0.9)] dark:[--tooltip-bg:rgba(17,24,39,0.9)]">
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex flex-col">
+          <h3 className="text-lg font-bold text-gray-700 dark:text-gray-100 leading-tight">
+            {t('dashboard.journey')}
+          </h3>
+          <div className="flex gap-4">
+            {chartData.length >= 1 && (
+              <span className="text-sm font-semibold text-gray-500 dark:text-gray-400">
+                Avg: {averageWeight.toFixed(1)} kg
+              </span>
+            )}
+            {chartData.length >= 2 && (
+              <span className="text-sm font-semibold primary-text-gradient">
+                {weightDiff > 0 ? `+${weightDiff.toFixed(1)}` : weightDiff.toFixed(1)} kg
+              </span>
+            )}
+          </div>
+        </div>
+        <TimeRangeSelector
+          value={timeRange}
+          onChange={setTimeRange}
+          triggerClassName="border border-gray-200 dark:border-amber-300/15 bg-gray-50 dark:bg-zinc-800 text-gray-900 dark:text-gray-100 hover:bg-gray-100 dark:hover:bg-zinc-700 focus:ring-amber-300"
+          activeOptionClassName="bg-amber-100 dark:bg-amber-300/20 text-amber-900 dark:text-amber-300 font-bold"
+        />
+      </div>
+      <div className="h-[200px] w-full">
+        <SharedWeightChart
+          data={chartData}
+          height="100%"
+          margin={{ top: 5, right: 5, left: -20, bottom: 0 }}
+          emptyMessage={chartData.length === 0 ? "No weight data available to display chart." : undefined}
+          emptyStateClassName="bg-gray-50 dark:bg-gray-800/30 border-gray-100 dark:border-amber-300/10"
+        />
       </div>
     </Card>
   );
