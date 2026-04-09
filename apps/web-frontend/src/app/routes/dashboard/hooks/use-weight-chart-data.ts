@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { userStore } from '../../../store/user.store';
+import { TimeRange } from '@my-org/shared-ui';
 
 export interface ChartDataPoint {
   date: string;
@@ -7,7 +8,7 @@ export interface ChartDataPoint {
   timestamp: number;
 }
 
-export function useWeightChartData() {
+export function useWeightChartData(timeRange?: TimeRange) {
   const weights = userStore((state) => state.weights);
 
   return useMemo(() => {
@@ -33,6 +34,18 @@ export function useWeightChartData() {
       }
     }
 
-    return uniqueData.slice(-10);
-  }, [weights]);
+    if (!timeRange) {
+      return uniqueData.slice(-10);
+    }
+
+    if (timeRange === 'all') {
+      return uniqueData;
+    }
+
+    const now = new Date().getTime();
+    const days = timeRange === '1w' ? 7 : timeRange === '4w' ? 28 : 180;
+    const ms = days * 24 * 60 * 60 * 1000;
+
+    return uniqueData.filter(d => (now - d.timestamp) <= ms);
+  }, [weights, timeRange]);
 }

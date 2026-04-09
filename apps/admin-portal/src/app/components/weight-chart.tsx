@@ -6,11 +6,11 @@ interface WeightChartProps {
 }
 
 export const WeightChart = ({ weights }: WeightChartProps) => {
-  const [timeRange, setTimeRange] = useState<TimeRange>('1w');
+  const [timeRange, setTimeRange] = useState<TimeRange>('4w');
 
   const data = useMemo(() => {
     const now = new Date();
-    
+
     const filteredWeights = weights.filter((w) => {
       if (!w.createdAt?.toDate) return false;
       const weightDate = w.createdAt.toDate();
