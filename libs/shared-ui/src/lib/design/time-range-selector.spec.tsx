@@ -125,4 +125,14 @@ describe('TimeRangeSelector', () => {
     
     expect(screen.getByText(`${startStr} - ${endStr}`)).toBeInTheDocument();
   });
+
+  it('should not show "Custom Range" option when allowCustomRange is false', () => {
+    render(<TimeRangeSelector {...defaultProps} allowCustomRange={false} />);
+    
+    // Open popover
+    fireEvent.click(screen.getByRole('button'));
+    
+    // "Custom Range" should not be present
+    expect(screen.queryByText('Custom Range')).not.toBeInTheDocument();
+  });
 });

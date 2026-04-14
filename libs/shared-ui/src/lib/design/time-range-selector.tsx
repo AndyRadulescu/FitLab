@@ -15,6 +15,7 @@ export interface TimeRangeSelectorProps {
   triggerClassName?: string;
   popoverClassName?: string;
   activeOptionClassName?: string;
+  allowCustomRange?: boolean;
 }
 
 export function TimeRangeSelector({
@@ -24,6 +25,7 @@ export function TimeRangeSelector({
   triggerClassName,
   popoverClassName,
   activeOptionClassName,
+  allowCustomRange = true,
 }: TimeRangeSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showCustomPicker, setShowCustomPicker] = useState(false);
@@ -133,20 +135,22 @@ export function TimeRangeSelector({
                   {option.label}
                 </button>
               ))}
-              <button
-                onClick={() => setShowCustomPicker(true)}
-                className={clsx(
-                  'block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors duration-150 border-t border-gray-100 dark:border-gray-700 mt-1',
-                  isCustomRange
-                    ? activeOptionClassName
+              {allowCustomRange && (
+                <button
+                  onClick={() => setShowCustomPicker(true)}
+                  className={clsx(
+                    'block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors duration-150 border-t border-gray-100 dark:border-gray-700 mt-1',
+                    isCustomRange
                       ? activeOptionClassName
-                      : 'bg-gray-100 dark:bg-gray-700 font-bold'
-                    : ''
-                )}
-                role="menuitem"
-              >
-                Custom Range
-              </button>
+                        ? activeOptionClassName
+                        : 'bg-gray-100 dark:bg-gray-700 font-bold'
+                      : ''
+                  )}
+                  role="menuitem"
+                >
+                  Custom Range
+                </button>
+              )}
             </div>
           ) : (
             <div className="p-2 custom-date-range-picker">
