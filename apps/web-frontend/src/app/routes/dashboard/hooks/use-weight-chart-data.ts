@@ -38,6 +38,10 @@ export function useWeightChartData(timeRange?: TimeRange) {
 
     if (!timeRange) {
       filteredData = uniqueData.slice(-10);
+    } else if (typeof timeRange === 'object') {
+      const start = timeRange.start.getTime();
+      const end = timeRange.end.getTime();
+      filteredData = uniqueData.filter(d => d.timestamp >= start && d.timestamp <= end);
     } else if (timeRange !== 'all') {
       const now = new Date().getTime();
       const days = timeRange === '1w' ? 7 : timeRange === '4w' ? 28 : 180;

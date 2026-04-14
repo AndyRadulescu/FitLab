@@ -16,6 +16,11 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
       .filter((w) => {
         if (!w.createdAt?.toDate) return false;
         const weightDate = w.createdAt.toDate();
+        if (typeof timeRange === 'object') {
+          const weightTime = weightDate.getTime();
+          return weightTime >= timeRange.start.getTime() && weightTime <= timeRange.end.getTime();
+        }
+
         const diffTime = Math.abs(now.getTime() - weightDate.getTime());
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 

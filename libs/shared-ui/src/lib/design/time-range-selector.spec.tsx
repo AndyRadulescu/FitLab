@@ -88,4 +88,51 @@ describe('TimeRangeSelector', () => {
     const activeOption = within(menu).getByRole('menuitem', { name: '1w' });
     expect(activeOption).toHaveClass(activeClass);
   });
+
+  it('should show custom date picker when "Custom Range" is clicked', () => {
+    render(<TimeRangeSelector {...defaultProps} />);
+    
+    // Open popover
+    fireEvent.click(screen.getByRole('button'));
+    
+    // Click "Custom Range"
+    fireEvent.click(screen.getByText('Custom Range'));
+    
+    // Menu should be gone and replaced with date picker content
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    
+    // Check if "Done" button is present (part of my custom picker UI)
+    expect(screen.getByText('Done')).toBeInTheDocument();
+    
+    // Check for some react-date-range indicator (like a month name)
+    // react-date-range usually renders month names
+    const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+    // We use getAllByText because the month name might appear in multiple places (header, calendar)
+    expect(screen.getAllByText(new RegExp(currentMonth, 'i')).length).toBeGreaterThan(0);
+  });
+
+  it('should render selected custom range in the trigger', () => {
+    const customRange = {
+      start: new Date('2023-01-01'),
+      end: new Date('2023-01-10'),
+    };
+    render(<TimeRangeSelector {...defaultProps} value={customRange} />);
+    
+    // Should show the formatted date range
+    // Based on my implementation: value.start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })
+    const startStr = customRange.start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    const endStr = customRange.end.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+    
+    expect(screen.getByText(`${startStr} - ${endStr}`)).toBeInTheDocument();
+  });
+
+  it('should not show "Custom Range" option when allowCustomRange is false', () => {
+    render(<TimeRangeSelector {...defaultProps} allowCustomRange={false} />);
+    
+    // Open popover
+    fireEvent.click(screen.getByRole('button'));
+    
+    // "Custom Range" should not be present
+    expect(screen.queryByText('Custom Range')).not.toBeInTheDocument();
+  });
 });

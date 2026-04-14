@@ -1,8 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import clsx from 'clsx';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Calendar } from 'lucide-react';
+import { DateRange, Range, RangeKeyDict } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
-export type TimeRange = '1w' | '4w' | '6m' | 'all';
+export type CustomRange = { start: Date; end: Date };
+export type TimeRange = '1w' | '4w' | '6m' | 'all' | CustomRange;
 
 export interface TimeRangeSelectorProps {
   value: TimeRange;
@@ -11,6 +15,7 @@ export interface TimeRangeSelectorProps {
   triggerClassName?: string;
   popoverClassName?: string;
   activeOptionClassName?: string;
+  allowCustomRange?: boolean;
 }
 
 export function TimeRangeSelector({
@@ -20,8 +25,10 @@ export function TimeRangeSelector({
   triggerClassName,
   popoverClassName,
   activeOptionClassName,
+  allowCustomRange = true,
 }: TimeRangeSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [showCustomPicker, setShowCustomPicker] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -31,6 +38,7 @@ export function TimeRangeSelector({
         !popoverRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
+        setShowCustomPicker(false);
       }
     }
 
@@ -47,7 +55,29 @@ export function TimeRangeSelector({
     { label: 'all', value: 'all' },
   ];
 
-  const selectedOption = options.find((opt) => opt.value === value) || options[0];
+  const isCustomRange = typeof value !== 'string';
+  
+  const selectedOption = isCustomRange 
+    ? { label: 'Custom', value } 
+    : options.find((opt) => opt.value === value) || options[0];
+
+  const handleSelect = (ranges: RangeKeyDict) => {
+    const { selection } = ranges;
+    if (selection.startDate && selection.endDate) {
+      onChange({
+        start: selection.startDate,
+        end: selection.endDate,
+      });
+    }
+  };
+
+  const initialRange: Range[] = [
+    {
+      startDate: isCustomRange ? value.start : new Date(),
+      endDate: isCustomRange ? value.end : new Date(),
+      key: 'selection',
+    },
+  ];
 
   return (
     <div className={clsx('relative inline-block text-left', className)} ref={popoverRef}>
@@ -59,43 +89,87 @@ export function TimeRangeSelector({
             ? triggerClassName
             : 'border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-amber-300'
         )}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          setIsOpen(!isOpen);
+          setShowCustomPicker(false);
+        }}
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        <span>{selectedOption.label}</span>
+        <span className="flex items-center gap-2">
+          {isCustomRange && <Calendar className="h-3.5 w-3.5 text-amber-500" />}
+          {isCustomRange 
+            ? `${value.start.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} - ${value.end.toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}`
+            : selectedOption.label}
+        </span>
         <ChevronDown className="-mr-1 ml-2 h-4 w-4" aria-hidden="true" />
       </button>
 
       {isOpen && (
         <div
           className={clsx(
-            'absolute right-0 z-10 mt-2 w-24 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none',
+            'absolute right-0 z-10 mt-2 origin-top-right rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none',
+            showCustomPicker ? 'w-auto' : 'w-32',
             popoverClassName ? popoverClassName : 'bg-white dark:bg-zinc-800'
           )}
         >
-          <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-            {options.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => {
-                  onChange(option.value);
-                  setIsOpen(false);
-                }}
-                className={clsx(
-                  'block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors duration-150',
-                  value === option.value
-                    ? activeOptionClassName
+          {!showCustomPicker ? (
+            <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+              {options.map((option) => (
+                <button
+                  key={option.value as string}
+                  onClick={() => {
+                    onChange(option.value);
+                    setIsOpen(false);
+                  }}
+                  className={clsx(
+                    'block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors duration-150',
+                    value === option.value
                       ? activeOptionClassName
-                      : 'bg-gray-100 dark:bg-gray-700 font-bold'
-                    : ''
-                )}
-                role="menuitem"
-              >
-                {option.label}
-              </button>
-            ))}
-          </div>
+                        ? activeOptionClassName
+                        : 'bg-gray-100 dark:bg-gray-700 font-bold'
+                      : ''
+                  )}
+                  role="menuitem"
+                >
+                  {option.label}
+                </button>
+              ))}
+              {allowCustomRange && (
+                <button
+                  onClick={() => setShowCustomPicker(true)}
+                  className={clsx(
+                    'block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors duration-150 border-t border-gray-100 dark:border-gray-700 mt-1',
+                    isCustomRange
+                      ? activeOptionClassName
+                        ? activeOptionClassName
+                        : 'bg-gray-100 dark:bg-gray-700 font-bold'
+                      : ''
+                  )}
+                  role="menuitem"
+                >
+                  Custom Range
+                </button>
+              )}
+            </div>
+          ) : (
+            <div className="p-2 custom-date-range-picker">
+              <DateRange
+                ranges={initialRange}
+                onChange={handleSelect}
+                moveRangeOnFirstSelection={false}
+                rangeColors={['#f59e0b']} // amber-500
+              />
+              <div className="flex justify-end p-2 border-t border-gray-100 dark:border-gray-700">
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="px-3 py-1 text-sm font-medium text-white bg-amber-500 rounded-md hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-300"
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
