@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs, query, limit } from 'firebase/firestore';
+import { collection, getDocs, query, limit, where } from 'firebase/firestore';
 import { db } from '../../init-firebase-auth';
 import { userStore } from '../store/user.store';
 import { useNavigate } from 'react-router-dom';
@@ -23,13 +23,41 @@ export const UsersList = () => {
       setLoading(true);
       setError(null);
       try {
-        const usersQuery = query(collection(db, 'users'), limit(50));
-        const usersSnapshot = await getDocs(usersQuery);
-        const usersList = usersSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setUsers(usersList);
+        const fetchMyClients = async (coachId: string) => {
+          // 1. Get all active connections for this coach
+          const connectionsQuery = query(
+            collection(db, 'connections'),
+            where('coachId', '==', coachId),
+            where('status', '==', 'active')
+          );
+
+          const connectionsSnapshot = await getDocs(connectionsQuery);
+
+          // 2. Extract the clientIds from those connections
+          const clientIds = connectionsSnapshot.docs.map(doc => doc.data().clientId);
+
+          if (clientIds.length === 0) {
+            setUsers([]);
+            return;
+          }
+
+          // 3. Fetch the actual user documents for these IDs
+          // Note: Firestore 'in' queries are limited to 30 IDs per request
+          const usersQuery = query(
+            collection(db, 'users'),
+            where('__name__', 'in', clientIds)
+          );
+
+          const usersSnapshot = await getDocs(usersQuery);
+          const clientsList = usersSnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          setUsers(clientsList);
+        };
+
+        await fetchMyClients(currentUser?.uid);
       } catch (err: any) {
         console.error('Error fetching users:', err);
         if (err.code === 'permission-denied') {
@@ -105,8 +133,8 @@ export const UsersList = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
               {users.map((user) => (
-                <tr 
-                  key={user.id} 
+                <tr
+                  key={user.id}
                   onClick={() => handleUserClick(user.id)}
                   className="hover:bg-indigo-50/30 transition-colors duration-150 cursor-pointer"
                 >
