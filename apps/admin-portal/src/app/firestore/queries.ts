@@ -29,3 +29,30 @@ export const fetchWeights = async (userId: string) => {
   const weightsSnapshot = await getDocs(weightsQuery);
   return weightsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 };
+
+export const fetchClientIds = async (coachId: string) => {
+  const connectionsQuery = query(
+    collection(db, 'connections'),
+    where('coachId', '==', coachId),
+    where('status', '==', 'active')
+  );
+
+  const connectionsSnapshot = await getDocs(connectionsQuery);
+  const clientIds = connectionsSnapshot.docs.map(doc => doc.data().clientId);
+
+  if (clientIds.length === 0) {
+    return [];
+  }
+
+  const usersQuery = query(
+    collection(db, 'users'),
+    where('__name__', 'in', clientIds)
+  );
+
+  const usersSnapshot = await getDocs(usersQuery);
+  return usersSnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  })) ?? [];
+}
+
