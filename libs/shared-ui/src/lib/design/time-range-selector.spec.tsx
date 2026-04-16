@@ -1,12 +1,14 @@
 /**
  * @vitest-environment jsdom
  */
-import { render, screen, fireEvent, within } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { render, screen, fireEvent, within, cleanup } from '@testing-library/react';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { TimeRangeSelector } from './time-range-selector';
 import '@testing-library/jest-dom/vitest';
 
 describe('TimeRangeSelector', () => {
+  afterEach(cleanup);
+  
   const defaultProps = {
     value: '1w' as const,
     onChange: vi.fn(),
