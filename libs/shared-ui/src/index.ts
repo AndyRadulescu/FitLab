@@ -8,4 +8,5 @@ export * from './lib/design/social-button';
 export * from './lib/design/loading-screen';
 export * from './lib/design/weight-chart';
 export * from './lib/design/time-range-selector';
+export * from './lib/design/option-selector';
 export * from './lib/language-toggle';
