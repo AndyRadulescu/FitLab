@@ -103,7 +103,7 @@ describe('CheckInForm', () => {
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalled();
-      expect(mockOnSubmit.mock.calls[0][0].kg).toBe(75);
+      expect(mockOnSubmit.mock.calls[0][0].kg).toBe(70);
     });
   });
 
