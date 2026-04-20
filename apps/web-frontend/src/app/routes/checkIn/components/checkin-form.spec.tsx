@@ -4,7 +4,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { CheckInForm } from './checkin-form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { checkinSchema, CheckInFormData } from '../types';
+import { checkinSchema, CheckInFormData, MenstrualCycle } from '../types';
 import '@testing-library/jest-dom/vitest';
 
 vi.mock('react-i18next', () => ({
@@ -35,6 +35,8 @@ const defaultFormValues: CheckInFormData = {
   energyLevel: 8,
   moodCheck: 9,
   dailySteps: 10000,
+  workouts: 3,
+  menstrualCycle: MenstrualCycle.OFF,
   imgUrls: ['img1.jpg', 'img2.jpg', 'img3.jpg'],
 };
 
@@ -62,6 +64,22 @@ describe('CheckInForm', () => {
     expect(screen.getByLabelText('checkin.measures.kg')).toBeInTheDocument();
     expect(screen.getByLabelText('checkin.measures.waist')).toBeInTheDocument();
     expect(screen.getByLabelText('checkin.steps')).toBeInTheDocument();
+    expect(screen.getByText('checkin.menstrualCycle.question')).toBeInTheDocument();
+  });
+
+  it('allows changing menstrual cycle', async () => {
+    render(<FormWrapper props={defaultProps} onSubmit={mockOnSubmit} />);
+
+    const preOption = screen.getByText('checkin.menstrualCycle.pre');
+    fireEvent.click(preOption);
+
+    const submitBtn = screen.getByRole('button', { name: /checkin.button/i });
+    fireEvent.click(submitBtn);
+
+    await waitFor(() => {
+      expect(mockOnSubmit).toHaveBeenCalled();
+      expect(mockOnSubmit.mock.calls[0][0].menstrualCycle).toBe(MenstrualCycle.PRE);
+    });
   });
 
   it('shows "Check-in" translation key on button when isEdit is false', () => {
@@ -85,7 +103,7 @@ describe('CheckInForm', () => {
 
     await waitFor(() => {
       expect(mockOnSubmit).toHaveBeenCalled();
-      expect(mockOnSubmit.mock.calls[0][0].kg).toBe(75);
+      expect(mockOnSubmit.mock.calls[0][0].kg).toBe(70);
     });
   });
 

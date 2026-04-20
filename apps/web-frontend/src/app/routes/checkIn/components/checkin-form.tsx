@@ -1,10 +1,10 @@
 import { Controller, UseFormReturn } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { SectionHeader } from '../../../components/section-header';
-import { Card, Input, Button } from '@my-org/shared-ui';
+import { Card, Input, Button, OptionSelector } from '@my-org/shared-ui';
 import { FormSlider } from '../../../components/custom-slider/form-slider';
 import { ImageUploader } from '../../../components/image/image-uploader';
-import { CheckInFormData } from '../types';
+import { CheckInFormData, MenstrualCycle } from '../types';
 import firebase from 'firebase/compat/app';
 
 interface CheckInFormProps {
@@ -73,6 +73,29 @@ export function CheckInForm({ formMethods, onSubmit, user, activeCheckinId, isEd
         <Input label={t('checkin.steps')} type="number"
                min="0" {...register('dailySteps', { valueAsNumber: true })}
                error={errors.dailySteps?.message && t(errors.dailySteps.message)}></Input>
+
+        <Input label={t('checkin.workouts')} type="number"
+               min={0} max={10} step={1} {...register('workouts', { valueAsNumber: true })}
+               error={errors.workouts?.message && t(errors.workouts.message)}></Input>
+
+        <Controller
+          name="menstrualCycle"
+          control={control}
+          render={({ field: { value, onChange } }) => (
+            <OptionSelector
+              label={t('checkin.menstrualCycle.question')}
+              infoText={t('checkin.menstrualCycle.info')}
+              value={value}
+              onChange={onChange}
+              options={[
+                { label: t('checkin.menstrualCycle.on'), value: MenstrualCycle.ON },
+                { label: t('checkin.menstrualCycle.off'), value: MenstrualCycle.OFF },
+                { label: t('checkin.menstrualCycle.pre'), value: MenstrualCycle.PRE },
+              ]}
+              error={errors.menstrualCycle?.message && t(errors.menstrualCycle.message)}
+            />
+          )}
+        />
       </Card>
 
       <SectionHeader><Trans i18nKey="section.requiredPhotos">Required Photos</Trans></SectionHeader>
