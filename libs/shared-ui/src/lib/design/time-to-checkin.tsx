@@ -1,4 +1,5 @@
 import { CheckInFormDataDto } from '@my-org/core';
+import clsx from 'clsx';
 
 export function TimeToCheckin({ data }: { data: CheckInFormDataDto[] }) {
   if (!data || data.length === 0) {
@@ -22,8 +23,14 @@ export function TimeToCheckin({ data }: { data: CheckInFormDataDto[] }) {
   const days = Math.floor(absoluteDiff / (1000 * 60 * 60 * 24));
 
   return (
-    <div style={{ color: isOverdue ? "text-red-500" : "inherit", fontWeight: "bold" }}>
-      {isOverdue ? "-" : ""}
+    <div className={clsx(
+      "font-bold", // Base classes
+      {
+        "text-red-500": isOverdue,
+        "text-gray-800 dark:text-gray-300": !isOverdue
+      }
+    )}>
+      {isOverdue && "-"}
       {days}d
     </div>
   );

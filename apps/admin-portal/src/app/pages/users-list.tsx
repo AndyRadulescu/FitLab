@@ -3,8 +3,9 @@ import { collection, getDocs, query, limit } from 'firebase/firestore';
 import { db } from '../../init-firebase-auth';
 import { userStore } from '../store/user.store';
 import { useNavigate } from 'react-router-dom';
+import { fetchCheckins } from '../firestore/queries';
 
-import { LoadingScreen } from '@my-org/shared-ui';
+import { LoadingScreen, TimeToCheckin } from '@my-org/shared-ui';
 
 export const UsersList = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -25,12 +26,29 @@ export const UsersList = () => {
       try {
         const usersQuery = query(collection(db, 'users'), limit(50));
         const usersSnapshot = await getDocs(usersQuery);
-        const usersList = usersSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        
+        const usersList = await Promise.all(
+          usersSnapshot.docs.map(async (doc) => {
+            const userData = {
+              id: doc.id,
+              ...doc.data(),
+            };
+            
+            const checkins = await fetchCheckins(doc.id);
+            // Convert Firestore Timestamps to JS Dates for TimeToCheckin
+            const formattedCheckins = checkins.map((c: any) => ({
+              ...c,
+              createdAt: c.createdAt?.toDate ? c.createdAt.toDate() : c.createdAt
+            }));
+
+            return {
+              ...userData,
+              checkins: formattedCheckins,
+            };
+          })
+        );
+        
         setUsers(usersList);
-        // TODO: get checkins for the specific users
       } catch (err: any) {
         console.error('Error fetching users:', err);
         if (err.code === 'permission-denied') {
@@ -73,7 +91,6 @@ export const UsersList = () => {
   }
 
 
-  // TODO: update the table by adding a new column to show days remaining to the next
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between pb-4 border-b border-gray-200">
@@ -103,6 +120,9 @@ export const UsersList = () => {
                 </th>
                 <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">
                   Created
+                </th>
+                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">
+                  Check-in
                 </th>
               </tr>
             </thead>
@@ -150,11 +170,14 @@ export const UsersList = () => {
                   <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-500 font-medium">
                     {user.createdAt?.toDate ? user.createdAt.toDate().toLocaleDateString() : '—'}
                   </td>
+                  <td className="px-6 py-5 whitespace-nowrap">
+                    <TimeToCheckin data={user.checkins || []} />
+                  </td>
                 </tr>
               ))}
               {users.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-gray-400 italic">
+                  <td colSpan={5} className="px-6 py-12 text-center text-gray-400 italic">
                     <div className="flex flex-col items-center">
                       <svg className="h-12 w-12 text-gray-200 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
