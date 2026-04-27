@@ -1,12 +1,12 @@
 import { CheckInFormDataDto } from '@my-org/core';
 import clsx from 'clsx';
 
-export function TimeToCheckin({ data }: { data: CheckInFormDataDto[] }) {
-  if (!data || data.length === 0) {
+export function TimeToCheckin({ checkins }: { checkins: CheckInFormDataDto[] }) {
+  if (!checkins || checkins.length === 0) {
     return <span>N/A</span>;
   }
 
-  const sortedCheckins = [...data].sort(
+  const sortedCheckins = [...checkins].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 

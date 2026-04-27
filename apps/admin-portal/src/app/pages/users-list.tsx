@@ -26,14 +26,14 @@ export const UsersList = () => {
       try {
         const usersQuery = query(collection(db, 'users'), limit(50));
         const usersSnapshot = await getDocs(usersQuery);
-        
+
         const usersList = await Promise.all(
           usersSnapshot.docs.map(async (doc) => {
             const userData = {
               id: doc.id,
               ...doc.data(),
             };
-            
+
             const checkins = await fetchCheckins(doc.id);
             // Convert Firestore Timestamps to JS Dates for TimeToCheckin
             const formattedCheckins = checkins.map((c: any) => ({
@@ -47,7 +47,7 @@ export const UsersList = () => {
             };
           })
         );
-        
+
         setUsers(usersList);
       } catch (err: any) {
         console.error('Error fetching users:', err);
@@ -171,7 +171,7 @@ export const UsersList = () => {
                     {user.createdAt?.toDate ? user.createdAt.toDate().toLocaleDateString() : '—'}
                   </td>
                   <td className="px-6 py-5 whitespace-nowrap">
-                    <TimeToCheckin data={user.checkins || []} />
+                    <TimeToCheckin checkins={user.checkins || []} />
                   </td>
                 </tr>
               ))}

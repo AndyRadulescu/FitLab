@@ -19,13 +19,13 @@ describe('TimeToCheckin', () => {
   });
 
   it('should render N/A when data is empty', () => {
-    render(<TimeToCheckin data={[]} />);
+    render(<TimeToCheckin checkins={[]} />);
     expect(screen.getByText('N/A')).toBeInTheDocument();
   });
 
   it('should render N/A when data is null', () => {
     // @ts-expect-error testing null input
-    render(<TimeToCheckin data={null} />);
+    render(<TimeToCheckin checkins={null} />);
     expect(screen.getByText('N/A')).toBeInTheDocument();
   });
 
@@ -38,11 +38,11 @@ describe('TimeToCheckin', () => {
       { id: '1', createdAt: lastCheckinDate }
     ];
 
-    render(<TimeToCheckin data={mockData} />);
-    
+    render(<TimeToCheckin checkins={mockData} />);
+
     expect(screen.getByText('2d')).toBeInTheDocument();
     expect(screen.queryByText('-')).not.toBeInTheDocument();
-    
+
     const container = screen.getByText('2d');
     expect(container).not.toHaveClass('text-red-500');
   });
@@ -56,10 +56,10 @@ describe('TimeToCheckin', () => {
       { id: '1', createdAt: lastCheckinDate }
     ];
 
-    render(<TimeToCheckin data={mockData} />);
-    
+    render(<TimeToCheckin checkins={mockData} />);
+
     expect(screen.getByText('-3d')).toBeInTheDocument();
-    
+
     const container = screen.getByText('-3d');
     expect(container).toHaveClass('text-red-500');
   });
@@ -77,8 +77,8 @@ describe('TimeToCheckin', () => {
       { id: '2', createdAt: recentCheckin }
     ];
 
-    render(<TimeToCheckin data={mockData} />);
-    
+    render(<TimeToCheckin checkins={mockData} />);
+
     expect(screen.getByText('4d')).toBeInTheDocument();
   });
 
@@ -90,8 +90,8 @@ describe('TimeToCheckin', () => {
       { id: '1', createdAt: lastCheckinDate }
     ];
 
-    render(<TimeToCheckin data={mockData} />);
-    
+    render(<TimeToCheckin checkins={mockData} />);
+
     expect(screen.getByText('0d')).toBeInTheDocument();
   });
 });

@@ -10,7 +10,7 @@ export function Dashboard() {
 
   return (
     <div>
-      <SectionHeader><Trans i18nKey="dashboard.weight.title"/></SectionHeader>
+      <SectionHeader><Trans i18nKey="dashboard.weight.title" /></SectionHeader>
       <div className="mb-2">
         <WeightInput />
       </div>
