@@ -4,7 +4,7 @@ import { SectionHeader } from '../../../components/section-header';
 import { Card, Input, Button, OptionSelector } from '@my-org/shared-ui';
 import { FormSlider } from '../../../components/custom-slider/form-slider';
 import { ImageUploader } from '../../../components/image/image-uploader';
-import { CheckInFormData, MenstrualCycle } from '../types';
+import { CheckInFormData, MenstrualCycle } from '@my-org/core';
 import firebase from 'firebase/compat/app';
 
 interface CheckInFormProps {

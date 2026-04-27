@@ -7,9 +7,8 @@ import { collection, doc } from 'firebase/firestore';
 import { db } from '../../../../init-firebase-auth';
 import { useMemo, useRef } from 'react';
 import { CheckInStrategyFactory } from '../../../core/checkin-strategy/checkin-strategy';
-import { CheckInFormData, checkinSchema } from '../types';
 import { assertAuthenticated } from '../../../shared/user.guard';
-import { CheckInFormDataDto } from '@my-org/core';
+import { CheckInFormData, CheckInFormDataDto, checkinSchema } from '@my-org/core';
 
 const isToday = (date: Date) => {
   const today = new Date();

@@ -4,7 +4,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { CheckInForm } from './checkin-form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { checkinSchema, CheckInFormData, MenstrualCycle } from '../types';
+import { checkinSchema, CheckInFormData, MenstrualCycle } from '@my-org/core';
 import '@testing-library/jest-dom/vitest';
 
 vi.mock('react-i18next', () => ({
