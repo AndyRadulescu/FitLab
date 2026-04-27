@@ -1,14 +1,6 @@
-import { CheckInFormData } from '../routes/checkIn/types';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-
-export type CheckInFormDataDto = Omit<CheckInFormData, 'kg'> & {
-  id: string;
-  weightId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  userId?: string;
-};
+import { CheckInFormDataDto } from '@my-org/core';
 
 interface CheckinStore {
   checkins: CheckInFormDataDto[];

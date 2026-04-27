@@ -1,8 +1,8 @@
-import { CheckInFormDataDto } from '../../store/checkin.store';
 import { Card } from '@my-org/shared-ui';
 import { CheckinItem } from '../../components/checkin-item/checkin-item';
 import { SectionHeader } from '../../components/section-header';
 import { Trans } from 'react-i18next';
+import { CheckInFormDataDto } from '@my-org/core';
 
 export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {
   if (checkins.length === 0) {

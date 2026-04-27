@@ -2,13 +2,14 @@ import { Resolver, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userStore } from '../../../store/user.store';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { CheckInFormDataDto, checkinStore } from '../../../store/checkin.store';
+import { checkinStore } from '../../../store/checkin.store';
 import { collection, doc } from 'firebase/firestore';
 import { db } from '../../../../init-firebase-auth';
 import { useMemo, useRef } from 'react';
 import { CheckInStrategyFactory } from '../../../core/checkin-strategy/checkin-strategy';
 import { CheckInFormData, checkinSchema } from '../types';
 import { assertAuthenticated } from '../../../shared/user.guard';
+import { CheckInFormDataDto } from '@my-org/core';
 
 const isToday = (date: Date) => {
   const today = new Date();

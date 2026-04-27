@@ -30,6 +30,7 @@ export const UsersList = () => {
           ...doc.data(),
         }));
         setUsers(usersList);
+        // TODO: get checkins for the specific users
       } catch (err: any) {
         console.error('Error fetching users:', err);
         if (err.code === 'permission-denied') {
@@ -71,6 +72,8 @@ export const UsersList = () => {
     );
   }
 
+
+  // TODO: update the table by adding a new column to show days remaining to the next
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between pb-4 border-b border-gray-200">
@@ -105,8 +108,8 @@ export const UsersList = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
               {users.map((user) => (
-                <tr 
-                  key={user.id} 
+                <tr
+                  key={user.id}
                   onClick={() => handleUserClick(user.id)}
                   className="hover:bg-indigo-50/30 transition-colors duration-150 cursor-pointer"
                 >
