@@ -1,9 +1,9 @@
-import { CheckInFormDataDto, checkinStore } from '../../store/checkin.store';
+import { checkinStore } from '../../store/checkin.store';
 import { collection, doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { analytics, db } from '../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
 import { CheckInStrategy, CheckinStrategyType } from './checkin-strategy';
-import { CHECKINS_TABLE, WEIGHT_TABLE } from '@my-org/core';
+import { CheckInFormDataDto, CHECKINS_TABLE, WEIGHT_TABLE } from '@my-org/core';
 import { userStore } from '../../store/user.store';
 
 export class AddCheckInStrategy implements CheckInStrategy {

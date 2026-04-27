@@ -78,6 +78,7 @@
   "checkin.button": "Check-in",
   "checkin.alreadyDone": "You have already completed a check-in for today. You are now editing it.",
   "checkin.onlyOnce": "Only one check-in per day is allowed.",
+  "checkin.nextCheckin": "next checkin",
   "start.title": "Hi, welcome to FitLab!",
   "start.description": "To get started, we only need a few pieces of information about you.",
   "start.dateOfBirth": "Date of birth:",

@@ -27,3 +27,11 @@ export const checkinSchema = z.object({
 });
 
 export type CheckInFormData = z.infer<typeof checkinSchema>;
+
+export type CheckInFormDataDto = Omit<CheckInFormData, 'kg'> & {
+  id: string;
+  weightId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId?: string;
+};
