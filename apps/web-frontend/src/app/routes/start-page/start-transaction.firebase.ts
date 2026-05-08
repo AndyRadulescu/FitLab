@@ -1,7 +1,6 @@
 import { collection, doc, runTransaction, serverTimestamp } from 'firebase/firestore';
-import { USERS_TABLE, WEIGHT_TABLE } from '../../firestore/constants';
 import { db } from '../../../init-firebase-auth';
-import { StartMappedWeightData } from './types';
+import { StartMappedWeightData, USERS_TABLE, WEIGHT_TABLE } from '@my-org/core';
 
 export async function startTransaction(userId: string, mappedData: StartMappedWeightData): Promise<string | null> {
   let weightId = null;

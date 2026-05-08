@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { fetchCheckins } from '../firestore/queries';
 
 import { LoadingScreen, TimeToCheckin } from '@my-org/shared-ui';
+import { CheckInFormDataDto } from '@my-org/core';
 
 export const UsersList = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -36,7 +37,7 @@ export const UsersList = () => {
 
             const checkins = await fetchCheckins(doc.id);
             // Convert Firestore Timestamps to JS Dates for TimeToCheckin
-            const formattedCheckins = checkins.map((c: any) => ({
+            const formattedCheckins: CheckInFormDataDto[] = checkins.map((c: any) => ({
               ...c,
               createdAt: c.createdAt?.toDate ? c.createdAt.toDate() : c.createdAt
             }));

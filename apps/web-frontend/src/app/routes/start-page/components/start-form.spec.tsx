@@ -4,7 +4,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { StartForm } from './start-form';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { startPageSchema, StartPageFormData } from '../types';
+import { startPageSchema, StartPageFormData } from '@my-org/core';
 import '@testing-library/jest-dom/vitest';
 
 vi.mock('react-i18next', () => ({

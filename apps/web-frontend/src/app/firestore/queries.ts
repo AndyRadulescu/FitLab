@@ -1,7 +1,7 @@
 import { collection, limit, orderBy, query, where } from 'firebase/firestore';
 import firebase from 'firebase/compat/app';
 import { db } from '../../init-firebase-auth';
-import { CHECKINS_TABLE, USERS_TABLE, WEIGHT_TABLE } from './constants';
+import { CHECKINS_TABLE, USERS_TABLE, WEIGHT_TABLE } from '@my-org/core';
 
 export const getStartDataQuery = (user: firebase.User)=> {
   return query(

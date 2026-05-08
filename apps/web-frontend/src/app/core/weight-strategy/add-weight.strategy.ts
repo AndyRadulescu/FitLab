@@ -1,10 +1,10 @@
 import { WeightStrategy } from './weight-strategy';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { analytics, db } from '../../../init-firebase-auth';
-import { userStore, Weight } from '../../store/user.store';
-import { WEIGHT_TABLE } from '../../firestore/constants';
+import { userStore } from '../../store/user.store';
 import { TFunction } from 'i18next';
 import { logEvent } from 'firebase/analytics';
+import { Weight, WEIGHT_TABLE } from '@my-org/core';
 
 export class AddWeightStrategy implements WeightStrategy {
   async weight(weight: Partial<Weight>, userId: string, t: TFunction<'translation', undefined>): Promise<void> {
