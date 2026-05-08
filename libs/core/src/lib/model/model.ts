@@ -54,6 +54,7 @@ export type StartMappedWeightData = {
 export type Weight = { id: string; weight: number, createdAt: Date, updatedAt?: Date, from?: 'checkin' | 'weight' };
 
 export type StartPageFormDataDto = Omit<StartPageFormData, 'dateOfBirth'> & { dateOfBirth?: string };
+
 export interface UserStore {
   user?: firebase.User;
   weights: Weight[];
@@ -67,3 +68,20 @@ export interface UserStore {
 
   delete(): void;
 }
+
+export type User = {
+  userId: string;
+  weight: number;
+  height: number;
+  displayName?: string;
+  email?: string;
+  photoURL?: string;
+  createdAt: Date;
+  dateOfBirth: string;
+  isAdmin?: boolean;
+}
+
+export type AllUserData = User & {
+    checkins: CheckInFormDataDto[];
+    weights: Weight[];
+  }

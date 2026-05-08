@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { StartPageFormDataDto, userStore, Weight } from '../store/user.store';
+import { userStore } from '../store/user.store';
 import { checkinStore } from '../store/checkin.store';
 import { useNavigate } from 'react-router-dom';
 import { getDocs } from 'firebase/firestore';
 import { getCheckinQuery, getStartDataQuery, getWeightQuery } from '../firestore/queries';
 import { assertAuthenticated } from '../shared/user.guard';
-import { CheckInFormDataDto } from '@my-org/core';
+import { CheckInFormDataDto, StartPageFormDataDto, Weight } from '@my-org/core';
 
 export function useAppInitialization() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
