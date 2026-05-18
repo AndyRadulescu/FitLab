@@ -52,6 +52,7 @@ export type StartMappedWeightData = {
   email?: string | null;
 };
 export type Weight = { id: string; weight: number, createdAt: Date, updatedAt?: Date, from?: 'checkin' | 'weight' };
+export type WeightString = Omit<Weight, 'createdAt' | 'updatedAt'> & { createdAt: string, updatedAt?: string };
 
 export type StartPageFormDataDto = Omit<StartPageFormData, 'dateOfBirth'> & { dateOfBirth?: string };
 
@@ -82,6 +83,6 @@ export type User = {
 }
 
 export type AllUserData = User & {
-    checkins: CheckInFormDataDto[];
-    weights: Weight[];
-  }
+  checkins: CheckInFormDataDto[];
+  weights: WeightString[];
+}

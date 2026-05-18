@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../init-firebase-auth';
-import { CheckInFormDataDto, CHECKINS_TABLE, USERS_TABLE, Weight, WEIGHT_TABLE } from './constants';
+import { CheckInFormDataDto, CHECKINS_TABLE, USERS_TABLE, WEIGHT_TABLE, WeightString } from './constants';
 
 export const fetchUserInfo = async (userId: string) => {
   const userDoc = await getDoc(doc(db, USERS_TABLE, userId));
@@ -42,6 +42,6 @@ export const fetchWeights = async (userId: string) => {
       id: doc.id,
       ...data,
       createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : data.createdAt
-    } as Weight;
+    } as WeightString;
   });
 };

@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
-import { WeightChart as SharedWeightChart, TimeRangeSelector, TimeRange } from '@my-org/shared-ui';
+import { TimeRange, TimeRangeSelector, WeightChart as SharedWeightChart } from '@my-org/shared-ui';
 import clsx from 'clsx';
+import { WeightString } from '@my-org/core';
 
 interface WeightChartProps {
-  weights: any[];
+  weights: WeightString[];
 }
 
 export const WeightChart = ({ weights }: WeightChartProps) => {
@@ -14,8 +15,8 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
 
     const filteredWeights = weights
       .filter((w) => {
-        if (!w.createdAt?.toDate) return false;
-        const weightDate = w.createdAt.toDate();
+        if (!w.createdAt) return false;
+        const weightDate = new Date(w.createdAt);
         if (typeof timeRange === 'object') {
           const weightTime = weightDate.getTime();
           return weightTime >= timeRange.start.getTime() && weightTime <= timeRange.end.getTime();
@@ -33,7 +34,7 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
         }
         return true;
       })
-      .sort((a, b) => a.createdAt.toDate().getTime() - b.createdAt.toDate().getTime());
+      .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
 
     let diff = 0;
     let avg = 0;
@@ -41,7 +42,7 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
       const sum = filteredWeights.reduce((acc, curr) => acc + curr.weight, 0);
       console.log(sum);
       console.log(filteredWeights.length);
-      console.log(sum/ filteredWeights.length);
+      console.log(sum / filteredWeights.length);
       avg = sum / filteredWeights.length;
 
       if (filteredWeights.length >= 2) {
@@ -52,9 +53,9 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
     }
 
     const data = filteredWeights.map((w) => ({
-      date: w.createdAt.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      date: new Date(w.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
       weight: w.weight,
-      fullDate: w.createdAt.toDate().toLocaleDateString(),
+      fullDate: new Date(w.createdAt).toLocaleDateString()
     }));
 
     return { chartData: data, weightDiff: diff, averageWeight: avg };
@@ -76,8 +77,8 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
             <div className="flex flex-col">
               <span className="text-xs text-gray-500 uppercase font-semibold tracking-wider">Weight Change</span>
               <span className={clsx(
-                "text-2xl font-bold",
-                weightDiff > 0 ? "text-red-500" : weightDiff < 0 ? "text-green-500" : "text-gray-700 dark:text-gray-200"
+                'text-2xl font-bold',
+                weightDiff > 0 ? 'text-red-500' : weightDiff < 0 ? 'text-green-500' : 'text-gray-700 dark:text-gray-200'
               )}>
                 {weightDiff > 0 ? `+${weightDiff.toFixed(1)}` : weightDiff.toFixed(1)} kg
               </span>
@@ -98,7 +99,7 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
         showDot={true}
         xAxisDy={10}
         yAxisDomain={['dataMin - 5', 'dataMax + 5']}
-        tooltipFormatter={(value: any) => [`${value} kg`, 'Weight']}
+        tooltipFormatter={(value: number) => [`${value} kg`, 'Weight']}
       />
     </div>
   );

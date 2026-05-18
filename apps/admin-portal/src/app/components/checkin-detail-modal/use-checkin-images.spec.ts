@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useCheckinImages } from './use-checkin-images';
-import { getDownloadURL, ref } from 'firebase/storage';
+import { getDownloadURL } from 'firebase/storage';
 
 // Mock Firebase storage
 vi.mock('firebase/storage', () => ({

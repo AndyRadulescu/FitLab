@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { storage } from '../../../init-firebase-auth';
-import { imagePath, SLOTS } from '@my-org/core';
+import { CheckInFormDataDto, imagePath, SLOTS } from '@my-org/core';
 
-export const useCheckinImages = (checkin: any, isOpen: boolean) => {
+export const useCheckinImages = (isOpen: boolean, checkin?: CheckInFormDataDto) => {
   const [imgUrls, setImgUrls] = useState<Record<string, string>>({});
   const [loadingImages, setLoadingImages] = useState(false);
 
@@ -12,10 +12,10 @@ export const useCheckinImages = (checkin: any, isOpen: boolean) => {
       if (!checkin || !isOpen) return;
       setLoadingImages(true);
       const urls: Record<string, string> = {};
-      
+
       const fetchPromises = SLOTS.map(async (slot) => {
         try {
-          const path = imagePath(checkin.userId, checkin.id, slot);
+          const path = imagePath(checkin?.userId ?? '', checkin.id, slot);
           const url = await getDownloadURL(ref(storage, path));
           urls[slot] = url;
         } catch (e) {

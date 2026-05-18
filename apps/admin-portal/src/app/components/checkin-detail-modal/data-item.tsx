@@ -2,7 +2,7 @@ import './checkin-detail-modal.scss';
 
 interface DataItemProps {
   label: string;
-  value: any;
+  value: string | number | null | undefined;
   unit?: string;
 }
 

@@ -13,6 +13,7 @@ export const UsersList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const currentUser = userStore((state) => state.user);
+  const setUserListForUser = userStore((state) => state.setUserList);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,8 +49,9 @@ export const UsersList = () => {
           })
         );
 
+        setUserListForUser(usersList);
         setUsers(usersList);
-      } catch (err: any) {
+      } catch (err: Error) {
         console.error('Error fetching users:', err);
         if (err.code === 'permission-denied') {
           setError('Permission Required: You must have administrative privileges to view the registered users list.');
@@ -62,7 +64,7 @@ export const UsersList = () => {
     };
 
     fetchUsers();
-  }, [currentUser]);
+  }, [currentUser, setUserListForUser]);
 
   const handleUserClick = (userId: string) => {
     navigate(userId);
@@ -153,7 +155,8 @@ export const UsersList = () => {
                 </td>
                 <td className="px-6 py-5 whitespace-nowrap">
                   <div className="text-sm text-gray-900 font-semibold">
-                    {user.weight ? `${user.weights.at(-1)?.weight} kg` : <span className="text-gray-300 font-normal italic">N/A</span>}
+                    {user.weight ? `${user.weights.at(-1)?.weight} kg` :
+                      <span className="text-gray-300 font-normal italic">N/A</span>}
                   </div>
                   <div className="text-xs text-gray-500">
                     {user.height ? `${user.height} cm` : <span className="text-gray-300 italic">N/A</span>}

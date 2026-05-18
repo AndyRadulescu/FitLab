@@ -1,5 +1,7 @@
+import { CheckInFormDataDto } from '@my-org/core';
+
 interface CheckinListProps {
-  checkins: any[];
+  checkins: CheckInFormDataDto[];
   onSelectCheckin: (id: string) => void;
 }
 
@@ -29,9 +31,7 @@ export const CheckinList = ({ checkins, onSelectCheckin }: CheckinListProps) => 
               </div>
               <div>
                 <p className="font-bold text-gray-900">
-                  {checkin.createdAt?.toDate
-                    ? checkin.createdAt.toDate().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
-                    : 'Unknown Date'}
+                  {checkin.createdAt.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </p>
                 <p className="text-sm text-gray-500">
                   {checkin.kg ? `Weight: ${checkin.kg} kg` : 'No weight recorded'}
