@@ -50,7 +50,7 @@ export const UserDashboard = () => {
 
       <div className="user-dashboard__section">
         <h3 className="user-dashboard__section-title">Check-in History</h3>
-        <CheckinList checkins={checkins} onSelectCheckin={handleSelectCheckin} />
+        <CheckinList checkins={checkins} weights={weights} onSelectCheckin={handleSelectCheckin} />
       </div>
 
       {checkinId && (

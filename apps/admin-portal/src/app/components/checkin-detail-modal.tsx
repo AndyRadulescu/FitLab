@@ -1,4 +1,4 @@
-import { CheckInFormDataDto } from '@my-org/core';
+import { CheckInFormDataDto, WeightString } from '@my-org/core';
 import { LoadingScreen, Modal } from '@my-org/shared-ui';
 import { useCheckinImages } from './checkin-detail-modal/use-checkin-images';
 import { CheckinPhotos } from './checkin-detail-modal/checkin-photos';

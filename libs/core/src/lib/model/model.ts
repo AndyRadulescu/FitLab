@@ -42,6 +42,7 @@ export type CheckInFormDataDto = Omit<CheckInFormData, 'kg'> & {
   createdAt: Date;
   updatedAt: Date;
   userId?: string;
+  kg?: string;
 };
 
 export type StartMappedWeightData = {
