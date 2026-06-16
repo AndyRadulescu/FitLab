@@ -1,6 +1,7 @@
 import { AllUserData } from '@my-org/core';
 import { ArrowLeft } from 'lucide-react';
 import { EditableName } from '../../components/editable-name';
+import { UnlinkUserButton } from '../../components/unlink-user-button';
 import './user-dashboard.scss';
 
 interface UserDashboardHeaderProps {
@@ -11,7 +12,7 @@ interface UserDashboardHeaderProps {
 export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) => {
   return (
     <div className="user-dashboard__header">
-      <div className="user-dashboard__user-info">
+      <div className="user-dashboard__user-info flex-1">
         <button
           onClick={onBack}
           className="user-dashboard__back-button"
@@ -44,6 +45,13 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
             )}
           </div>
         </div>
+      </div>
+
+      <div className="flex items-center gap-4">
+        <UnlinkUserButton 
+          userId={user?.userId || user?.id || ''} 
+          displayName={user?.displayName || user?.email}
+        />
       </div>
     </div>
   );

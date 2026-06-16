@@ -15,6 +15,19 @@ export const updateUserName = async (userId: string, displayName: string) => {
   await updateDoc(userRef, { displayName });
 };
 
+export const unlinkClient = async (coachId: string, clientId: string) => {
+  const connectionsQuery = query(
+    collection(db, 'connections'),
+    where('coachId', '==', coachId),
+    where('clientId', '==', clientId),
+    where('status', '==', 'active')
+  );
+
+  const snapshot = await getDocs(connectionsQuery);
+  const updatePromises = snapshot.docs.map(doc => updateDoc(doc.ref, { status: 'unlinked' }));
+  await Promise.all(updatePromises);
+};
+
 export const fetchCheckins = async (userId: string) => {
   const checkinsQuery = query(
     collection(db, CHECKINS_TABLE),
