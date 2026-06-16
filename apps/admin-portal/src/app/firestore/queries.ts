@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../init-firebase-auth';
-import { CheckInFormDataDto, CHECKINS_TABLE, USERS_TABLE, WEIGHT_TABLE, WeightString } from './constants';
+import { CheckInFormDataDto, CHECKINS_TABLE, User, USERS_TABLE, WEIGHT_TABLE, WeightString } from './constants';
 
 export const fetchUserInfo = async (userId: string) => {
   const userDoc = await getDoc(doc(db, USERS_TABLE, userId));
@@ -46,7 +46,7 @@ export const fetchWeights = async (userId: string) => {
   });
 };
 
-export const fetchClientIds = async (coachId: string) => {
+export const fetchClientIds = async (coachId: string): Promise<User[]> => {
   const connectionsQuery = query(
     collection(db, 'connections'),
     where('coachId', '==', coachId),
@@ -69,6 +69,6 @@ export const fetchClientIds = async (coachId: string) => {
   return usersSnapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data()
-  })) ?? [];
+  })) as unknown as User[] ?? [];
 }
 
