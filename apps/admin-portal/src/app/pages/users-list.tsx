@@ -1,100 +1,15 @@
-import { useEffect, useState } from 'react';
-import { collection, getDocs, limit, query } from 'firebase/firestore';
-import { db } from '../../init-firebase-auth';
 import { userStore } from '../store/user.store';
 import { useNavigate } from 'react-router-dom';
-import { fetchCheckins, fetchWeights } from '../firestore/queries';
-
-import { LoadingScreen, TimeToCheckin } from '@my-org/shared-ui';
-import { AllUserData, User } from '@my-org/core';
+import { EditableName } from '../components/editable-name';
+import { TimeToCheckin } from '@my-org/shared-ui';
 
 export const UsersList = () => {
-  const [users, setUsers] = useState<AllUserData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const currentUser = userStore((state) => state.user);
-  const setUserListForUser = userStore((state) => state.setUserList);
+  const users = userStore((state) => state.userList) || [];
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      if (!currentUser) {
-        setLoading(false);
-        return;
-      }
-
-      setLoading(true);
-      setError(null);
-      try {
-        const usersQuery = query(collection(db, 'users'), limit(50));
-        const usersSnapshot = await getDocs(usersQuery);
-
-        const usersList = await Promise.all(
-          usersSnapshot.docs.map(async (doc) => {
-            const data = doc.data();
-            const userData = {
-              id: data.id,
-              ...data,
-              createdAt: data.createdAt.toDate()
-            } as unknown as User;
-
-            const checkins = await fetchCheckins(doc.id);
-            const weights = await fetchWeights(doc.id);
-
-            return {
-              ...userData,
-              checkins,
-              weights
-            };
-          })
-        );
-
-        setUserListForUser(usersList);
-        setUsers(usersList);
-      } catch (err: unknown) {
-        console.error('Error fetching users:', err);
-
-        const error = err as { code?: string; message?: string };
-        if (error.code === 'permission-denied') {
-          setError('Permission Required: You must have administrative privileges to view the registered users list.');
-        } else {
-          setError(`An error occurred: ${error.message || 'Unknown error'}`);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUsers();
-  }, [currentUser, setUserListForUser]);
 
   const handleUserClick = (userId: string) => {
     navigate(userId);
   };
-
-  if (loading) {
-    return <LoadingScreen fullScreen={false} />;
-  }
-
-  if (error) {
-    return (
-      <div className="bg-red-50 border-l-4 border-red-400 p-4 mt-4 shadow-sm rounded-r-md">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <svg className="h-6 w-6 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd" />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-bold text-red-800 uppercase tracking-wide">Access Restricted</h3>
-            <p className="text-sm text-red-700 mt-1">{error}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">
@@ -126,16 +41,13 @@ export const UsersList = () => {
               <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">
                 Created
               </th>
-              <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-widest">
-                Check-in
-              </th>
             </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-100">
             {users.map((user) => (
               <tr
-                key={user.userId}
-                onClick={() => handleUserClick(user.userId)}
+                key={user.id}
+                onClick={() => handleUserClick(user.id)}
                 className="hover:bg-indigo-50/30 transition-colors duration-150 cursor-pointer"
               >
                 <td className="px-6 py-5 whitespace-nowrap">
@@ -145,20 +57,23 @@ export const UsersList = () => {
                       {user.photoURL ? (
                         <img src={user.photoURL} alt="" className="h-full w-full object-cover" />
                       ) : (
-                        (user.displayName || user.email || user.userId).substring(0, 2).toUpperCase()
+                        (user.displayName || user.email || user.id).substring(0, 2).toUpperCase()
                       )}
                     </div>
                     <div className="ml-4">
-                      <div
-                        className="text-sm font-bold text-gray-900">{user.displayName || user.email || user.userId}</div>
-                      <div className="text-xs text-gray-400 font-mono">ID: {user.userId}</div>
+                      <EditableName
+                        userId={user.userId || user.id}
+                        initialName={user.displayName || user.email || user.id}
+                        className="text-sm font-bold text-gray-900"
+                        inputClassName="text-sm font-bold"
+                      />
+                      <div className="text-xs text-gray-400 font-mono">ID: {user.id}</div>
                     </div>
                   </div>
                 </td>
                 <td className="px-6 py-5 whitespace-nowrap">
                   <div className="text-sm text-gray-900 font-semibold">
-                    {user.weight ? `${user.weights.at(-1)?.weight} kg` :
-                      <span className="text-gray-300 font-normal italic">N/A</span>}
+                    {user.weights && user.weights.length > 0 ? `${user.weights.at(-1)?.weight} kg` : <span className="text-gray-300 font-normal italic">N/A</span>}
                   </div>
                   <div className="text-xs text-gray-500">
                     {user.height ? `${user.height} cm` : <span className="text-gray-300 italic">N/A</span>}
@@ -178,7 +93,7 @@ export const UsersList = () => {
                   )}
                 </td>
                 <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-500 font-medium">
-                  {user.createdAt.toLocaleDateString() ?? '—'}
+                  {user.createdAt?.toDate ? user.createdAt.toDate().toLocaleDateString() : '—'}
                 </td>
                 <td className="px-6 py-5 whitespace-nowrap">
                   <TimeToCheckin checkins={user.checkins || []} />
@@ -187,7 +102,7 @@ export const UsersList = () => {
             ))}
             {users.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-6 py-12 text-center text-gray-400 italic">
+                <td colSpan={4} className="px-6 py-12 text-center text-gray-400 italic">
                   <div className="flex flex-col items-center">
                     <svg className="h-12 w-12 text-gray-200 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}

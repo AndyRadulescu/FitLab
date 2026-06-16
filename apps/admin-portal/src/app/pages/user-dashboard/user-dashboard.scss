@@ -17,6 +17,10 @@
     @apply text-2xl font-extrabold text-gray-900 tracking-tight;
   }
 
+  &__title-input {
+    @apply text-2xl font-extrabold text-gray-900 tracking-tight bg-indigo-50 border-b-2 border-indigo-400 focus:outline-none px-2 rounded-t-md w-full;
+  }
+
   &__metadata {
     @apply flex flex-col md:flex-row md:items-center gap-x-6 gap-y-1 mt-1;
   }

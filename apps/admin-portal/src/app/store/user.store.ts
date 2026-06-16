@@ -7,7 +7,9 @@ interface UserStore {
   user: User | null;
   userList: AllUserData[] | null;
   setUser: (user: User | null) => void;
-  setUserList: (user: AllUserData[] | null) => void;
+  setUserList: (userList: AllUserData[] | null) => void;
+  updateUserInList: (userId: string, data: Partial<AllUserData>) => void;
+  removeUserFromList: (userId: string) => void;
   delete(): void;
 }
 
@@ -18,6 +20,12 @@ export const userStore = create<UserStore>()(
       userList: null,
       setUser: (user) => set({ user }),
       setUserList: (userList) => set({ userList }),
+      updateUserInList: (userId, data) => set((state) => ({
+        userList: state.userList?.map((u) => (u.userId === userId || u.id === userId) ? { ...u, ...data } : u) || null
+      })),
+      removeUserFromList: (userId) => set((state) => ({
+        userList: state.userList?.filter((u) => u.userId !== userId && u.id !== userId) || null
+      })),
       delete: () => set(() => ({ user: null, userList: null }))
     }), {
       name: 'admin-user-store'

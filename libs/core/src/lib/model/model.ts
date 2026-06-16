@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import firebase from 'firebase/compat/app';
+import Timestamp = firebase.firestore.Timestamp;
 
 export enum MenstrualCycle {
   ON = 'on',
@@ -73,12 +74,13 @@ export interface UserStore {
 
 export type User = {
   userId: string;
+  id: string;
   weight: number;
   height: number;
   displayName?: string;
   email?: string;
   photoURL?: string;
-  createdAt: Date;
+  createdAt: Timestamp;
   dateOfBirth: string;
   isAdmin?: boolean;
 }
