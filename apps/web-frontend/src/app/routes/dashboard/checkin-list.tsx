@@ -1,8 +1,7 @@
-import { CheckInFormDataDto } from '../../store/checkin.store';
-import { Card } from '@my-org/shared-ui';
+import { Card, TimeToCheckin } from '@my-org/shared-ui';
 import { CheckinItem } from '../../components/checkin-item/checkin-item';
-import { SectionHeader } from '../../components/section-header';
 import { Trans } from 'react-i18next';
+import { CheckInFormDataDto } from '@my-org/core';
 
 export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {
   if (checkins.length === 0) {
@@ -15,7 +14,11 @@ export function CheckinList({ checkins }: { checkins: CheckInFormDataDto[] }) {
 
   return (
     <div>
-      <SectionHeader><Trans i18nKey="checkin.checkins">Check-ins</Trans></SectionHeader>
+      <h2 className="flex justify-between text-xl font-bold mb-4 text-gray-700 dark:text-white">
+        <Trans i18nKey="checkin.checkins">Check-ins</Trans>
+        <p className="flex justify-center items-center ml-2"><TimeToCheckin checkins={checkins} /> <span
+          className="ml-2 font-light text-sm"> - <Trans i18nKey="checkin.nextCheckin">next checkin</Trans></span></p>
+      </h2>
       <Card className="mb-2">
         {checkins.map((checkin, index) => (
           <div key={checkin.id}>

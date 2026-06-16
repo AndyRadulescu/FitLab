@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { calculateCm } from './calculate-cm';
-import { CheckInFormDataDto } from '../../store/checkin.store';
+import { CheckInFormDataDto } from '@my-org/core';
 
 describe('calculateCm', () => {
   it('should correctly sum all body measurements', () => {
@@ -14,7 +14,7 @@ describe('calculateCm', () => {
       rightArm: 30,
       leftArm: 30,
       kg: 75
-    } as CheckInFormDataDto;
+    } as unknown as CheckInFormDataDto;
     const result = calculateCm(mockCheckin);
     expect(result).toBe(560);
   });

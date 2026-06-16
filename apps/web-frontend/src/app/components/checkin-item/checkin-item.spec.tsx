@@ -2,11 +2,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CheckinItem } from './checkin-item';
-import { CheckInFormDataDto } from '../../store/checkin.store';
 import { userStore } from '../../store/user.store';
 import { CheckInStrategyFactory } from '../../core/checkin-strategy/checkin-strategy';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom/vitest';
+import { CheckInFormDataDto } from '@my-org/core';
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({

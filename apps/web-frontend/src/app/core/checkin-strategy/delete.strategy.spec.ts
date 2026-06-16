@@ -1,10 +1,9 @@
-import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DeleteCheckInStrategy } from './delete.strategy';
-import { doc, writeBatch } from 'firebase/firestore';
+import { doc } from 'firebase/firestore';
 import { ref, listAll, deleteObject } from 'firebase/storage';
 import { logEvent } from 'firebase/analytics';
-import { getCheckinPath } from '@my-org/core';
-import { CHECKINS_TABLE, WEIGHT_TABLE } from '../../firestore/constants';
+import { CHECKINS_TABLE, getCheckinPath, WEIGHT_TABLE } from '@my-org/core';
 
 const mockDeleteCheckin = vi.fn();
 const mockDeleteWeight = vi.fn();

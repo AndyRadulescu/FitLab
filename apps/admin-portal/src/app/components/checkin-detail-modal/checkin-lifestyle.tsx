@@ -1,10 +1,11 @@
+import { CheckInFormDataDto } from '@my-org/core';
 import { Zap } from 'lucide-react';
 import { StatBadge } from './stat-badge';
 import { DataItem } from './data-item';
 import './checkin-detail-modal.scss';
 
 interface CheckinLifestyleProps {
-  checkin: any;
+  checkin: CheckInFormDataDto;
 }
 
 export const CheckinLifestyle = ({ checkin }: CheckinLifestyleProps) => {

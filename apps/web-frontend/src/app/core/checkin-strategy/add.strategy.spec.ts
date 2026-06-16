@@ -1,10 +1,8 @@
 import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest';
 import { AddCheckInStrategy } from './add.strategy';
-import { doc, writeBatch, collection } from 'firebase/firestore';
-import { checkinStore } from '../../store/checkin.store';
-import { userStore } from '../../store/user.store';
+import { doc, collection } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
-import { CHECKINS_TABLE, WEIGHT_TABLE } from '../../firestore/constants';
+import { CHECKINS_TABLE, WEIGHT_TABLE } from '@my-org/core';
 
 const mockUpsertCheckin = vi.fn();
 const mockAddWeight = vi.fn();

@@ -1,8 +1,9 @@
+import { AllUserData } from '@my-org/core';
 import { ArrowLeft } from 'lucide-react';
 import './user-dashboard.scss';
 
 interface UserDashboardHeaderProps {
-  user: any;
+  user?: AllUserData;
   onBack: () => void;
 }
 
@@ -28,10 +29,10 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
                 <span className="user-dashboard__value">{user.email}</span>
               </div>
             )}
-            {user?.id && (
+            {user?.userId && (
               <div className="flex items-center text-sm text-gray-500">
                 <span className="user-dashboard__label">User ID:</span>
-                <code className="user-dashboard__id-badge">{user.id}</code>
+                <code className="user-dashboard__id-badge">{user.userId}</code>
               </div>
             )}
           </div>

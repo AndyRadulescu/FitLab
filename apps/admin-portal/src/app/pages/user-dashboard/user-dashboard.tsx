@@ -1,33 +1,39 @@
-import { useUserDashboard } from '../hooks/use-user-dashboard';
+import { useParams, useNavigate } from 'react-router-dom';
+import { userStore } from '../../store/user.store';
 import { CheckinList } from '../../components/checkin-list';
-import { Button, LoadingScreen } from '@my-org/shared-ui';
+import { Button } from '@my-org/shared-ui';
 import { CheckinDetailModal } from '../../components/checkin-detail-modal';
 import { WeightChart } from '../../components/weight-chart';
 import { UserDashboardHeader } from './user-dashboard-header';
 import './user-dashboard.scss';
 
 export const UserDashboard = () => {
-  const {
-    user,
-    checkins,
-    weights,
-    loading,
-    error,
-    selectedCheckin,
-    checkinId,
-    handleCloseModal,
-    handleSelectCheckin,
-    handleGoBack
-  } = useUserDashboard();
+  const { userId, checkinId } = useParams<{ userId: string; checkinId?: string }>();
+  const navigate = useNavigate();
+  const { userList } = userStore();
 
-  if (loading) {
-    return <LoadingScreen fullScreen={false} />;
-  }
+  const user = userList?.find((u) => u.userId === userId);
+  const checkins = user?.checkins || [];
+  const weights = user?.weights || [];
 
-  if (error) {
+  const handleGoBack = () => {
+    navigate('/dashboard');
+  };
+
+  const selectedCheckin = checkins.find((c) => c.id === checkinId);
+
+  const handleCloseModal = () => {
+    navigate(`/dashboard/${userId}`);
+  };
+
+  const handleSelectCheckin = (cid: string) => {
+    navigate(`/dashboard/${userId}/${cid}`);
+  };
+
+  if (!user) {
     return (
       <div className="bg-red-50 p-4 rounded-md">
-        <p className="text-red-700">{error}</p>
+        <p className="text-red-700">User not found.</p>
         <Button type="tertiary" onClick={handleGoBack} className="mt-4">Go Back</Button>
       </div>
     );
@@ -44,7 +50,7 @@ export const UserDashboard = () => {
 
       <div className="user-dashboard__section">
         <h3 className="user-dashboard__section-title">Check-in History</h3>
-        <CheckinList checkins={checkins} onSelectCheckin={handleSelectCheckin} />
+        <CheckinList checkins={checkins} weights={weights} onSelectCheckin={handleSelectCheckin} />
       </div>
 
       {checkinId && (
@@ -52,7 +58,7 @@ export const UserDashboard = () => {
           checkin={selectedCheckin}
           isOpen={!!checkinId}
           onClose={handleCloseModal}
-          loading={!selectedCheckin && loading}
+          loading={!selectedCheckin}
         />
       )}
     </div>

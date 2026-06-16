@@ -6,7 +6,7 @@ describe('UserDashboardHeader', () => {
   const mockOnBack = vi.fn();
 
   it('should render user displayName when available', () => {
-    const user = { id: '123', displayName: 'John Doe', email: 'john@example.com' };
+    const user = { userId: '123', displayName: 'John Doe', email: 'john@example.com' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
     expect(screen.getByText("John Doe's Dashboard")).toBeTruthy();
@@ -15,21 +15,21 @@ describe('UserDashboardHeader', () => {
   });
 
   it('should render email as title when displayName is missing', () => {
-    const user = { id: '123', email: 'john@example.com' };
+    const user = { userId: '123', email: 'john@example.com' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
     expect(screen.getByText("john@example.com's Dashboard")).toBeTruthy();
   });
 
   it('should render "User" as title when both displayName and email are missing', () => {
-    const user = { id: '123' };
+    const user = { userId: '123' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
     expect(screen.getByText("User's Dashboard")).toBeTruthy();
   });
 
   it('should call onBack when back button is clicked', () => {
-    const user = { id: '123' };
+    const user = { userId: '123' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
     const backButton = screen.getByLabelText('Go back');
@@ -39,14 +39,14 @@ describe('UserDashboardHeader', () => {
   });
 
   it('should not render email section if email is missing', () => {
-    const user = { id: '123' };
+    const user = { userId: '123' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
     expect(screen.queryByText('Email:')).toBeNull();
   });
 
-  it('should not render ID section if id is missing', () => {
-    const user = { email: 'john@example.com' };
+  it('should not render ID section if userId is missing', () => {
+    const user = { email: 'john@example.com' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
     expect(screen.queryByText('User ID:')).toBeNull();

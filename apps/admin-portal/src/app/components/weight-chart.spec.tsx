@@ -29,12 +29,12 @@ describe('WeightChart', () => {
     {
       id: 'w1',
       weight: 80.5,
-      createdAt: { toDate: () => new Date('2024-01-01T10:00:00Z') }, // 9 days ago (filtered out by 1w)
+      createdAt: new Date('2024-01-01T10:00:00Z'), // 9 days ago (filtered out by 1w)
     },
     {
       id: 'w2',
       weight: 79.8,
-      createdAt: { toDate: () => new Date('2024-01-08T10:00:00Z') }, // 2 days ago (included in 1w)
+      createdAt: new Date('2024-01-08T10:00:00Z'), // 2 days ago (included in 1w)
     },
   ];
 

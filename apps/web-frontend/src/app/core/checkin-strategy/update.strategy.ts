@@ -1,9 +1,9 @@
-import { CheckInFormDataDto, checkinStore } from '../../store/checkin.store';
+import { checkinStore } from '../../store/checkin.store';
 import { doc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { analytics, db } from '../../../init-firebase-auth';
 import { logEvent } from 'firebase/analytics';
-import { CheckInStrategy, CheckinStrategyType } from './checkin-strategy';
-import { CHECKINS_TABLE, WEIGHT_TABLE } from '@my-org/core';
+import { CheckInStrategy } from './checkin-strategy';
+import { CheckInFormDataDto, CHECKINS_TABLE, WEIGHT_TABLE } from '@my-org/core';
 import { userStore } from '../../store/user.store';
 
 export class UpdateCheckInStrategy implements CheckInStrategy {
@@ -32,10 +32,10 @@ export class UpdateCheckInStrategy implements CheckInStrategy {
     // 2. Update checkin document
     const docRef = doc(db, CHECKINS_TABLE, data.id);
     const { kg, ...checkinDataWithoutKg } = data;
-    const mappedData = { 
-      ...checkinDataWithoutKg, 
+    const mappedData = {
+      ...checkinDataWithoutKg,
       weightId: data.weightId,
-      updatedAt: now 
+      updatedAt: now
     };
 
     batch.update(docRef, {
