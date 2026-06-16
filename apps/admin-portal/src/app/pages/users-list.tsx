@@ -1,43 +1,13 @@
 import { userStore } from '../store/user.store';
 import { useNavigate } from 'react-router-dom';
 
-import { LoadingScreen } from '@my-org/shared-ui';
-import { useFetchClients } from '../hooks/useFetchClients';
-
 export const UsersList = () => {
-  const currentUser = userStore((state) => state.user);
   const users = userStore((state) => state.userList) || [];
   const navigate = useNavigate();
-
-  const { loading, error } = useFetchClients(currentUser?.uid);
 
   const handleUserClick = (userId: string) => {
     navigate(userId);
   };
-
-  if (loading) {
-    return <LoadingScreen fullScreen={false} />;
-  }
-
-  if (error) {
-    return (
-      <div className="bg-red-50 border-l-4 border-red-400 p-4 mt-4 shadow-sm rounded-r-md">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <svg className="h-6 w-6 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd" />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-bold text-red-800 uppercase tracking-wide">Access Restricted</h3>
-            <p className="text-sm text-red-700 mt-1">{error}</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">
@@ -74,8 +44,8 @@ export const UsersList = () => {
             <tbody className="bg-white divide-y divide-gray-100">
             {users.map((user) => (
               <tr
-                key={user.userId}
-                onClick={() => handleUserClick(user.userId)}
+                key={user.id}
+                onClick={() => handleUserClick(user.id)}
                 className="hover:bg-indigo-50/30 transition-colors duration-150 cursor-pointer"
               >
                 <td className="px-6 py-5 whitespace-nowrap">
@@ -85,13 +55,13 @@ export const UsersList = () => {
                       {user.photoURL ? (
                         <img src={user.photoURL} alt="" className="h-full w-full object-cover" />
                       ) : (
-                        (user.displayName || user.email || user.userId).substring(0, 2).toUpperCase()
+                        (user.displayName || user.email || user.id).substring(0, 2).toUpperCase()
                       )}
                     </div>
                     <div className="ml-4">
                       <div
-                        className="text-sm font-bold text-gray-900">{user.displayName || user.email || user.userId || user.userId}</div>
-                      <div className="text-xs text-gray-400 font-mono">ID: {user.userId}</div>
+                        className="text-sm font-bold text-gray-900">{user.displayName || user.email || user.id}</div>
+                      <div className="text-xs text-gray-400 font-mono">ID: {user.id}</div>
                     </div>
                   </div>
                 </td>
