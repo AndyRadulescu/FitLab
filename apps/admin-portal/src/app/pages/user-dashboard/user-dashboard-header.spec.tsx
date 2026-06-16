@@ -1,16 +1,36 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { UserDashboardHeader } from './user-dashboard-header';
+import { userStore } from '../../store/user.store';
+
+// Mock dependencies
+vi.mock('../../store/user.store', () => ({
+  userStore: vi.fn(),
+}));
+
+vi.mock('../../firestore/queries', () => ({
+  updateUserName: vi.fn(),
+}));
 
 describe('UserDashboardHeader', () => {
   const mockOnBack = vi.fn();
+  const mockUpdateUserInList = vi.fn();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    // Setup the mock for userStore selector
+    vi.mocked(userStore).mockImplementation((selector: any) =>
+      selector({ updateUserInList: mockUpdateUserInList })
+    );
+  });
 
   it('should render user displayName when available', () => {
     const user = { userId: '123', displayName: 'John Doe', email: 'john@example.com' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
-    expect(screen.getByText("John Doe's Dashboard")).toBeTruthy();
-    expect(screen.getByText('john@example.com')).toBeTruthy();
+    expect(screen.getByText('John Doe')).toBeTruthy();
+    expect(screen.getByText(/Dashboard of/i)).toBeTruthy();
+    expect(screen.getAllByText('john@example.com').length).toBeGreaterThan(0);
     expect(screen.getByText('123')).toBeTruthy();
   });
 
@@ -18,14 +38,16 @@ describe('UserDashboardHeader', () => {
     const user = { userId: '123', email: 'john@example.com' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
-    expect(screen.getByText("john@example.com's Dashboard")).toBeTruthy();
+    expect(screen.getAllByText('john@example.com').length).toBeGreaterThan(0);
+    expect(screen.getByText(/Dashboard of/i)).toBeTruthy();
   });
 
   it('should render "User" as title when both displayName and email are missing', () => {
     const user = { userId: '123' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
-    expect(screen.getByText("User's Dashboard")).toBeTruthy();
+    expect(screen.getByText(/^User$/)).toBeTruthy();
+    expect(screen.getByText(/Dashboard of/i)).toBeTruthy();
   });
 
   it('should call onBack when back button is clicked', () => {

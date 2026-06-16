@@ -20,12 +20,15 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
           <ArrowLeft className="h-6 w-6 text-gray-600" />
         </button>
         <div className="flex-1">
-          <EditableName
-            userId={user?.userId || ''}
-            initialName={user?.displayName || user?.email || 'User'}
-            className="user-dashboard__title"
-            inputClassName="text-2xl font-extrabold"
-          />
+          <div className="flex items-center gap-1">
+            <span className="text-2xl font-extrabold text-gray-900 tracking-tight">Dashboard of</span>
+            <EditableName
+              userId={user?.userId || ''}
+              initialName={user?.displayName || user?.email || 'User'}
+              className="user-dashboard__title"
+              inputClassName="text-2xl font-extrabold"
+            />
+          </div>
           <div className="user-dashboard__metadata">
             {user?.email && (
               <div className="flex items-center text-sm text-gray-500">
