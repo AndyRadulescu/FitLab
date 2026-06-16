@@ -29,7 +29,7 @@ describe('CheckinDetailModal', () => {
     hoursSlept: 8,
     dailySteps: 10000,
     kg: 75,
-    createdAt: { toDate: () => new Date(2024, 0, 1, 12, 0, 0) },
+    createdAt: new Date(2024, 0, 1, 12, 0, 0),
   };
 
   beforeEach(() => {

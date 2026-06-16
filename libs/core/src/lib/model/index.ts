@@ -1,1 +1,1 @@
-export * from './checkin-model';
+export * from './model';

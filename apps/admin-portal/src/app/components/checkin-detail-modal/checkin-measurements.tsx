@@ -1,9 +1,10 @@
+import { CheckInFormDataDto } from '@my-org/core';
 import { Ruler } from 'lucide-react';
 import { DataItem } from './data-item';
 import './checkin-detail-modal.scss';
 
 interface CheckinMeasurementsProps {
-  checkin: any;
+  checkin: CheckInFormDataDto;
 }
 
 export const CheckinMeasurements = ({ checkin }: CheckinMeasurementsProps) => {

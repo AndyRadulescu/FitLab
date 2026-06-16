@@ -1,23 +1,7 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import firebase from 'firebase/compat/app';
-import { StartPageFormData } from '../routes/start-page/types';
-
-export type StartPageFormDataDto = Omit<StartPageFormData, 'dateOfBirth'> & { dateOfBirth?: string };
-export type Weight = { id: string; weight: number, createdAt: Date, updatedAt?: Date, from?: 'checkin' | 'weight' };
-
-interface UserStore {
-  user?: firebase.User;
-  weights: Weight[];
-  userData?: StartPageFormDataDto;
-  setUser: (user?: firebase.User) => void,
-  setUserData: (user?: StartPageFormDataDto) => void,
-  setWeights: (user?: Weight[]) => void,
-  addWeight: (weight: Weight) => void;
-  updateWeight: (weight: Weight) => void;
-  deleteWeight: (id: string) => void;
-  delete(): void;
-}
+import { StartPageFormDataDto, UserStore, Weight } from '@my-org/core';
 
 export const userStore = create<UserStore>()(
   devtools(

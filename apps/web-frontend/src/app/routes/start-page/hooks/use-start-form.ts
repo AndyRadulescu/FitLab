@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
 import { userStore } from '../../../store/user.store';
 import { assertAuthenticated } from '../../../shared/user.guard';
-import { StartPageFormData, startPageSchema } from '../types';
+import { StartPageFormData, startPageSchema } from '@my-org/core';
 import { startTransaction } from '../start-transaction.firebase';
 
 export function useStartForm() {

@@ -1,6 +1,6 @@
-import { collection, getDocs, query, where, orderBy, doc, getDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../../init-firebase-auth';
-import { USERS_TABLE, CHECKINS_TABLE, WEIGHT_TABLE } from './constants';
+import { CheckInFormDataDto, CHECKINS_TABLE, USERS_TABLE, WEIGHT_TABLE, WeightString } from './constants';
 
 export const fetchUserInfo = async (userId: string) => {
   const userDoc = await getDoc(doc(db, USERS_TABLE, userId));
@@ -17,7 +17,15 @@ export const fetchCheckins = async (userId: string) => {
     orderBy('createdAt', 'desc')
   );
   const snapshot = await getDocs(checkinsQuery);
-  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  return snapshot.docs.map(doc => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : data.createdAt,
+      updatedAt: data.updatedAt?.toDate ? data.updatedAt.toDate() : data.updatedAt
+    } as CheckInFormDataDto;
+  });
 };
 
 export const fetchWeights = async (userId: string) => {
@@ -27,5 +35,13 @@ export const fetchWeights = async (userId: string) => {
     orderBy('createdAt', 'asc')
   );
   const weightsSnapshot = await getDocs(weightsQuery);
-  return weightsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  return weightsSnapshot.docs.map(doc => {
+    const data = doc.data();
+
+    return {
+      id: doc.id,
+      ...data,
+      createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : data.createdAt
+    } as WeightString;
+  });
 };
