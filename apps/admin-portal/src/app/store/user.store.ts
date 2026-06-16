@@ -7,7 +7,7 @@ interface UserStore {
   user: User | null;
   userList: AllUserData[] | null;
   setUser: (user: User | null) => void;
-  setUserList: (user: AllUserData[] | null) => void;
+  setUserList: (userList: AllUserData[] | null) => void;
   delete(): void;
 }
 
