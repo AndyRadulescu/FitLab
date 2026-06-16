@@ -1,6 +1,7 @@
 import { userStore } from '../store/user.store';
 import { useNavigate } from 'react-router-dom';
 import { EditableName } from '../components/editable-name';
+import { TimeToCheckin } from '@my-org/shared-ui';
 
 export const UsersList = () => {
   const users = userStore((state) => state.userList) || [];
@@ -93,6 +94,9 @@ export const UsersList = () => {
                 </td>
                 <td className="px-6 py-5 whitespace-nowrap text-sm text-gray-500 font-medium">
                   {user.createdAt?.toDate ? user.createdAt.toDate().toLocaleDateString() : '—'}
+                </td>
+                <td className="px-6 py-5 whitespace-nowrap">
+                  <TimeToCheckin checkins={user.checkins || []} />
                 </td>
               </tr>
             ))}
