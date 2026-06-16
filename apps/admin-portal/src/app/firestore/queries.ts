@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../init-firebase-auth';
 import { CheckInFormDataDto, CHECKINS_TABLE, User, USERS_TABLE, WEIGHT_TABLE, WeightString } from './constants';
 
@@ -8,6 +8,11 @@ export const fetchUserInfo = async (userId: string) => {
     return { id: userDoc.id, ...userDoc.data() };
   }
   return null;
+};
+
+export const updateUserName = async (userId: string, displayName: string) => {
+  const userRef = doc(db, USERS_TABLE, userId);
+  await updateDoc(userRef, { displayName });
 };
 
 export const fetchCheckins = async (userId: string) => {

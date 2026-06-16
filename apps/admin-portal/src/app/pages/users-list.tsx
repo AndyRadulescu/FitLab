@@ -1,5 +1,6 @@
 import { userStore } from '../store/user.store';
 import { useNavigate } from 'react-router-dom';
+import { EditableName } from '../components/editable-name';
 
 export const UsersList = () => {
   const users = userStore((state) => state.userList) || [];
@@ -59,8 +60,12 @@ export const UsersList = () => {
                       )}
                     </div>
                     <div className="ml-4">
-                      <div
-                        className="text-sm font-bold text-gray-900">{user.displayName || user.email || user.id}</div>
+                      <EditableName
+                        userId={user.userId || user.id}
+                        initialName={user.displayName || user.email || user.id}
+                        className="text-sm font-bold text-gray-900"
+                        inputClassName="text-sm font-bold"
+                      />
                       <div className="text-xs text-gray-400 font-mono">ID: {user.id}</div>
                     </div>
                   </div>

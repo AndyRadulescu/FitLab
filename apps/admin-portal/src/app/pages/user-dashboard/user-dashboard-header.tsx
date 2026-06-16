@@ -1,5 +1,6 @@
 import { AllUserData } from '@my-org/core';
 import { ArrowLeft } from 'lucide-react';
+import { EditableName } from '../../components/editable-name';
 import './user-dashboard.scss';
 
 interface UserDashboardHeaderProps {
@@ -18,10 +19,13 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
         >
           <ArrowLeft className="h-6 w-6 text-gray-600" />
         </button>
-        <div>
-          <h2 className="user-dashboard__title">
-            {user?.displayName || user?.email || 'User'}'s Dashboard
-          </h2>
+        <div className="flex-1">
+          <EditableName
+            userId={user?.userId || ''}
+            initialName={user?.displayName || user?.email || 'User'}
+            className="user-dashboard__title"
+            inputClassName="text-2xl font-extrabold"
+          />
           <div className="user-dashboard__metadata">
             {user?.email && (
               <div className="flex items-center text-sm text-gray-500">
