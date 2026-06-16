@@ -51,12 +51,14 @@ export const UsersList = () => {
 
         setUserListForUser(usersList);
         setUsers(usersList);
-      } catch (err: Error) {
+      } catch (err: unknown) {
         console.error('Error fetching users:', err);
-        if (err.code === 'permission-denied') {
+
+        const error = err as { code?: string; message?: string };
+        if (error.code === 'permission-denied') {
           setError('Permission Required: You must have administrative privileges to view the registered users list.');
         } else {
-          setError(`An error occurred: ${err.message || 'Unknown error'}`);
+          setError(`An error occurred: ${error.message || 'Unknown error'}`);
         }
       } finally {
         setLoading(false);
