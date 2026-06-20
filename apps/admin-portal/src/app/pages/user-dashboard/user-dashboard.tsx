@@ -56,6 +56,7 @@ export const UserDashboard = () => {
       {checkinId && (
         <CheckinDetailModal
           checkin={selectedCheckin}
+          weights={weights}
           gender={user?.gender}
           isOpen={!!checkinId}
           onClose={handleCloseModal}

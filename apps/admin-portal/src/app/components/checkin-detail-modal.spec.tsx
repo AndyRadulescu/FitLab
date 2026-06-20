@@ -95,4 +95,19 @@ describe('CheckinDetailModal', () => {
     render(<CheckinDetailModal checkin={checkinWithCycle} gender="male" isOpen={true} onClose={mockOnClose} />);
     expect(screen.queryByText('Menstrual Cycle')).toBeNull();
   });
+
+  it('should render weight from weights array using weightId when kg is missing', () => {
+    const checkinWithWeightId = {
+      ...mockCheckin,
+      kg: undefined,
+      weightId: 'w1'
+    } as any;
+    const mockWeights = [
+      { id: 'w1', weight: 82.5, createdAt: '2024-01-01T12:00:00Z' }
+    ] as any;
+
+    render(<CheckinDetailModal checkin={checkinWithWeightId} weights={mockWeights} isOpen={true} onClose={mockOnClose} />);
+    expect(screen.getByText('Weight')).toBeTruthy();
+    expect(screen.getByText('82.5 kg')).toBeTruthy();
+  });
 });
