@@ -77,9 +77,8 @@ describe('ImageUploader', () => {
       expect(screen.getByAltText('front')).toHaveAttribute('src', 'url-front');
       expect(screen.getByAltText('back')).toHaveAttribute('src', 'url-back');
       expect(screen.getByAltText('side')).toHaveAttribute('src', 'url-side');
+      expect(mockOnChange).toHaveBeenCalledWith(['url-front', 'url-back', 'url-side']);
     });
-
-    expect(mockOnChange).toHaveBeenCalledWith(['url-front', 'url-back', 'url-side']);
   });
 
   it('handles file upload for a slot', async () => {

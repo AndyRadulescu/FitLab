@@ -9,7 +9,8 @@ export function CheckInPage() {
     isEditingToday,
     checkinData,
     activeCheckinId,
-    user
+    user,
+    gender
   } = useCheckInForm();
 
   return (
@@ -19,6 +20,7 @@ export function CheckInPage() {
         formMethods={formMethods}
         onSubmit={onSubmit}
         user={user!}
+        gender={gender}
         activeCheckinId={activeCheckinId}
         isEdit={!!checkinData?.id}
       />

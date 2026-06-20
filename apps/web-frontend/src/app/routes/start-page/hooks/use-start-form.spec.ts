@@ -46,6 +46,7 @@ describe('useStartForm', () => {
       dateOfBirth: new Date('1990-01-01'),
       weight: 80,
       height: 180,
+      gender: 'female' as const,
     };
 
     await act(async () => {
@@ -55,6 +56,7 @@ describe('useStartForm', () => {
     expect(startTransaction).toHaveBeenCalledWith('user123', expect.objectContaining({
       weight: 80,
       height: 180,
+      gender: 'female',
       dateOfBirth: formData.dateOfBirth.toISOString()
     }));
     

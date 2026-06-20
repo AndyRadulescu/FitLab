@@ -1,15 +1,14 @@
-import { useMemo, useState } from 'react';
-import { TimeRange, TimeRangeSelector, WeightChart as SharedWeightChart } from '@my-org/shared-ui';
+import { useMemo } from 'react';
+import { TimeRange, WeightChart as SharedWeightChart } from '@my-org/shared-ui';
 import clsx from 'clsx';
 import { WeightString } from '@my-org/core';
 
 interface WeightChartProps {
   weights: WeightString[];
+  timeRange: TimeRange;
 }
 
-export const WeightChart = ({ weights }: WeightChartProps) => {
-  const [timeRange, setTimeRange] = useState<TimeRange>('4w');
-
+export const WeightChart = ({ weights, timeRange }: WeightChartProps) => {
   const { chartData, weightDiff, averageWeight } = useMemo(() => {
     const now = new Date();
 
@@ -85,12 +84,6 @@ export const WeightChart = ({ weights }: WeightChartProps) => {
             </div>
           )}
         </div>
-        <TimeRangeSelector
-          value={timeRange}
-          onChange={setTimeRange}
-          triggerClassName="border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-indigo-500"
-          activeOptionClassName="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 font-bold"
-        />
       </div>
       <SharedWeightChart
         data={chartData}

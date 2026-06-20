@@ -24,14 +24,15 @@ export const checkinSchema = z.object({
   moodCheck: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1').max(10, 'errors.profile.max10'),
   dailySteps: z.number({ message: 'errors.profile.empty' }).min(1, 'errors.profile.min1'),
   workouts: z.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min1').max(10, 'errors.profile.max10'),
-  menstrualCycle: z.enum(MenstrualCycle, { message: 'errors.profile.empty' }),
+  menstrualCycle: z.enum(MenstrualCycle, { message: 'errors.profile.empty' }).optional(),
   imgUrls: z.array(z.string(), 'errors.image.invalid').min(3, 'errors.image.invalid').max(3)
 });
 
 export const startPageSchema = z.object({
   dateOfBirth: z.date({ message: 'errors.date.invalid' }).max(new Date(), 'errors.date.max'),
   weight: z.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
-  height: z.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min')
+  height: z.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
+  gender: z.enum(['male', 'female'], { message: 'errors.profile.empty' })
 });
 
 export type StartPageFormData = z.infer<typeof startPageSchema>;
@@ -52,11 +53,12 @@ export type StartMappedWeightData = {
   height: number;
   displayName?: string | null;
   email?: string | null;
+  gender?: string;
 };
 export type Weight = { id: string; weight: number, createdAt: Date, updatedAt?: Date, from?: 'checkin' | 'weight' };
 export type WeightString = Omit<Weight, 'createdAt' | 'updatedAt'> & { createdAt: string, updatedAt?: string };
 
-export type StartPageFormDataDto = Omit<StartPageFormData, 'dateOfBirth'> & { dateOfBirth?: string };
+export type StartPageFormDataDto = Omit<StartPageFormData, 'dateOfBirth'> & { dateOfBirth?: string; gender?: string; };
 
 export interface UserStore {
   user?: firebase.User;
@@ -83,6 +85,7 @@ export type User = {
   createdAt: Timestamp;
   dateOfBirth: string;
   isAdmin?: boolean;
+  gender?: string;
 }
 
 export type AllUserData = User & {

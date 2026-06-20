@@ -8,12 +8,14 @@ import './checkin-detail-modal/checkin-detail-modal.scss';
 
 interface CheckinDetailModalProps {
   checkin?: CheckInFormDataDto;
+  weights?: WeightString[];
+  gender?: string;
   isOpen: boolean;
   onClose: () => void;
   loading?: boolean;
 }
 
-export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: CheckinDetailModalProps) => {
+export const CheckinDetailModal = ({ checkin, weights = [], gender, isOpen, onClose, loading }: CheckinDetailModalProps) => {
   const { imgUrls, loadingImages } = useCheckinImages(isOpen, checkin);
 
   const formatDate = (date: Date | undefined) => {
@@ -42,8 +44,8 @@ export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: Checki
 
             <div className="checkin-modal__body">
               <CheckinPhotos imgUrls={imgUrls} loadingImages={loadingImages} />
-              <CheckinLifestyle checkin={checkin} />
-              <CheckinMeasurements checkin={checkin} />
+              <CheckinLifestyle checkin={checkin} gender={gender} />
+              <CheckinMeasurements checkin={checkin} weights={weights} />
             </div>
 
             <footer className="checkin-modal__footer">

@@ -22,6 +22,7 @@ const isToday = (date: Date) => {
 
 export function useCheckInForm() {
   const user = userStore((state) => state.user);
+  const userData = userStore((state) => state.userData);
   const weights = userStore((state) => state.weights);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -84,6 +85,7 @@ export function useCheckInForm() {
     isEditingToday,
     checkinData,
     activeCheckinId,
-    user
+    user,
+    gender: userData?.gender
   };
 }

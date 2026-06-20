@@ -1,13 +1,16 @@
-import { CheckInFormDataDto } from '@my-org/core';
+import { CheckInFormDataDto, WeightString } from '@my-org/core';
 import { Ruler } from 'lucide-react';
 import { DataItem } from './data-item';
 import './checkin-detail-modal.scss';
 
 interface CheckinMeasurementsProps {
   checkin: CheckInFormDataDto;
+  weights?: WeightString[];
 }
 
-export const CheckinMeasurements = ({ checkin }: CheckinMeasurementsProps) => {
+export const CheckinMeasurements = ({ checkin, weights = [] }: CheckinMeasurementsProps) => {
+  const actualWeight = checkin.kg ? checkin.kg : weights.find((w) => w.id === checkin.weightId)?.weight;
+
   return (
     <section>
       <h3 className="checkin-modal__section-title">
@@ -15,7 +18,7 @@ export const CheckinMeasurements = ({ checkin }: CheckinMeasurementsProps) => {
         Body Measurements
       </h3>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-3">
-        <DataItem label="Weight" value={checkin.kg} unit="kg" />
+        <DataItem label="Weight" value={actualWeight} unit="kg" />
         <DataItem label="Bust" value={checkin.breastSize} unit="cm" />
         <DataItem label="Waist" value={checkin.waistSize} unit="cm" />
         <DataItem label="Hips" value={checkin.hipSize} unit="cm" />

@@ -56,6 +56,7 @@ describe('CheckInForm', () => {
     user: mockUser,
     activeCheckinId: 'checkin-456',
     isEdit: false,
+    gender: 'female',
   };
 
   it('renders all measurement inputs', () => {
@@ -65,6 +66,11 @@ describe('CheckInForm', () => {
     expect(screen.getByLabelText('checkin.measures.waist')).toBeInTheDocument();
     expect(screen.getByLabelText('checkin.steps')).toBeInTheDocument();
     expect(screen.getByText('checkin.menstrualCycle.question')).toBeInTheDocument();
+  });
+
+  it('does not render menstrual cycle selection for male users', () => {
+    render(<FormWrapper props={{ ...defaultProps, gender: 'male' }} onSubmit={mockOnSubmit} />);
+    expect(screen.queryByText('checkin.menstrualCycle.question')).toBeNull();
   });
 
   it('allows changing menstrual cycle', async () => {
