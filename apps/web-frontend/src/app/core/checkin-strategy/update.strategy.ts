@@ -32,14 +32,17 @@ export class UpdateCheckInStrategy implements CheckInStrategy {
     // 2. Update checkin document
     const docRef = doc(db, CHECKINS_TABLE, data.id);
     const { kg, ...checkinDataWithoutKg } = data;
+    const cleanCheckinData = Object.fromEntries(
+      Object.entries(checkinDataWithoutKg).filter(([_, v]) => v !== undefined)
+    );
     const mappedData = {
-      ...checkinDataWithoutKg,
+      ...cleanCheckinData,
       weightId: data.weightId,
       updatedAt: now
     };
 
     batch.update(docRef, {
-      ...checkinDataWithoutKg,
+      ...cleanCheckinData,
       updatedAt: serverTimestamp()
     });
 

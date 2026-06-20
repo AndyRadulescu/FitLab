@@ -11,11 +11,12 @@ interface CheckInFormProps {
   formMethods: UseFormReturn<CheckInFormData>;
   onSubmit: (data: CheckInFormData) => Promise<void>;
   user: firebase.User | null;
+  gender?: string;
   activeCheckinId: string | null;
   isEdit: boolean;
 }
 
-export function CheckInForm({ formMethods, onSubmit, user, activeCheckinId, isEdit }: CheckInFormProps) {
+export function CheckInForm({ formMethods, onSubmit, user, gender, activeCheckinId, isEdit }: CheckInFormProps) {
   const { t } = useTranslation();
   const {
     register,
@@ -78,24 +79,26 @@ export function CheckInForm({ formMethods, onSubmit, user, activeCheckinId, isEd
                min={0} max={10} step={1} {...register('workouts', { valueAsNumber: true })}
                error={errors.workouts?.message && t(errors.workouts.message)}></Input>
 
-        <Controller
-          name="menstrualCycle"
-          control={control}
-          render={({ field: { value, onChange } }) => (
-            <OptionSelector
-              label={t('checkin.menstrualCycle.question')}
-              infoText={t('checkin.menstrualCycle.info')}
-              value={value}
-              onChange={onChange}
-              options={[
-                { label: t('checkin.menstrualCycle.on'), value: MenstrualCycle.ON },
-                { label: t('checkin.menstrualCycle.off'), value: MenstrualCycle.OFF },
-                { label: t('checkin.menstrualCycle.pre'), value: MenstrualCycle.PRE },
-              ]}
-              error={errors.menstrualCycle?.message && t(errors.menstrualCycle.message)}
-            />
-          )}
-        />
+        {gender?.toLowerCase() !== 'male' && (
+          <Controller
+            name="menstrualCycle"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <OptionSelector
+                label={t('checkin.menstrualCycle.question')}
+                infoText={t('checkin.menstrualCycle.info')}
+                value={value}
+                onChange={onChange}
+                options={[
+                  { label: t('checkin.menstrualCycle.on'), value: MenstrualCycle.ON },
+                  { label: t('checkin.menstrualCycle.off'), value: MenstrualCycle.OFF },
+                  { label: t('checkin.menstrualCycle.pre'), value: MenstrualCycle.PRE },
+                ]}
+                error={errors.menstrualCycle?.message && t(errors.menstrualCycle.message)}
+              />
+            )}
+          />
+        )}
       </Card>
 
       <SectionHeader><Trans i18nKey="section.requiredPhotos">Required Photos</Trans></SectionHeader>

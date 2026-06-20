@@ -1,7 +1,7 @@
 import { UpdateCheckInStrategy } from './update.strategy';
 import { AddCheckInStrategy } from './add.strategy';
 import { DeleteCheckInStrategy } from './delete.strategy';
-import { CheckInFormData } from '../../routes/checkIn/types';
+import { CheckInFormData } from '@my-org/core';
 
 export type CheckinStrategyType = Omit<CheckInFormData, 'imgUrls' | 'kg'> & { id?: string, createdAt?: Date, weightId?: string, kg?: number };
 

@@ -75,4 +75,24 @@ describe('CheckinDetailModal', () => {
     render(<CheckinDetailModal checkin={null} isOpen={true} onClose={mockOnClose} />);
     expect(screen.getByText('Check-in data not found.')).toBeTruthy();
   });
+
+  it('should render menstrual cycle when gender is female', () => {
+    const checkinWithCycle = { ...mockCheckin, menstrualCycle: 'on' };
+    render(<CheckinDetailModal checkin={checkinWithCycle} gender="female" isOpen={true} onClose={mockOnClose} />);
+    expect(screen.getByText('Menstrual Cycle')).toBeTruthy();
+    expect(screen.getByText('On')).toBeTruthy();
+  });
+
+  it('should render menstrual cycle when gender is missing', () => {
+    const checkinWithCycle = { ...mockCheckin, menstrualCycle: 'off' };
+    render(<CheckinDetailModal checkin={checkinWithCycle} isOpen={true} onClose={mockOnClose} />);
+    expect(screen.getByText('Menstrual Cycle')).toBeTruthy();
+    expect(screen.getByText('Off')).toBeTruthy();
+  });
+
+  it('should not render menstrual cycle when gender is male', () => {
+    const checkinWithCycle = { ...mockCheckin, menstrualCycle: 'pre' };
+    render(<CheckinDetailModal checkin={checkinWithCycle} gender="male" isOpen={true} onClose={mockOnClose} />);
+    expect(screen.queryByText('Menstrual Cycle')).toBeNull();
+  });
 });

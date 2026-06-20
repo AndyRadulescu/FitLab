@@ -53,8 +53,11 @@ export class AddCheckInStrategy implements CheckInStrategy {
     // 2. Handle Checkin
     const newDocRef = doc(db, CHECKINS_TABLE, data.id);
     const { kg, ...checkinDataWithoutKg } = data;
+    const cleanCheckinData = Object.fromEntries(
+      Object.entries(checkinDataWithoutKg).filter(([_, v]) => v !== undefined)
+    );
     const mappedData = {
-      ...checkinDataWithoutKg,
+      ...cleanCheckinData,
       weightId: weightId as string,
       createdAt: now,
       updatedAt: now,
@@ -62,7 +65,7 @@ export class AddCheckInStrategy implements CheckInStrategy {
     } as CheckInFormDataDto;
 
     batch.set(newDocRef, {
-      ...checkinDataWithoutKg,
+      ...cleanCheckinData,
       weightId,
       userId: userId,
       createdAt: serverTimestamp(),

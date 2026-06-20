@@ -2,13 +2,15 @@ import { CheckInFormDataDto } from '@my-org/core';
 import { Zap } from 'lucide-react';
 import { StatBadge } from './stat-badge';
 import { DataItem } from './data-item';
+import { MenstrualCycleItem } from './menstrual-cycle-item';
 import './checkin-detail-modal.scss';
 
 interface CheckinLifestyleProps {
   checkin: CheckInFormDataDto;
+  gender?: string;
 }
 
-export const CheckinLifestyle = ({ checkin }: CheckinLifestyleProps) => {
+export const CheckinLifestyle = ({ checkin, gender }: CheckinLifestyleProps) => {
   return (
     <section>
       <h3 className="checkin-modal__section-title">
@@ -20,6 +22,7 @@ export const CheckinLifestyle = ({ checkin }: CheckinLifestyleProps) => {
         <StatBadge label="Energy Level" value={checkin.energyLevel} />
         <StatBadge label="Mood Check" value={checkin.moodCheck} />
         <DataItem label="Sleep" value={checkin.hoursSlept} unit="hrs" />
+        <MenstrualCycleItem value={checkin.menstrualCycle} gender={gender} />
       </div>
       <div className="mt-4">
         <DataItem label="Daily Steps" value={checkin.dailySteps?.toLocaleString()} unit="steps" />

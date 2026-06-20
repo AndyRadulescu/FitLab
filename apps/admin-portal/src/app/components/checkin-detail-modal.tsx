@@ -1,4 +1,4 @@
-import { CheckInFormDataDto, WeightString } from '@my-org/core';
+import { CheckInFormDataDto } from '@my-org/core';
 import { LoadingScreen, Modal } from '@my-org/shared-ui';
 import { useCheckinImages } from './checkin-detail-modal/use-checkin-images';
 import { CheckinPhotos } from './checkin-detail-modal/checkin-photos';
@@ -8,12 +8,13 @@ import './checkin-detail-modal/checkin-detail-modal.scss';
 
 interface CheckinDetailModalProps {
   checkin?: CheckInFormDataDto;
+  gender?: string;
   isOpen: boolean;
   onClose: () => void;
   loading?: boolean;
 }
 
-export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: CheckinDetailModalProps) => {
+export const CheckinDetailModal = ({ checkin, gender, isOpen, onClose, loading }: CheckinDetailModalProps) => {
   const { imgUrls, loadingImages } = useCheckinImages(isOpen, checkin);
 
   const formatDate = (date: Date | undefined) => {
@@ -42,7 +43,7 @@ export const CheckinDetailModal = ({ checkin, isOpen, onClose, loading }: Checki
 
             <div className="checkin-modal__body">
               <CheckinPhotos imgUrls={imgUrls} loadingImages={loadingImages} />
-              <CheckinLifestyle checkin={checkin} />
+              <CheckinLifestyle checkin={checkin} gender={gender} />
               <CheckinMeasurements checkin={checkin} />
             </div>
 
