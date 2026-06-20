@@ -11,14 +11,11 @@ export function App() {
   if (isLoading) {
     return <LoadingScreen />;
   }
-  if (!hasInitData) {
-    return <StartPage />;
-  }
   return (
     <>
       <AnalyticsTracker />
       <div className="lg:mx-[10%] xl:mx-[20%]">
-        <Main />
+        {!hasInitData ? <StartPage /> : <Main />}
       </div>
     </>
   );
