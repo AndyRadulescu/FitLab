@@ -36,6 +36,9 @@ describe('StartForm', () => {
     expect(screen.getByLabelText('start.dateOfBirth')).toBeInTheDocument();
     expect(screen.getByLabelText('start.startingWeight')).toBeInTheDocument();
     expect(screen.getByLabelText('start.height')).toBeInTheDocument();
+    expect(screen.getByText('start.gender')).toBeInTheDocument();
+    expect(screen.getByText('start.gender.male')).toBeInTheDocument();
+    expect(screen.getByText('start.gender.female')).toBeInTheDocument();
   });
 
   it('calls onSubmit with form data when submitted with valid data', async () => {
@@ -48,8 +51,9 @@ describe('StartForm', () => {
     fireEvent.change(dobInput, { target: { value: '1990-01-01' } });
     fireEvent.change(weightInput, { target: { value: '80' } });
     fireEvent.change(heightInput, { target: { value: '180' } });
+    fireEvent.click(screen.getByText('start.gender.female'));
 
-    const submitBtn = screen.getByRole('button', { name: /start/i });
+    const submitBtn = screen.getByRole('button', { name: 'Start' });
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
@@ -57,6 +61,7 @@ describe('StartForm', () => {
       const submittedData = mockOnSubmit.mock.calls[0][0];
       expect(submittedData.weight).toBe(80);
       expect(submittedData.height).toBe(180);
+      expect(submittedData.gender).toBe('female');
       expect(submittedData.dateOfBirth).toBeInstanceOf(Date);
     });
   });
@@ -69,8 +74,9 @@ describe('StartForm', () => {
     fireEvent.change(screen.getByLabelText('start.dateOfBirth'), { target: { value: '1990-01-01' } });
     fireEvent.change(screen.getByLabelText('start.startingWeight'), { target: { value: '80' } });
     fireEvent.change(screen.getByLabelText('start.height'), { target: { value: '180' } });
+    fireEvent.click(screen.getByText('start.gender.female'));
 
-    const submitBtn = screen.getByRole('button', { name: /start/i });
+    const submitBtn = screen.getByRole('button', { name: 'Start' });
     fireEvent.click(submitBtn);
     expect(submitBtn).toBeDisabled();
   });

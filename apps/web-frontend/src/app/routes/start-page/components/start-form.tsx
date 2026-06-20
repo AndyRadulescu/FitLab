@@ -1,8 +1,8 @@
-import { UseFormReturn } from 'react-hook-form';
+import { Controller, UseFormReturn } from 'react-hook-form';
 import { Trans, useTranslation } from 'react-i18next';
 import { SectionHeader } from '../../../components/section-header';
-import { Card, Input, Button } from '@my-org/shared-ui';
-import { StartPageFormData } from '../types';
+import { Card, Input, Button, OptionSelector } from '@my-org/shared-ui';
+import { StartPageFormData } from '@my-org/core';
 
 interface StartFormProps {
   formMethods: UseFormReturn<StartPageFormData>;
@@ -13,6 +13,7 @@ export function StartForm({ formMethods, onSubmit }: StartFormProps) {
   const { t } = useTranslation();
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors, isSubmitting }
   } = formMethods;
@@ -45,6 +46,23 @@ export function StartForm({ formMethods, onSubmit }: StartFormProps) {
             min="0"
             {...register('height', { valueAsNumber: true })}
             error={errors.height?.message && t(errors.height.message)} />
+
+          <Controller
+            name="gender"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <OptionSelector
+                label={t('start.gender')}
+                value={value}
+                onChange={onChange}
+                options={[
+                  { label: t('start.gender.male'), value: 'male' },
+                  { label: t('start.gender.female'), value: 'female' }
+                ]}
+                error={errors.gender?.message && t(errors.gender.message)}
+              />
+            )}
+          />
         </Card>
       </div>
       <Button type="primary" disabled={isSubmitting}>

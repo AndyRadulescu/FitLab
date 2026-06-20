@@ -31,7 +31,8 @@ export const checkinSchema = z.object({
 export const startPageSchema = z.object({
   dateOfBirth: z.date({ message: 'errors.date.invalid' }).max(new Date(), 'errors.date.max'),
   weight: z.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
-  height: z.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min')
+  height: z.number({ message: 'errors.profile.empty' }).min(0, 'errors.profile.min'),
+  gender: z.enum(['male', 'female'], { message: 'errors.profile.empty' })
 });
 
 export type StartPageFormData = z.infer<typeof startPageSchema>;
