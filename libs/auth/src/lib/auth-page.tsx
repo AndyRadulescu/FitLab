@@ -10,9 +10,22 @@ interface AuthPageProps extends AuthContextProps {
   user: any; // Ideally typed according to your user store
   logoSrc?: string;
   children?: ReactNode;
+  lastUsedProvider?: string | null;
+  onSocialClick?: (provider: 'google' | 'facebook') => void;
+  renderLastUsedBadge?: (provider: 'google' | 'facebook') => ReactNode;
 }
 
-export function AuthPage({ user, auth, analytics, handleAuthErrors, redirectPath, logoSrc = '/images/logo-title.svg' }: AuthPageProps) {
+export function AuthPage({
+  user,
+  auth,
+  analytics,
+  handleAuthErrors,
+  redirectPath,
+  logoSrc = '/images/logo-title.svg',
+  lastUsedProvider,
+  onSocialClick,
+  renderLastUsedBadge,
+}: AuthPageProps) {
   const location = useLocation();
   const { i18n, t } = useTranslation();
 
@@ -21,6 +34,7 @@ export function AuthPage({ user, auth, analytics, handleAuthErrors, redirectPath
   }
 
   const onSocialLogin = async (provider: 'google' | 'facebook') => {
+    onSocialClick?.(provider);
     auth.languageCode = i18n.language;
     const authProvider = provider === 'google' ? new GoogleAuthProvider() : new FacebookAuthProvider();
     if (analytics) {
@@ -31,6 +45,13 @@ export function AuthPage({ user, auth, analytics, handleAuthErrors, redirectPath
     } catch (err: any) {
       handleAuthErrors(err, t);
     }
+  };
+
+  const getBadge = (provider: 'google' | 'facebook') => {
+    if (renderLastUsedBadge) {
+      return renderLastUsedBadge(provider);
+    }
+    return undefined;
   };
 
   return (
@@ -64,10 +85,18 @@ export function AuthPage({ user, auth, analytics, handleAuthErrors, redirectPath
 
             <div className="w-full">
               <div className="mb-2">
-                <SocialButton socialType="google" onClick={() => void onSocialLogin('google')} />
+                <SocialButton
+                  socialType="google"
+                  onClick={() => void onSocialLogin('google')}
+                  badge={getBadge('google')}
+                />
               </div>
               <div className="mb-4">
-                <SocialButton socialType="facebook" onClick={() => void onSocialLogin('facebook')} />
+                <SocialButton
+                  socialType="facebook"
+                  onClick={() => void onSocialLogin('facebook')}
+                  badge={getBadge('facebook')}
+                />
               </div>
 
               <div className="flex justify-center w-full mt-6 flex-col items-center gap-4">

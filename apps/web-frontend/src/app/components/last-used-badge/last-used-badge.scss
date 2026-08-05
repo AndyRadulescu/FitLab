@@ -1,0 +1,52 @@
+.last-used-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(79, 70, 229, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  z-index: 10;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.95;
+  }
+
+  &__text {
+    line-height: 1;
+  }
+
+  &--floating {
+    position: absolute;
+    top: -0.65rem;
+    right: 0.85rem;
+    animation: lastUsedBadgePopIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  &--inline {
+    margin-left: 0.5rem;
+  }
+}
+
+@keyframes lastUsedBadgePopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(4px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

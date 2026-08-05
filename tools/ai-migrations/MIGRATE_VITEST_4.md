@@ -523,7 +523,7 @@ export default defineConfig({
 
 ### 5. Environment Variable Updates
 
-**Search Pattern**: CI/CD configuration files, `.env` files, documentation
+**Search Pattern**: CI/CD configuration files, `../../apps/web-frontend/.env` files, documentation
 
 **Changes Required**:
 
@@ -541,7 +541,7 @@ VITEST_MODULE_DIRECTORIES=/custom/path
 **Action Items**:
 
 - [ ] Update CI/CD pipeline environment variables
-- [ ] Update `.env` files
+- [ ] Update `../../apps/web-frontend/.env` files
 - [ ] Update documentation referencing old environment variables
 - [ ] Search for `VITEST_MAX_THREADS`, `VITEST_MAX_FORKS`, `VITE_NODE_DEPS_MODULE_DIRECTORIES`
 
