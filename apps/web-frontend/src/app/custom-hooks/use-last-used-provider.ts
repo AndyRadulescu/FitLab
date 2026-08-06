@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
+import { AuthProviderType } from '@my-org/auth';
 
 export const LAST_USED_PROVIDER_KEY = 'fitlab_last_used_login_provider';
 
-export type AuthProviderType = 'facebook' | 'google' | 'email' | string;
-
 export function getLastUsedProvider(): AuthProviderType | null {
   try {
-    return localStorage.getItem(LAST_USED_PROVIDER_KEY);
+    return localStorage.getItem(LAST_USED_PROVIDER_KEY) as AuthProviderType;
   } catch {
     return null;
   }

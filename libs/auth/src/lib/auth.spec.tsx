@@ -45,6 +45,12 @@ vi.mock('@my-org/shared-ui', () => ({
   Button: ({ children, disabled, onClick, buttonType }: any) => (
     <button disabled={disabled} onClick={onClick} type={buttonType}>{children}</button>
   ),
+  EmailLoginButton: ({ children, disabled, onClick, buttonType, badge }: any) => (
+    <div className="relative">
+      <button disabled={disabled} onClick={onClick} type={buttonType}>{children || 'Login'}</button>
+      {badge}
+    </div>
+  ),
   Card: ({ children }: any) => <div>{children}</div>,
   SocialButton: ({ socialType, onClick }: any) => (
     <button data-testid={`social-${socialType}`} onClick={onClick}>{socialType}</button>

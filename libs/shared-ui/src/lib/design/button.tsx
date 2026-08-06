@@ -9,10 +9,11 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   onClick?: () => void;
   buttonType?: 'button' | 'submit' | 'reset';
   icon?: ReactNode;
+  badge?: ReactNode;
 }
 
-export function Button({ children, type, disabled, onClick, buttonType, className, icon, ...rest }: ButtonProps) {
-  return (
+export function Button({ children, type, disabled, onClick, buttonType, className, icon, badge, ...rest }: ButtonProps) {
+  const buttonEl = (
     <button
       type={buttonType}
       onClick={onClick}
@@ -36,4 +37,15 @@ export function Button({ children, type, disabled, onClick, buttonType, classNam
       {children}
     </button>
   );
+
+  if (badge) {
+    return (
+      <div className="relative w-full">
+        {buttonEl}
+        {badge}
+      </div>
+    );
+  }
+
+  return buttonEl;
 }

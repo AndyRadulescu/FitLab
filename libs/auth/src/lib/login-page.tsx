@@ -7,7 +7,7 @@ import { Trans, useTranslation } from 'react-i18next';
 import { logEvent } from 'firebase/analytics';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
-import { Input, Button } from '@my-org/shared-ui';
+import { Input, Button, EmailLoginButton } from '@my-org/shared-ui';
 import { useAuth } from './types';
 
 const loginSchema = z.object({
@@ -20,10 +20,11 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginPage() {
   const { t } = useTranslation();
-  const { auth, analytics, handleAuthErrors } = useAuth();
+  const { auth, analytics, handleAuthErrors, onLoginAttempt, renderLastUsedBadge, lastUsedProvider } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const onLogInWithEmailAndPassword = (data: LoginFormData) => {
+    onLoginAttempt?.('email');
     if (analytics) {
       logEvent(analytics, 'email-password-login');
     }
@@ -59,6 +60,16 @@ export function LoginPage() {
     }
   };
 
+  const getBadge = () => {
+    if (renderLastUsedBadge) {
+      return renderLastUsedBadge('email');
+    }
+    if (lastUsedProvider === 'email') {
+      return <div data-testid="last-used-badge-email" />;
+    }
+    return undefined;
+  };
+
   return (
     <form onSubmit={handleSubmit(data => onLogInWithEmailAndPassword(data))}>
       <Input
@@ -89,9 +100,11 @@ export function LoginPage() {
           <Trans i18nKey="auth.forgot">Forgot Password?</Trans>
         </button>
       </div>
-      <Button disabled={isSubmitting} type="primary" buttonType={'submit'}>
-        <Trans i18nKey="auth.login">Login</Trans>
-      </Button>
+      <EmailLoginButton
+        disabled={isSubmitting}
+        buttonType={'submit'}
+        badge={getBadge()}
+      />
       <Button type="tertiary" buttonType={'button'}>
         <Link to={'/auth/register'}>
           <Trans i18nKey="auth.register">Register</Trans>

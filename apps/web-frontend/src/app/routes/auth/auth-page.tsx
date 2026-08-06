@@ -25,6 +25,7 @@ export function AuthPage() {
         redirectPath="/"
         logoSrc="/images/logo-title.svg"
         lastUsedProvider={lastUsedProvider}
+        onLoginAttempt={(provider) => setLastUsedProvider(provider)}
         onSocialClick={(provider) => setLastUsedProvider(provider)}
         renderLastUsedBadge={(provider) =>
           lastUsedProvider === provider ? <LastUsedBadge /> : null
