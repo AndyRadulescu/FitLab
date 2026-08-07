@@ -7,6 +7,7 @@ import { checkinStore } from './app/store/checkin.store';
 import { FirebaseStorage, getStorage } from 'firebase/storage';
 import { handleAuthErrors } from '@my-org/core';
 import i18next from 'i18next';
+import { setLastUsedProvider } from './app/custom-hooks/use-last-used-provider';
 
 let firebaseApp: FirebaseApp;
 let auth: Auth;
@@ -58,6 +59,16 @@ export async function initFirebaseAuth() {
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       userSt.setUser(user as any);
+      if (user.providerData && user.providerData.length > 0) {
+        const mainProvider = user.providerData[0].providerId;
+        if (mainProvider.includes('facebook')) {
+          setLastUsedProvider('facebook');
+        } else if (mainProvider.includes('google')) {
+          setLastUsedProvider('google');
+        } else if (mainProvider.includes('password')) {
+          setLastUsedProvider('email');
+        }
+      }
     } else {
       userSt.delete();
       checkinSt.delete();

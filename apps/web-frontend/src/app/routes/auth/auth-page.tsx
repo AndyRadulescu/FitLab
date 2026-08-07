@@ -5,11 +5,14 @@ import { AnalyticsTracker } from '../../analytics-tracker';
 import { handleAuthErrors } from '@my-org/core';
 import { useHtmlLang } from '../../custom-hooks/use-html-lang';
 import { AuthPage as BaseAuthPage } from '@my-org/auth';
+import { useLastUsedProvider } from '../../custom-hooks/use-last-used-provider';
+import { LastUsedBadge } from '../../components/last-used-badge/last-used-badge';
 
 export function AuthPage() {
   useHtmlLang();
   const { t } = useTranslation();
   const user = userStore(state => state.user);
+  const { lastUsedProvider, setLastUsedProvider } = useLastUsedProvider();
 
   return (
     <>
@@ -21,6 +24,12 @@ export function AuthPage() {
         handleAuthErrors={(err) => handleAuthErrors(err, t)}
         redirectPath="/"
         logoSrc="/images/logo-title.svg"
+        lastUsedProvider={lastUsedProvider}
+        onLoginAttempt={(provider) => setLastUsedProvider(provider)}
+        onSocialClick={(provider) => setLastUsedProvider(provider)}
+        renderLastUsedBadge={(provider) =>
+          lastUsedProvider === provider ? <LastUsedBadge /> : null
+        }
       />
     </>
   );

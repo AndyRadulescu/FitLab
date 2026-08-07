@@ -10,7 +10,12 @@ export interface AuthContextProps {
   analytics: Analytics | null;
   handleAuthErrors: AuthErrorHandler;
   redirectPath: string;
+  lastUsedProvider?: AuthProviderType | null;
+  onLoginAttempt?: (provider: AuthProviderType) => void;
+  renderLastUsedBadge?: (provider: AuthProviderType) => ReactNode;
 }
+
+export type AuthProviderType = 'google' | 'facebook' | 'email';
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 

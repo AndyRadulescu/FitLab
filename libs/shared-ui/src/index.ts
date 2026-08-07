@@ -5,6 +5,7 @@ export * from './lib/design/button';
 export * from './lib/design/input';
 export * from './lib/design/card';
 export * from './lib/design/social-button';
+export * from './lib/design/email-login-button';
 export * from './lib/design/loading-screen';
 export * from './lib/design/weight-chart';
 export * from './lib/design/time-range-selector';

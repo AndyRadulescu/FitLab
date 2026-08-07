@@ -64,6 +64,7 @@ vi.mock('../../custom-hooks/use-html-lang', () => ({
 describe('AuthPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
     (useLocation as Mock).mockReturnValue({ pathname: '/auth' });
     (userStore as unknown as Mock).mockImplementation((selector: any) => selector({ user: null }));
   });
@@ -107,7 +108,7 @@ describe('AuthPage', () => {
     expect(signInWithRedirect).toHaveBeenCalledWith(expect.anything(), expect.any(GoogleAuthProvider));
   });
 
-  it('should call signInWithRedirect with Facebook provider when Facebook button is clicked', async () => {
+  it('should call signInWithRedirect with Facebook provider when Facebook button is clicked and save last used provider', async () => {
     (signInWithRedirect as Mock).mockResolvedValue({});
     render(<AuthPage />);
 
@@ -117,6 +118,16 @@ describe('AuthPage', () => {
     expect(auth.languageCode).toBe('en');
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'facebook-login');
     expect(signInWithRedirect).toHaveBeenCalledWith(expect.anything(), expect.any(FacebookAuthProvider));
+    expect(localStorage.getItem('fitlab_last_used_login_provider')).toBe('facebook');
+  });
+
+  it('should display LastUsedBadge when facebook was last used provider', () => {
+    localStorage.setItem('fitlab_last_used_login_provider', 'facebook');
+    render(<AuthPage />);
+
+    const badge = screen.getByTestId('last-used-badge');
+    expect(badge).toBeInTheDocument();
+    expect(badge).toHaveTextContent('auth.last_used');
   });
 
   it('should handle errors when signInWithRedirect fails', async () => {
