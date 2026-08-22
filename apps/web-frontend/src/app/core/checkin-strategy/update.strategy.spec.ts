@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest';
-import { doc } from 'firebase/firestore';
+import { doc, runTransaction } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { UpdateCheckInStrategy } from './update.strategy';
 import { CHECKINS_TABLE, WEIGHT_TABLE } from '@my-org/core';
@@ -7,9 +7,10 @@ import { CHECKINS_TABLE, WEIGHT_TABLE } from '@my-org/core';
 const mockUpsertCheckin = vi.fn();
 const mockUpdateWeight = vi.fn();
 
-const mockBatch = {
+const mockTransaction = {
   update: vi.fn(),
-  commit: vi.fn().mockResolvedValue(undefined),
+  set: vi.fn(),
+  delete: vi.fn(),
 };
 
 vi.mock('../../store/checkin.store', () => ({
@@ -30,7 +31,7 @@ vi.mock('../../store/user.store', () => ({
 
 vi.mock('firebase/firestore', () => ({
   doc: vi.fn((db, table, id) => ({ id, table })),
-  writeBatch: vi.fn(() => mockBatch),
+  runTransaction: vi.fn(async (db, cb) => cb(mockTransaction)),
   serverTimestamp: vi.fn(() => 'mock-timestamp')
 }));
 
@@ -52,6 +53,7 @@ describe('UpdateCheckInStrategy', () => {
     vi.useFakeTimers();
     vi.setSystemTime(MOCK_DATE);
     vi.clearAllMocks();
+    (runTransaction as any).mockImplementation(async (db: any, cb: any) => cb(mockTransaction));
     strategy = new UpdateCheckInStrategy();
   });
 
@@ -59,15 +61,17 @@ describe('UpdateCheckInStrategy', () => {
     vi.useRealTimers();
   });
 
-  it('should update the document in Firestore and sync with the local store', async () => {
+  it('should update the document in Firestore via transaction and sync with the local store', async () => {
     const mockData = { id: 'checkin-123', weightId: 'w-456', kg: 80 };
     const userId = 'user-456';
 
     await strategy.checkIn({ data: mockData as any, userId });
 
+    expect(runTransaction).toHaveBeenCalled();
+
     // Verify weight update
     expect(doc).toHaveBeenCalledWith(expect.anything(), WEIGHT_TABLE, 'w-456');
-    expect(mockBatch.update).toHaveBeenCalledWith(
+    expect(mockTransaction.update).toHaveBeenCalledWith(
       expect.objectContaining({ id: 'w-456', table: WEIGHT_TABLE }),
       expect.objectContaining({ weight: 80, updatedAt: 'mock-timestamp' })
     );
@@ -75,19 +79,18 @@ describe('UpdateCheckInStrategy', () => {
 
     // Verify checkin update
     expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, 'checkin-123');
-    expect(mockBatch.update).toHaveBeenCalledWith(
+    expect(mockTransaction.update).toHaveBeenCalledWith(
       expect.objectContaining({ id: 'checkin-123', table: CHECKINS_TABLE }),
       expect.objectContaining({ updatedAt: 'mock-timestamp' })
     );
 
-    expect(mockBatch.commit).toHaveBeenCalled();
     expect(mockUpsertCheckin).toHaveBeenCalled();
     expect(logEvent).toHaveBeenCalledWith(expect.anything(), 'update-checkin');
   });
 
-  it('should handle Firestore update failures gracefully', async () => {
+  it('should handle Firestore transaction failures gracefully', async () => {
     const mockData = { id: 'checkin-123', weightId: 'w-456' };
-    mockBatch.commit.mockRejectedValueOnce(new Error('Firestore Error'));
+    (runTransaction as any).mockRejectedValueOnce(new Error('Firestore Error'));
 
     await expect(strategy.checkIn({ data: mockData as any }))
       .rejects.toThrow('Firestore Error');

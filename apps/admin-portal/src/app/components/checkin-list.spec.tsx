@@ -9,26 +9,22 @@ describe('CheckinList', () => {
   const mockCheckins = [
     {
       id: 'c1',
-      kg: 80.5,
+      weightId: 'w1',
       createdAt: new Date('2024-01-01T10:00:00Z')
     },
     {
       id: 'c2',
-      weightId: 'someWeightId',
+      weightId: 'missingWeightId',
       createdAt: new Date('2024-01-08T10:00:00Z')
     }
   ] as CheckInFormDataDto[];
 
-  const mockWiegths = [
+  const mockWeights = [
     {
-      id: 'someWeightId',
-      weight: 80.5
-    },
-    {
-      id: 'someWeightId',
-      weight: 80.5
+      id: 'w1',
+      weight: 80.5,
+      createdAt: '2024-01-01T10:00:00Z'
     }
-
   ] as WeightString[];
 
   it('should render "No check-ins" message when array is empty', () => {
@@ -37,7 +33,7 @@ describe('CheckinList', () => {
   });
 
   it('should render a list of check-ins', () => {
-    render(<CheckinList checkins={mockCheckins} weights={[]} onSelectCheckin={mockOnSelectCheckin} />);
+    render(<CheckinList checkins={mockCheckins} weights={mockWeights} onSelectCheckin={mockOnSelectCheckin} />);
 
     expect(screen.getByText('Monday, January 1, 2024')).toBeTruthy();
     expect(screen.getByText('Weight: 80.5 kg')).toBeTruthy();
@@ -47,7 +43,7 @@ describe('CheckinList', () => {
   });
 
   it('should call onSelectCheckin when a check-in is clicked', () => {
-    render(<CheckinList checkins={mockCheckins} weights={[]} onSelectCheckin={mockOnSelectCheckin} />);
+    render(<CheckinList checkins={mockCheckins} weights={mockWeights} onSelectCheckin={mockOnSelectCheckin} />);
 
     // The onClick is on the main wrapper div
     const checkinItem = screen.getByText('Monday, January 1, 2024').closest('.cursor-pointer');

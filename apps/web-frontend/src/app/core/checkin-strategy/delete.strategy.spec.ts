@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DeleteCheckInStrategy } from './delete.strategy';
-import { doc } from 'firebase/firestore';
+import { doc, runTransaction } from 'firebase/firestore';
 import { ref, listAll, deleteObject } from 'firebase/storage';
 import { logEvent } from 'firebase/analytics';
 import { CHECKINS_TABLE, getCheckinPath, WEIGHT_TABLE } from '@my-org/core';
@@ -8,9 +8,10 @@ import { CHECKINS_TABLE, getCheckinPath, WEIGHT_TABLE } from '@my-org/core';
 const mockDeleteCheckin = vi.fn();
 const mockDeleteWeight = vi.fn();
 
-const mockBatch = {
+const mockTransaction = {
   delete: vi.fn(),
-  commit: vi.fn().mockResolvedValue(undefined),
+  set: vi.fn(),
+  update: vi.fn(),
 };
 
 vi.mock('firebase/firestore', () => ({
@@ -18,7 +19,7 @@ vi.mock('firebase/firestore', () => ({
     if (args.length === 3) return { id: args[2], table: args[1] };
     return { id: 'random-id' };
   }),
-  writeBatch: vi.fn(() => mockBatch),
+  runTransaction: vi.fn(async (db, cb) => cb(mockTransaction)),
 }));
 
 vi.mock('firebase/storage', () => ({
@@ -66,10 +67,11 @@ describe('DeleteCheckInStrategy', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    (runTransaction as any).mockImplementation(async (db: any, cb: any) => cb(mockTransaction));
     strategy = new DeleteCheckInStrategy();
   });
 
-  it('should delete all files in storage and the firestore documents (checkin and weight)', async () => {
+  it('should delete all files in storage and the firestore documents (checkin and weight) via transaction', async () => {
     const userId = 'user-123';
     const checkinId = 'checkin-456';
     const weightId = 'weight-789';
@@ -91,11 +93,11 @@ describe('DeleteCheckInStrategy', () => {
     expect(listAll).toHaveBeenCalled();
     expect(deleteObject).toHaveBeenCalledTimes(2);
 
-    // Verify batch deletes
+    // Verify transaction deletes
+    expect(runTransaction).toHaveBeenCalled();
     expect(doc).toHaveBeenCalledWith(expect.anything(), CHECKINS_TABLE, checkinId);
     expect(doc).toHaveBeenCalledWith(expect.anything(), WEIGHT_TABLE, weightId);
-    expect(mockBatch.delete).toHaveBeenCalledTimes(2);
-    expect(mockBatch.commit).toHaveBeenCalled();
+    expect(mockTransaction.delete).toHaveBeenCalledTimes(2);
 
     expect(mockDeleteCheckin).toHaveBeenCalledWith(checkinId);
     expect(mockDeleteWeight).toHaveBeenCalledWith(weightId);
@@ -111,7 +113,8 @@ describe('DeleteCheckInStrategy', () => {
 
     await strategy.checkIn({ data: payload as any, userId });
 
-    expect(mockBatch.delete).toHaveBeenCalledTimes(1);
+    expect(runTransaction).toHaveBeenCalled();
+    expect(mockTransaction.delete).toHaveBeenCalledTimes(1);
     expect(mockDeleteCheckin).toHaveBeenCalledWith(checkinId);
     expect(mockDeleteWeight).not.toHaveBeenCalled();
   });
@@ -141,7 +144,8 @@ describe('DeleteCheckInStrategy', () => {
 
     await strategy.checkIn({ data: { id: 'id-1' } as any, userId: 'u1' });
 
-    expect(mockBatch.delete).toHaveBeenCalled();
+    expect(runTransaction).toHaveBeenCalled();
+    expect(mockTransaction.delete).toHaveBeenCalled();
     expect(mockDeleteCheckin).toHaveBeenCalledWith('id-1');
   });
 });

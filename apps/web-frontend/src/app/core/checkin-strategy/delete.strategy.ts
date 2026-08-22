@@ -1,7 +1,7 @@
 import { CheckInStrategy, CheckinStrategyType } from './checkin-strategy';
 import { checkinStore } from '../../store/checkin.store';
 import { analytics, db, storage } from '../../../init-firebase-auth';
-import { doc, writeBatch } from 'firebase/firestore';
+import { doc, runTransaction } from 'firebase/firestore';
 import { logEvent } from 'firebase/analytics';
 import { deleteObject, listAll, ref } from 'firebase/storage';
 import { getCheckinPath } from '@my-org/core';
@@ -14,7 +14,7 @@ export class DeleteCheckInStrategy implements CheckInStrategy {
 
     try {
       await this.deleteFile(data.id, userId);
-      await this.deleteDocs(data, userId);
+      await this.deleteDocs(data);
 
       if (analytics) {
         logEvent(analytics, 'delete-checkin');
@@ -36,18 +36,16 @@ export class DeleteCheckInStrategy implements CheckInStrategy {
     await Promise.allSettled(deletePromises);
   }
 
-  private async deleteDocs(data: CheckinStrategyType, userId: string) {
-    const batch = writeBatch(db);
+  private async deleteDocs(data: CheckinStrategyType) {
+    await runTransaction(db, async (transaction) => {
+      const checkinRef = doc(db, CHECKINS_TABLE, data.id!);
+      transaction.delete(checkinRef);
 
-    const checkinRef = doc(db, CHECKINS_TABLE, data.id!);
-    batch.delete(checkinRef);
-
-    if (data.weightId) {
-      const weightRef = doc(db, WEIGHT_TABLE, data.weightId);
-      batch.delete(weightRef);
-    }
-
-    await batch.commit();
+      if (data.weightId) {
+        const weightRef = doc(db, WEIGHT_TABLE, data.weightId);
+        transaction.delete(weightRef);
+      }
+    });
 
     checkinStore.getState().deleteCheckin(data.id!);
     if (data.weightId) {
