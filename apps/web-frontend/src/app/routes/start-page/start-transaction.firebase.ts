@@ -15,8 +15,10 @@ export async function startTransaction(userId: string, mappedData: StartMappedWe
       weight: mappedData.weight
     });
 
+    const { weight, ...userProfileData } = mappedData;
+
     transaction.set(userRef, {
-      ...mappedData,
+      ...userProfileData,
       userId: userId,
       createdAt: serverTimestamp()
     });

@@ -26,7 +26,9 @@ export function useStartForm() {
     };
     try {
       const weightId = await startTransaction(user.uid, mappedData);
-      if (!weightId) return;
+      if (!weightId) {
+        return;
+      }
       addWeight({ id: weightId, weight: mappedData.weight, createdAt: new Date() });
       setUserData(mappedData);
       navigate('/dashboard/', { replace: true });

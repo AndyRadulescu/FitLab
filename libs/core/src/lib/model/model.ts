@@ -77,7 +77,6 @@ export interface UserStore {
 export type User = {
   userId: string;
   id: string;
-  weight: number;
   height: number;
   displayName?: string;
   email?: string;
