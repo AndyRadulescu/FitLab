@@ -103,5 +103,7 @@
   "common.edit": "Editează",
   "common.save": "Salvează",
   "common.loading": "Încărcare",
-  "common.pleaseWait": "Te rugăm să aștepți..."
+  "common.pleaseWait": "Te rugăm să aștepți...",
+  "profile.user_id": "ID Utilizator"
 }
+

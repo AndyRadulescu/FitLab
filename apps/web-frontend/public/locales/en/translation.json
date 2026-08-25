@@ -102,5 +102,7 @@
   "common.edit": "Edit",
   "common.save": "Save",
   "common.loading": "Loading",
-  "common.pleaseWait": "Please wait..."
+  "common.pleaseWait": "Please wait...",
+  "profile.user_id": "User ID"
 }
+

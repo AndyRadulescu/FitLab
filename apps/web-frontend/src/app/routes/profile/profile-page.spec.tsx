@@ -50,7 +50,9 @@ vi.mock('@my-org/shared-ui', () => ({
       {children}
     </button>
   ),
+  CopyButton: ({ text }: any) => <button data-testid="copy-button" data-copy-text={text}>Copy</button>,
 }));
+
 
 vi.mock('../../components/danger-zone/danger-zone', () => ({
   DangerZone: () => <div data-testid="danger-zone" />,
@@ -83,12 +85,15 @@ describe('ProfilePage', () => {
 
     expect(screen.getByTestId('section-header')).toBeInTheDocument();
     expect(screen.getByTestId('profile.settings')).toBeInTheDocument();
+    expect(screen.getByTestId('profile.user_id')).toBeInTheDocument();
+    expect(screen.getByTestId('copy-button')).toBeInTheDocument();
     expect(screen.getByTestId('language-toggle')).toBeInTheDocument();
     expect(screen.getByTestId('logout-icon')).toBeInTheDocument();
     expect(screen.getByTestId('auth.signout')).toBeInTheDocument();
     expect(screen.getByTestId('button-secondary')).toBeInTheDocument();
     expect(screen.getByTestId('danger-zone')).toBeInTheDocument();
   });
+
 
   it('should call signOut, log logout event and navigate to login on logout click', async () => {
     render(<ProfilePage />);

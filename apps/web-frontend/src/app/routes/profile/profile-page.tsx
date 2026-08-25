@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { analytics, auth } from '../../../init-firebase-auth';
 import { Trans, useTranslation } from 'react-i18next';
-import { Card, Button } from '@my-org/shared-ui';
+import { Card, Button, CopyButton } from '@my-org/shared-ui';
 import { LanguageToggle } from '../../components/language-toggle/language-toggle';
 import { logEvent } from 'firebase/analytics';
 import { DangerZone } from '../../components/danger-zone/danger-zone';
@@ -34,6 +34,20 @@ export function ProfilePage() {
         <LanguageToggle />
       </div>
 
+      <Card className="mb-4">
+        <div className="flex items-center justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <span className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 block mb-1">
+              <Trans i18nKey="profile.user_id">User ID</Trans>
+            </span>
+            <code className="text-xs md:text-sm font-mono text-gray-800 dark:text-gray-200 break-all select-all">
+              {auth.currentUser?.uid}
+            </code>
+          </div>
+          <CopyButton text={auth.currentUser?.uid || ''} showFeedbackText={true} />
+        </div>
+      </Card>
+
       <div className="mb-6">
         <Button 
           type="secondary"
@@ -43,6 +57,7 @@ export function ProfilePage() {
           <Trans i18nKey="auth.signout">Log out</Trans>
         </Button>
       </div>
+
 
       <Card className="mb-4">
         <div className="text-center">
