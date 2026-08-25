@@ -73,6 +73,17 @@ export interface UserStore {
   delete(): void;
 }
 
+export type ConnectionStatus = 'active' | 'unlinked' | 'pending';
+
+export type Connection = {
+  id?: string;
+  clientId: string;
+  coachId: string;
+  status: ConnectionStatus;
+  createdAt?: Timestamp | Date;
+  updatedAt?: Timestamp | Date;
+};
+
 export type User = {
   userId: string;
   id: string;
@@ -84,9 +95,11 @@ export type User = {
   dateOfBirth: string;
   isAdmin?: boolean;
   gender?: string;
-}
+  connectionStatus?: ConnectionStatus;
+};
 
 export type AllUserData = User & {
   checkins: CheckInFormDataDto[];
   weights: WeightString[];
-}
+};
+

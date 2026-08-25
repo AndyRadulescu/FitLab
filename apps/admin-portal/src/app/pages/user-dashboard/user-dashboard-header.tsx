@@ -10,6 +10,9 @@ interface UserDashboardHeaderProps {
 }
 
 export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) => {
+  const isUnlinked = user?.connectionStatus === 'unlinked';
+  const isPending = user?.connectionStatus === 'pending';
+
   return (
     <div className="user-dashboard__header">
       <div className="user-dashboard__user-info flex-1">
@@ -21,14 +24,29 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
           <ArrowLeft className="h-6 w-6 text-gray-600" />
         </button>
         <div className="flex-1">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-2xl font-extrabold text-gray-900 tracking-tight">Dashboard of</span>
             <EditableName
-              userId={user?.userId || ''}
+              userId={user?.userId || user?.id || ''}
               initialName={user?.displayName || user?.email || 'User'}
               className="user-dashboard__title"
               inputClassName="text-2xl font-extrabold"
             />
+            {user && (
+              isUnlinked ? (
+                <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-amber-50 text-amber-700 border border-amber-200 uppercase tracking-tight">
+                  Unlinked
+                </span>
+              ) : isPending ? (
+                <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-tight">
+                  Pending
+                </span>
+              ) : (
+                <span className="px-2.5 py-0.5 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 uppercase tracking-tight">
+                  Linked
+                </span>
+              )
+            )}
           </div>
           <div className="user-dashboard__metadata">
             {user?.email && (
@@ -37,10 +55,10 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
                 <span className="user-dashboard__value">{user.email}</span>
               </div>
             )}
-            {user?.userId && (
+            {(user?.userId || user?.id) && (
               <div className="flex items-center text-sm text-gray-500">
                 <span className="user-dashboard__label">User ID:</span>
-                <code className="user-dashboard__id-badge">{user.userId}</code>
+                <code className="user-dashboard__id-badge">{user.userId || user.id}</code>
               </div>
             )}
           </div>
@@ -51,8 +69,10 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
         <UnlinkUserButton 
           userId={user?.userId || user?.id || ''} 
           displayName={user?.displayName || user?.email}
+          connectionStatus={user?.connectionStatus}
         />
       </div>
     </div>
   );
 };
+

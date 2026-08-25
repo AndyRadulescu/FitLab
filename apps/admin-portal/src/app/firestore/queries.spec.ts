@@ -1,6 +1,6 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { fetchUserInfo, fetchCheckins, fetchWeights, fetchClientIds } from './queries';
-import { getDoc, getDocs } from 'firebase/firestore';
+import { fetchUserInfo, fetchCheckins, fetchWeights, fetchClientIds, unlinkClient, linkClient } from './queries';
+import { addDoc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
 
 vi.mock('firebase/firestore', async () => {
   const actual = await vi.importActual('firebase/firestore');
@@ -13,6 +13,8 @@ vi.mock('firebase/firestore', async () => {
     orderBy: vi.fn(),
     doc: vi.fn(),
     getDoc: vi.fn(),
+    updateDoc: vi.fn(),
+    addDoc: vi.fn(),
   };
 });
 
@@ -97,17 +99,17 @@ describe('queries', () => {
 
   describe('fetchClientIds', () => {
     it('should return empty array if no connections found', async () => {
-      vi.mocked(getDocs).mockResolvedValue({ docs: [] } as any);
+      vi.mocked(getDocs).mockResolvedValue({ docs: [], empty: true } as any);
 
       const result = await fetchClientIds('coach-123');
 
       expect(result).toEqual([]);
     });
 
-    it('should return client users if connections found', async () => {
+    it('should return client users with connectionStatus if connections found', async () => {
       const mockConnections = [
-        { data: () => ({ clientId: 'client-1' }) },
-        { data: () => ({ clientId: 'client-2' }) }
+        { data: () => ({ clientId: 'client-1', status: 'active' }) },
+        { data: () => ({ clientId: 'client-2', status: 'unlinked' }) }
       ];
       
       const mockUsers = [
@@ -123,13 +125,86 @@ describe('queries', () => {
       };
 
       vi.mocked(getDocs)
-        .mockResolvedValueOnce({ docs: mockConnections } as any)
+        .mockResolvedValueOnce({ docs: mockConnections, empty: false } as any)
         .mockResolvedValueOnce(mockUsersSnapshot as any);
 
       const result = await fetchClientIds('coach-123');
 
-      expect(result).toEqual(mockUsers);
+      expect(result).toEqual([
+        { id: 'client-1', userId: 'client-1', name: 'Client One', connectionStatus: 'active' },
+        { id: 'client-2', userId: 'client-2', name: 'Client Two', connectionStatus: 'unlinked' }
+      ]);
       expect(getDocs).toHaveBeenCalledTimes(2);
+    });
+
+    it('should filter connections by status when statusFilter is provided', async () => {
+      const mockConnections = [
+        { data: () => ({ clientId: 'client-2', status: 'unlinked' }) }
+      ];
+
+      const mockUsers = [
+        { id: 'client-2', name: 'Client Two' }
+      ];
+
+      const mockUsersSnapshot = {
+        docs: mockUsers.map(u => ({
+          id: u.id,
+          data: () => ({ name: u.name })
+        }))
+      };
+
+      vi.mocked(getDocs)
+        .mockResolvedValueOnce({ docs: mockConnections, empty: false } as any)
+        .mockResolvedValueOnce(mockUsersSnapshot as any);
+
+      const result = await fetchClientIds('coach-123', 'unlinked');
+
+      expect(result).toEqual([
+        { id: 'client-2', userId: 'client-2', name: 'Client Two', connectionStatus: 'unlinked' }
+      ]);
+    });
+  });
+
+  describe('unlinkClient', () => {
+    it('should update connection status to unlinked', async () => {
+      const mockDocRef = { id: 'conn-1' };
+      const mockDocs = [{ ref: mockDocRef }];
+      vi.mocked(getDocs).mockResolvedValue({ docs: mockDocs } as any);
+      vi.mocked(updateDoc).mockResolvedValue(undefined as any);
+
+      await unlinkClient('coach-123', 'client-123');
+
+      expect(updateDoc).toHaveBeenCalledWith(mockDocRef, { status: 'unlinked' });
+    });
+  });
+
+  describe('linkClient', () => {
+    it('should update existing connection to active if found', async () => {
+      const mockDocRef = { id: 'conn-1' };
+      const mockDocs = [{ ref: mockDocRef }];
+      vi.mocked(getDocs).mockResolvedValue({ docs: mockDocs, empty: false } as any);
+      vi.mocked(updateDoc).mockResolvedValue(undefined as any);
+
+      await linkClient('coach-123', 'client-123');
+
+      expect(updateDoc).toHaveBeenCalledWith(mockDocRef, { status: 'active' });
+    });
+
+    it('should add a new connection if no connection found', async () => {
+      vi.mocked(getDocs).mockResolvedValue({ docs: [], empty: true } as any);
+      vi.mocked(addDoc).mockResolvedValue({ id: 'new-conn' } as any);
+
+      await linkClient('coach-123', 'client-123');
+
+      expect(addDoc).toHaveBeenCalledWith(
+        undefined,
+        expect.objectContaining({
+          coachId: 'coach-123',
+          clientId: 'client-123',
+          status: 'active'
+        })
+      );
     });
   });
 });
+

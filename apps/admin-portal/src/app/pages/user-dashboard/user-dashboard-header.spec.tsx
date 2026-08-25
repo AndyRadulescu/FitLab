@@ -16,12 +16,12 @@ vi.mock('../../store/user.store', () => ({
 vi.mock('../../firestore/queries', () => ({
   updateUserName: vi.fn(),
   unlinkClient: vi.fn(),
+  linkClient: vi.fn(),
 }));
 
 describe('UserDashboardHeader', () => {
   const mockOnBack = vi.fn();
   const mockUpdateUserInList = vi.fn();
-  const mockRemoveUserFromList = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -29,20 +29,28 @@ describe('UserDashboardHeader', () => {
     vi.mocked(userStore).mockImplementation((selector: any) => 
       selector({ 
         updateUserInList: mockUpdateUserInList,
-        removeUserFromList: mockRemoveUserFromList,
         user: { uid: 'coach123' }
       })
     );
   });
 
-  it('should render user displayName when available', () => {
-    const user = { userId: '123', displayName: 'John Doe', email: 'john@example.com' } as any;
+  it('should render user displayName when available and Linked badge', () => {
+    const user = { userId: '123', displayName: 'John Doe', email: 'john@example.com', connectionStatus: 'active' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
     expect(screen.getByText('John Doe')).toBeTruthy();
     expect(screen.getByText(/Dashboard of/i)).toBeTruthy();
+    expect(screen.getByText(/Linked/i)).toBeTruthy();
     expect(screen.getAllByText('john@example.com').length).toBeGreaterThan(0);
     expect(screen.getByText('123')).toBeTruthy();
+  });
+
+  it('should render Unlinked badge when connectionStatus is unlinked', () => {
+    const user = { userId: '123', displayName: 'John Doe', email: 'john@example.com', connectionStatus: 'unlinked' } as any;
+    render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
+
+    expect(screen.getByText(/Unlinked/i)).toBeTruthy();
+    expect(screen.getByText(/Link User/i)).toBeTruthy();
   });
 
   it('should render email as title when displayName is missing', () => {
@@ -85,8 +93,8 @@ describe('UserDashboardHeader', () => {
     expect(screen.queryByText('User ID:')).toBeNull();
   });
 
-  it('should call unlinkClient and removeUserFromList when Unlink button is clicked and confirmed', async () => {
-    const user = { userId: '123', displayName: 'John Doe' } as any;
+  it('should call unlinkClient and updateUserInList when Unlink button is clicked and confirmed', async () => {
+    const user = { userId: '123', displayName: 'John Doe', connectionStatus: 'active' } as any;
     vi.spyOn(window, 'confirm').mockReturnValue(true);
     const { unlinkClient } = await import('../../firestore/queries');
     vi.mocked(unlinkClient).mockResolvedValue(undefined);
@@ -99,7 +107,7 @@ describe('UserDashboardHeader', () => {
     await waitFor(() => {
       expect(window.confirm).toHaveBeenCalled();
       expect(unlinkClient).toHaveBeenCalledWith('coach123', '123');
-      expect(mockRemoveUserFromList).toHaveBeenCalledWith('123');
+      expect(mockUpdateUserInList).toHaveBeenCalledWith('123', { connectionStatus: 'unlinked' });
       expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
     });
   });

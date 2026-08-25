@@ -15,7 +15,7 @@ export const UserDashboard = () => {
   const { userList } = userStore();
   const [timeRange, setTimeRange] = useState<TimeRange>('4w');
 
-  const user = userList?.find((u) => u.userId === userId);
+  const user = userList?.find((u) => u.userId === userId || u.id === userId);
   const checkins = user?.checkins || [];
   const weights = user?.weights || [];
 
