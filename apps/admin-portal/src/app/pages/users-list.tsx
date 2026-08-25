@@ -2,16 +2,19 @@ import { useState, useMemo } from 'react';
 import { userStore } from '../store/user.store';
 import { useNavigate } from 'react-router-dom';
 import { EditableName } from '../components/editable-name';
-import { TimeToCheckin } from '@my-org/shared-ui';
-import { Users, UserCheck, UserX, Clock } from 'lucide-react';
+import { Button, TimeToCheckin } from '@my-org/shared-ui';
+import { Users, UserCheck, UserX, Clock, UserPlus } from 'lucide-react';
+import { LinkUserModal } from '../components/link-user-modal/link-user-modal';
 
 type FilterType = 'all' | 'linked' | 'unlinked' | 'pending';
 
 export const UsersList = () => {
+  const currentUser = userStore((state) => state.user);
   const rawUsers = userStore((state) => state.userList);
   const users = useMemo(() => rawUsers || [], [rawUsers]);
   const navigate = useNavigate();
-  const [filter, setFilter] = useState<FilterType>('linked');
+  const [filter, setFilter] = useState<FilterType>('all');
+  const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
 
   const linkedUsers = useMemo(
     () => users.filter((u) => u.connectionStatus === 'active' || !u.connectionStatus),
@@ -52,7 +55,7 @@ export const UsersList = () => {
           <p className="text-sm text-gray-500 mt-1">Manage and view all registered participants.</p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-3">
           <div className="inline-flex p-1 bg-gray-100/80 rounded-xl border border-gray-200 gap-1">
             <button
               type="button"
@@ -136,6 +139,16 @@ export const UsersList = () => {
               </button>
             )}
           </div>
+
+          <Button
+            type="primary"
+            buttonType="button"
+            onClick={() => setIsLinkModalOpen(true)}
+            className="!w-auto flex items-center gap-2 text-sm py-2 px-4 shadow-sm"
+          >
+            <UserPlus className="h-4 w-4" />
+            Link User
+          </Button>
         </div>
       </div>
 
@@ -268,7 +281,14 @@ export const UsersList = () => {
           </table>
         </div>
       </div>
+
+      <LinkUserModal
+        isOpen={isLinkModalOpen}
+        onClose={() => setIsLinkModalOpen(false)}
+        coachId={currentUser?.uid}
+      />
     </div>
   );
 };
+
 

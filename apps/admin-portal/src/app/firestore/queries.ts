@@ -12,13 +12,26 @@ import {
   WeightString
 } from './constants';
 
-export const fetchUserInfo = async (userId: string) => {
+export const fetchUserInfo = async (userId: string): Promise<User | null> => {
   const userDoc = await getDoc(doc(db, USERS_TABLE, userId));
   if (userDoc.exists()) {
-    return { id: userDoc.id, ...userDoc.data() };
+    return { id: userDoc.id, ...userDoc.data() } as User;
   }
+
+  const userQuery = query(
+    collection(db, USERS_TABLE),
+    where('userId', '==', userId)
+  );
+  const snapshot = await getDocs(userQuery);
+  if (snapshot && !snapshot.empty && snapshot.docs && snapshot.docs.length > 0) {
+    const docSnap = snapshot.docs[0];
+    return { id: docSnap.id, ...docSnap.data() } as User;
+  }
+
   return null;
 };
+
+
 
 export const updateUserName = async (userId: string, displayName: string) => {
   const userRef = doc(db, USERS_TABLE, userId);

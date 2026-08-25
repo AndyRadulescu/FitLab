@@ -48,11 +48,13 @@ describe('queries', () => {
         exists: () => false
       };
       vi.mocked(getDoc).mockResolvedValue(mockDocSnap as any);
+      vi.mocked(getDocs).mockResolvedValue({ empty: true, docs: [] } as any);
 
       const result = await fetchUserInfo('user-123');
 
       expect(result).toBeNull();
     });
+
   });
 
   describe('fetchCheckins', () => {
@@ -179,7 +181,7 @@ describe('queries', () => {
   });
 
   describe('linkClient', () => {
-    it('should update existing connection to active if found', async () => {
+    it('should update existing connection to active if found without adding a new document', async () => {
       const mockDocRef = { id: 'conn-1' };
       const mockDocs = [{ ref: mockDocRef }];
       vi.mocked(getDocs).mockResolvedValue({ docs: mockDocs, empty: false } as any);
@@ -188,7 +190,9 @@ describe('queries', () => {
       await linkClient('coach-123', 'client-123');
 
       expect(updateDoc).toHaveBeenCalledWith(mockDocRef, { status: 'active' });
+      expect(addDoc).not.toHaveBeenCalled();
     });
+
 
     it('should add a new connection if no connection found', async () => {
       vi.mocked(getDocs).mockResolvedValue({ docs: [], empty: true } as any);
