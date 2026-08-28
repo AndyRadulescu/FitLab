@@ -1,12 +1,31 @@
 rules_version = '2';
 
-// Craft rules based on data in your Firestore database
-// allow write: if firestore.get(
-//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if false;
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isAdmin() {
+      return isSignedIn() && 
+        firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    function isCoach() {
+      return isSignedIn() && 
+        (firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.isCoach == true || isAdmin());
+    }
+
+    match /checkin-imgs/{userId}/{allPaths=**} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isCoach() || isAdmin());
+      allow write: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow delete: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+    }
+
+    match /profile-photos/{userId}/{allPaths=**} {
+      allow read: if isSignedIn();
+      allow write, delete: if isSignedIn() && (request.auth.uid == userId || isAdmin());
     }
   }
 }

@@ -1,16 +1,21 @@
-import { addDoc, collection, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore';
-import { db } from '../../init-firebase-auth';
+import { addDoc, collection, doc, DocumentReference, getDoc, getDocs, orderBy, query, updateDoc, where, writeBatch } from 'firebase/firestore';
+import { deleteObject, listAll, ref, StorageReference } from 'firebase/storage';
+import { logEvent } from 'firebase/analytics';
+import { analytics, db, storage } from '../../init-firebase-auth';
 import {
+  CHECKINS_STORAGE,
   CheckInFormDataDto,
   CHECKINS_TABLE,
   Connection,
   CONNECTIONS_TABLE,
   ConnectionStatus,
+  PROFILE_PHOTOS_STORAGE,
   User,
   USERS_TABLE,
   WEIGHT_TABLE,
   WeightString
 } from './constants';
+
 
 export const fetchUserInfo = async (userId: string): Promise<User | null> => {
   const userDoc = await getDoc(doc(db, USERS_TABLE, userId));
@@ -187,6 +192,76 @@ export const fetchAllUsers = async (): Promise<User[]> => {
     } as User;
   });
 };
+
+export const deleteUserByAdmin = async (userId: string): Promise<void> => {
+  if (!userId) throw new Error('User ID is required for deletion');
+
+  // 1. Wipe Storage Folders
+  const wipeStorageFolder = async (folderPath: string) => {
+    const folderRef = ref(storage, folderPath);
+    const recursiveDelete = async (currentRef: StorageReference): Promise<void> => {
+      try {
+        const listResult = await listAll(currentRef);
+        const filePromises = listResult.items.map(item => deleteObject(item));
+        const folderPromises = listResult.prefixes.map(subFolder => recursiveDelete(subFolder));
+        await Promise.all([...filePromises, ...folderPromises]);
+      } catch (error: unknown) {
+        const storageErr = error as { code?: string };
+        if (storageErr?.code === 'storage/object-not-found') return;
+        console.warn(`Storage delete notice at ${currentRef.fullPath}:`, error);
+      }
+
+    };
+    await recursiveDelete(folderRef);
+  };
+
+  await Promise.all([
+    wipeStorageFolder(`${CHECKINS_STORAGE}/${userId}`),
+    wipeStorageFolder(`${PROFILE_PHOTOS_STORAGE}/${userId}`)
+  ]);
+
+  // 2. Wipe Firestore Collections
+  const [
+    checkinsSnap,
+    weightsSnap,
+    connectionsClientSnap,
+    connectionsCoachSnap,
+    usersSnap,
+    userDocDirect
+  ] = await Promise.all([
+    getDocs(query(collection(db, CHECKINS_TABLE), where('userId', '==', userId))),
+    getDocs(query(collection(db, WEIGHT_TABLE), where('userId', '==', userId))),
+    getDocs(query(collection(db, CONNECTIONS_TABLE), where('clientId', '==', userId))),
+    getDocs(query(collection(db, CONNECTIONS_TABLE), where('coachId', '==', userId))),
+    getDocs(query(collection(db, USERS_TABLE), where('userId', '==', userId))),
+    getDoc(doc(db, USERS_TABLE, userId))
+  ]);
+
+  const docRefsToDelete = new Set<DocumentReference>();
+  checkinsSnap.forEach(d => docRefsToDelete.add(d.ref));
+  weightsSnap.forEach(d => docRefsToDelete.add(d.ref));
+  connectionsClientSnap.forEach(d => docRefsToDelete.add(d.ref));
+  connectionsCoachSnap.forEach(d => docRefsToDelete.add(d.ref));
+  usersSnap.forEach(d => docRefsToDelete.add(d.ref));
+  if (userDocDirect.exists()) {
+    docRefsToDelete.add(userDocDirect.ref);
+  }
+
+  // Chunk batch deletions (up to 400 per batch)
+  const docRefsArray = Array.from(docRefsToDelete);
+  const chunkSize = 400;
+  for (let i = 0; i < docRefsArray.length; i += chunkSize) {
+    const chunk = docRefsArray.slice(i, i + chunkSize);
+    const batch = writeBatch(db);
+    chunk.forEach(docRef => batch.delete(docRef));
+    await batch.commit();
+  }
+
+  if (analytics) {
+    logEvent(analytics, 'admin_user_deleted', { deletedUserId: userId });
+  }
+};
+
 
 
 

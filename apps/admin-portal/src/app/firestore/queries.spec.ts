@@ -1,7 +1,14 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { fetchUserInfo, fetchCheckins, fetchWeights, fetchClientIds, fetchAllUsers, unlinkClient, linkClient } from './queries';
-import { addDoc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+import { fetchUserInfo, fetchCheckins, fetchWeights, fetchClientIds, fetchAllUsers, unlinkClient, linkClient, deleteUserByAdmin } from './queries';
+import { addDoc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
+import { listAll } from 'firebase/storage';
 
+
+vi.mock('firebase/storage', () => ({
+  ref: vi.fn(),
+  listAll: vi.fn().mockResolvedValue({ items: [], prefixes: [] }),
+  deleteObject: vi.fn().mockResolvedValue(undefined),
+}));
 
 vi.mock('firebase/firestore', async () => {
   const actual = await vi.importActual('firebase/firestore');
@@ -16,12 +23,19 @@ vi.mock('firebase/firestore', async () => {
     getDoc: vi.fn(),
     updateDoc: vi.fn(),
     addDoc: vi.fn(),
+    writeBatch: vi.fn(() => ({
+      delete: vi.fn(),
+      commit: vi.fn().mockResolvedValue(undefined),
+    })),
   };
 });
 
 vi.mock('../../init-firebase-auth', () => ({
-  db: {}
+  db: {},
+  storage: {},
+  analytics: null,
 }));
+
 
 describe('queries', () => {
   beforeEach(() => {
@@ -237,6 +251,40 @@ describe('queries', () => {
       expect(getDocs).toHaveBeenCalled();
     });
   });
+
+  describe('deleteUserByAdmin', () => {
+    it('should throw error if userId is not provided', async () => {
+      await expect(deleteUserByAdmin('')).rejects.toThrow('User ID is required for deletion');
+    });
+
+    it('should wipe storage folders and batch delete firestore records for the user', async () => {
+      const mockDocRef = { id: 'doc-1' };
+      const mockSnapshot = {
+        forEach: (fn: any) => fn({ ref: mockDocRef }),
+      };
+
+      vi.mocked(getDocs).mockResolvedValue(mockSnapshot as any);
+      vi.mocked(getDoc).mockResolvedValue({
+        exists: () => true,
+        ref: { id: 'user-direct' },
+      } as any);
+
+      const mockDelete = vi.fn();
+      const mockCommit = vi.fn().mockResolvedValue(undefined);
+      vi.mocked(writeBatch).mockReturnValue({
+        delete: mockDelete,
+        commit: mockCommit,
+      } as any);
+
+      await deleteUserByAdmin('user-123');
+
+      expect(listAll).toHaveBeenCalled();
+      expect(writeBatch).toHaveBeenCalled();
+      expect(mockDelete).toHaveBeenCalledWith(mockDocRef);
+      expect(mockCommit).toHaveBeenCalled();
+    });
+  });
 });
+
 
 

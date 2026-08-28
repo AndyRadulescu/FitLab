@@ -17,11 +17,21 @@ vi.mock('../../firestore/queries', () => ({
   updateUserName: vi.fn(),
   unlinkClient: vi.fn(),
   linkClient: vi.fn(),
+  deleteUserByAdmin: vi.fn(),
 }));
+
+vi.mock('@my-org/shared-ui', async () => {
+  const actual = await vi.importActual('@my-org/shared-ui');
+  return {
+    ...actual,
+    Modal: ({ children, isOpen }: any) => (isOpen ? <div data-testid="modal">{children}</div> : null),
+  };
+});
 
 describe('UserDashboardHeader', () => {
   const mockOnBack = vi.fn();
   const mockUpdateUserInList = vi.fn();
+  const mockRemoveUserFromList = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -29,6 +39,7 @@ describe('UserDashboardHeader', () => {
     vi.mocked(userStore).mockImplementation((selector: any) => 
       selector({ 
         updateUserInList: mockUpdateUserInList,
+        removeUserFromList: mockRemoveUserFromList,
         user: { uid: 'coach123' },
         userProfile: { isCoach: true, isAdmin: false }
       })
@@ -120,18 +131,38 @@ describe('UserDashboardHeader', () => {
     expect(screen.queryByText(/Delete User/i)).toBeNull();
   });
 
-  it('should render Delete User button when user is an admin', () => {
+  it('should render Delete User button and open modal when clicked by an admin', async () => {
     vi.mocked(userStore).mockImplementation((selector: any) => 
       selector({ 
         updateUserInList: mockUpdateUserInList,
+        removeUserFromList: mockRemoveUserFromList,
         user: { uid: 'admin123' },
         userProfile: { isCoach: false, isAdmin: true }
       })
     );
 
+    const { deleteUserByAdmin } = await import('../../firestore/queries');
+    vi.mocked(deleteUserByAdmin).mockResolvedValue(undefined);
+
     const user = { userId: '123', displayName: 'John Doe' } as any;
     render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
 
-    expect(screen.getByText(/Delete User/i)).toBeTruthy();
+    const deleteBtn = screen.getByText(/Delete User/i);
+    expect(deleteBtn).toBeTruthy();
+
+    fireEvent.click(deleteBtn);
+
+    expect(screen.getByTestId('delete-user-modal')).toBeTruthy();
+    expect(screen.getByText('Delete User Account')).toBeTruthy();
+
+    // Confirm deletion inside modal
+    const confirmDeleteBtn = screen.getAllByRole('button', { name: /delete user/i })[1];
+    fireEvent.click(confirmDeleteBtn);
+
+    await waitFor(() => {
+      expect(deleteUserByAdmin).toHaveBeenCalledWith('123');
+      expect(mockRemoveUserFromList).toHaveBeenCalledWith('123');
+      expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
+    });
   });
 });

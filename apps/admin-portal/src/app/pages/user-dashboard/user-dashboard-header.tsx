@@ -1,8 +1,11 @@
+import React, { useState } from 'react';
 import { AllUserData } from '@my-org/core';
 import { ArrowLeft, Trash2 } from 'lucide-react';
 import { Button } from '@my-org/shared-ui';
+import { useNavigate } from 'react-router-dom';
 import { EditableName } from '../../components/editable-name';
 import { UnlinkUserButton } from '../../components/unlink-user-button';
+import { DeleteUserModal } from '../../components/delete-user-modal';
 import { userStore } from '../../store/user.store';
 import './user-dashboard.scss';
 
@@ -12,9 +15,20 @@ interface UserDashboardHeaderProps {
 }
 
 export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const navigate = useNavigate();
   const currentUserProfile = userStore((state) => state.userProfile);
+  const removeUserFromList = userStore((state) => state.removeUserFromList);
   const isUnlinked = user?.connectionStatus === 'unlinked';
   const isPending = user?.connectionStatus === 'pending';
+
+  const handleDeleteSuccess = () => {
+    const targetId = user?.userId || user?.id;
+    if (targetId) {
+      removeUserFromList(targetId);
+    }
+    navigate('/dashboard');
+  };
 
   return (
     <div className="user-dashboard__header">
@@ -78,9 +92,7 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
           <Button
             type="secondary"
             buttonType="button"
-            onClick={() => {
-              console.log('Delete user placeholder clicked for:', user?.userId || user?.id);
-            }}
+            onClick={() => setIsDeleteModalOpen(true)}
             className="!w-auto flex items-center gap-2 text-sm py-2 px-4 !bg-red-50 hover:!bg-red-100 !text-red-700 !border-red-200"
           >
             <Trash2 className="h-4 w-4 text-red-600" />
@@ -88,8 +100,19 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
           </Button>
         )}
       </div>
+
+      {user && (
+        <DeleteUserModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          userId={user.userId || user.id || ''}
+          displayName={user.displayName || user.email}
+          onSuccess={handleDeleteSuccess}
+        />
+      )}
     </div>
   );
 };
+
 
 
