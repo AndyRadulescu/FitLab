@@ -94,9 +94,11 @@ export type User = {
   createdAt: Timestamp;
   dateOfBirth: string;
   isAdmin?: boolean;
+  isCoach?: boolean;
   gender?: string;
   connectionStatus?: ConnectionStatus;
 };
+
 
 export type AllUserData = User & {
   checkins: CheckInFormDataDto[];

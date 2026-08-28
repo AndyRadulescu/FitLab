@@ -1,12 +1,14 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { User } from 'firebase/auth';
-import { AllUserData } from '@my-org/core';
+import { User as AuthUser } from 'firebase/auth';
+import { AllUserData, User as CoreUser } from '@my-org/core';
 
 interface UserStore {
-  user: User | null;
+  user: AuthUser | null;
+  userProfile: CoreUser | null;
   userList: AllUserData[] | null;
-  setUser: (user: User | null) => void;
+  setUser: (user: AuthUser | null) => void;
+  setUserProfile: (userProfile: CoreUser | null) => void;
   setUserList: (userList: AllUserData[] | null) => void;
   updateUserInList: (userId: string, data: Partial<AllUserData>) => void;
   addUserToList: (user: AllUserData) => void;
@@ -18,8 +20,10 @@ export const userStore = create<UserStore>()(
   devtools(
     persist((set) => ({
       user: null,
+      userProfile: null,
       userList: null,
       setUser: (user) => set({ user }),
+      setUserProfile: (userProfile) => set({ userProfile }),
       setUserList: (userList) => set({ userList }),
       updateUserInList: (userId, data) => set((state) => ({
         userList: state.userList?.map((u) => (u.userId === userId || u.id === userId) ? { ...u, ...data } : u) || null
@@ -38,10 +42,11 @@ export const userStore = create<UserStore>()(
       removeUserFromList: (userId) => set((state) => ({
         userList: state.userList?.filter((u) => u.userId !== userId && u.id !== userId) || null
       })),
-      delete: () => set(() => ({ user: null, userList: null }))
+      delete: () => set(() => ({ user: null, userProfile: null, userList: null }))
     }), {
       name: 'admin-user-store'
     })
   )
 );
+
 

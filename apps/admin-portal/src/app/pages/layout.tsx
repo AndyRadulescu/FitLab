@@ -1,5 +1,5 @@
 import { auth } from '../../init-firebase-auth';
-import { Button, LoadingScreen } from '@my-org/shared-ui';
+import { Button, LoadingScreen, UnauthorizedScreen } from '@my-org/shared-ui';
 import { signOut } from 'firebase/auth';
 import { Trans } from 'react-i18next';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { useFetchClients } from '../hooks/useFetchClients';
 export const Layout = () => {
   const navigate = useNavigate();
   const currentUser = userStore((state) => state.user);
-  const { loading, error } = useFetchClients(currentUser?.uid);
+  const { loading, error, isUnauthorized } = useFetchClients(currentUser?.uid);
 
   const onLogout = async () => {
     console.log('Logging out...');
@@ -24,6 +24,11 @@ export const Layout = () => {
   if (loading) {
     return <LoadingScreen fullScreen={true} />;
   }
+
+  if (isUnauthorized) {
+    return <UnauthorizedScreen onLogout={() => void onLogout()} />;
+  }
+
 
   if (error) {
     return (
@@ -54,6 +59,7 @@ export const Layout = () => {
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
