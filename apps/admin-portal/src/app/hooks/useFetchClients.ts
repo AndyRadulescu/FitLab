@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { userStore } from '../store/user.store';
-import { fetchCheckins, fetchClientIds, fetchUserInfo, fetchWeights } from '../firestore/queries';
+import { fetchAllUsers, fetchCheckins, fetchClientIds, fetchUserInfo, fetchWeights } from '../firestore/queries';
 import { AllUserData } from '@my-org/core';
 
 export const useFetchClients = (coachId: string | undefined) => {
@@ -26,16 +26,19 @@ export const useFetchClients = (coachId: string | undefined) => {
         const profile = await fetchUserInfo(coachId);
         setUserProfile(profile);
 
-        const isCoachOrAdmin = profile && (profile.isCoach === true || profile.isAdmin === true);
-        if (!isCoachOrAdmin) {
+        const isAdmin = profile?.isAdmin === true;
+        const isCoach = profile?.isCoach === true;
+
+        if (!isAdmin && !isCoach) {
           setIsUnauthorized(true);
           setUserList(null);
           setLoading(false);
           return;
         }
 
-        // Step 2: Fetch and enrich client data
-        const clients = await fetchClientIds(coachId);
+        // Step 2: Fetch and enrich client data (admin rights prevail to fetch all users)
+        const clients = isAdmin ? await fetchAllUsers() : await fetchClientIds(coachId);
+
         
         const enrichedClients = await Promise.all(
           clients.map(async (client) => {

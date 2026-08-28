@@ -3,8 +3,9 @@ import { describe, it, expect, vi } from 'vitest';
 import { UnauthorizedScreen } from './unauthorized-screen';
 
 vi.mock('react-i18next', () => ({
-  Trans: ({ children, defaultValue }: any) => <>{defaultValue || children}</>,
+  Trans: ({ children, defaultValue }: any) => defaultValue || children || null,
 }));
+
 
 describe('UnauthorizedScreen', () => {
   it('should render default title, shield icon, and default description', () => {

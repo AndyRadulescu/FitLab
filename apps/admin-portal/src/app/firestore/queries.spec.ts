@@ -1,6 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { fetchUserInfo, fetchCheckins, fetchWeights, fetchClientIds, unlinkClient, linkClient } from './queries';
+import { fetchUserInfo, fetchCheckins, fetchWeights, fetchClientIds, fetchAllUsers, unlinkClient, linkClient } from './queries';
 import { addDoc, getDoc, getDocs, updateDoc } from 'firebase/firestore';
+
 
 vi.mock('firebase/firestore', async () => {
   const actual = await vi.importActual('firebase/firestore');
@@ -210,5 +211,32 @@ describe('queries', () => {
       );
     });
   });
+
+  describe('fetchAllUsers', () => {
+    it('should return all users in the users collection', async () => {
+      const mockUsers = [
+        { id: 'user-1', name: 'Alice', email: 'alice@example.com' },
+        { id: 'user-2', name: 'Bob', email: 'bob@example.com' },
+      ];
+
+      const mockSnapshot = {
+        docs: mockUsers.map(u => ({
+          id: u.id,
+          data: () => ({ name: u.name, email: u.email })
+        }))
+      };
+
+      vi.mocked(getDocs).mockResolvedValue(mockSnapshot as any);
+
+      const result = await fetchAllUsers();
+
+      expect(result).toEqual([
+        { id: 'user-1', userId: 'user-1', name: 'Alice', email: 'alice@example.com' },
+        { id: 'user-2', userId: 'user-2', name: 'Bob', email: 'bob@example.com' },
+      ]);
+      expect(getDocs).toHaveBeenCalled();
+    });
+  });
 });
+
 

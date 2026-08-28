@@ -176,4 +176,17 @@ export const fetchClientIds = async (coachId: string, statusFilter?: ConnectionS
   return users;
 };
 
+export const fetchAllUsers = async (): Promise<User[]> => {
+  const usersSnapshot = await getDocs(collection(db, USERS_TABLE));
+  return usersSnapshot.docs.map(doc => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      userId: doc.id,
+      ...data
+    } as User;
+  });
+};
+
+
 

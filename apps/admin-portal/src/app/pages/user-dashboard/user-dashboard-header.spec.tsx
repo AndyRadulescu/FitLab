@@ -29,7 +29,8 @@ describe('UserDashboardHeader', () => {
     vi.mocked(userStore).mockImplementation((selector: any) => 
       selector({ 
         updateUserInList: mockUpdateUserInList,
-        user: { uid: 'coach123' }
+        user: { uid: 'coach123' },
+        userProfile: { isCoach: true, isAdmin: false }
       })
     );
   });
@@ -110,5 +111,27 @@ describe('UserDashboardHeader', () => {
       expect(mockUpdateUserInList).toHaveBeenCalledWith('123', { connectionStatus: 'unlinked' });
       expect(mockNavigate).toHaveBeenCalledWith('/dashboard');
     });
+  });
+
+  it('should not render Delete User button when user is not an admin', () => {
+    const user = { userId: '123', displayName: 'John Doe' } as any;
+    render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
+
+    expect(screen.queryByText(/Delete User/i)).toBeNull();
+  });
+
+  it('should render Delete User button when user is an admin', () => {
+    vi.mocked(userStore).mockImplementation((selector: any) => 
+      selector({ 
+        updateUserInList: mockUpdateUserInList,
+        user: { uid: 'admin123' },
+        userProfile: { isCoach: false, isAdmin: true }
+      })
+    );
+
+    const user = { userId: '123', displayName: 'John Doe' } as any;
+    render(<UserDashboardHeader user={user} onBack={mockOnBack} />);
+
+    expect(screen.getByText(/Delete User/i)).toBeTruthy();
   });
 });

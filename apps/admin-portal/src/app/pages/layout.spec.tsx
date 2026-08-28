@@ -23,8 +23,9 @@ vi.mock('react-router-dom', () => ({
 }));
 
 vi.mock('react-i18next', () => ({
-  Trans: ({ children, defaultValue }: any) => <>{defaultValue || children}</>,
+  Trans: ({ children, defaultValue }: any) => defaultValue || children || null,
 }));
+
 
 vi.mock('@my-org/shared-ui', async () => {
   const actual = await vi.importActual('@my-org/shared-ui');

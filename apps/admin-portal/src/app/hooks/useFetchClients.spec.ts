@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useFetchClients } from './useFetchClients';
-import { fetchCheckins, fetchClientIds, fetchUserInfo, fetchWeights } from '../firestore/queries';
+import { fetchAllUsers, fetchCheckins, fetchClientIds, fetchUserInfo, fetchWeights } from '../firestore/queries';
 import { userStore } from '../store/user.store';
 
 // Mock dependencies
@@ -9,6 +9,7 @@ vi.mock('../firestore/queries', () => ({
   fetchUserInfo: vi.fn(),
   fetchCheckins: vi.fn(),
   fetchClientIds: vi.fn(),
+  fetchAllUsers: vi.fn(),
   fetchWeights: vi.fn(),
 }));
 
@@ -42,6 +43,7 @@ describe('useFetchClients', () => {
     expect(result.current.loading).toBe(false);
     expect(fetchUserInfo).not.toHaveBeenCalled();
     expect(fetchClientIds).not.toHaveBeenCalled();
+    expect(fetchAllUsers).not.toHaveBeenCalled();
   });
 
   it('should block fetching and set isUnauthorized if user does not have isCoach or isAdmin', async () => {
@@ -61,10 +63,11 @@ describe('useFetchClients', () => {
     expect(fetchUserInfo).toHaveBeenCalledWith('user123');
     expect(result.current.isUnauthorized).toBe(true);
     expect(fetchClientIds).not.toHaveBeenCalled();
+    expect(fetchAllUsers).not.toHaveBeenCalled();
     expect(mockSetUserList).toHaveBeenCalledWith(null);
   });
 
-  it('should fetch enriched client data successfully if user is a coach (isCoach: true)', async () => {
+  it('should fetch enriched client data for coach (isCoach: true, isAdmin: false) using fetchClientIds', async () => {
     const mockProfile = { id: 'coach123', isCoach: true, isAdmin: false } as any;
     const mockClients = [{ id: 'client1', name: 'Client 1' }];
     const mockCheckins = [{ id: 'checkin1', note: 'Feeling good' }];
@@ -84,6 +87,7 @@ describe('useFetchClients', () => {
     expect(fetchUserInfo).toHaveBeenCalledWith('coach123');
     expect(mockSetUserProfile).toHaveBeenCalledWith(mockProfile);
     expect(fetchClientIds).toHaveBeenCalledWith('coach123');
+    expect(fetchAllUsers).not.toHaveBeenCalled();
     expect(fetchCheckins).toHaveBeenCalledWith('client1');
     expect(fetchWeights).toHaveBeenCalledWith('client1');
 
@@ -98,14 +102,14 @@ describe('useFetchClients', () => {
     expect(result.current.isUnauthorized).toBe(false);
   });
 
-  it('should fetch enriched client data successfully if user is an admin (isAdmin: true)', async () => {
+  it('should fetch all users in the db if user is an admin (isAdmin: true) using fetchAllUsers', async () => {
     const mockProfile = { id: 'admin123', isCoach: false, isAdmin: true } as any;
-    const mockClients = [{ id: 'client1', name: 'Client 1' }];
+    const mockAllUsers = [{ id: 'user1', name: 'User 1' }, { id: 'user2', name: 'User 2' }];
     const mockCheckins = [{ id: 'checkin1', note: 'Feeling good' }];
     const mockWeights = [{ id: 'weight1', weight: 80 }];
 
     vi.mocked(fetchUserInfo).mockResolvedValue(mockProfile);
-    vi.mocked(fetchClientIds).mockResolvedValue(mockClients as any);
+    vi.mocked(fetchAllUsers).mockResolvedValue(mockAllUsers as any);
     vi.mocked(fetchCheckins).mockResolvedValue(mockCheckins as any);
     vi.mocked(fetchWeights).mockResolvedValue(mockWeights as any);
 
@@ -114,7 +118,28 @@ describe('useFetchClients', () => {
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(fetchUserInfo).toHaveBeenCalledWith('admin123');
-    expect(fetchClientIds).toHaveBeenCalledWith('admin123');
+    expect(fetchAllUsers).toHaveBeenCalled();
+    expect(fetchClientIds).not.toHaveBeenCalled();
+    expect(fetchCheckins).toHaveBeenCalledWith('user1');
+    expect(fetchCheckins).toHaveBeenCalledWith('user2');
+    expect(result.current.isUnauthorized).toBe(false);
+  });
+
+  it('should prioritize admin rights if user is both admin and coach (isAdmin: true, isCoach: true) using fetchAllUsers', async () => {
+    const mockProfile = { id: 'super123', isCoach: true, isAdmin: true } as any;
+    const mockAllUsers = [{ id: 'user1', name: 'User 1' }];
+
+    vi.mocked(fetchUserInfo).mockResolvedValue(mockProfile);
+    vi.mocked(fetchAllUsers).mockResolvedValue(mockAllUsers as any);
+    vi.mocked(fetchCheckins).mockResolvedValue([] as any);
+    vi.mocked(fetchWeights).mockResolvedValue([] as any);
+
+    const { result } = renderHook(() => useFetchClients('super123'));
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    expect(fetchAllUsers).toHaveBeenCalled();
+    expect(fetchClientIds).not.toHaveBeenCalled();
     expect(result.current.isUnauthorized).toBe(false);
   });
 

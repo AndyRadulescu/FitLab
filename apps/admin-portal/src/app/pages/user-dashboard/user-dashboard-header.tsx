@@ -1,7 +1,9 @@
 import { AllUserData } from '@my-org/core';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Trash2 } from 'lucide-react';
+import { Button } from '@my-org/shared-ui';
 import { EditableName } from '../../components/editable-name';
 import { UnlinkUserButton } from '../../components/unlink-user-button';
+import { userStore } from '../../store/user.store';
 import './user-dashboard.scss';
 
 interface UserDashboardHeaderProps {
@@ -10,6 +12,7 @@ interface UserDashboardHeaderProps {
 }
 
 export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) => {
+  const currentUserProfile = userStore((state) => state.userProfile);
   const isUnlinked = user?.connectionStatus === 'unlinked';
   const isPending = user?.connectionStatus === 'pending';
 
@@ -71,8 +74,22 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
           displayName={user?.displayName || user?.email}
           connectionStatus={user?.connectionStatus}
         />
+        {currentUserProfile?.isAdmin && (
+          <Button
+            type="secondary"
+            buttonType="button"
+            onClick={() => {
+              console.log('Delete user placeholder clicked for:', user?.userId || user?.id);
+            }}
+            className="!w-auto flex items-center gap-2 text-sm py-2 px-4 !bg-red-50 hover:!bg-red-100 !text-red-700 !border-red-200"
+          >
+            <Trash2 className="h-4 w-4 text-red-600" />
+            <span>Delete User</span>
+          </Button>
+        )}
       </div>
     </div>
   );
 };
+
 
