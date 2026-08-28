@@ -36,8 +36,9 @@ export const useFetchClients = (coachId: string | undefined) => {
           return;
         }
 
-        // Step 2: Fetch and enrich client data (admin rights prevail to fetch all users)
-        const clients = isAdmin ? await fetchAllUsers() : await fetchClientIds(coachId);
+        // Step 2: Fetch and enrich client data (admin rights prevail to fetch all users, excluding current user)
+        const clients = isAdmin ? await fetchAllUsers(coachId) : await fetchClientIds(coachId);
+
 
         
         const enrichedClients = await Promise.all(

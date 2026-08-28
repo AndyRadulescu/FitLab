@@ -118,7 +118,7 @@ describe('useFetchClients', () => {
     await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(fetchUserInfo).toHaveBeenCalledWith('admin123');
-    expect(fetchAllUsers).toHaveBeenCalled();
+    expect(fetchAllUsers).toHaveBeenCalledWith('admin123');
     expect(fetchClientIds).not.toHaveBeenCalled();
     expect(fetchCheckins).toHaveBeenCalledWith('user1');
     expect(fetchCheckins).toHaveBeenCalledWith('user2');
@@ -138,7 +138,7 @@ describe('useFetchClients', () => {
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    expect(fetchAllUsers).toHaveBeenCalled();
+    expect(fetchAllUsers).toHaveBeenCalledWith('super123');
     expect(fetchClientIds).not.toHaveBeenCalled();
     expect(result.current.isUnauthorized).toBe(false);
   });

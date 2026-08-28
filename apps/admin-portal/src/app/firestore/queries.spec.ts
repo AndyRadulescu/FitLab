@@ -250,7 +250,30 @@ describe('queries', () => {
       ]);
       expect(getDocs).toHaveBeenCalled();
     });
+
+    it('should exclude the current admin user when excludeUserId is provided', async () => {
+      const mockUsers = [
+        { id: 'admin-1', name: 'Admin', email: 'admin@example.com' },
+        { id: 'user-2', name: 'Bob', email: 'bob@example.com' },
+      ];
+
+      const mockSnapshot = {
+        docs: mockUsers.map(u => ({
+          id: u.id,
+          data: () => ({ name: u.name, email: u.email, userId: u.id })
+        }))
+      };
+
+      vi.mocked(getDocs).mockResolvedValue(mockSnapshot as any);
+
+      const result = await fetchAllUsers('admin-1');
+
+      expect(result).toEqual([
+        { id: 'user-2', userId: 'user-2', name: 'Bob', email: 'bob@example.com' },
+      ]);
+    });
   });
+
 
   describe('deleteUserByAdmin', () => {
     it('should throw error if userId is not provided', async () => {

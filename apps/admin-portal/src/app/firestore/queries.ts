@@ -143,7 +143,7 @@ export const fetchClientIds = async (coachId: string, statusFilter?: ConnectionS
     }
   });
 
-  const clientIds = Array.from(clientStatusMap.keys());
+  const clientIds = Array.from(clientStatusMap.keys()).filter(id => id !== coachId);
   if (clientIds.length === 0) {
     return [];
   }
@@ -181,16 +181,18 @@ export const fetchClientIds = async (coachId: string, statusFilter?: ConnectionS
   return users;
 };
 
-export const fetchAllUsers = async (): Promise<User[]> => {
+export const fetchAllUsers = async (excludeUserId?: string): Promise<User[]> => {
   const usersSnapshot = await getDocs(collection(db, USERS_TABLE));
-  return usersSnapshot.docs.map(doc => {
-    const data = doc.data();
-    return {
-      id: doc.id,
-      userId: doc.id,
-      ...data
-    } as User;
-  });
+  return usersSnapshot.docs
+    .filter(doc => !excludeUserId || (doc.id !== excludeUserId && doc.data()?.userId !== excludeUserId))
+    .map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        userId: doc.id,
+        ...data
+      } as User;
+    });
 };
 
 export const deleteUserByAdmin = async (userId: string): Promise<void> => {
