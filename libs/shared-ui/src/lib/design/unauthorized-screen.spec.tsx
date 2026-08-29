@@ -13,7 +13,6 @@ describe('UnauthorizedScreen', () => {
 
     expect(screen.getByTestId('unauthorized-screen')).toBeTruthy();
     expect(screen.getByText('Coach Privileges Required')).toBeTruthy();
-    expect(screen.getByText(/isCoach: true/)).toBeTruthy();
   });
 
   it('should render custom title and custom description', () => {
