@@ -13,3 +13,7 @@ export * from './lib/design/option-selector';
 export * from './lib/design/time-to-checkin';
 export * from './lib/language-toggle';
 export * from './lib/design/metric-chart';
+export * from './lib/design/copy-button';
+export * from './lib/design/unauthorized-screen';
+
+

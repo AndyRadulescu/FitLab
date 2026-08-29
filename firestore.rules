@@ -1,18 +1,71 @@
-rules_version='2'
+rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      // This rule allows anyone with your database reference to view, edit,
-      // and delete all data in your database. It is useful for getting
-      // started, but it is configured to expire after 30 days because it
-      // leaves your app open to attackers. At that time, all client
-      // requests to your database will be denied.
-      //
-      // Make sure to write security rules for your app before that time, or
-      // else all client requests to your database will be denied until you
-      // update your rules.
-      allow read, write: if request.time < timestamp.date(2026, 1, 10);
+    
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    // Helper to check if the current user is an admin
+    function isAdmin() {
+      return isSignedIn() && 
+        getUserData().isAdmin == true;
+    }
+
+    // Helper to check if the current user is a coach
+    function isCoach() {
+      return isSignedIn() && 
+        (getUserData().isCoach == true || isAdmin());
+    }
+
+    // Specific rule for the users table
+    // Users can read/write their own doc, coaches can read client docs, admins have full read/write/delete access
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isCoach() || isAdmin());
+      allow create: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+      allow update, delete: if isSignedIn() && (request.auth.uid == userId || isAdmin());
+    }
+
+    // Specific rule for the connections table
+    match /connections/{connectionId} {
+      allow read: if isSignedIn() && (
+        resource.data.coachId == request.auth.uid || 
+        resource.data.clientId == request.auth.uid || 
+        isAdmin()
+      );
+      allow create: if isSignedIn() && (
+        (isCoach() && request.resource.data.coachId == request.auth.uid) || 
+        isAdmin()
+      );
+      allow update, delete: if isSignedIn() && (
+        (isCoach() && resource.data.coachId == request.auth.uid) || 
+        isAdmin()
+      );
+    }
+
+    // Generic rule for collections where documents have a 'userId' field (checkins, weights)
+    match /{collectionName}/{docId} {
+      allow read: if isSignedIn() && (
+        resource == null || 
+        resource.data.userId == request.auth.uid || 
+        isCoach() || 
+        isAdmin()
+      );
+      allow write: if isSignedIn() && (
+        resource == null || 
+        resource.data.userId == request.auth.uid || 
+        isAdmin()
+      );
+    }
+
+    // Specific rule for logs
+    match /logs/{logId} {
+      allow read, write: if isSignedIn();
     }
   }
 }

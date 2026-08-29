@@ -1,31 +1,81 @@
-import { collection, doc, getDoc, getDocs, orderBy, query, updateDoc, where } from 'firebase/firestore';
-import { db } from '../../init-firebase-auth';
-import { CheckInFormDataDto, CHECKINS_TABLE, User, USERS_TABLE, WEIGHT_TABLE, WeightString } from './constants';
+import { addDoc, collection, doc, DocumentReference, getDoc, getDocs, orderBy, query, updateDoc, where, writeBatch } from 'firebase/firestore';
+import { deleteObject, listAll, ref, StorageReference } from 'firebase/storage';
+import { logEvent } from 'firebase/analytics';
+import { analytics, db, storage } from '../../init-firebase-auth';
+import {
+  CHECKINS_STORAGE,
+  CheckInFormDataDto,
+  CHECKINS_TABLE,
+  Connection,
+  CONNECTIONS_TABLE,
+  ConnectionStatus,
+  PROFILE_PHOTOS_STORAGE,
+  User,
+  USERS_TABLE,
+  WEIGHT_TABLE,
+  WeightString
+} from './constants';
 
-export const fetchUserInfo = async (userId: string) => {
+
+export const fetchUserInfo = async (userId: string): Promise<User | null> => {
   const userDoc = await getDoc(doc(db, USERS_TABLE, userId));
   if (userDoc.exists()) {
-    return { id: userDoc.id, ...userDoc.data() };
+    return { id: userDoc.id, ...userDoc.data() } as User;
   }
+
+  const userQuery = query(
+    collection(db, USERS_TABLE),
+    where('userId', '==', userId)
+  );
+  const snapshot = await getDocs(userQuery);
+  if (snapshot && !snapshot.empty && snapshot.docs && snapshot.docs.length > 0) {
+    const docSnap = snapshot.docs[0];
+    return { id: docSnap.id, ...docSnap.data() } as User;
+  }
+
   return null;
 };
+
+
 
 export const updateUserName = async (userId: string, displayName: string) => {
   const userRef = doc(db, USERS_TABLE, userId);
   await updateDoc(userRef, { displayName });
 };
 
-export const unlinkClient = async (coachId: string, clientId: string) => {
+export const unlinkClient = async (coachId: string, clientId: string): Promise<void> => {
   const connectionsQuery = query(
-    collection(db, 'connections'),
+    collection(db, CONNECTIONS_TABLE),
     where('coachId', '==', coachId),
     where('clientId', '==', clientId),
     where('status', '==', 'active')
   );
 
   const snapshot = await getDocs(connectionsQuery);
-  const updatePromises = snapshot.docs.map(doc => updateDoc(doc.ref, { status: 'unlinked' }));
+  const updatePromises = snapshot.docs.map(doc => updateDoc(doc.ref, { status: 'unlinked' as ConnectionStatus }));
   await Promise.all(updatePromises);
+};
+
+export const linkClient = async (coachId: string, clientId: string): Promise<void> => {
+  const connectionsQuery = query(
+    collection(db, CONNECTIONS_TABLE),
+    where('coachId', '==', coachId),
+    where('clientId', '==', clientId)
+  );
+
+  const snapshot = await getDocs(connectionsQuery);
+  if (!snapshot.empty) {
+    const updatePromises = snapshot.docs.map(doc => updateDoc(doc.ref, { status: 'active' as ConnectionStatus }));
+    await Promise.all(updatePromises);
+  } else {
+    const newConnection: Omit<Connection, 'id'> = {
+      coachId,
+      clientId,
+      status: 'active',
+      createdAt: new Date()
+    };
+    await addDoc(collection(db, CONNECTIONS_TABLE), newConnection);
+  }
 };
 
 export const fetchCheckins = async (userId: string) => {
@@ -64,29 +114,156 @@ export const fetchWeights = async (userId: string) => {
   });
 };
 
-export const fetchClientIds = async (coachId: string): Promise<User[]> => {
-  const connectionsQuery = query(
-    collection(db, 'connections'),
-    where('coachId', '==', coachId),
-    where('status', '==', 'active')
-  );
+export const fetchClientIds = async (coachId: string, statusFilter?: ConnectionStatus): Promise<User[]> => {
+  const connectionsQuery = statusFilter
+    ? query(
+        collection(db, CONNECTIONS_TABLE),
+        where('coachId', '==', coachId),
+        where('status', '==', statusFilter)
+      )
+    : query(
+        collection(db, CONNECTIONS_TABLE),
+        where('coachId', '==', coachId)
+      );
 
   const connectionsSnapshot = await getDocs(connectionsQuery);
-  const clientIds = connectionsSnapshot.docs.map(doc => doc.data().clientId);
+  if (connectionsSnapshot.empty) {
+    return [];
+  }
 
+  const clientStatusMap = new Map<string, ConnectionStatus>();
+  connectionsSnapshot.docs.forEach(doc => {
+    const data = doc.data() as Connection;
+    const clientId = data.clientId;
+    if (!clientId) return;
+    const status: ConnectionStatus = data.status || 'active';
+    // If client has multiple connection records, 'active' takes precedence
+    if (!clientStatusMap.has(clientId) || status === 'active') {
+      clientStatusMap.set(clientId, status);
+    }
+  });
+
+  const clientIds = Array.from(clientStatusMap.keys()).filter(id => id !== coachId);
   if (clientIds.length === 0) {
     return [];
   }
 
-  const usersQuery = query(
-    collection(db, 'users'),
-    where('__name__', 'in', clientIds)
+  const chunks: string[][] = [];
+  for (let i = 0; i < clientIds.length; i += 30) {
+    chunks.push(clientIds.slice(i, i + 30));
+  }
+
+  const userSnapshots = await Promise.all(
+    chunks.map(chunk =>
+      getDocs(
+        query(
+          collection(db, USERS_TABLE),
+          where('__name__', 'in', chunk)
+        )
+      )
+    )
   );
 
-  const usersSnapshot = await getDocs(usersQuery);
-  return usersSnapshot.docs.map(doc => ({
-    id: doc.id,
-    ...doc.data()
-  })) as unknown as User[] ?? [];
-}
+  const users: User[] = [];
+  userSnapshots.forEach(usersSnapshot => {
+    usersSnapshot.docs.forEach(doc => {
+      const status = clientStatusMap.get(doc.id) || 'active';
+      const userData = doc.data();
+      users.push({
+        id: doc.id,
+        userId: doc.id,
+        ...userData,
+        connectionStatus: status
+      } as User);
+    });
+  });
+
+  return users;
+};
+
+export const fetchAllUsers = async (excludeUserId?: string): Promise<User[]> => {
+  const usersSnapshot = await getDocs(collection(db, USERS_TABLE));
+  return usersSnapshot.docs
+    .filter(doc => !excludeUserId || (doc.id !== excludeUserId && doc.data()?.userId !== excludeUserId))
+    .map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        userId: doc.id,
+        ...data
+      } as User;
+    });
+};
+
+export const deleteUserByAdmin = async (userId: string): Promise<void> => {
+  if (!userId) throw new Error('User ID is required for deletion');
+
+  // 1. Wipe Storage Folders
+  const wipeStorageFolder = async (folderPath: string) => {
+    const folderRef = ref(storage, folderPath);
+    const recursiveDelete = async (currentRef: StorageReference): Promise<void> => {
+      try {
+        const listResult = await listAll(currentRef);
+        const filePromises = listResult.items.map(item => deleteObject(item));
+        const folderPromises = listResult.prefixes.map(subFolder => recursiveDelete(subFolder));
+        await Promise.all([...filePromises, ...folderPromises]);
+      } catch (error: unknown) {
+        const storageErr = error as { code?: string };
+        if (storageErr?.code === 'storage/object-not-found') return;
+        console.warn(`Storage delete notice at ${currentRef.fullPath}:`, error);
+      }
+
+    };
+    await recursiveDelete(folderRef);
+  };
+
+  await Promise.all([
+    wipeStorageFolder(`${CHECKINS_STORAGE}/${userId}`),
+    wipeStorageFolder(`${PROFILE_PHOTOS_STORAGE}/${userId}`)
+  ]);
+
+  // 2. Wipe Firestore Collections
+  const [
+    checkinsSnap,
+    weightsSnap,
+    connectionsClientSnap,
+    connectionsCoachSnap,
+    usersSnap,
+    userDocDirect
+  ] = await Promise.all([
+    getDocs(query(collection(db, CHECKINS_TABLE), where('userId', '==', userId))),
+    getDocs(query(collection(db, WEIGHT_TABLE), where('userId', '==', userId))),
+    getDocs(query(collection(db, CONNECTIONS_TABLE), where('clientId', '==', userId))),
+    getDocs(query(collection(db, CONNECTIONS_TABLE), where('coachId', '==', userId))),
+    getDocs(query(collection(db, USERS_TABLE), where('userId', '==', userId))),
+    getDoc(doc(db, USERS_TABLE, userId))
+  ]);
+
+  const docRefsToDelete = new Set<DocumentReference>();
+  checkinsSnap.forEach(d => docRefsToDelete.add(d.ref));
+  weightsSnap.forEach(d => docRefsToDelete.add(d.ref));
+  connectionsClientSnap.forEach(d => docRefsToDelete.add(d.ref));
+  connectionsCoachSnap.forEach(d => docRefsToDelete.add(d.ref));
+  usersSnap.forEach(d => docRefsToDelete.add(d.ref));
+  if (userDocDirect.exists()) {
+    docRefsToDelete.add(userDocDirect.ref);
+  }
+
+  // Chunk batch deletions (up to 400 per batch)
+  const docRefsArray = Array.from(docRefsToDelete);
+  const chunkSize = 400;
+  for (let i = 0; i < docRefsArray.length; i += chunkSize) {
+    const chunk = docRefsArray.slice(i, i + chunkSize);
+    const batch = writeBatch(db);
+    chunk.forEach(docRef => batch.delete(docRef));
+    await batch.commit();
+  }
+
+  if (analytics) {
+    logEvent(analytics, 'admin_user_deleted', { deletedUserId: userId });
+  }
+};
+
+
+
 

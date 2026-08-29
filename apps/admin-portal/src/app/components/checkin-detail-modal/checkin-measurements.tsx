@@ -9,7 +9,7 @@ interface CheckinMeasurementsProps {
 }
 
 export const CheckinMeasurements = ({ checkin, weights = [] }: CheckinMeasurementsProps) => {
-  const actualWeight = checkin.kg ? checkin.kg : weights.find((w) => w.id === checkin.weightId)?.weight;
+  const actualWeight = weights.find((w) => w.id === checkin.weightId)?.weight;
 
   return (
     <section>

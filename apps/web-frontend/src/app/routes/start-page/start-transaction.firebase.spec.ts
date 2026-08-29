@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { startTransaction } from './start-transaction.firebase';
-import { runTransaction, collection, doc } from 'firebase/firestore';
+import { runTransaction } from 'firebase/firestore';
 
 vi.mock('firebase/firestore', () => ({
   collection: vi.fn(),
@@ -45,9 +45,10 @@ describe('startTransaction', () => {
       weight: 80
     });
 
-    // Verify user set
+    // Verify user set (without weight)
     expect(mockSet).toHaveBeenCalledWith(expect.anything(), {
-      ...data,
+      height: 180,
+      dateOfBirth: '1990-01-01T00:00:00.000Z',
       userId: userId,
       createdAt: 'mock-timestamp'
     });

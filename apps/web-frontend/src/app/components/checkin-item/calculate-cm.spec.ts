@@ -13,7 +13,6 @@ describe('calculateCm', () => {
       leftThigh: 60,
       rightArm: 30,
       leftArm: 30,
-      kg: 75
     } as unknown as CheckInFormDataDto;
     const result = calculateCm(mockCheckin);
     expect(result).toBe(560);

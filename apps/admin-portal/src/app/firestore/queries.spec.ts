@@ -1,6 +1,14 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import { fetchUserInfo, fetchCheckins, fetchWeights, fetchClientIds } from './queries';
-import { getDoc, getDocs } from 'firebase/firestore';
+import { fetchUserInfo, fetchCheckins, fetchWeights, fetchClientIds, fetchAllUsers, unlinkClient, linkClient, deleteUserByAdmin } from './queries';
+import { addDoc, getDoc, getDocs, updateDoc, writeBatch } from 'firebase/firestore';
+import { listAll } from 'firebase/storage';
+
+
+vi.mock('firebase/storage', () => ({
+  ref: vi.fn(),
+  listAll: vi.fn().mockResolvedValue({ items: [], prefixes: [] }),
+  deleteObject: vi.fn().mockResolvedValue(undefined),
+}));
 
 vi.mock('firebase/firestore', async () => {
   const actual = await vi.importActual('firebase/firestore');
@@ -13,12 +21,21 @@ vi.mock('firebase/firestore', async () => {
     orderBy: vi.fn(),
     doc: vi.fn(),
     getDoc: vi.fn(),
+    updateDoc: vi.fn(),
+    addDoc: vi.fn(),
+    writeBatch: vi.fn(() => ({
+      delete: vi.fn(),
+      commit: vi.fn().mockResolvedValue(undefined),
+    })),
   };
 });
 
 vi.mock('../../init-firebase-auth', () => ({
-  db: {}
+  db: {},
+  storage: {},
+  analytics: null,
 }));
+
 
 describe('queries', () => {
   beforeEach(() => {
@@ -46,11 +63,13 @@ describe('queries', () => {
         exists: () => false
       };
       vi.mocked(getDoc).mockResolvedValue(mockDocSnap as any);
+      vi.mocked(getDocs).mockResolvedValue({ empty: true, docs: [] } as any);
 
       const result = await fetchUserInfo('user-123');
 
       expect(result).toBeNull();
     });
+
   });
 
   describe('fetchCheckins', () => {
@@ -97,17 +116,17 @@ describe('queries', () => {
 
   describe('fetchClientIds', () => {
     it('should return empty array if no connections found', async () => {
-      vi.mocked(getDocs).mockResolvedValue({ docs: [] } as any);
+      vi.mocked(getDocs).mockResolvedValue({ docs: [], empty: true } as any);
 
       const result = await fetchClientIds('coach-123');
 
       expect(result).toEqual([]);
     });
 
-    it('should return client users if connections found', async () => {
+    it('should return client users with connectionStatus if connections found', async () => {
       const mockConnections = [
-        { data: () => ({ clientId: 'client-1' }) },
-        { data: () => ({ clientId: 'client-2' }) }
+        { data: () => ({ clientId: 'client-1', status: 'active' }) },
+        { data: () => ({ clientId: 'client-2', status: 'unlinked' }) }
       ];
       
       const mockUsers = [
@@ -123,13 +142,172 @@ describe('queries', () => {
       };
 
       vi.mocked(getDocs)
-        .mockResolvedValueOnce({ docs: mockConnections } as any)
+        .mockResolvedValueOnce({ docs: mockConnections, empty: false } as any)
         .mockResolvedValueOnce(mockUsersSnapshot as any);
 
       const result = await fetchClientIds('coach-123');
 
-      expect(result).toEqual(mockUsers);
+      expect(result).toEqual([
+        { id: 'client-1', userId: 'client-1', name: 'Client One', connectionStatus: 'active' },
+        { id: 'client-2', userId: 'client-2', name: 'Client Two', connectionStatus: 'unlinked' }
+      ]);
       expect(getDocs).toHaveBeenCalledTimes(2);
+    });
+
+    it('should filter connections by status when statusFilter is provided', async () => {
+      const mockConnections = [
+        { data: () => ({ clientId: 'client-2', status: 'unlinked' }) }
+      ];
+
+      const mockUsers = [
+        { id: 'client-2', name: 'Client Two' }
+      ];
+
+      const mockUsersSnapshot = {
+        docs: mockUsers.map(u => ({
+          id: u.id,
+          data: () => ({ name: u.name })
+        }))
+      };
+
+      vi.mocked(getDocs)
+        .mockResolvedValueOnce({ docs: mockConnections, empty: false } as any)
+        .mockResolvedValueOnce(mockUsersSnapshot as any);
+
+      const result = await fetchClientIds('coach-123', 'unlinked');
+
+      expect(result).toEqual([
+        { id: 'client-2', userId: 'client-2', name: 'Client Two', connectionStatus: 'unlinked' }
+      ]);
+    });
+  });
+
+  describe('unlinkClient', () => {
+    it('should update connection status to unlinked', async () => {
+      const mockDocRef = { id: 'conn-1' };
+      const mockDocs = [{ ref: mockDocRef }];
+      vi.mocked(getDocs).mockResolvedValue({ docs: mockDocs } as any);
+      vi.mocked(updateDoc).mockResolvedValue(undefined as any);
+
+      await unlinkClient('coach-123', 'client-123');
+
+      expect(updateDoc).toHaveBeenCalledWith(mockDocRef, { status: 'unlinked' });
+    });
+  });
+
+  describe('linkClient', () => {
+    it('should update existing connection to active if found without adding a new document', async () => {
+      const mockDocRef = { id: 'conn-1' };
+      const mockDocs = [{ ref: mockDocRef }];
+      vi.mocked(getDocs).mockResolvedValue({ docs: mockDocs, empty: false } as any);
+      vi.mocked(updateDoc).mockResolvedValue(undefined as any);
+
+      await linkClient('coach-123', 'client-123');
+
+      expect(updateDoc).toHaveBeenCalledWith(mockDocRef, { status: 'active' });
+      expect(addDoc).not.toHaveBeenCalled();
+    });
+
+
+    it('should add a new connection if no connection found', async () => {
+      vi.mocked(getDocs).mockResolvedValue({ docs: [], empty: true } as any);
+      vi.mocked(addDoc).mockResolvedValue({ id: 'new-conn' } as any);
+
+      await linkClient('coach-123', 'client-123');
+
+      expect(addDoc).toHaveBeenCalledWith(
+        undefined,
+        expect.objectContaining({
+          coachId: 'coach-123',
+          clientId: 'client-123',
+          status: 'active'
+        })
+      );
+    });
+  });
+
+  describe('fetchAllUsers', () => {
+    it('should return all users in the users collection', async () => {
+      const mockUsers = [
+        { id: 'user-1', name: 'Alice', email: 'alice@example.com' },
+        { id: 'user-2', name: 'Bob', email: 'bob@example.com' },
+      ];
+
+      const mockSnapshot = {
+        docs: mockUsers.map(u => ({
+          id: u.id,
+          data: () => ({ name: u.name, email: u.email })
+        }))
+      };
+
+      vi.mocked(getDocs).mockResolvedValue(mockSnapshot as any);
+
+      const result = await fetchAllUsers();
+
+      expect(result).toEqual([
+        { id: 'user-1', userId: 'user-1', name: 'Alice', email: 'alice@example.com' },
+        { id: 'user-2', userId: 'user-2', name: 'Bob', email: 'bob@example.com' },
+      ]);
+      expect(getDocs).toHaveBeenCalled();
+    });
+
+    it('should exclude the current admin user when excludeUserId is provided', async () => {
+      const mockUsers = [
+        { id: 'admin-1', name: 'Admin', email: 'admin@example.com' },
+        { id: 'user-2', name: 'Bob', email: 'bob@example.com' },
+      ];
+
+      const mockSnapshot = {
+        docs: mockUsers.map(u => ({
+          id: u.id,
+          data: () => ({ name: u.name, email: u.email, userId: u.id })
+        }))
+      };
+
+      vi.mocked(getDocs).mockResolvedValue(mockSnapshot as any);
+
+      const result = await fetchAllUsers('admin-1');
+
+      expect(result).toEqual([
+        { id: 'user-2', userId: 'user-2', name: 'Bob', email: 'bob@example.com' },
+      ]);
+    });
+  });
+
+
+  describe('deleteUserByAdmin', () => {
+    it('should throw error if userId is not provided', async () => {
+      await expect(deleteUserByAdmin('')).rejects.toThrow('User ID is required for deletion');
+    });
+
+    it('should wipe storage folders and batch delete firestore records for the user', async () => {
+      const mockDocRef = { id: 'doc-1' };
+      const mockSnapshot = {
+        forEach: (fn: any) => fn({ ref: mockDocRef }),
+      };
+
+      vi.mocked(getDocs).mockResolvedValue(mockSnapshot as any);
+      vi.mocked(getDoc).mockResolvedValue({
+        exists: () => true,
+        ref: { id: 'user-direct' },
+      } as any);
+
+      const mockDelete = vi.fn();
+      const mockCommit = vi.fn().mockResolvedValue(undefined);
+      vi.mocked(writeBatch).mockReturnValue({
+        delete: mockDelete,
+        commit: mockCommit,
+      } as any);
+
+      await deleteUserByAdmin('user-123');
+
+      expect(listAll).toHaveBeenCalled();
+      expect(writeBatch).toHaveBeenCalled();
+      expect(mockDelete).toHaveBeenCalledWith(mockDocRef);
+      expect(mockCommit).toHaveBeenCalled();
     });
   });
 });
+
+
+

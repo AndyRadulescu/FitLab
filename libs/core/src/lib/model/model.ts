@@ -44,7 +44,6 @@ export type CheckInFormDataDto = Omit<CheckInFormData, 'kg'> & {
   createdAt: Date;
   updatedAt: Date;
   userId?: string;
-  kg?: string;
 };
 
 export type StartMappedWeightData = {
@@ -74,10 +73,20 @@ export interface UserStore {
   delete(): void;
 }
 
+export type ConnectionStatus = 'active' | 'unlinked' | 'pending';
+
+export type Connection = {
+  id?: string;
+  clientId: string;
+  coachId: string;
+  status: ConnectionStatus;
+  createdAt?: Timestamp | Date;
+  updatedAt?: Timestamp | Date;
+};
+
 export type User = {
   userId: string;
   id: string;
-  weight: number;
   height: number;
   displayName?: string;
   email?: string;
@@ -85,10 +94,13 @@ export type User = {
   createdAt: Timestamp;
   dateOfBirth: string;
   isAdmin?: boolean;
+  isCoach?: boolean;
   gender?: string;
-}
+  connectionStatus?: ConnectionStatus;
+};
+
 
 export type AllUserData = User & {
   checkins: CheckInFormDataDto[];
   weights: WeightString[];
-}
+};
