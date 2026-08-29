@@ -83,8 +83,8 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
       </div>
 
       <div className="flex items-center gap-4">
-        <UnlinkUserButton 
-          userId={user?.userId || user?.id || ''} 
+        <UnlinkUserButton
+          userId={user?.userId || user?.id || ''}
           displayName={user?.displayName || user?.email}
           connectionStatus={user?.connectionStatus}
         />
@@ -113,6 +113,3 @@ export const UserDashboardHeader = ({ user, onBack }: UserDashboardHeaderProps) 
     </div>
   );
 };
-
-
-

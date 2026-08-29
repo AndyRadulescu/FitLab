@@ -104,4 +104,3 @@ export type AllUserData = User & {
   checkins: CheckInFormDataDto[];
   weights: WeightString[];
 };
-

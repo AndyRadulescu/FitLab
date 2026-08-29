@@ -15,7 +15,7 @@ export const CheckinList = ({ checkins, weights, onSelectCheckin }: CheckinListP
     );
   }
 
-  function showWeieght(checkin: CheckInFormDataDto) {
+  function showWeight(checkin: CheckInFormDataDto) {
     const actualWeight = weights.find((w) => w.id === checkin.weightId)?.weight;
     return <p className="text-sm text-gray-500">
       {actualWeight ? `Weight: ${actualWeight} kg` : 'No weight recorded'}
@@ -47,7 +47,7 @@ export const CheckinList = ({ checkins, weights, onSelectCheckin }: CheckinListP
                     day: 'numeric'
                   })}
                 </p>
-                {showWeieght(checkin)}
+                {showWeight(checkin)}
               </div>
             </div>
             <div className="text-indigo-600 font-medium text-sm flex items-center gap-1 group">

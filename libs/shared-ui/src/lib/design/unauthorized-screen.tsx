@@ -39,7 +39,7 @@ export function UnauthorizedScreen({
         <div className="text-sm text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
           {description || (
             <p>
-              This portal is restricted to coaches and administrators. Your account does not currently have coach privileges enabled (<code className="bg-gray-100 dark:bg-zinc-800 px-1.5 py-0.5 rounded text-amber-700 dark:text-amber-400 font-mono text-xs">isCoach: true</code>).
+              This portal is restricted to coaches and administrators. Your account does not currently have coach privileges enabled.
             </p>
           )}
         </div>

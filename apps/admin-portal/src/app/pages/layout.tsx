@@ -60,7 +60,6 @@ export const Layout = () => {
     );
   }
 
-
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <header className="bg-white shadow-sm h-16 flex items-center justify-between px-8 border-b border-gray-200">

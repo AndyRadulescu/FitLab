@@ -2,7 +2,7 @@ import { UserMinus, UserPlus } from 'lucide-react';
 import { userStore } from '../store/user.store';
 import { unlinkClient, linkClient } from '../firestore/queries';
 import { useNavigate } from 'react-router-dom';
-import { ConnectionStatus } from '../firestore/constants';
+import { ConnectionStatus } from '@my-org/core';
 
 interface UnlinkUserButtonProps {
   userId: string;
