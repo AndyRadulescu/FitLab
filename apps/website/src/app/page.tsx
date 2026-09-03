@@ -8,9 +8,6 @@ export default function LandingPage() {
       {/* --- NAVIGATION --- */}
       <nav className="relative z-30 flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-red">
-            <Image src="/logo-white.svg" alt="Amazonia - FitLab Logo" width={45} height={45} layout="fixed"/>
-          </div>
           <span className="text-xl font-black tracking-tighter uppercase italic">
             Amazonia <span className="primary-text-gradient">FitLab</span>
           </span>
@@ -23,30 +20,12 @@ export default function LandingPage() {
         </a>
       </nav>
 
-      {/* --- HERO SECTION --- */}
-      <main className="relative min-h-[85vh] md:min-h-[90vh] flex items-center px-6 py-16 md:py-24 overflow-hidden isolate">
-        {/* Background Image with Black & White Mask */}
-        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-          <Image
-            src="/hero-background.jpeg"
-            alt="Personalized Fitness and Nutrition Coach"
-            fill
-            priority
-            className="object-cover object-right md:object-[75%_center] grayscale contrast-125 brightness-90"
-          />
-          {/* Black & White Vignette / Masking Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-transparent md:via-black/70 md:to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
-        </div>
-
-        {/* Subtle Ambient Red/Gold Glow */}
-        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-red-500/10 blur-[130px] rounded-full z-0 pointer-events-none" />
-
-        {/* Foreground Content */}
-        <div className="relative z-20 max-w-7xl mx-auto w-full">
-          <div className="max-w-2xl lg:max-w-3xl">
+      {/* --- HERO SECTION (ZERO ABSOLUTE CLASSES) --- */}
+      <main className="hero-section min-h-[85vh] md:min-h-[90vh] flex items-center px-6 py-16 md:py-24">
+        <div className="max-w-7xl mx-auto w-full flex items-center">
+          <div className="max-w-2xl lg:max-w-3xl flex flex-col">
             {/* Eyebrow / Kicker */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/80 border border-zinc-800 text-xs font-bold uppercase tracking-[0.2em] text-zinc-300 mb-6 backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-800 text-xs font-bold uppercase tracking-[0.2em] text-zinc-300 mb-6 w-fit backdrop-blur-sm">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               Personalized Fitness & Nutrition
             </div>
