@@ -5,11 +5,11 @@ import { Activity, Camera, LineChart, ChevronRight } from 'lucide-react';
 export default function LandingPage() {
   return (
     <div className="auth-theme-trigger min-h-screen bg-black text-white selection:bg-primary selection:text-white">
-
-      <nav className="flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
+      {/* --- NAVIGATION --- */}
+      <nav className="relative z-30 flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-red">
-            <Image src="/logo.svg" alt="Amazonia - FitLab Logo" width={45} height={45} layout="fixed"/>
+            <Image src="/logo-white.svg" alt="Amazonia - FitLab Logo" width={45} height={45} layout="fixed"/>
           </div>
           <span className="text-xl font-black tracking-tighter uppercase italic">
             Amazonia <span className="primary-text-gradient">FitLab</span>
@@ -18,83 +18,140 @@ export default function LandingPage() {
         <a
           href="https://app.amazonia-fitlab.ro/auth/login"
           className="text-sm font-bold hover:text-primary transition-colors border-b border-white/10 pb-1"
-        >Sign In
+        >
+          Sign In
         </a>
       </nav>
 
-      <main className="relative pt-12 pb-20 px-6 overflow-hidden">
-        {/* Subtle Background Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[500px] bg-red-500 blur-[120px] rounded-full -z-10" />
+      {/* --- HERO SECTION --- */}
+      <main className="relative min-h-[85vh] md:min-h-[90vh] flex items-center px-6 py-16 md:py-24 overflow-hidden isolate">
+        {/* Background Image with Black & White Mask */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <Image
+            src="/hero-background.jpeg"
+            alt="Personalized Fitness and Nutrition Coach"
+            fill
+            priority
+            className="object-cover object-right md:object-[75%_center] grayscale contrast-125 brightness-90"
+          />
+          {/* Black & White Vignette / Masking Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black via-black/85 to-transparent md:via-black/70 md:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/60" />
+        </div>
 
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-gray-500 uppercase tracking-[0.3em] text-xs font-bold mb-6">
-            Precision Fitness Tracking
-          </h2>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8 leading-[1.1]">
-            Balance is <span className="italic primary-text-gradient">everything.</span><br />
-            Science is <span className="primary-text-gradient">all.</span>
-          </h1>
-          <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed">
-            Amazonia - FitLab isn't just an app; it's a digital laboratory for your body.
-            Quantify your mood, track every centimeter of progress, and master the metrics that matter.
-          </p>
+        {/* Subtle Ambient Red/Gold Glow */}
+        <div className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-red-500/10 blur-[130px] rounded-full z-0 pointer-events-none" />
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="https://app.amazonia-fitlab.ro/auth/register"
-              className="px-8 py-4 text-black font-bold rounded-full text-lg primary-gradient transition-all transform hover:scale-105 flex items-center justify-center gap-2"
-            >
-              Start Your Lab Report <ChevronRight size={20} />
-            </a>
+        {/* Foreground Content */}
+        <div className="relative z-20 max-w-7xl mx-auto w-full">
+          <div className="max-w-2xl lg:max-w-3xl">
+            {/* Eyebrow / Kicker */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900/80 border border-zinc-800 text-xs font-bold uppercase tracking-[0.2em] text-zinc-300 mb-6 backdrop-blur-sm">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              Personalized Fitness & Nutrition
+            </div>
+
+            {/* H1 Main Headline */}
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-6 leading-[1.12]">
+              Fitness & nutrition customized for you, based on{' '}
+              <span className="primary-text-gradient">current science.</span>
+            </h1>
+
+            {/* Sub-headline / Punchline */}
+            <p className="text-xl sm:text-2xl md:text-3xl font-semibold text-zinc-200 mb-6 leading-snug">
+              Find the right balance for you—
+              <span className="italic text-white">
+                without restrictions and absurd diets.
+              </span>
+            </p>
+
+            {/* Lead Description */}
+            <p className="text-zinc-400 text-base sm:text-lg md:text-xl max-w-2xl mb-10 leading-relaxed">
+              Premium workout and nutrition plans, built on the highest quality
+              science, tailored to your unique needs, lifestyle, and
+              individuality.
+            </p>
+
+            {/* CTA Button */}
+            <div className="flex flex-col sm:flex-row gap-4 items-start">
+              <a
+                href="#what-i-offer"
+                className="px-8 py-4 text-black font-bold rounded-full text-lg primary-gradient transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+              >
+                Learn More <ChevronRight size={20} />
+              </a>
+            </div>
           </div>
         </div>
       </main>
 
-      {/* --- FEATURES GRID --- */}
-      <section className="px-6 py-24 bg-zinc-950/50 border-y border-zinc-900">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-
-          <div className="space-y-4">
-            <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
-              <Activity size={24} />
-            </div>
-            <h3 className="text-xl font-bold">Biometric Precision</h3>
-            <p className="text-gray-500">
-              Beyond the scale. Track body circumferences, mood fluctuations, and physical energy levels to see the full biological picture.
+      {/* --- WHAT I OFFER / FEATURES GRID --- */}
+      <section
+        id="what-i-offer"
+        className="px-6 py-24 bg-zinc-950/50 border-y border-zinc-900 scroll-mt-12"
+      >
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-primary font-bold uppercase tracking-[0.25em] text-xs mb-3">
+              What I Offer
+            </h2>
+            <h3 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
+              A Sustainable, Science-Driven Program
+            </h3>
+            <p className="text-gray-400 text-base md:text-lg">
+              No generic templates. Every plan is built around your individual
+              biology, lifestyle, and progressive goals.
             </p>
           </div>
 
-          <div className="space-y-4">
-            <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
-              <Camera size={24} />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="space-y-4 p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/60">
+              <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
+                <Activity size={24} />
+              </div>
+              <h4 className="text-xl font-bold">Custom Nutrition & Workouts</h4>
+              <p className="text-gray-400">
+                Tailored programming that adapts to your metabolism and routine.
+                Enjoy sustainable progress without rigid food bans.
+              </p>
             </div>
-            <h3 className="text-xl font-bold">Visual Evidence</h3>
-            <p className="text-gray-500">
-              Secure progress photos. Our storage logic ensures your visual transformation is stored with clinical privacy and ready for side-by-side analysis.
-            </p>
-          </div>
 
-          <div className="space-y-4">
-            <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
-              <LineChart size={24} />
+            <div className="space-y-4 p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/60">
+              <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
+                <Camera size={24} />
+              </div>
+              <h4 className="text-xl font-bold">Objective Progress Tracking</h4>
+              <p className="text-gray-400">
+                Track circumferences, visual changes, and performance markers to
+                ensure continuous adaptation and real results.
+              </p>
             </div>
-            <h3 className="text-xl font-bold">Data-Driven Evolution</h3>
-            <p className="text-gray-500">
-              Turn your daily check-ins into actionable trends. Observe how your mood correlates with your physical performance.
-            </p>
-          </div>
 
+            <div className="space-y-4 p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/60">
+              <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
+                <LineChart size={24} />
+              </div>
+              <h4 className="text-xl font-bold">1-on-1 Continuous Guidance</h4>
+              <p className="text-gray-400">
+                Direct coaching adjustments based on your feedback, mood, and
+                recovery metrics to keep you moving forward safely.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* --- QUOTE SECTION --- */}
       <section className="px-6 py-32 text-center max-w-4xl mx-auto">
         <blockquote className="text-2xl md:text-4xl font-light italic text-gray-300">
-          "The wildest jungle is the human biology. We provide the tools to navigate it with surgical precision."
+          "The wildest jungle is the human biology. We provide the tools to
+          navigate it with surgical precision."
         </blockquote>
         <div className="mt-8 flex items-center justify-center gap-3">
           <div className="h-[1px] w-8 primary-gradient"></div>
-          <span className="primary-text-gradient font-bold tracking-widest uppercase text-sm">Amazonia Philosophy</span>
+          <span className="primary-text-gradient font-bold tracking-widest uppercase text-sm">
+            Amazonia Philosophy
+          </span>
           <div className="h-[1px] w-8 primary-gradient"></div>
         </div>
       </section>
