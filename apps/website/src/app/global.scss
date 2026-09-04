@@ -6,9 +6,14 @@
 @tailwind utilities;
 
 @layer base {
-  :root{
+  html {
+    scroll-behavior: smooth;
+  }
+
+  :root {
     --primary-color-dark: #{variables.$primary-color-dark3};
   }
+
   body {
     @apply bg-white text-black dark:bg-black dark:text-gray-100;
   }
@@ -40,5 +45,40 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
+  }
+}
+
+.hero-section {
+  @media (min-width: 769px) {
+    background-color: #000000;
+    background-image: /* Layer 1: Horizontal black gradient mask */
+      linear-gradient(to right, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.82) 38%, rgba(0, 0, 0, 0.15) 70%, rgba(0, 0, 0, 0.9) 100%),
+        /* Layer 2: Vertical black gradient mask */
+      linear-gradient(to top, #000000 0%, transparent 30%, rgba(0, 0, 0, 0.5) 100%),
+        /* Layer 4: Grayscale coach photo on right */
+      url('/hero-background.jpeg');
+    background-position: center,
+    center,
+    right center;
+    background-size: 100% 100%,
+    100% 100%,
+    cover;
+    background-repeat: no-repeat;
+  }
+  @media (max-width: 768px) {
+    background-color: #000000;
+    background-image: /* Layer 1: Horizontal black gradient mask */
+      linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.9) 38%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 0.6) 100%),
+        /* Layer 2: Vertical black gradient mask */
+      linear-gradient(to top, #000000 0%, transparent 30%, rgba(0, 0, 0, 0) 100%),
+        /* Layer 4: Grayscale coach photo on right */
+      url('/hero-background-mobile.jpg');
+    background-position: center,
+    center,
+    center fdfsa;
+    background-size: 100% 100%,
+    100% 100%,
+    cover;
+    background-repeat: no-repeat;
   }
 }
