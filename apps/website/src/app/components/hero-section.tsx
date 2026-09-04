@@ -3,7 +3,7 @@ import { ChevronRight } from 'lucide-react';
 
 export default function HeroSection() {
   return (
-    <main className="hero-section min-h-[85vh] md:min-h-[90vh] flex items-center px-6 py-16 md:py-24">
+    <main className="hero-section min-h-svh md:min-h-[90vh] flex items-center px-6 py-16 md:py-24">
       <div className="max-w-7xl mx-auto w-full flex items-center">
         <div className="max-w-2xl lg:max-w-3xl flex flex-col">
           {/* Eyebrow / Kicker */}
