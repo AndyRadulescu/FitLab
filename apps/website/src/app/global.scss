@@ -68,14 +68,14 @@
   @media (max-width: 768px) {
     background-color: #000000;
     background-image: /* Layer 1: Horizontal black gradient mask */
-      linear-gradient(to right, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.52) 38%, rgba(0, 0, 0, 0.55) 70%, rgba(0, 0, 0, 0.9) 100%),
+      linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.9) 38%, rgba(0, 0, 0, 0.7) 70%, rgba(0, 0, 0, 0.6) 100%),
         /* Layer 2: Vertical black gradient mask */
       linear-gradient(to top, #000000 0%, transparent 30%, rgba(0, 0, 0, 0) 100%),
         /* Layer 4: Grayscale coach photo on right */
       url('/hero-background-mobile.jpg');
     background-position: center,
     center,
-    right center;
+    center fdfsa;
     background-size: 100% 100%,
     100% 100%,
     cover;
