@@ -20,7 +20,7 @@ export default function HeroSection() {
       <div className="max-w-7xl mx-auto w-full min-h-[80dvh] md:min-h-0 flex flex-col md:flex-row items-center">
         <div className="max-w-2xl lg:max-w-3xl flex flex-col flex-1 md:flex-none w-full pb-8 md:pb-0 items-center md:items-start">
           {/* Eyebrow / Kicker */}
-          <div className="mt-48 md:mt-0 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-transparent border border-zinc-800 text-xs font-bold uppercase tracking-[0.2em] text-zinc-300 mb-6 w-fit backdrop-blur-sm">
+          <div className="mt-24 md:mt-0 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-transparent border border-zinc-800 text-[11px] md:text-xs font-bold uppercase tracking-[0.2em] text-zinc-300 mb-6 w-fit backdrop-blur-sm">
             <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
             Personalized Fitness & Nutrition
           </div>
