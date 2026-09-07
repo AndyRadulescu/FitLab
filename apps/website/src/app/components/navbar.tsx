@@ -46,16 +46,16 @@ export function Navbar() {
   return (
     <header
       className={clsx(
-        'fixed top-5 left-0 right-0 z-40 transition-colors duration-300',
+        'fixed top-0 md:top-5 left-0 right-0 z-40 transition-colors duration-300',
         // Mobile: Transparent background with backdrop blur only (no border, no reflection)
         'bg-black/40 backdrop-blur-md',
         // Desktop: Glassy design with border line, transparent background, backdrop blur, and specular reflection
-        'md:bg-black/30 md:backdrop-blur-xl md:border-b md:border-white/10 rounded-full md:mx-32'
+        'md:bg-black/30 md:backdrop-blur-xl md:border-b md:border-white/10 md:rounded-full md:mx-32'
       )}
     >
-      <GlassyReflection />
+      <GlassyReflection showGlowOnMobile={true} />
 
-      <nav className="max-w-7xl mx-auto px-6 rounded-full h-20 flex items-center justify-between relative">
+      <nav className="max-w-7xl mx-auto px-6 md:rounded-full h-20 flex items-center justify-between relative">
         {/* Brand / Logo */}
         <Link
           href="/"
