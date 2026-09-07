@@ -16,7 +16,7 @@ export function StartButton() {
 
 export default function HeroSection() {
   return (
-    <main className="hero-section min-h-svh md:min-h-[90vh] flex items-center px-6 md:py-24">
+    <main className="hero-section flex items-center px-6 md:py-24 min-h-[92svh] md:min-h-svh mt-[8svh] md:mt-0">
       <div className="max-w-7xl mx-auto w-full min-h-[90svh] md:min-h-0 flex flex-col md:flex-row items-center">
         <div className="max-w-2xl lg:max-w-3xl flex flex-col flex-1 md:flex-none w-full pb-8 md:pb-0 items-center md:items-start">
           {/* Eyebrow / Kicker */}

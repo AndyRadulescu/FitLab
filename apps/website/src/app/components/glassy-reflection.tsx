@@ -48,7 +48,7 @@ export function GlassyReflection({
           )}
           style={{
             background:
-              'conic-gradient(from 90deg at 50% 50%, #00000000 50%, #000 50%),radial-gradient(rgba(200,200,200,0.1) 0%, transparent 80%)',
+              'conic-gradient(from 90deg at 50% 50%, #00000000 50%),radial-gradient(rgba(200,200,200,0.1) 0%, transparent 80%)',
           }}
         />
       )}

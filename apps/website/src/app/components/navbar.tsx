@@ -53,7 +53,7 @@ export function Navbar() {
         'md:bg-black/30 md:backdrop-blur-xl md:border-b md:border-white/10 md:rounded-full md:mx-32'
       )}
     >
-      <GlassyReflection showGlowOnMobile={true} />
+      <GlassyReflection showGlowOnMobile={false} />
 
       <nav className="max-w-7xl mx-auto px-6 md:rounded-full h-20 flex items-center justify-between relative">
         {/* Brand / Logo */}
