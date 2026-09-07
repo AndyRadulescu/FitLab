@@ -2,12 +2,27 @@ import './global.scss';
 import Footer from './components/footer';
 import CookieBanner from './components/cookie-banner';
 import { Metadata } from 'next';
+import { Navbar } from '@website/components/navbar';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://amazonia-fitlab.ro/'),
   title: 'Amazonia - FitLab | Precision Fitness Tracking',
-  description: 'Amazonia - FitLab isn\'t just an app; it\'s a digital laboratory for your body. Quantify your mood, track every centimeter of progress, and master the metrics that matter.',
-  keywords: ['fitness tracking', 'mood tracking', 'body measurements', 'progress photos', 'workout log', 'health metrics', 'Amazonia FitLab', 'biometric precision', 'fitness app', 'body transformation', 'gym progress', 'health laboratory'],
+  description:
+    "Amazonia - FitLab isn't just an app; it's a digital laboratory for your body. Quantify your mood, track every centimeter of progress, and master the metrics that matter.",
+  keywords: [
+    'fitness tracking',
+    'mood tracking',
+    'body measurements',
+    'progress photos',
+    'workout log',
+    'health metrics',
+    'Amazonia FitLab',
+    'biometric precision',
+    'fitness app',
+    'body transformation',
+    'gym progress',
+    'health laboratory',
+  ],
   authors: [{ name: 'Amazonia FitLab' }],
   category: 'fitness',
   alternates: {
@@ -15,7 +30,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Amazonia - FitLab | Precision Fitness Tracking',
-    description: 'Amazonia - FitLab isn\'t just an app; it\'s a digital laboratory for your body. Quantify your mood, track every centimeter of progress, and master the metrics that matter.',
+    description:
+      "Amazonia - FitLab isn't just an app; it's a digital laboratory for your body. Quantify your mood, track every centimeter of progress, and master the metrics that matter.",
     url: 'https://amazonia-fitlab.ro/',
     siteName: 'Amazonia - FitLab',
     images: [
@@ -32,7 +48,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Amazonia - FitLab | Precision Fitness Tracking',
-    description: 'Amazonia - FitLab isn\'t just an app; it\'s a digital laboratory for your body. Quantify your mood, track every centimeter of progress, and master the metrics that matter.',
+    description:
+      "Amazonia - FitLab isn't just an app; it's a digital laboratory for your body. Quantify your mood, track every centimeter of progress, and master the metrics that matter.",
     images: ['/amazonia-fitlab.jpg'],
   },
   robots: {
@@ -48,7 +65,7 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'cWpDXCgw5xLtm1XLCUipCC5Q1kG7TZKqrBvofMsMy6k',
-  }
+  },
 };
 
 export default function RootLayout({ children }: {
@@ -56,11 +73,12 @@ export default function RootLayout({ children }: {
 }) {
   return (
     <html lang="en">
-    <body>
-    {children}
-    <Footer />
-    <CookieBanner />
-    </body>
+      <body>
+        <Navbar />
+        {children}
+        <Footer />
+        <CookieBanner />
+      </body>
     </html>
   );
 }
