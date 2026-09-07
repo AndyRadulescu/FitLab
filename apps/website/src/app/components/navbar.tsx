@@ -8,10 +8,7 @@ import clsx from 'clsx';
 import { GlassyReflection } from './glassy-reflection';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/terms/', label: 'Terms of Use' },
-  { href: '/privacy-policy/', label: 'Privacy Policy' },
-  { href: '/data-deletion/', label: 'Data Deletion' },
+  { href: '/', label: 'Home' }
 ];
 
 export function Navbar() {
