@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import clsx from 'clsx';
+import { GlassyReflection } from './glassy-reflection';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -45,25 +46,16 @@ export function Navbar() {
   return (
     <header
       className={clsx(
-        'fixed top-0 left-0 right-0 z-40 transition-colors duration-300',
+        'fixed top-5 left-0 right-0 z-40 transition-colors duration-300',
         // Mobile: Transparent background with backdrop blur only (no border, no reflection)
         'bg-black/40 backdrop-blur-md',
         // Desktop: Glassy design with border line, transparent background, backdrop blur, and specular reflection
-        'md:bg-black/30 md:backdrop-blur-xl md:border-b md:border-white/10 rounded md:mx-32'
+        'md:bg-black/30 md:backdrop-blur-xl md:border-b md:border-white/10 rounded-full md:mx-32'
       )}
     >
-      {/* Glassy reflection sheen - Desktop only */}
-      <div
-        className="hidden md:block pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.08] via-white/[0.015] to-transparent"
-        aria-hidden="true"
-      />
-      {/* Top specular reflection highlight line - Desktop only */}
-      <div
-        className="hidden md:block pointer-events-none absolute top-0 left-12 right-12 h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent"
-        aria-hidden="true"
-      />
+      <GlassyReflection />
 
-      <nav className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative">
+      <nav className="max-w-7xl mx-auto px-6 rounded-full h-20 flex items-center justify-between relative">
         {/* Brand / Logo */}
         <Link
           href="/"

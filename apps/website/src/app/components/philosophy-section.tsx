@@ -1,8 +1,10 @@
 import React from 'react';
+import { GlassyReflection } from './glassy-reflection';
 
 export default function PhilosophySection() {
   return (
-    <section className="px-6 py-32 text-center max-w-4xl mx-auto">
+    <section className="relative px-6 py-32 text-center max-w-4xl mx-auto overflow-hidden">
+      <GlassyReflection />
       <blockquote className="text-2xl md:text-4xl font-light italic text-gray-300">
         "The wildest jungle is the human biology. We provide the tools to
         navigate it with surgical precision."

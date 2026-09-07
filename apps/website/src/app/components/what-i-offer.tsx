@@ -1,13 +1,15 @@
 import React from 'react';
 import { Activity, Camera, LineChart } from 'lucide-react';
+import { GlassyReflection } from './glassy-reflection';
 
 export default function WhatIOfferSection() {
   return (
     <section
       id="what-i-offer"
-      className="px-6 py-24 bg-zinc-950/50 border-y border-zinc-900 scroll-mt-12"
+      className="relative px-6 py-24 bg-zinc-950/50 border-y border-zinc-900 scroll-mt-12 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto">
+      <GlassyReflection />
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-primary font-bold uppercase tracking-[0.25em] text-xs mb-3">
             What I Offer
