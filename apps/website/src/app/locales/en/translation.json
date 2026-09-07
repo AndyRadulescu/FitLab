@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "home": "Home",
+    "terms": "Terms of Use",
+    "privacyPolicy": "Privacy Policy",
+    "dataDeletion": "Data Deletion",
+    "toggleLanguage": "Switch Language"
+  },
+  "hero": {
+    "eyebrow": "Personalized Fitness & Nutrition",
+    "titlePart1": "Fitness & nutrition customized for you, based on",
+    "titleHighlight": "current science",
+    "description": "Premium workout and nutrition plans, built on the highest quality science, tailored to your unique needs, lifestyle, without restrictions and absurd diets.",
+    "cta": "Learn More"
+  },
+  "whatIOffer": {
+    "eyebrow": "What I Offer",
+    "title": "A Sustainable, Science-Driven Program",
+    "subtitle": "No generic templates. Every plan is built around your individual biology, lifestyle, and progressive goals.",
+    "card1Title": "Custom Nutrition & Workouts",
+    "card1Desc": "Tailored programming that adapts to your metabolism and routine. Enjoy sustainable progress without rigid food bans.",
+    "card2Title": "Objective Progress Tracking",
+    "card2Desc": "Track circumferences, visual changes, and performance markers to ensure continuous adaptation and real results.",
+    "card3Title": "1-on-1 Continuous Guidance",
+    "card3Desc": "Direct coaching adjustments based on your feedback, mood, and recovery metrics to keep you moving forward safely."
+  },
+  "philosophy": {
+    "quote": "The wildest jungle is the human biology. We provide the tools to navigate it with surgical precision.",
+    "tag": "Amazonia Philosophy"
+  },
+  "footer": {
+    "copyright": "© 2026 AMAZONIA - FITLAB. SCIENCE-BACKED FITNESS.",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of use",
+    "dataDeletion": "Data Deletion",
+    "contact": "Contact"
+  },
+  "cookieBanner": {
+    "title": "Fuel Your Progress with Cookies?",
+    "description": "We use cookies to optimize your laboratory experience and track your body metrics more precisely. Don't worry, these cookies have 0 calories! Gains guaranteed.",
+    "checkFormula": "Check our formula.",
+    "skip": "Skip Set",
+    "accept": "Crush It 💪"
+  }
+}

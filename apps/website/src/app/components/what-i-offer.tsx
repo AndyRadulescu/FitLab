@@ -1,8 +1,16 @@
 import React from 'react';
 import { Activity, Camera, LineChart } from 'lucide-react';
 import { GlassyReflection } from './glassy-reflection';
+import { getServerTranslations } from '../i18n/server';
+import { defaultLocale, Locale } from '../i18n/utils';
 
-export default function WhatIOfferSection() {
+export default async function WhatIOfferSection({
+  locale = defaultLocale,
+}: {
+  locale?: Locale;
+}) {
+  const { t } = await getServerTranslations(locale);
+
   return (
     <section
       id="what-i-offer"
@@ -12,14 +20,13 @@ export default function WhatIOfferSection() {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="text-primary font-bold uppercase tracking-[0.25em] text-xs mb-3">
-            What I Offer
+            {t('whatIOffer.eyebrow')}
           </h2>
           <h3 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4">
-            A Sustainable, Science-Driven Program
+            {t('whatIOffer.title')}
           </h3>
           <p className="text-gray-400 text-base md:text-lg">
-            No generic templates. Every plan is built around your individual
-            biology, lifestyle, and progressive goals.
+            {t('whatIOffer.subtitle')}
           </p>
         </div>
 
@@ -28,10 +35,9 @@ export default function WhatIOfferSection() {
             <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
               <Activity size={24} />
             </div>
-            <h4 className="text-xl font-bold">Custom Nutrition & Workouts</h4>
+            <h4 className="text-xl font-bold">{t('whatIOffer.card1Title')}</h4>
             <p className="text-gray-400">
-              Tailored programming that adapts to your metabolism and routine.
-              Enjoy sustainable progress without rigid food bans.
+              {t('whatIOffer.card1Desc')}
             </p>
           </div>
 
@@ -39,10 +45,9 @@ export default function WhatIOfferSection() {
             <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
               <Camera size={24} />
             </div>
-            <h4 className="text-xl font-bold">Objective Progress Tracking</h4>
+            <h4 className="text-xl font-bold">{t('whatIOffer.card2Title')}</h4>
             <p className="text-gray-400">
-              Track circumferences, visual changes, and performance markers to
-              ensure continuous adaptation and real results.
+              {t('whatIOffer.card2Desc')}
             </p>
           </div>
 
@@ -50,10 +55,9 @@ export default function WhatIOfferSection() {
             <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
               <LineChart size={24} />
             </div>
-            <h4 className="text-xl font-bold">1-on-1 Continuous Guidance</h4>
+            <h4 className="text-xl font-bold">{t('whatIOffer.card3Title')}</h4>
             <p className="text-gray-400">
-              Direct coaching adjustments based on your feedback, mood, and
-              recovery metrics to keep you moving forward safely.
+              {t('whatIOffer.card3Desc')}
             </p>
           </div>
         </div>

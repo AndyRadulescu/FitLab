@@ -1,0 +1,45 @@
+{
+  "nav": {
+    "home": "Acasă",
+    "terms": "Termeni și condiții",
+    "privacyPolicy": "Politică de confidențialitate",
+    "dataDeletion": "Ștergere date",
+    "toggleLanguage": "Schimbă limba"
+  },
+  "hero": {
+    "eyebrow": "Nutriție & Fitness Personalizate",
+    "titlePart1": "Fitness și nutriție personalizate pentru tine, bazate pe",
+    "titleHighlight": "știința actuală",
+    "description": "Planuri premium de antrenament și nutriție, construite pe baza științei de cea mai înaltă calitate, adaptate nevoilor și stilului tău unic de viață, fără restricții și diete absurde.",
+    "cta": "Află mai multe"
+  },
+  "whatIOffer": {
+    "eyebrow": "Ce Îți Ofer",
+    "title": "Un Program Sustenabil, Bazat pe Știință",
+    "subtitle": "Fără șabloane generice. Fiecare plan este construit în jurul biologiei tale individuale, stilului de viață și obiectivelor tale progresive.",
+    "card1Title": "Nutriție & Antrenamente Personalizate",
+    "card1Desc": "Programare adaptată care se pliază pe metabolismul și rutina ta. Bucură-te de progres sustenabil fără interdicții alimentare absurde.",
+    "card2Title": "Monitorizare Obiectivă a Progresului",
+    "card2Desc": "Urmărește circumferințele, schimbările vizuale și markerii de performanță pentru a asigura o adaptare continuă și rezultate reale.",
+    "card3Title": "Ghidare Continuă 1-la-1",
+    "card3Desc": "Ajustări directe de coaching bazate pe feedback-ul tău, starea de spirit și indicatorii de recuperare pentru a merge înainte în siguranță."
+  },
+  "philosophy": {
+    "quote": "Cea mai sălbatică junglă este biologia umană. Oferim instrumentele pentru a o naviga cu precizie chirurgicală.",
+    "tag": "Filosofia Amazonia"
+  },
+  "footer": {
+    "copyright": "© 2026 AMAZONIA - FITLAB. FITNESS BAZAT PE ȘTIINȚĂ.",
+    "privacyPolicy": "Politică de confidențialitate",
+    "terms": "Termeni și condiții",
+    "dataDeletion": "Ștergere date",
+    "contact": "Contact"
+  },
+  "cookieBanner": {
+    "title": "Susține-ți progresul cu cookies?",
+    "description": "Folosim cookie-uri pentru a optimiza experiența ta și a monitoriza parametrii corporali cu precizie. Nu-ți face griji, aceste cookie-uri au 0 calorii! Progres garantat.",
+    "checkFormula": "Vezi formula noastră.",
+    "skip": "Sari seria",
+    "accept": "Dă totul 💪"
+  }
+}

@@ -1,4 +1,7 @@
 import React from 'react';
+import Navbar from '../components/navbar';
+import Footer from '../components/footer';
+import CookieBanner from '../components/cookie-banner';
 
 export const metadata = {
   title: 'Terms of Use | Amazonia - FitLab',
@@ -9,7 +12,9 @@ export default function TermsOfUse() {
   const lastUpdated = "February 15, 2026";
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20 text-whie mt-[8svh]">
+    <>
+      <Navbar locale="en" />
+      <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20 text-white mt-[8svh]">
       <header className="border-b border-slate-200 pb-8 mb-10">
         <h1 className="text-4xl font-bold tracking-tight text-white mb-4">
           Terms of Use
@@ -81,6 +86,9 @@ export default function TermsOfUse() {
           </p>
         </section>
       </div>
-    </div>
+      </div>
+      <Footer />
+      <CookieBanner />
+    </>
   );
 }

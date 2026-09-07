@@ -6,12 +6,31 @@ import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import clsx from 'clsx';
 import { GlassyReflection } from './glassy-reflection';
+import { LanguageToggler } from './language-toggler';
+import { getClientTranslations } from '../i18n/client';
+import { defaultLocale } from '../i18n/utils';
 
-const navLinks = [
-  { href: '/', label: 'Home' }
-];
+export interface NavbarTranslations {
+  home?: string;
+  terms?: string;
+  privacyPolicy?: string;
+  dataDeletion?: string;
+}
 
-export function Navbar() {
+interface NavbarProps {
+  locale?: string;
+  translations?: NavbarTranslations;
+}
+
+export function Navbar({
+  locale = defaultLocale,
+  translations,
+}: NavbarProps) {
+  const t = getClientTranslations(locale);
+  const home = translations?.home || t.nav.home;
+  const terms = translations?.terms || t.nav.terms;
+  const privacyPolicy = translations?.privacyPolicy || t.nav.privacyPolicy;
+  const dataDeletion = translations?.dataDeletion || t.nav.dataDeletion;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -31,12 +50,21 @@ export function Navbar() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const homeHref = locale === 'en' ? '/en/' : '/';
+
+  const navLinks = [
+    { href: homeHref, label: home },
+    { href: '/terms/', label: terms },
+    { href: '/privacy-policy/', label: privacyPolicy },
+    { href: '/data-deletion/', label: dataDeletion },
+  ];
+
   const isLinkActive = (href: string) => {
-    if (href === '/') {
-      return pathname === '/';
-    }
     const normalizedPath = pathname?.endsWith('/') ? pathname : `${pathname}/`;
     const normalizedHref = href.endsWith('/') ? href : `${href}/`;
+    if (normalizedHref === '/' && (normalizedPath === '/' || normalizedPath === '/ro/')) {
+      return true;
+    }
     return normalizedPath === normalizedHref;
   };
 
@@ -55,7 +83,7 @@ export function Navbar() {
       <nav className="max-w-7xl mx-auto px-6 md:rounded-full h-20 flex items-center justify-between relative">
         {/* Brand / Logo */}
         <Link
-          href="/"
+          href={homeHref}
           className="flex items-center gap-2 group transition-opacity hover:opacity-90"
           onClick={() => setIsMobileMenuOpen(false)}
         >
@@ -64,7 +92,7 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Desktop Nav Links */}
+        {/* Desktop Nav Links & Language Toggler */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium">
           {navLinks.map(({ href, label }) => {
             const active = isLinkActive(href);
@@ -86,22 +114,26 @@ export function Navbar() {
               </Link>
             );
           })}
+          <LanguageToggler locale={locale} />
         </div>
 
-        {/* Mobile Hamburger Button */}
-        <button
-          type="button"
-          onClick={() => setIsMobileMenuOpen((prev) => !prev)}
-          className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg text-zinc-300 hover:text-white hover:bg-white/5 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
-          aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={isMobileMenuOpen}
-        >
-          {isMobileMenuOpen ? (
-            <X className="w-6 h-6 transition-transform duration-200" />
-          ) : (
-            <Menu className="w-6 h-6 transition-transform duration-200" />
-          )}
-        </button>
+        {/* Mobile Actions: Language Toggler + Hamburger Button */}
+        <div className="md:hidden flex items-center gap-3">
+          <LanguageToggler locale={locale} />
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            className="flex items-center justify-center w-10 h-10 rounded-lg text-zinc-300 hover:text-white hover:bg-white/5 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50"
+            aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMobileMenuOpen}
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6 transition-transform duration-200" />
+            ) : (
+              <Menu className="w-6 h-6 transition-transform duration-200" />
+            )}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Navigation Drawer / Dropdown */}
@@ -140,3 +172,5 @@ export function Navbar() {
     </header>
   );
 }
+
+export default Navbar;

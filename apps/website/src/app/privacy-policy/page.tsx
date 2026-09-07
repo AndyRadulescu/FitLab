@@ -1,6 +1,9 @@
 import React from 'react';
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Navbar from '../components/navbar';
+import Footer from '../components/footer';
+import CookieBanner from '../components/cookie-banner';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy - Amazonia - FitLab',
@@ -8,7 +11,9 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="min-h-screen bg-black text-gray-300 selection:bg-primary selection:text-white mt-[8svh]">
+    <>
+      <Navbar locale="en" />
+      <div className="min-h-screen bg-black text-gray-300 selection:bg-primary selection:text-white mt-[8svh]">
       <div className="max-w-3xl mx-auto px-6 py-12 lg:py-20">
         <header className="mb-12 border-b border-gray-800 pb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
@@ -331,10 +336,10 @@ export default function PrivacyPolicyPage() {
           </section>
         </main>
 
-        <footer className="mt-20 text-center text-gray-600 text-xs tracking-widest uppercase">
-          &copy; 2026 Amazonia - FitLab
-        </footer>
       </div>
     </div>
-  );
+    <Footer />
+    <CookieBanner />
+  </>
+);
 }

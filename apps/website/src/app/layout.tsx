@@ -1,8 +1,5 @@
 import './global.scss';
-import Footer from './components/footer';
-import CookieBanner from './components/cookie-banner';
 import { Metadata } from 'next';
-import { Navbar } from './components/navbar';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://amazonia-fitlab.ro/'),
@@ -74,10 +71,7 @@ export default function RootLayout({ children }: {
   return (
     <html lang="en">
       <body>
-        <Navbar />
         {children}
-        <Footer />
-        <CookieBanner />
       </body>
     </html>
   );

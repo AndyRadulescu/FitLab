@@ -1,6 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 import { Metadata } from 'next';
+import Navbar from '../components/navbar';
+import Footer from '../components/footer';
+import CookieBanner from '../components/cookie-banner';
 
 export const metadata: Metadata = {
   title: 'Data Deletion Instructions - Amazonia - FitLab',
@@ -8,7 +11,9 @@ export const metadata: Metadata = {
 
 export default function DataDeletionPage() {
   return (
-    <div className="auth-theme-trigger min-h-screen bg-black text-gray-300 selection:bg-primary mt-[8svh]">
+    <>
+      <Navbar locale="en" />
+      <div className="auth-theme-trigger min-h-screen bg-black text-gray-300 selection:bg-primary mt-[8svh]">
       <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20">
         <header className="mb-16 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
@@ -158,5 +163,8 @@ export default function DataDeletionPage() {
         </footer>
       </div>
     </div>
-  );
+    <Footer />
+    <CookieBanner />
+  </>
+);
 }
