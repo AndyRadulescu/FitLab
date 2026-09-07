@@ -12,9 +12,6 @@ import { defaultLocale } from '../i18n/utils';
 
 export interface NavbarTranslations {
   home?: string;
-  terms?: string;
-  privacyPolicy?: string;
-  dataDeletion?: string;
 }
 
 interface NavbarProps {
@@ -28,9 +25,6 @@ export function Navbar({
 }: NavbarProps) {
   const t = getClientTranslations(locale);
   const home = translations?.home || t.nav.home;
-  const terms = translations?.terms || t.nav.terms;
-  const privacyPolicy = translations?.privacyPolicy || t.nav.privacyPolicy;
-  const dataDeletion = translations?.dataDeletion || t.nav.dataDeletion;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -54,9 +48,6 @@ export function Navbar({
 
   const navLinks = [
     { href: homeHref, label: home },
-    { href: '/terms/', label: terms },
-    { href: '/privacy-policy/', label: privacyPolicy },
-    { href: '/data-deletion/', label: dataDeletion },
   ];
 
   const isLinkActive = (href: string) => {
