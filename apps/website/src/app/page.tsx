@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import Navbar from './components/navbar';
 import HeroSection from './components/hero-section';
 import WhatIOfferSection from './components/what-i-offer';
+import AppShowcaseSection from './components/app-showcase-section';
 import PhilosophySection from './components/philosophy-section';
 import Footer from './components/footer';
 import CookieBanner from './components/cookie-banner';
@@ -31,6 +32,7 @@ export default async function RootPage() {
       <Navbar locale={defaultLocale} />
       <HeroSection locale={defaultLocale} />
       <WhatIOfferSection locale={defaultLocale} />
+      <AppShowcaseSection locale={defaultLocale} />
       <PhilosophySection locale={defaultLocale} />
       <Footer locale={defaultLocale} />
       <CookieBanner locale={defaultLocale} />

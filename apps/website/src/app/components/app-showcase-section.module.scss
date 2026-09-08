@@ -1,0 +1,84 @@
+.showcaseSection {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: #000000;
+  /* Mobile: no background image, purely clean dark canvas */
+  background-image: none;
+  padding-top: 4.5rem;
+  padding-bottom: 5rem;
+
+  @media (min-width: 640px) {
+    padding-top: 5.5rem;
+    padding-bottom: 6rem;
+  }
+
+  /* Desktop: mesh gradient background with soft top/bottom gradient masks for seamless blending */
+  @media (min-width: 768px) {
+    /* Placeholder desktop background SVG (mesh gradient) */
+    /* When your final SVG asset is ready, replace '/mesh-gradient-placeholder.svg' with your SVG path */
+    background-image:
+      linear-gradient(to bottom, #000000 0%, rgba(0, 0, 0, 0.15) 15%, rgba(0, 0, 0, 0.15) 85%, #000000 100%),
+      url('/background-2.svg');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-top: 7rem;
+    padding-bottom: 7.5rem;
+  }
+}
+
+.container {
+  position: relative;
+  z-index: 10;
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.phoneWrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.captionWrapper {
+  margin-top: 2rem;
+  text-align: center;
+  max-width: 38rem;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (min-width: 640px) {
+    margin-top: 2.5rem;
+  }
+
+  @media (min-width: 768px) {
+    margin-top: 3rem;
+  }
+}
+
+.caption {
+  font-size: 1.25rem;
+  line-height: 1.35;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #f4f4f5;
+
+  @media (min-width: 640px) {
+    font-size: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 1.875rem;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 2.125rem;
+  }
+}

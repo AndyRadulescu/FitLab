@@ -58,3 +58,4 @@ out
 /apps/website/out/
 /.firebase
 /admin/
+/apps/website/tsconfig.tsbuildinfo

@@ -24,6 +24,11 @@
     "card3Title": "1-on-1 Continuous Guidance",
     "card3Desc": "Direct coaching adjustments based on your feedback, mood, and recovery metrics to keep you moving forward safely."
   },
+  "appShowcase": {
+    "eyebrow": "The FitLab App",
+    "caption": "Your science-backed progress, engineered right in your pocket.",
+    "imageAlt": "Amazonia FitLab Mobile Application"
+  },
   "philosophy": {
     "quote": "The wildest jungle is the human biology. We provide the tools to navigate it with surgical precision.",
     "tag": "Amazonia Philosophy"
