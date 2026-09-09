@@ -41,10 +41,21 @@ export function Navbar({ locale = defaultLocale, translations }: NavbarProps) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Prevent background scrolling while mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   const homeHref = locale === 'en' ? '/en/' : '/';
 
   const navLinks = [
-    { href: homeHref, label: home },
     { href: homeHref, label: home },
   ];
 
@@ -128,37 +139,45 @@ export function Navbar({ locale = defaultLocale, translations }: NavbarProps) {
         </div>
       </nav>
 
-      {/* Mobile Navigation Drawer / Dropdown */}
+      {/* Mobile Navigation Full-Screen Overlay */}
       <div
         className={clsx(
-          'md:hidden transition-all duration-300 ease-in-out overflow-hidden absolute top-5',
+          'md:hidden fixed inset-x-0 top-20 bottom-0 h-[calc(100svh-5rem)] w-full bg-black/95 backdrop-blur-2xl border-t border-white/10 transition-all duration-300 ease-in-out overflow-y-auto z-40',
           isMobileMenuOpen
-            ? 'max-h-96 opacity-100'
-            : 'max-h-0 opacity-0 pointer-events-none',
+            ? 'opacity-100 visible pointer-events-auto'
+            : 'opacity-0 invisible pointer-events-none'
         )}
       >
-        <div className="px-6 pt-2 pb-6 space-y-2 bg-black/40 backdrop-blur-md">
-          {navLinks.map(({ href, label }) => {
-            const active = isLinkActive(href);
-            return (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={clsx(
-                  'flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-colors',
-                  active
-                    ? 'bg-white/10 text-white font-semibold'
-                    : 'text-zinc-300 hover:bg-white/5 hover:text-white',
-                )}
-              >
-                <span>{label}</span>
-                {active && (
-                  <span className="w-2 h-2 rounded-full bg-secondary" />
-                )}
-              </Link>
-            );
-          })}
+        <div className="px-6 py-8 flex flex-col justify-between min-h-full">
+          <div className="space-y-3">
+            {navLinks.map(({ href, label }, idx) => {
+              const active = isLinkActive(href);
+              return (
+                <Link
+                  key={`${href}-${idx}`}
+                  href={href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={clsx(
+                    'flex items-center justify-between px-4 py-3.5 rounded-xl text-lg font-semibold transition-colors',
+                    active
+                      ? 'bg-white/10 text-white'
+                      : 'text-zinc-300 hover:bg-white/5 hover:text-white'
+                  )}
+                >
+                  <span>{label}</span>
+                  {active && (
+                    <span className="w-2.5 h-2.5 rounded-full bg-secondary" />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="pt-8 border-t border-zinc-900 text-center">
+            <p className="text-xs text-zinc-500 uppercase tracking-widest">
+              Amazonia FitLab
+            </p>
+          </div>
         </div>
       </div>
     </header>
