@@ -1,19 +1,27 @@
 import React from 'react';
 import Image from 'next/image';
 import { Metadata } from 'next';
-import Navbar from '../components/navbar';
-import Footer from '../components/footer';
-import CookieBanner from '../components/cookie-banner';
+import { supportedLocales, isValidLocale, defaultLocale } from '../../i18n/utils';
 
 export const metadata: Metadata = {
   title: 'Data Deletion Instructions - Amazonia - FitLab',
 };
 
-export default function DataDeletionPage() {
+export function generateStaticParams() {
+  return supportedLocales.map((locale) => ({ locale }));
+}
+
+export default async function LocalizedDataDeletionPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const safeLocale = isValidLocale(locale) ? locale : defaultLocale;
+  void safeLocale;
+
   return (
-    <>
-      <Navbar locale="en" />
-      <div className="auth-theme-trigger min-h-screen bg-black text-gray-300 selection:bg-primary mt-[8svh]">
+    <div className="auth-theme-trigger min-h-screen bg-black text-gray-300 selection:bg-primary mt-[8svh]">
       <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20">
         <header className="mb-16 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">
@@ -58,7 +66,7 @@ export default function DataDeletionPage() {
                   </span>
                   <p>
                     Scroll to the{' '}
-                    <strong className="text-red-500">"Danger Zone"</strong> at
+                    <strong className="text-red-500">&quot;Danger Zone&quot;</strong> at
                     the bottom of the page.
                   </p>
                 </li>
@@ -68,7 +76,7 @@ export default function DataDeletionPage() {
                   </span>
                   <p>
                     Select{' '}
-                    <strong className="text-white">"Delete Account"</strong> and
+                    <strong className="text-white">&quot;Delete Account&quot;</strong> and
                     confirm your password when prompted.
                   </p>
                 </li>
@@ -163,8 +171,5 @@ export default function DataDeletionPage() {
         </footer>
       </div>
     </div>
-    <Footer />
-    <CookieBanner />
-  </>
-);
+  );
 }

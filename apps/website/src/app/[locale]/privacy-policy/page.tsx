@@ -1,19 +1,27 @@
 import React from 'react';
-import { Metadata } from 'next';
 import Link from 'next/link';
-import Navbar from '../components/navbar';
-import Footer from '../components/footer';
-import CookieBanner from '../components/cookie-banner';
+import { Metadata } from 'next';
+import { supportedLocales, isValidLocale, defaultLocale } from '../../i18n/utils';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy - Amazonia - FitLab',
 };
 
-export default function PrivacyPolicyPage() {
+export function generateStaticParams() {
+  return supportedLocales.map((locale) => ({ locale }));
+}
+
+export default async function LocalizedPrivacyPolicyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const safeLocale = isValidLocale(locale) ? locale : defaultLocale;
+  void safeLocale;
+
   return (
-    <>
-      <Navbar locale="en" />
-      <div className="min-h-screen bg-black text-gray-300 selection:bg-primary selection:text-white mt-[8svh]">
+    <div className="min-h-screen bg-black text-gray-300 selection:bg-primary selection:text-white mt-[8svh]">
       <div className="max-w-3xl mx-auto px-6 py-12 lg:py-20">
         <header className="mb-12 border-b border-gray-800 pb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
@@ -45,7 +53,7 @@ export default function PrivacyPolicyPage() {
               </li>
               <li>
                 <strong className="text-white">Fitness Data:</strong> Check-in
-                logs, measurements, and "start" data stored in our database.
+                logs, measurements, and &quot;start&quot; data stored in our database.
               </li>
               <li>
                 <strong className="text-white">Usage Data:</strong> Basic
@@ -83,7 +91,7 @@ export default function PrivacyPolicyPage() {
           <section className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-2xl overflow-hidden">
             <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
               <span className="text-red-500 font-bold">3.</span> Data Retention
-              & Deletion
+              &amp; Deletion
             </h2>
             <p className="mb-4 text-zinc-300 text-sm">
               You have full control over your data and how long we keep it:
@@ -107,7 +115,7 @@ export default function PrivacyPolicyPage() {
                     Account Wipe
                   </h3>
                   <p className="text-xs text-zinc-400">
-                    Use the "Danger Zone" in settings to permanently erase your
+                    Use the &quot;Danger Zone&quot; in settings to permanently erase your
                     entire history, including all social login associations.
                   </p>
                 </div>
@@ -137,13 +145,13 @@ export default function PrivacyPolicyPage() {
           <section className="bg-zinc-900/50 border border-zinc-800 p-6 rounded-2xl mt-6">
             <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
               <span className="text-red-400 font-bold">4.</span> Google API
-              Disclosure & Privacy
+              Disclosure &amp; Privacy
             </h2>
 
             <p className="mb-4 text-zinc-300">
               Amazonia - FitLab integrates with Google Services to provide a
               secure and seamless authentication experience. To comply with
-              Google's security standards and ensure your data remains private,
+              Google&apos;s security standards and ensure your data remains private,
               we adhere to the following:
             </p>
 
@@ -153,7 +161,7 @@ export default function PrivacyPolicyPage() {
                   Google Limited Use Policy
                 </h3>
                 <p className="text-sm leading-relaxed text-zinc-400">
-                  Amazonia - FitLab's use and transfer of information received
+                  Amazonia - FitLab&apos;s use and transfer of information received
                   from Google APIs to any other app will adhere to the
                   <a
                     href="https://developers.google.com/terms/api-services-user-data-policy"
@@ -171,7 +179,7 @@ export default function PrivacyPolicyPage() {
 
               <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
                 <h3 className="text-white font-medium mb-1">
-                  Data Accessed & Purpose
+                  Data Accessed &amp; Purpose
                 </h3>
                 <p className="text-sm text-zinc-400">
                   We only access your Google <strong>email address</strong> and{' '}
@@ -184,7 +192,7 @@ export default function PrivacyPolicyPage() {
 
               <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
                 <h3 className="text-white font-medium mb-1">
-                  Data Retention & Deletion
+                  Data Retention &amp; Deletion
                 </h3>
                 <p className="text-sm text-zinc-400">
                   Your Google data is stored only as long as your account is
@@ -197,7 +205,7 @@ export default function PrivacyPolicyPage() {
                   </span>
                   , or do it yourself by following the instructions in our{' '}
                   <Link
-                    href="/data-deletion"
+                    href="/en/data-deletion"
                     className="text-red-400 ml-1 hover:underline"
                   >
                     Data Deletion Guide
@@ -217,7 +225,7 @@ export default function PrivacyPolicyPage() {
 
             <p className="mb-4 text-zinc-300">
               Our application provides an option to sign in using your Facebook
-              account. To protect your data and comply with Meta's Platform
+              account. To protect your data and comply with Meta&apos;s Platform
               Terms, we disclose the following:
             </p>
 
@@ -227,7 +235,7 @@ export default function PrivacyPolicyPage() {
                   Information Received
                 </h3>
                 <p className="text-sm text-zinc-400">
-                  When you use "Login with Facebook," we receive your{' '}
+                  When you use &quot;Login with Facebook,&quot; we receive your{' '}
                   <strong>public profile</strong> (name and profile picture) and{' '}
                   <strong>email address</strong>. This information is used
                   solely to authenticate your account and set up your Amazonia -
@@ -238,10 +246,10 @@ export default function PrivacyPolicyPage() {
 
               <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
                 <h3 className="text-white font-medium mb-1 text-sm">
-                  Data Retention & Deletion
+                  Data Retention &amp; Deletion
                 </h3>
                 <p className="text-sm text-zinc-400">
-                  According to Meta's Platform Terms, we provide a way for you
+                  According to Meta&apos;s Platform Terms, we provide a way for you
                   to request the deletion of your data. Your Facebook data is
                   stored only as long as your account is active. To permanently
                   delete your Amazonia - FitLab account and all associated
@@ -251,7 +259,7 @@ export default function PrivacyPolicyPage() {
                   </span>
                   , or do it yourself by following the instructions in our
                   <Link
-                    href="/data-deletion"
+                    href="/en/data-deletion"
                     className="text-blue-400 ml-1 hover:underline"
                   >
                     Data Deletion Guide
@@ -262,7 +270,7 @@ export default function PrivacyPolicyPage() {
 
               <div className="p-4 bg-black/40 rounded-lg border border-zinc-800">
                 <h3 className="text-white font-medium mb-1">
-                  Compliance & Sharing
+                  Compliance &amp; Sharing
                 </h3>
                 <p className="text-sm text-zinc-400">
                   We do not sell, trade, or otherwise transfer your Facebook
@@ -308,7 +316,7 @@ export default function PrivacyPolicyPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-4 flex items-center gap-2">
-              <span className="text-primary">7.</span> Children's Privacy
+              <span className="text-primary">7.</span> Children&apos;s Privacy
             </h2>
             <p>
               Amazonia - FitLab is not intended for individuals under the age of
@@ -335,11 +343,7 @@ export default function PrivacyPolicyPage() {
             </a>
           </section>
         </main>
-
       </div>
     </div>
-    <Footer />
-    <CookieBanner />
-  </>
-);
+  );
 }

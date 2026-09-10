@@ -1,20 +1,29 @@
 import React from 'react';
-import Navbar from '../components/navbar';
-import Footer from '../components/footer';
-import CookieBanner from '../components/cookie-banner';
+import { Metadata } from 'next';
+import { supportedLocales, isValidLocale, defaultLocale } from '../../i18n/utils';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Terms of Use | Amazonia - FitLab',
   description: 'The rules and guidelines for using the Amazonia - FitLab platform.',
 };
 
-export default function TermsOfUse() {
-  const lastUpdated = "February 15, 2026";
+export function generateStaticParams() {
+  return supportedLocales.map((locale) => ({ locale }));
+}
+
+export default async function LocalizedTermsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const safeLocale = isValidLocale(locale) ? locale : defaultLocale;
+  void safeLocale;
+
+  const lastUpdated = 'February 15, 2026';
 
   return (
-    <>
-      <Navbar locale="en" />
-      <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20 text-white mt-[8svh]">
+    <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20 text-white mt-[8svh]">
       <header className="border-b border-slate-200 pb-8 mb-10">
         <h1 className="text-4xl font-bold tracking-tight text-white mb-4">
           Terms of Use
@@ -62,7 +71,7 @@ export default function TermsOfUse() {
             All content, including workout plans, videos, and logos, is the
             property of Amazonia - FitLab. We grant you a personal,
             non-commercial license to view our content. Redistribution or
-            "scraping" of our data is strictly prohibited.
+            &quot;scraping&quot; of our data is strictly prohibited.
           </p>
         </section>
 
@@ -86,9 +95,6 @@ export default function TermsOfUse() {
           </p>
         </section>
       </div>
-      </div>
-      <Footer />
-      <CookieBanner />
-    </>
+    </div>
   );
 }

@@ -25,7 +25,10 @@ export async function generateMetadata({
       ? 'Amazonia - FitLab | Monitorizare Precisă a Fitnessului'
       : 'Amazonia - FitLab | Precision Fitness Tracking';
 
-  const canonicalUrl = safeLocale === 'ro' ? 'https://amazonia-fitlab.ro/' : 'https://amazonia-fitlab.ro/en/';
+  const canonicalUrl =
+    safeLocale === 'ro'
+      ? 'https://amazonia-fitlab.ro/ro/'
+      : 'https://amazonia-fitlab.ro/en/';
 
   return {
     title,
@@ -33,9 +36,9 @@ export async function generateMetadata({
     alternates: {
       canonical: canonicalUrl,
       languages: {
-        ro: 'https://amazonia-fitlab.ro/',
         en: 'https://amazonia-fitlab.ro/en/',
-        'x-default': 'https://amazonia-fitlab.ro/',
+        ro: 'https://amazonia-fitlab.ro/ro/',
+        'x-default': 'https://amazonia-fitlab.ro/en/',
       },
     },
   };

@@ -1,7 +1,5 @@
 import './global.scss';
 import { Metadata } from 'next';
-import { Suspense } from 'react';
-import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://amazonia-fitlab.ro/'),
@@ -67,17 +65,12 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: {
+// html/body are rendered by [locale]/layout.tsx so that lang={locale} is set
+// dynamically per page without client-side JavaScript.
+export default function RootLayout({
+  children,
+}: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body>
-        {children}
-        <Suspense>
-          <Analytics />
-        </Suspense>
-      </body>
-    </html>
-  );
+  return children as React.ReactElement;
 }

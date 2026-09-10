@@ -59,12 +59,6 @@ export function LanguageToggler({ locale, className }: LanguageTogglerProps) {
   const targetLocale: Locale = currentLocale === 'en' ? 'ro' : 'en';
 
   const handleToggle = () => {
-    try {
-      localStorage.setItem('language', targetLocale);
-    } catch {
-      // localStorage may fail in restricted/private environments
-    }
-
     let cleanPath = pathname || '/';
     if (cleanPath.startsWith('/en/')) {
       cleanPath = cleanPath.replace(/^\/en/, '');
@@ -87,7 +81,8 @@ export function LanguageToggler({ locale, className }: LanguageTogglerProps) {
       const destination = cleanPath === '/' ? '/en/' : `/en${cleanPath}`;
       router.push(destination);
     } else {
-      router.push(cleanPath);
+      const destination = cleanPath === '/' ? '/ro/' : `/ro${cleanPath}`;
+      router.push(destination);
     }
   };
 
