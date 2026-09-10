@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Languages } from 'lucide-react';
 import clsx from 'clsx';
 import { Locale } from '../i18n/utils';
@@ -54,6 +54,7 @@ interface LanguageTogglerProps {
 
 export function LanguageToggler({ locale, className }: LanguageTogglerProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const currentLocale = locale === 'en' ? 'en' : 'ro';
   const targetLocale: Locale = currentLocale === 'en' ? 'ro' : 'en';
 
@@ -64,10 +65,29 @@ export function LanguageToggler({ locale, className }: LanguageTogglerProps) {
       // localStorage may fail in restricted/private environments
     }
 
+    let cleanPath = pathname || '/';
+    if (cleanPath.startsWith('/en/')) {
+      cleanPath = cleanPath.replace(/^\/en/, '');
+    } else if (cleanPath === '/en') {
+      cleanPath = '/';
+    } else if (cleanPath.startsWith('/ro/')) {
+      cleanPath = cleanPath.replace(/^\/ro/, '');
+    } else if (cleanPath === '/ro') {
+      cleanPath = '/';
+    }
+
+    if (!cleanPath.startsWith('/')) {
+      cleanPath = `/${cleanPath}`;
+    }
+    if (!cleanPath.endsWith('/')) {
+      cleanPath = `${cleanPath}/`;
+    }
+
     if (targetLocale === 'en') {
-      router.push('/en/');
+      const destination = cleanPath === '/' ? '/en/' : `/en${cleanPath}`;
+      router.push(destination);
     } else {
-      router.push('/');
+      router.push(cleanPath);
     }
   };
 

@@ -53,10 +53,13 @@ export function Navbar({ locale = defaultLocale, translations }: NavbarProps) {
     };
   }, [isMobileMenuOpen]);
 
-  const homeHref = locale === 'en' ? '/en/' : '/';
+  const homeHref = locale === 'en' ? '/en/' : '/ro/';
+  const aboutHref = locale === 'en' ? '/en/about-me/' : '/ro/about-me/';
+  const aboutLabel = t.nav.aboutMe || (locale === 'en' ? 'About Me' : 'Despre mine');
 
   const navLinks = [
     { href: homeHref, label: home },
+    { href: aboutHref, label: aboutLabel },
   ];
 
   const isLinkActive = (href: string) => {

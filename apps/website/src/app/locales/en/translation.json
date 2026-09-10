@@ -1,6 +1,7 @@
 {
   "nav": {
     "home": "Home",
+    "aboutMe": "About Me",
     "terms": "Terms of Use",
     "privacyPolicy": "Privacy Policy",
     "dataDeletion": "Data Deletion",
@@ -32,6 +33,18 @@
   "philosophy": {
     "quote": "The wildest jungle is the human biology. We provide the tools to navigate it with surgical precision.",
     "tag": "Amazonia Philosophy"
+  },
+  "aboutMe": {
+    "metaTitle": "Diana Bucelea | Amazonia - FitLab",
+    "metaDescription": "About Diana Bucelea - Coach and Nutritionist at Amazonia FitLab.",
+    "eyebrow": "Amazonia FitLab",
+    "name": "Diana Bucelea",
+    "p1": "I believe a coach has the responsibility to learn continuously. That is why I have invested years of study in nutrition and clinical nutrition, training methodology, and interpreting scientific research, attending national and international courses and certifications.",
+    "p2": "Every credential you see below represents more than just a qualification. It represents my commitment to offering you evidence-based guidance, rather than opinions or industry trends.",
+    "highlight": "Credentials are not the end goal. They are proof of my commitment to offering you the very best recommendations that science can support.",
+    "p3": "My ongoing education enables me to distinguish evidence-backed recommendations from information popularized purely because it is trending. That is why my coaching process starts with a comprehensive analysis of your needs, goals, and lifestyle, rather than a one-size-fits-all plan.",
+    "p4": "Every strategy is customized, grounded in the best available evidence, and clearly explained so that you understand not just what to do, but why. I emphasize sustainable results, education, and autonomy—because the ultimate goal is not to keep you dependent on a coach, but to empower you with the confidence and knowledge needed to make sound decisions independently over the long term.",
+    "imageAlt": "Diana Bucelea - Amazonia FitLab Coach"
   },
   "footer": {
     "copyright": "© 2026 AMAZONIA - FITLAB. SCIENCE-BACKED FITNESS.",

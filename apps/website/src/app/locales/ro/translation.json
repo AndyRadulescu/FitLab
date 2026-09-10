@@ -1,6 +1,7 @@
 {
   "nav": {
     "home": "Acasă",
+    "aboutMe": "Despre mine",
     "terms": "Termeni și condiții",
     "privacyPolicy": "Politică de confidențialitate",
     "dataDeletion": "Ștergere date",
@@ -32,6 +33,18 @@
   "philosophy": {
     "quote": "Cea mai sălbatică junglă este biologia umană. Oferim instrumentele pentru a o naviga cu precizie chirurgicală.",
     "tag": "Filosofia Amazonia"
+  },
+  "aboutMe": {
+    "metaTitle": "Diana Bucelea | Amazonia - FitLab",
+    "metaDescription": "Despre Diana Bucelea - Coach și nutriționist Amazonia FitLab.",
+    "eyebrow": "Amazonia FitLab",
+    "name": "Diana Bucelea",
+    "p1": "Cred că un coach are responsabilitatea de a învăța continuu. De aceea, am investit ani de studiu în nutriție și nutriție clinică, antrenament și interpretarea cercetărilor științifice, participând la cursuri și certificări naționale și internaționale.",
+    "p2": "Fiecare diplomă pe care o vezi mai jos reprezintă mai mult decât o calificare. Reprezintă angajamentul meu de a-ți oferi recomandări bazate pe dovezi, nu pe opinii sau tendințe din industrie.",
+    "highlight": "Diplomele nu sunt scopul. Sunt dovada angajamentului meu de a-ți oferi cele mai bune recomandări pe care știința le poate susține.",
+    "p3": "Educația mea continuă îmi permite să disting recomandările susținute de dovezi științifice de informațiile promovate doar pentru că sunt populare. De aceea, procesul meu de coaching începe cu o analiză completă a nevoilor, obiectivelor și stilului tău de viață, nu cu un plan standard.",
+    "p4": "Fiecare strategie este personalizată, fundamentată pe cele mai bune dovezi disponibile și explicată clar, astfel încât să înțelegi nu doar ce ai de făcut, ci și de ce. Pun accent pe rezultate sustenabile, educație și autonomie, pentru ca obiectivul final nu este să depinzi permanent de un coach, ci să capeți încrederea și cunoștințele necesare pentru a lua singur decizii bune pe termen lung.",
+    "imageAlt": "Diana Bucelea - Coach Amazonia FitLab"
   },
   "footer": {
     "copyright": "© 2026 AMAZONIA - FITLAB. FITNESS BAZAT PE ȘTIINȚĂ.",
