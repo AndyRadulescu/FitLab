@@ -1,6 +1,7 @@
 import React from 'react';
 import { Metadata } from 'next';
 import AboutMeContent from '../../components/about-me-content';
+import DiplomasGrid from '../../components/diplomas-grid';
 import { getServerTranslations } from '../../i18n/server';
 import { supportedLocales, isValidLocale, defaultLocale } from '../../i18n/utils';
 
@@ -46,5 +47,10 @@ export default async function LocalizedAboutMePage({
   const { locale } = await params;
   const safeLocale = isValidLocale(locale) ? locale : defaultLocale;
 
-  return <AboutMeContent locale={safeLocale} />;
+  return (
+    <>
+      <AboutMeContent locale={safeLocale} />
+      <DiplomasGrid locale={safeLocale} />
+    </>
+  );
 }

@@ -11,7 +11,7 @@ export default async function AboutMeContent({
   const { t } = await getServerTranslations(locale);
 
   return (
-    <main className="auth-theme-trigger min-h-screen bg-black text-zinc-300 selection:bg-primary selection:text-white mt-[8svh] md:mt-[10svh] px-6 py-12 lg:py-20">
+    <main className="auth-theme-trigger bg-black text-zinc-300 selection:bg-primary selection:text-white mt-[8svh] md:mt-[10svh] px-6 py-12 lg:py-20">
       <div className="max-w-6xl mx-auto">
         {/* Title on top in the middle */}
         <header className="text-center mb-10 md:mb-16">

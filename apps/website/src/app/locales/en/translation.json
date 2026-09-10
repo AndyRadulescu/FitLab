@@ -46,6 +46,16 @@
     "p4": "Every strategy is customized, grounded in the best available evidence, and clearly explained so that you understand not just what to do, but why. I emphasize sustainable results, education, and autonomy—because the ultimate goal is not to keep you dependent on a coach, but to empower you with the confidence and knowledge needed to make sound decisions independently over the long term.",
     "imageAlt": "Diana Bucelea - Amazonia FitLab Coach"
   },
+  "diplomas": {
+    "eyebrow": "Credentials & Accreditations",
+    "title": "Diplomas & Certifications",
+    "subtitle": "Years of continuous study in nutrition, exercise physiology, and clinical research interpretation.",
+    "viewCredential": "Click to expand",
+    "close": "Close preview",
+    "next": "Next credential",
+    "prev": "Previous credential",
+    "credentialCount": "Credential {{current}} of {{total}}"
+  },
   "footer": {
     "copyright": "© 2026 AMAZONIA - FITLAB. SCIENCE-BACKED FITNESS.",
     "privacyPolicy": "Privacy Policy",
