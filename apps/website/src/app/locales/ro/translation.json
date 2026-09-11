@@ -27,8 +27,40 @@
   },
   "appShowcase": {
     "eyebrow": "Aplicația FitLab",
+    "title": "Ecosistemul Tău Complet de Sănătate & Fitness",
+    "subtitle": "Monitorizează progresul săptămânal, înregistrează antrenamentele, gestionează nutriția și optimizează-ți sănătatea—totul într-o singură aplicație mobilă.",
     "caption": "Transformarea ta bazată pe știință, direct în buzunarul tău.",
-    "imageAlt": "Aplicația mobilă Amazonia FitLab"
+    "imageAlt": "Aplicația mobilă Amazonia FitLab",
+    "features": {
+      "checkins": {
+        "title": "Check-in-uri Săptămânale",
+        "description": "Înregistrează circumferințele corporale, fotografii de progres, greutatea și biofeedback-ul pentru adaptarea continuă și dinamică a planului tău.",
+        "tag1": "Măsurători Corporale",
+        "tag2": "Poze de Progres",
+        "tag3": "Biofeedback & Stare"
+      },
+      "workouts": {
+        "title": "Jurnal de Antrenamente",
+        "description": "Monitorizează fiecare sesiune cu precizie. Înregistrează serii, repetări, greutăți și pauze pentru a asigura supraîncărcarea progresivă și progresul continuu.",
+        "tag1": "Serii & Repetări",
+        "tag2": "Supraîncărcare Progresivă",
+        "tag3": "Analiză Volum"
+      },
+      "nutrition": {
+        "title": "Bibliotecă Alimentară",
+        "description": "Explorează o bază extinsă de alimente și rețete verificate, cu distribuția exactă a macronutrienților și caloriilor, pentru o alimentație flexibilă și sustenabilă.",
+        "tag1": "Distribuție Macronutrienți",
+        "tag2": "Bază de Date Verificată",
+        "tag3": "Nutriție Flexibilă"
+      },
+      "health": {
+        "title": "Aplicație Completă de Sănătate",
+        "description": "Fitnessul este doar o parte din ecuație. Monitorizează durata somnului, activitatea zilnică, nivelul de energie, recuperarea și obiceiurile pe termen lung.",
+        "tag1": "Somn & Recuperare",
+        "tag2": "Pași Zilnici & Obiceiuri",
+        "tag3": "Nivel de Energie"
+      }
+    }
   },
   "philosophy": {
     "quote": "Cea mai sălbatică junglă este biologia umană. Oferim instrumentele pentru a o naviga cu precizie chirurgicală.",

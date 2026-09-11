@@ -1,6 +1,7 @@
 import React from 'react';
 import { Activity, Camera, LineChart } from 'lucide-react';
 import { GlassyReflection } from './glassy-reflection';
+import FeatureCard from './feature-card';
 import { getServerTranslations } from '../i18n/server';
 import { defaultLocale, Locale } from '../i18n/utils';
 
@@ -30,36 +31,22 @@ export default async function WhatIOfferSection({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          <div className="space-y-4 p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/60">
-            <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
-              <Activity size={24} />
-            </div>
-            <h4 className="text-xl font-bold">{t('whatIOffer.card1Title')}</h4>
-            <p className="text-gray-400">
-              {t('whatIOffer.card1Desc')}
-            </p>
-          </div>
-
-          <div className="space-y-4 p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/60">
-            <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
-              <Camera size={24} />
-            </div>
-            <h4 className="text-xl font-bold">{t('whatIOffer.card2Title')}</h4>
-            <p className="text-gray-400">
-              {t('whatIOffer.card2Desc')}
-            </p>
-          </div>
-
-          <div className="space-y-4 p-6 rounded-2xl bg-zinc-900/40 border border-zinc-800/60">
-            <div className="w-12 h-12 bg-zinc-900 rounded-full flex items-center justify-center text-primary">
-              <LineChart size={24} />
-            </div>
-            <h4 className="text-xl font-bold">{t('whatIOffer.card3Title')}</h4>
-            <p className="text-gray-400">
-              {t('whatIOffer.card3Desc')}
-            </p>
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          <FeatureCard
+            icon={<Activity size={24} />}
+            title={t('whatIOffer.card1Title')}
+            description={t('whatIOffer.card1Desc')}
+          />
+          <FeatureCard
+            icon={<Camera size={24} />}
+            title={t('whatIOffer.card2Title')}
+            description={t('whatIOffer.card2Desc')}
+          />
+          <FeatureCard
+            icon={<LineChart size={24} />}
+            title={t('whatIOffer.card3Title')}
+            description={t('whatIOffer.card3Desc')}
+          />
         </div>
       </div>
     </section>

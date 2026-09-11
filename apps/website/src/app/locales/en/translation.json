@@ -27,8 +27,40 @@
   },
   "appShowcase": {
     "eyebrow": "The FitLab App",
+    "title": "Your Complete Health & Fitness Ecosystem",
+    "subtitle": "Track your weekly progress, log workouts, explore verified nutrition, and optimize holistic health—all in one seamless mobile app.",
     "caption": "Your science-backed progress, engineered right in your pocket.",
-    "imageAlt": "Amazonia FitLab Mobile Application"
+    "imageAlt": "Amazonia FitLab Mobile Application",
+    "features": {
+      "checkins": {
+        "title": "Weekly Check-Ins",
+        "description": "Log precise body circumferences, progress photos, weight trends, and biofeedback so your plan adapts dynamically to your real progress.",
+        "tag1": "Body Circumferences",
+        "tag2": "Progress Photos",
+        "tag3": "Biofeedback & Mood"
+      },
+      "workouts": {
+        "title": "Workout Tracker",
+        "description": "Log sets, reps, weights, and rest intervals effortlessly. Monitor progressive overload and volume over time to ensure continuous strength gains.",
+        "tag1": "Set & Rep Tracking",
+        "tag2": "Progressive Overload",
+        "tag3": "Volume Analytics"
+      },
+      "nutrition": {
+        "title": "Food Library",
+        "description": "Access an expansive, verified database of foods and recipes with exact macronutrient and caloric data for flexible, restriction-free nutrition.",
+        "tag1": "Macro Breakdown",
+        "tag2": "Verified Database",
+        "tag3": "Flexible Dieting"
+      },
+      "health": {
+        "title": "All-in-One Health Hub",
+        "description": "More than just workouts—monitor holistic health markers including sleep duration, daily activity, energy levels, and lifestyle habits in a single app.",
+        "tag1": "Sleep & Recovery",
+        "tag2": "Daily Steps",
+        "tag3": "Holistic Wellbeing"
+      }
+    }
   },
   "philosophy": {
     "quote": "The wildest jungle is the human biology. We provide the tools to navigate it with surgical precision.",

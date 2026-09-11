@@ -41,25 +41,170 @@
   align-items: center;
 }
 
-.phoneWrapper {
+.header {
+  text-align: center;
+  max-width: 48rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 4rem;
+  }
+}
+
+.eyebrow {
+  color: var(--color-primary, #ff5722);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-size: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: #ffffff;
+  margin-bottom: 1rem;
+
+  @media (min-width: 640px) {
+    font-size: 2.25rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 2.75rem;
+  }
+}
+
+.subtitle {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #a1a1aa;
+
+  @media (min-width: 640px) {
+    font-size: 1.125rem;
+  }
+}
+
+.showcaseGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  align-items: center;
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+
+  @media (min-width: 1024px) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  @media (min-width: 1280px) {
+    gap: 3.5rem;
+  }
+}
+
+.featureColumnLeft,
+.featureColumnRight {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    gap: 2rem;
+  }
+}
+
+/* Order control across breakpoints */
+.phoneColumn {
+  position: relative;
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
+  order: 1;
+  margin-bottom: 0.5rem;
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    grid-column: 1 / -1;
+    order: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    grid-column: auto;
+    order: 2;
+    margin-bottom: 0;
+  }
+}
+
+.featureColumnLeft {
+  order: 2;
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    grid-column: 1;
+    order: 2;
+  }
+
+  @media (min-width: 1024px) {
+    grid-column: auto;
+    order: 1;
+  }
+}
+
+.featureColumnRight {
+  order: 3;
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    grid-column: 2;
+    order: 3;
+  }
+
+  @media (min-width: 1024px) {
+    grid-column: auto;
+    order: 3;
+  }
+}
+
+.phoneGlow {
+  position: absolute;
+  inset: -30px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, rgba(255, 87, 34, 0.12) 0%, rgba(255, 87, 34, 0.03) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(40px);
 }
 
 .captionWrapper {
-  margin-top: 2rem;
+  margin-top: 3.5rem;
   text-align: center;
-  max-width: 38rem;
+  max-width: 44rem;
   margin-left: auto;
   margin-right: auto;
 
   @media (min-width: 640px) {
-    margin-top: 2.5rem;
+    margin-top: 4.5rem;
   }
 
   @media (min-width: 768px) {
-    margin-top: 3rem;
+    margin-top: 5.5rem;
   }
 }
 
