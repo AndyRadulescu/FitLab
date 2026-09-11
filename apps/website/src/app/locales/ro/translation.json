@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "home": "Acasă",
+    "aboutMe": "Despre mine",
+    "terms": "Termeni și condiții",
+    "privacyPolicy": "Politică de confidențialitate",
+    "dataDeletion": "Ștergere date",
+    "toggleLanguage": "Schimbă limba"
+  },
+  "hero": {
+    "eyebrow": "Nutriție & Fitness Personalizate",
+    "titlePart1": "Fitness și nutriție personalizate pentru tine, bazate pe",
+    "titleHighlight": "știința actuală",
+    "description": "Planuri premium de antrenament și nutriție, construite pe baza științei de cea mai înaltă calitate, adaptate nevoilor și stilului tău unic de viață, fără restricții și diete absurde.",
+    "cta": "Află mai multe"
+  },
+  "whatIOffer": {
+    "eyebrow": "Ce Îți Ofer",
+    "title": "Un Program Sustenabil, Bazat pe Știință",
+    "subtitle": "Fără șabloane generice. Fiecare plan este construit în jurul biologiei tale individuale, stilului de viață și obiectivelor tale progresive.",
+    "card1Title": "Nutriție & Antrenamente Personalizate",
+    "card1Desc": "Programare adaptată care se pliază pe metabolismul și rutina ta. Bucură-te de progres sustenabil fără interdicții alimentare absurde.",
+    "card2Title": "Monitorizare Obiectivă a Progresului",
+    "card2Desc": "Urmărește circumferințele, schimbările vizuale și markerii de performanță pentru a asigura o adaptare continuă și rezultate reale.",
+    "card3Title": "Ghidare Continuă 1-la-1",
+    "card3Desc": "Ajustări directe de coaching bazate pe feedback-ul tău, starea de spirit și indicatorii de recuperare pentru a merge înainte în siguranță."
+  },
+  "appShowcase": {
+    "eyebrow": "Aplicația FitLab",
+    "title": "Ecosistemul Tău Complet de Sănătate & Fitness",
+    "subtitle": "Monitorizează progresul săptămânal, înregistrează antrenamentele, gestionează nutriția și optimizează-ți sănătatea—totul într-o singură aplicație mobilă.",
+    "caption": "Transformarea ta bazată pe știință, direct în buzunarul tău.",
+    "imageAlt": "Aplicația mobilă Amazonia FitLab",
+    "features": {
+      "checkins": {
+        "title": "Check-in-uri Săptămânale",
+        "description": "Înregistrează circumferințele corporale, fotografii de progres, greutatea și biofeedback-ul pentru adaptarea continuă și dinamică a planului tău.",
+        "tag1": "Măsurători Corporale",
+        "tag2": "Poze de Progres",
+        "tag3": "Biofeedback & Stare"
+      },
+      "workouts": {
+        "title": "Jurnal de Antrenamente",
+        "description": "Monitorizează fiecare sesiune cu precizie. Înregistrează serii, repetări, greutăți și pauze pentru a asigura supraîncărcarea progresivă și progresul continuu.",
+        "tag1": "Serii & Repetări",
+        "tag2": "Supraîncărcare Progresivă",
+        "tag3": "Analiză Volum"
+      },
+      "nutrition": {
+        "title": "Bibliotecă Alimentară",
+        "description": "Explorează o bază extinsă de alimente și rețete verificate, cu distribuția exactă a macronutrienților și caloriilor, pentru o alimentație flexibilă și sustenabilă.",
+        "tag1": "Distribuție Macronutrienți",
+        "tag2": "Bază de Date Verificată",
+        "tag3": "Nutriție Flexibilă"
+      },
+      "health": {
+        "title": "Aplicație Completă de Sănătate",
+        "description": "Fitnessul este doar o parte din ecuație. Monitorizează durata somnului, activitatea zilnică, nivelul de energie, recuperarea și obiceiurile pe termen lung.",
+        "tag1": "Somn & Recuperare",
+        "tag2": "Pași Zilnici & Obiceiuri",
+        "tag3": "Nivel de Energie"
+      }
+    }
+  },
+  "philosophy": {
+    "quote": "Cea mai sălbatică junglă este biologia umană. Oferim instrumentele pentru a o naviga cu precizie chirurgicală.",
+    "tag": "Filosofia Amazonia"
+  },
+  "aboutMe": {
+    "metaTitle": "Diana Bucelea | Amazonia - FitLab",
+    "metaDescription": "Despre Diana Bucelea - Coach și nutriționist Amazonia FitLab.",
+    "eyebrow": "Amazonia FitLab",
+    "name": "Diana Bucelea",
+    "p1": "Cred că un coach are responsabilitatea de a învăța continuu. De aceea, am investit ani de studiu în nutriție și nutriție clinică, antrenament și interpretarea cercetărilor științifice, participând la cursuri și certificări naționale și internaționale.",
+    "p2": "Fiecare diplomă pe care o vezi mai jos reprezintă mai mult decât o calificare. Reprezintă angajamentul meu de a-ți oferi recomandări bazate pe dovezi, nu pe opinii sau tendințe din industrie.",
+    "highlight": "Diplomele nu sunt scopul. Sunt dovada angajamentului meu de a-ți oferi cele mai bune recomandări pe care știința le poate susține.",
+    "p3": "Educația mea continuă îmi permite să disting recomandările susținute de dovezi științifice de informațiile promovate doar pentru că sunt populare. De aceea, procesul meu de coaching începe cu o analiză completă a nevoilor, obiectivelor și stilului tău de viață, nu cu un plan standard.",
+    "p4": "Fiecare strategie este personalizată, fundamentată pe cele mai bune dovezi disponibile și explicată clar, astfel încât să înțelegi nu doar ce ai de făcut, ci și de ce. Pun accent pe rezultate sustenabile, educație și autonomie, pentru ca obiectivul final nu este să depinzi permanent de un coach, ci să capeți încrederea și cunoștințele necesare pentru a lua singur decizii bune pe termen lung.",
+    "imageAlt": "Diana Bucelea - Coach Amazonia FitLab"
+  },
+  "diplomas": {
+    "eyebrow": "Calificări & Acreditări",
+    "title": "Diplome & Certificări",
+    "subtitle": "Ani de studiu continuu în nutriție, fiziologia efortului și interpretarea cercetărilor științifice.",
+    "viewCredential": "Apasă pentru a mări",
+    "close": "Închide previzualizarea",
+    "next": "Diploma următoare",
+    "prev": "Diploma anterioară",
+    "credentialCount": "Diploma {{current}} din {{total}}"
+  },
+  "footer": {
+    "copyright": "© 2026 AMAZONIA - FITLAB. FITNESS BAZAT PE ȘTIINȚĂ.",
+    "privacyPolicy": "Politică de confidențialitate",
+    "terms": "Termeni și condiții",
+    "dataDeletion": "Ștergere date",
+    "contact": "Contact"
+  },
+  "cookieBanner": {
+    "title": "Susține-ți progresul cu cookies?",
+    "description": "Folosim cookie-uri pentru a optimiza experiența ta și a monitoriza parametrii corporali cu precizie. Nu-ți face griji, aceste cookie-uri au 0 calorii! Progres garantat.",
+    "checkFormula": "Vezi formula noastră.",
+    "skip": "Sari seria",
+    "accept": "Dă totul 💪"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "nav": {
+    "home": "Home",
+    "aboutMe": "About Me",
+    "terms": "Terms of Use",
+    "privacyPolicy": "Privacy Policy",
+    "dataDeletion": "Data Deletion",
+    "toggleLanguage": "Switch Language"
+  },
+  "hero": {
+    "eyebrow": "Personalized Fitness & Nutrition",
+    "titlePart1": "Fitness & nutrition customized for you, based on",
+    "titleHighlight": "current science",
+    "description": "Premium workout and nutrition plans, built on the highest quality science, tailored to your unique needs, lifestyle, without restrictions and absurd diets.",
+    "cta": "Learn More"
+  },
+  "whatIOffer": {
+    "eyebrow": "What I Offer",
+    "title": "A Sustainable, Science-Driven Program",
+    "subtitle": "No generic templates. Every plan is built around your individual biology, lifestyle, and progressive goals.",
+    "card1Title": "Custom Nutrition & Workouts",
+    "card1Desc": "Tailored programming that adapts to your metabolism and routine. Enjoy sustainable progress without rigid food bans.",
+    "card2Title": "Objective Progress Tracking",
+    "card2Desc": "Track circumferences, visual changes, and performance markers to ensure continuous adaptation and real results.",
+    "card3Title": "1-on-1 Continuous Guidance",
+    "card3Desc": "Direct coaching adjustments based on your feedback, mood, and recovery metrics to keep you moving forward safely."
+  },
+  "appShowcase": {
+    "eyebrow": "The FitLab App",
+    "title": "Your Complete Health & Fitness Ecosystem",
+    "subtitle": "Track your weekly progress, log workouts, explore verified nutrition, and optimize holistic health—all in one seamless mobile app.",
+    "caption": "Your science-backed progress, engineered right in your pocket.",
+    "imageAlt": "Amazonia FitLab Mobile Application",
+    "features": {
+      "checkins": {
+        "title": "Weekly Check-Ins",
+        "description": "Log precise body circumferences, progress photos, weight trends, and biofeedback so your plan adapts dynamically to your real progress.",
+        "tag1": "Body Circumferences",
+        "tag2": "Progress Photos",
+        "tag3": "Biofeedback & Mood"
+      },
+      "workouts": {
+        "title": "Workout Tracker",
+        "description": "Log sets, reps, weights, and rest intervals effortlessly. Monitor progressive overload and volume over time to ensure continuous strength gains.",
+        "tag1": "Set & Rep Tracking",
+        "tag2": "Progressive Overload",
+        "tag3": "Volume Analytics"
+      },
+      "nutrition": {
+        "title": "Food Library",
+        "description": "Access an expansive, verified database of foods and recipes with exact macronutrient and caloric data for flexible, restriction-free nutrition.",
+        "tag1": "Macro Breakdown",
+        "tag2": "Verified Database",
+        "tag3": "Flexible Dieting"
+      },
+      "health": {
+        "title": "All-in-One Health Hub",
+        "description": "More than just workouts—monitor holistic health markers including sleep duration, daily activity, energy levels, and lifestyle habits in a single app.",
+        "tag1": "Sleep & Recovery",
+        "tag2": "Daily Steps",
+        "tag3": "Holistic Wellbeing"
+      }
+    }
+  },
+  "philosophy": {
+    "quote": "The wildest jungle is the human biology. We provide the tools to navigate it with surgical precision.",
+    "tag": "Amazonia Philosophy"
+  },
+  "aboutMe": {
+    "metaTitle": "Diana Bucelea | Amazonia - FitLab",
+    "metaDescription": "About Diana Bucelea - Coach and Nutritionist at Amazonia FitLab.",
+    "eyebrow": "Amazonia FitLab",
+    "name": "Diana Bucelea",
+    "p1": "I believe a coach has the responsibility to learn continuously. That is why I have invested years of study in nutrition and clinical nutrition, training methodology, and interpreting scientific research, attending national and international courses and certifications.",
+    "p2": "Every credential you see below represents more than just a qualification. It represents my commitment to offering you evidence-based guidance, rather than opinions or industry trends.",
+    "highlight": "Credentials are not the end goal. They are proof of my commitment to offering you the very best recommendations that science can support.",
+    "p3": "My ongoing education enables me to distinguish evidence-backed recommendations from information popularized purely because it is trending. That is why my coaching process starts with a comprehensive analysis of your needs, goals, and lifestyle, rather than a one-size-fits-all plan.",
+    "p4": "Every strategy is customized, grounded in the best available evidence, and clearly explained so that you understand not just what to do, but why. I emphasize sustainable results, education, and autonomy—because the ultimate goal is not to keep you dependent on a coach, but to empower you with the confidence and knowledge needed to make sound decisions independently over the long term.",
+    "imageAlt": "Diana Bucelea - Amazonia FitLab Coach"
+  },
+  "diplomas": {
+    "eyebrow": "Credentials & Accreditations",
+    "title": "Diplomas & Certifications",
+    "subtitle": "Years of continuous study in nutrition, exercise physiology, and clinical research interpretation.",
+    "viewCredential": "Click to expand",
+    "close": "Close preview",
+    "next": "Next credential",
+    "prev": "Previous credential",
+    "credentialCount": "Credential {{current}} of {{total}}"
+  },
+  "footer": {
+    "copyright": "© 2026 AMAZONIA - FITLAB. SCIENCE-BACKED FITNESS.",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of use",
+    "dataDeletion": "Data Deletion",
+    "contact": "Contact"
+  },
+  "cookieBanner": {
+    "title": "Fuel Your Progress with Cookies?",
+    "description": "We use cookies to optimize your laboratory experience and track your body metrics more precisely. Don't worry, these cookies have 0 calories! Gains guaranteed.",
+    "checkFormula": "Check our formula.",
+    "skip": "Skip Set",
+    "accept": "Crush It 💪"
+  }
+}
