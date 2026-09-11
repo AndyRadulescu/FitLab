@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import PhoneMockup from './phone-mockup';
 import FeatureCard from './feature-card';
+import MobileCardsScroller from './mobile-cards-scroller';
 import { GlassyReflection } from './glassy-reflection';
 import { getServerTranslations } from '../i18n/server';
 import { defaultLocale, Locale } from '../i18n/utils';
@@ -97,6 +98,52 @@ export default async function AppShowcaseSection({
               ]}
             />
           </div>
+        </div>
+
+        {/* Mobile Horizontal Scroller (visible on <768px, hidden on >768px) */}
+        <div className={styles.mobileScrollerWrapper}>
+          <MobileCardsScroller>
+            <FeatureCard
+              icon={<ClipboardCheck size={24} />}
+              title={t('appShowcase.features.checkins.title')}
+              description={t('appShowcase.features.checkins.description')}
+              tags={[
+                t('appShowcase.features.checkins.tag1'),
+                t('appShowcase.features.checkins.tag2'),
+                t('appShowcase.features.checkins.tag3'),
+              ]}
+            />
+            <FeatureCard
+              icon={<Dumbbell size={24} />}
+              title={t('appShowcase.features.workouts.title')}
+              description={t('appShowcase.features.workouts.description')}
+              tags={[
+                t('appShowcase.features.workouts.tag1'),
+                t('appShowcase.features.workouts.tag2'),
+                t('appShowcase.features.workouts.tag3'),
+              ]}
+            />
+            <FeatureCard
+              icon={<UtensilsCrossed size={24} />}
+              title={t('appShowcase.features.nutrition.title')}
+              description={t('appShowcase.features.nutrition.description')}
+              tags={[
+                t('appShowcase.features.nutrition.tag1'),
+                t('appShowcase.features.nutrition.tag2'),
+                t('appShowcase.features.nutrition.tag3'),
+              ]}
+            />
+            <FeatureCard
+              icon={<HeartPulse size={24} />}
+              title={t('appShowcase.features.health.title')}
+              description={t('appShowcase.features.health.description')}
+              tags={[
+                t('appShowcase.features.health.tag1'),
+                t('appShowcase.features.health.tag2'),
+                t('appShowcase.features.health.tag3'),
+              ]}
+            />
+          </MobileCardsScroller>
         </div>
 
         {/* Short copy under the phone and features */}
