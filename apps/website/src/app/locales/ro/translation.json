@@ -23,7 +23,27 @@
     "card2Title": "Monitorizare Obiectivă a Progresului",
     "card2Desc": "Urmărește circumferințele, schimbările vizuale și markerii de performanță pentru a asigura o adaptare continuă și rezultate reale.",
     "card3Title": "Ghidare Continuă 1-la-1",
-    "card3Desc": "Ajustări directe de coaching bazate pe feedback-ul tău, starea de spirit și indicatorii de recuperare pentru a merge înainte în siguranță."
+    "card3Desc": "Ajustări directe de coaching bazate pe feedback-ul tău, starea de spirit și indicatorii de recuperare pentru a merge înainte în siguranță.",
+    "workflow": {
+      "eyebrow": "Procesul de Coaching",
+      "title": "Cum lucrez cu tine",
+      "subtitle": "Un proces structurat, bazat pe știință, conceput pentru a-ți transforma corpul, obiceiurile și stilul de viață pe termen lung.",
+      "step1Tag": "pasul-01 // cunoaștere",
+      "step1Title": "Apel Inițial de Cunoaștere",
+      "step1Desc": "Începem cu o consultație 1-la-1 în care stabilim intențiile, dorințele, obiectivele personale și discutăm istoricul tău de sănătate.",
+      "step2Tag": "pasul-02 // fundație",
+      "step2Title": "Începerea Antrenamentelor",
+      "step2Desc": "Demarăm programul tău personalizat de exerciții, calibrat precis pe biomecanica ta, nivelul actual de pregătire și capacitatea de progres.",
+      "step3Tag": "pasul-03 // monitorizare",
+      "step3Title": "Monitorizare în Aplicație & Check-In",
+      "step3Desc": "Înregistrezi antrenamentele în aplicația FitLab, adaugi fotografii săptămânale, măsori circumferințele și monitorizezi somnul și nivelul de stres.",
+      "step4Tag": "pasul-04 // perfecționare",
+      "step4Title": "Feedback & Corectare Tehnică",
+      "step4Desc": "Îți perfecționezi constant execuția și progresezi. Te înregistrezi video pentru evaluare online sau primești feedback live direct în sală de la mine.",
+      "step5Tag": "pasul-05 // sustenabilitate",
+      "step5Title": "Nutriție Personalizată & Stil de Viață",
+      "step5Desc": "Primești planuri alimentare personalizate sau calcul exact de macronutrienți adaptat vieții tale. Scopul este un stil de viață sustenabil, nu o dietă strictă."
+    }
   },
   "appShowcase": {
     "eyebrow": "Aplicația FitLab",

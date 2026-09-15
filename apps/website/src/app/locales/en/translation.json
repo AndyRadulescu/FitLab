@@ -23,7 +23,27 @@
     "card2Title": "Objective Progress Tracking",
     "card2Desc": "Track circumferences, visual changes, and performance markers to ensure continuous adaptation and real results.",
     "card3Title": "1-on-1 Continuous Guidance",
-    "card3Desc": "Direct coaching adjustments based on your feedback, mood, and recovery metrics to keep you moving forward safely."
+    "card3Desc": "Direct coaching adjustments based on your feedback, mood, and recovery metrics to keep you moving forward safely.",
+    "workflow": {
+      "eyebrow": "The Coaching Journey",
+      "title": "How I work with you",
+      "subtitle": "A step-by-step, evidence-based process engineered to transform your body, mindset, and habits for life.",
+      "step1Tag": "step-01 // discovery",
+      "step1Title": "Initial Get-to-Know Call",
+      "step1Desc": "We begin with a 1-on-1 consultation to define your intentions, personal goals, daily routine, and discuss any health or medical considerations.",
+      "step2Tag": "step-02 // foundation",
+      "step2Title": "Start Training",
+      "step2Desc": "Kick off your tailored workout program, calibrated specifically for your biomechanics, current experience level, and progressive capacity.",
+      "step3Tag": "step-03 // analytics",
+      "step3Title": "App-Powered Progress & Check-Ins",
+      "step3Desc": "Use the FitLab app to log your workouts, submit weekly check-in photos, track body circumferences, and monitor sleep quality and stress levels.",
+      "step4Tag": "step-04 // refinement",
+      "step4Title": "Feedback & Continuous Form Correction",
+      "step4Desc": "Continuous refinement and technique improvement. Clients either record themselves for online review or receive live, hands-on feedback from me in the gym.",
+      "step5Tag": "step-05 // longevity",
+      "step5Title": "Personalized Nutrition & Macro Guidance",
+      "step5Desc": "Receive custom meal plans or macro calculations designed around your real life. The goal is building a sustainable lifestyle, not following a restrictive diet."
+    }
   },
   "appShowcase": {
     "eyebrow": "The FitLab App",

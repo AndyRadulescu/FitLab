@@ -2,6 +2,7 @@ import React from 'react';
 import { Activity, Camera, LineChart } from 'lucide-react';
 import { GlassyReflection } from './glassy-reflection';
 import FeatureCard from './feature-card';
+import CoachingWorkflow from './coaching-workflow';
 import { getServerTranslations } from '../i18n/server';
 import { defaultLocale, Locale } from '../i18n/utils';
 
@@ -11,6 +12,34 @@ export default async function WhatIOfferSection({
   locale?: Locale;
 }) {
   const { t } = await getServerTranslations(locale);
+
+  const workflowSteps = [
+    {
+      tag: t('whatIOffer.workflow.step1Tag'),
+      title: t('whatIOffer.workflow.step1Title'),
+      description: t('whatIOffer.workflow.step1Desc'),
+    },
+    {
+      tag: t('whatIOffer.workflow.step2Tag'),
+      title: t('whatIOffer.workflow.step2Title'),
+      description: t('whatIOffer.workflow.step2Desc'),
+    },
+    {
+      tag: t('whatIOffer.workflow.step3Tag'),
+      title: t('whatIOffer.workflow.step3Title'),
+      description: t('whatIOffer.workflow.step3Desc'),
+    },
+    {
+      tag: t('whatIOffer.workflow.step4Tag'),
+      title: t('whatIOffer.workflow.step4Title'),
+      description: t('whatIOffer.workflow.step4Desc'),
+    },
+    {
+      tag: t('whatIOffer.workflow.step5Tag'),
+      title: t('whatIOffer.workflow.step5Title'),
+      description: t('whatIOffer.workflow.step5Desc'),
+    },
+  ];
 
   return (
     <section
@@ -46,6 +75,16 @@ export default async function WhatIOfferSection({
             icon={<LineChart size={24} />}
             title={t('whatIOffer.card3Title')}
             description={t('whatIOffer.card3Desc')}
+          />
+        </div>
+
+        {/* Workflow / Coaching Journey Section (Git Source Tree) */}
+        <div className="mt-28 md:mt-36 pt-16 border-t border-zinc-900/80">
+          <CoachingWorkflow
+            eyebrow={t('whatIOffer.workflow.eyebrow')}
+            title={t('whatIOffer.workflow.title')}
+            subtitle={t('whatIOffer.workflow.subtitle')}
+            steps={workflowSteps}
           />
         </div>
       </div>
