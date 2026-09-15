@@ -2,7 +2,7 @@ import React from 'react';
 import { Activity, Camera, LineChart } from 'lucide-react';
 import { GlassyReflection } from './glassy-reflection';
 import FeatureCard from './feature-card';
-import CoachingWorkflow from './coaching-workflow';
+import CoachingWorkflow, { WorkflowStep } from './coaching-workflow';
 import { getServerTranslations } from '../i18n/server';
 import { defaultLocale, Locale } from '../i18n/utils';
 
@@ -13,7 +13,7 @@ export default async function WhatIOfferSection({
 }) {
   const { t } = await getServerTranslations(locale);
 
-  const workflowSteps = [
+  const workflowSteps: WorkflowStep[] = [
     {
       tag: t('whatIOffer.workflow.step1Tag'),
       title: t('whatIOffer.workflow.step1Title'),

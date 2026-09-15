@@ -115,6 +115,41 @@
     "dataDeletion": "Data Deletion",
     "contact": "Contact"
   },
+  "meetCoach": {
+    "eyebrow": "Meet Your Coach",
+    "name": "Diana Bucelea",
+    "role": "Certified Nutritionist & Personal Trainer",
+    "bio": "Fitness is not about punishment, extreme restriction, or following trends. I provide evidence-based training and clinical nutrition coaching that respects your biology and empowers you to build lifelong autonomy.",
+    "highlight": "Evidence-backed guidance, tailored to your biomechanics and daily lifestyle.",
+    "badge1": "ISSA Certified Personal Trainer",
+    "badge2": "Precision Nutrition Certified Coach",
+    "badge3": "Henselmans PT Certified",
+    "cta": "Read Full Story & Credentials",
+    "imageAlt": "Diana Bucelea - Coach & Nutritionist"
+  },
+  "faq": {
+    "eyebrow": "Common Questions",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about working with me, the FitLab app, and our evidence-based methodology.",
+    "q1": "Do I need prior gym experience to start?",
+    "a1": "Not at all. Every program is calibrated from scratch to match your current experience level, joint mechanics, and training background. Whether you are stepping into a gym for the first time or are an experienced lifter aiming for a breakthrough, your routine is personalized to progress safely and effectively.",
+    "q2": "Can I train at home, or do I need a fully equipped gym?",
+    "a2": "You can do either! During our initial get-to-know call, we review your available equipment and schedule. Your plan is tailored specifically for your environment, whether that means a home gym, dumbbells, or a commercial fitness center.",
+    "q3": "What is the difference between In-Person and Online coaching?",
+    "a3": "Both coaching modalities share the exact same nutritional guidance, lifestyle habits, and FitLab app progress tracking. The only difference is execution feedback: in-person clients receive live, hands-on feedback and form correction in the gym with me, while online clients record their exercises and receive comprehensive video breakdowns and technical reviews.",
+    "q4": "Is the FitLab mobile app included with the coaching?",
+    "a4": "Yes, full access to the FitLab companion app is included for all active coaching clients. You will use it to log workouts, track progressive overload, monitor body circumferences, submit weekly check-in photos, and log holistic health metrics like sleep and stress.",
+    "q5": "Will I have to follow a strict diet or give up foods I love?",
+    "a5": "Absolutely not. Extreme, restrictive diets are unsustainable and counter-productive. We use science-backed flexible nutrition and personalized macronutrient targets that integrate into your social life and daily routines, ensuring progress without unnecessary food bans.",
+    "q6": "How do I get started?",
+    "a6": "Getting started is simple! Send me a direct message on Instagram to introduce yourself, share your current goals, and schedule your initial get-to-know consultation call."
+  },
+  "finalCta": {
+    "eyebrow": "Get Started",
+    "title": "Ready to Build a Sustainable, Science-Backed Body?",
+    "subtitle": "Start your journey today. Send me a message on Instagram to talk about your goals, routine, and set up your initial get-to-know call.",
+    "buttonText": "Message me on Instagram"
+  },
   "cookieBanner": {
     "title": "Fuel Your Progress with Cookies?",
     "description": "We use cookies to optimize your laboratory experience and track your body metrics more precisely. Don't worry, these cookies have 0 calories! Gains guaranteed.",

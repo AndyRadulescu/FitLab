@@ -88,7 +88,7 @@
   },
   "aboutMe": {
     "metaTitle": "Diana Bucelea | Amazonia - FitLab",
-    "metaDescription": "Despre Diana Bucelea - Coach și nutriționist Amazonia FitLab.",
+    "metaDescription": "Despre mine - Coach și nutriționist Amazonia FitLab.",
     "eyebrow": "Amazonia FitLab",
     "name": "Diana Bucelea",
     "p1": "Cred că un coach are responsabilitatea de a învăța continuu. De aceea, am investit ani de studiu în nutriție și nutriție clinică, antrenament și interpretarea cercetărilor științifice, participând la cursuri și certificări naționale și internaționale.",
@@ -114,6 +114,41 @@
     "terms": "Termeni și condiții",
     "dataDeletion": "Ștergere date",
     "contact": "Contact"
+  },
+  "meetCoach": {
+    "eyebrow": "Antrenorul Tău",
+    "name": "Diana Bucelea",
+    "role": "Nutriționist & Antrenor Personal Certificat",
+    "bio": "Fitnessul nu înseamnă pedepse, restricții drastice sau urmărirea tendințelor trecătoare. Îți ofer îndrumare bazată pe dovezi științifice și nutriție clinică, respectând biologia ta și dezvoltându-ți autonomia pe viață.",
+    "highlight": "Recomandări fundamentate pe știință, calibrate pe biomecanica și stilul tău de viață.",
+    "badge1": "Antrenor Personal Certificat ISSA",
+    "badge2": "Coach Certificat Precision Nutrition",
+    "badge3": "Certificare Henselmans PT",
+    "cta": "Citește Povestea & Diplomele",
+    "imageAlt": "Diana Bucelea - Coach & Nutriționist"
+  },
+  "faq": {
+    "eyebrow": "Întrebări Frecvente",
+    "title": "Tot Ce Trebuie Să Știi",
+    "subtitle": "Răspunsuri la cele mai importante întrebări despre colaborarea cu mine, aplicația FitLab și abordarea bazată pe știință.",
+    "q1": "Am nevoie de experiență anterioară la sală pentru a începe?",
+    "a1": "Absolut deloc. Fiecare program este construit de la zero în funcție de nivelul tău actual, istoricul de antrenament și particularitățile articulare. Fie că pășești pentru prima dată într-o sală sau ești un sportiv avansat care caută noi recorduri, planul este personalizat pentru o progresie sigură și eficientă.",
+    "q2": "Mă pot antrena acasă sau am nevoie de un abonament la o sală complet utilată?",
+    "a2": "Te poți antrena în oricare dintre variante! În cadrul apelului inițial de cunoaștere, stabilim echipamentele pe care le ai la dispoziție și programul tău. Planul este calibrat specific pentru mediul tău, fie că este vorba despre antrenamente acasă cu gantere, fie într-o sală de fitness.",
+    "q3": "Care este diferența dintre coaching-ul în sală (fizic) și cel online?",
+    "a3": "În ambele variante beneficiezi de exact aceeași îndrumare nutrițională, monitorizare a stilului de viață și urmărire a progresului în aplicația FitLab. Singura diferență constă în modul de livrare a feedback-ului tehnic: clienții din sală primesc corecturi live și asistență directă de la mine în timpul execuției, în timp ce clienții online se înregistrează video și primesc analize tehnice detaliate.",
+    "q4": "Aplicația mobilă FitLab este inclusă în pachetul de coaching?",
+    "a4": "Da, accesul complet la aplicația FitLab este inclus pentru toți clienții activi. O vei folosi pentru a-ți înregistra antrenamentele, a monitoriza supraîncărcarea progresivă, a nota circumferințele corporale, a încărca fotografiile de check-in săptămânale și a urmări somnul și stresul.",
+    "q5": "Va trebui să urmez o dietă strictă sau să renunț la alimentele care îmi plac?",
+    "a5": "În niciun caz. Dietele drastice și restrictive nu sunt sustenabile pe termen lung. Lucrăm pe principiile nutriției flexibile fundamentate științific și pe ținte personalizate de macronutrienți, integrate firesc în viața ta socială, fără interdicții absurde.",
+    "q6": "Cum pot începe?",
+    "a6": "Este foarte simplu! Trimite-i Dianei un mesaj direct pe Instagram pentru a te prezenta, a împărtăși obiectivele tale actuale și a programa apelul inițial de cunoaștere."
+  },
+  "finalCta": {
+    "eyebrow": "Începe Acum",
+    "title": "Ești Gata Să Îți Transformi Corpul Pe Baze Științifice?",
+    "subtitle": "Fă primul pas către un stil de viață sustenabil. Trimite-i Dianei un mesaj pe Instagram pentru a discuta despre obiectivele tale și a stabili apelul inițial.",
+    "buttonText": "Scrie-mi pe Instagram"
   },
   "cookieBanner": {
     "title": "Susține-ți progresul cu cookies?",

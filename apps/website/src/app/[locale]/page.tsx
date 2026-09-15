@@ -2,8 +2,11 @@ import React from 'react';
 import { Metadata } from 'next';
 import HeroSection from '../components/hero-section';
 import WhatIOfferSection from '../components/what-i-offer';
+import MeetCoachSection from '../components/meet-coach-section';
 import AppShowcaseSection from '../components/app-showcase-section';
+import FaqSection from '../components/faq-section';
 import PhilosophySection from '../components/philosophy-section';
+import FinalCtaSection from '../components/final-cta-section';
 import { getServerTranslations } from '../i18n/server';
 import { supportedLocales, isValidLocale, defaultLocale } from '../i18n/utils';
 
@@ -56,8 +59,11 @@ export default async function LocalizedLandingPage({
     <div className="auth-theme-trigger min-h-screen bg-black text-white selection:bg-primary selection:text-white">
       <HeroSection locale={safeLocale} />
       <WhatIOfferSection locale={safeLocale} />
+      <MeetCoachSection locale={safeLocale} />
       <AppShowcaseSection locale={safeLocale} />
+      <FaqSection locale={safeLocale} />
       <PhilosophySection locale={safeLocale} />
+      <FinalCtaSection locale={safeLocale} />
     </div>
   );
 }

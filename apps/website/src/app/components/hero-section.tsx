@@ -2,6 +2,7 @@ import React from 'react';
 import { ChevronRight } from 'lucide-react';
 import { getServerTranslations } from '../i18n/server';
 import { defaultLocale, Locale } from '../i18n/utils';
+import MetallicButton from './metallic-button';
 
 export async function StartButton({
   locale = defaultLocale,
@@ -15,12 +16,14 @@ export async function StartButton({
 
   return (
     <div className="flex flex-col sm:flex-row gap-4 items-start">
-      <a
+      <MetallicButton
         href="#what-i-offer"
-        className="px-8 py-3 w-full max-w-96 text-black font-bold rounded-full text-lg primary-gradient transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
+        size="lg"
+        className="w-full max-w-96"
+        icon={<ChevronRight size={20} />}
       >
-        {label} <ChevronRight size={20} />
-      </a>
+        {label}
+      </MetallicButton>
     </div>
   );
 }
