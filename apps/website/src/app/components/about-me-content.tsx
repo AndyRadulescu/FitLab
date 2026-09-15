@@ -38,7 +38,7 @@ export default async function AboutMeContent({
           </div>
 
           {/* Text: Right on Desktop / 3rd in mobile order */}
-          <div className="space-y-4 text-xs leading-relaxed text-zinc-300">
+          <div className="space-y-4 text-sm leading-relaxed text-zinc-300">
             <p>{t('aboutMe.p1')}</p>
             <p>{t('aboutMe.p2')}</p>
             <p className="font-semibold text-white">
