@@ -1,31 +1,21 @@
 .container {
   position: relative;
   width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   touch-action: pan-y;
   cursor: grab;
   user-select: none;
-  scrollbar-width: thin;
-  scrollbar-color: rgb(170, 144, 91 , 0.45) rgba(39, 39, 42, 0.4);
+  -webkit-user-select: none;
+  outline: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   &.isDragging {
     cursor: grabbing;
-  }
-
-  &::-webkit-scrollbar {
-    height: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(39, 39, 42, 0.4);
-    border-radius: 9999px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgba(170, 144, 91, 0.45);
-    border-radius: 9999px;
   }
 }
 
@@ -34,6 +24,13 @@
   gap: 1rem;
   width: max-content;
   padding: 0.5rem 0.25rem 0.875rem 0.25rem;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
 }
 
 .item {
@@ -42,6 +39,10 @@
   max-width: 82vw;
   flex-shrink: 0;
   display: flex;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 
   & > * {
     width: 100%;
