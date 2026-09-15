@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import { ArrowUpRight } from 'lucide-react';
+import { InstagramLink } from './instagram-link';
 import { getClientTranslations } from '../i18n/client';
 import { defaultLocale } from '../i18n/utils';
 
@@ -56,26 +56,7 @@ export default function Footer({ locale = defaultLocale, translations }: FooterP
                 {label}
               </Link>
             ))}
-            <a
-              href="https://www.instagram.com/dianabucelea/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram @dianabucelea"
-              className="group inline-flex items-center gap-2 hover:text-white transition-colors duration-200"
-            >
-              <span className="relative flex items-center justify-center w-5 h-5 rounded-[6px] bg-zinc-900 border border-zinc-800 group-hover:border-transparent group-hover:bg-gradient-to-tr group-hover:from-[#f09433] group-hover:via-[#dc2743] group-hover:to-[#bc1888] transition-all duration-300">
-                <Image
-                  src="/insta-white.svg"
-                  alt="Instagram"
-                  width={13}
-                  height={13}
-                  className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity duration-200"
-                />
-              </span>
-              <span className="group-hover:text-white transition-colors">
-                @dianaBucelea
-              </span>
-            </a>
+            <InstagramLink />
           </div>
 
           <a

@@ -7,6 +7,7 @@ import { Menu, X } from 'lucide-react';
 import clsx from 'clsx';
 import { GlassyReflection } from './glassy-reflection';
 import { LanguageToggler } from './language-toggler';
+import { InstagramLink } from './instagram-link';
 import { getClientTranslations } from '../i18n/client';
 import { defaultLocale } from '../i18n/utils';
 
@@ -120,11 +121,13 @@ export function Navbar({ locale = defaultLocale, translations }: NavbarProps) {
               </Link>
             );
           })}
+          <InstagramLink />
           <LanguageToggler locale={locale} />
         </div>
 
-        {/* Mobile Actions: Language Toggler + Hamburger Button */}
+        {/* Mobile Actions: Instagram + Language Toggler + Hamburger Button */}
         <div className="md:hidden flex items-center gap-3">
+          <InstagramLink showLabel={false} />
           <LanguageToggler locale={locale} />
           <button
             type="button"
@@ -174,6 +177,9 @@ export function Navbar({ locale = defaultLocale, translations }: NavbarProps) {
                 </Link>
               );
             })}
+            <InstagramLink
+              className="flex items-center justify-between px-4 py-3.5 rounded-xl text-lg font-semibold text-zinc-300 hover:bg-white/5 hover:text-white transition-colors"
+            />
           </div>
 
           <div className="pt-8 border-t border-zinc-900 text-center">
