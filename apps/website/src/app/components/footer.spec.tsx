@@ -21,7 +21,18 @@ describe('Footer', () => {
     expect(screen.getByText('Privacy Policy')).toBeDefined();
     expect(screen.getByText('Terms of use')).toBeDefined();
     expect(screen.getByText('Data Deletion')).toBeDefined();
-    expect(screen.getByText('Contact')).toBeDefined();
+  });
+
+  it('renders the Instagram link with icon pointing to Diana Bucelea profile', () => {
+    render(<Footer locale="en" />);
+
+    const instagramLink = screen.getByRole('link', {
+      name: /instagram/i,
+    });
+    expect(instagramLink).toBeDefined();
+    expect(instagramLink.getAttribute('href')).toBe('https://www.instagram.com/dianabucelea/');
+    expect(instagramLink.getAttribute('target')).toBe('_blank');
+    expect(instagramLink.getAttribute('rel')).toContain('noopener');
   });
 
   it('renders the stylish Synapse Labs credit section with correct URL', () => {

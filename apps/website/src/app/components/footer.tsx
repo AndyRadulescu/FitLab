@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
@@ -27,7 +28,6 @@ export default function Footer({ locale = defaultLocale, translations }: FooterP
   const privacyPolicy = translations?.privacyPolicy || t.footer.privacyPolicy;
   const terms = translations?.terms || t.footer.terms;
   const dataDeletion = translations?.dataDeletion || t.footer.dataDeletion;
-  const contact = translations?.contact || t.footer.contact;
 
   const pathname = usePathname();
   const navLinks = [
@@ -43,7 +43,7 @@ export default function Footer({ locale = defaultLocale, translations }: FooterP
           {copyright}
         </div>
         <div className="flex flex-col items-center md:items-end gap-3.5">
-          <div className="flex flex-wrap justify-center md:justify-end gap-6 md:gap-8 text-sm font-medium">
+          <div className="flex flex-wrap justify-center md:justify-end items-center gap-6 md:gap-8 text-sm font-medium">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
@@ -57,10 +57,24 @@ export default function Footer({ locale = defaultLocale, translations }: FooterP
               </Link>
             ))}
             <a
-              href="mailto:andyradulescu@synapselabs.org"
-              className="hover:text-white transition-colors duration-200"
+              href="https://www.instagram.com/dianabucelea/"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram @dianabucelea"
+              className="group inline-flex items-center gap-2 hover:text-white transition-colors duration-200"
             >
-              {contact}
+              <span className="relative flex items-center justify-center w-5 h-5 rounded-[6px] bg-zinc-900 border border-zinc-800 group-hover:border-transparent group-hover:bg-gradient-to-tr group-hover:from-[#f09433] group-hover:via-[#dc2743] group-hover:to-[#bc1888] transition-all duration-300">
+                <Image
+                  src="/insta-white.svg"
+                  alt="Instagram"
+                  width={13}
+                  height={13}
+                  className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 transition-opacity duration-200"
+                />
+              </span>
+              <span className="group-hover:text-white transition-colors">
+                @dianaBucelea
+              </span>
             </a>
           </div>
 
@@ -79,7 +93,7 @@ export default function Footer({ locale = defaultLocale, translations }: FooterP
               </span>
             </span>
             <span className="text-zinc-500 group-hover:text-orange-400/90 font-medium transition-colors">
-              @andyRadulescu
+              @andy radulescu
             </span>
             <ArrowUpRight
               size={12}
@@ -91,3 +105,4 @@ export default function Footer({ locale = defaultLocale, translations }: FooterP
     </footer>
   );
 }
+
