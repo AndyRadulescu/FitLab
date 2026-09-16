@@ -46,7 +46,7 @@ export default async function FinalCtaSection({
               target="_blank"
               rel="noopener noreferrer"
               size="lg"
-              className="px-8 sm:px-10 py-3.5"
+              className="px-8 sm:px-10 py-3.5 w-full"
               icon={
                 <Image
                   src="/insta-white.svg"
