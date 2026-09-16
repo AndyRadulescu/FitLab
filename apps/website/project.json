@@ -12,7 +12,7 @@
         "{workspaceRoot}/dist/apps/website"
       ],
       "options": {
-        "command": "npx nx run website:build-base && cp -r dist/apps/website/.next/* dist/apps/website/ && rm -rf dist/apps/website/.next dist/apps/website/next.config.js dist/apps/website/package.json dist/apps/website/public dist/apps/website/.nx-helpers",
+        "command": "npx nx run website:build-base && cp -r dist/apps/website/.next/* dist/apps/website/ && rm -rf dist/apps/website/.next dist/apps/website/next.config.js dist/apps/website/package.json dist/apps/website/public dist/apps/website/.nx-helpers && cp -r dist/apps/website/en/data-deletion dist/apps/website/ && cp -r dist/apps/website/en/privacy-policy dist/apps/website/ && cp -r dist/apps/website/en/terms dist/apps/website/",
         "parallel": false
       }
     },
@@ -28,6 +28,12 @@
       },
       "configurations": {
         "production": {}
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "vitest run apps/website"
       }
     }
   }

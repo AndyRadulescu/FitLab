@@ -1,0 +1,50 @@
+.container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  outline: none;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &.isDragging {
+    cursor: grabbing;
+  }
+}
+
+.track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  padding: 0.5rem 0.25rem 0.875rem 0.25rem;
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 1000;
+  perspective: 1000;
+}
+
+.item {
+  width: 290px;
+  min-width: 290px;
+  max-width: 82vw;
+  flex-shrink: 0;
+  display: flex;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+
+  & > * {
+    width: 100%;
+  }
+}

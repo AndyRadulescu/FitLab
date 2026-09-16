@@ -1,38 +1,70 @@
 import './global.scss';
-import Footer from './components/footer';
-import CookieBanner from './components/cookie-banner';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://amazonia-fitlab.ro/'),
-  title: 'Amazonia - FitLab | Precision Fitness Tracking',
-  description: 'Amazonia - FitLab isn\'t just an app; it\'s a digital laboratory for your body. Quantify your mood, track every centimeter of progress, and master the metrics that matter.',
-  keywords: ['fitness tracking', 'mood tracking', 'body measurements', 'progress photos', 'workout log', 'health metrics', 'Amazonia FitLab', 'biometric precision', 'fitness app', 'body transformation', 'gym progress', 'health laboratory'],
-  authors: [{ name: 'Amazonia FitLab' }],
+  title: {
+    default: 'Diana Bucelea | Amazonia - FitLab | Personal Trainer & Nutritionist',
+    template: '%s | Diana Bucelea - Amazonia FitLab',
+  },
+  description:
+    'Diana Bucelea - Antrenor personal și nutriționist certificat la Amazonia FitLab. Programe personalizate de fitness și nutriție bazate pe știință, fără restricții absurde, asistate de aplicația FitLab.',
+  keywords: [
+    'Diana Bucelea',
+    'diana bucelea',
+    'Diana Bucelea fitness',
+    'Diana Bucelea antrenor personal',
+    'Diana Bucelea nutritionist',
+    'Diana Bucelea coaching',
+    'Amazonia FitLab',
+    'amazonia fitlab',
+    'antrenor personal bucuresti',
+    'nutritie personalizata',
+    'fitness tracking',
+    'coaching fitness romania',
+    'online coaching fitness',
+    'body transformation',
+    'ISSA certified personal trainer',
+    'precision nutrition coach',
+  ],
+  authors: [
+    { name: 'Diana Bucelea', url: 'https://www.instagram.com/dianabucelea/' },
+    { name: 'Amazonia FitLab', url: 'https://amazonia-fitlab.ro/' },
+  ],
+  creator: 'Diana Bucelea',
+  publisher: 'Amazonia - FitLab',
   category: 'fitness',
   alternates: {
     canonical: '/',
   },
   openGraph: {
-    title: 'Amazonia - FitLab | Precision Fitness Tracking',
-    description: 'Amazonia - FitLab isn\'t just an app; it\'s a digital laboratory for your body. Quantify your mood, track every centimeter of progress, and master the metrics that matter.',
+    title: 'Diana Bucelea | Amazonia - FitLab | Personal Trainer & Nutritionist',
+    description:
+      'Diana Bucelea - Antrenor personal și nutriționist certificat la Amazonia FitLab. Programe personalizate de fitness și nutriție bazate pe știință, fără restricții absurde.',
     url: 'https://amazonia-fitlab.ro/',
-    siteName: 'Amazonia - FitLab',
+    siteName: 'Diana Bucelea | Amazonia - FitLab',
     images: [
       {
         url: '/amazonia-fitlab.jpg',
         width: 1200,
         height: 630,
-        alt: 'Amazonia - FitLab Landing page',
+        alt: 'Diana Bucelea - Amazonia FitLab Landing page',
+      },
+      {
+        url: '/about-me.jpeg',
+        width: 933,
+        height: 1400,
+        alt: 'Diana Bucelea - Antrenor Personal & Nutriționist',
       },
     ],
-    locale: 'en_US',
+    locale: 'ro_RO',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Amazonia - FitLab | Precision Fitness Tracking',
-    description: 'Amazonia - FitLab isn\'t just an app; it\'s a digital laboratory for your body. Quantify your mood, track every centimeter of progress, and master the metrics that matter.',
+    title: 'Diana Bucelea | Amazonia - FitLab | Personal Trainer & Nutritionist',
+    description:
+      'Diana Bucelea - Antrenor personal și nutriționist certificat la Amazonia FitLab. Programe personalizate de fitness și nutriție bazate pe știință, fără restricții absurde.',
     images: ['/amazonia-fitlab.jpg'],
   },
   robots: {
@@ -48,19 +80,15 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'cWpDXCgw5xLtm1XLCUipCC5Q1kG7TZKqrBvofMsMy6k',
-  }
+  },
 };
 
-export default function RootLayout({ children }: {
+// html/body are rendered by [locale]/layout.tsx so that lang={locale} is set
+// dynamically per page without client-side JavaScript.
+export default function RootLayout({
+  children,
+}: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-    <body>
-    {children}
-    <Footer />
-    <CookieBanner />
-    </body>
-    </html>
-  );
+  return children as React.ReactElement;
 }
