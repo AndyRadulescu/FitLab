@@ -25,9 +25,47 @@ export async function generateMetadata({
       ? 'https://amazonia-fitlab.ro/ro/about-me/'
       : 'https://amazonia-fitlab.ro/en/about-me/';
 
+  const isRo = safeLocale === 'ro';
+
   return {
-    title,
+    title: {
+      absolute: title,
+    },
     description,
+    keywords: [
+      'Diana Bucelea',
+      'diana bucelea',
+      'Diana Bucelea despre mine',
+      'Diana Bucelea diplome',
+      'Diana Bucelea certificari',
+      'Diana Bucelea antrenor personal',
+      'Diana Bucelea nutritionist',
+      'Diana Bucelea ISSA',
+      'Diana Bucelea Precision Nutrition',
+      'Amazonia FitLab',
+    ],
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: 'Diana Bucelea | Amazonia - FitLab',
+      locale: isRo ? 'ro_RO' : 'en_US',
+      type: 'profile',
+      images: [
+        {
+          url: '/about-me.jpeg',
+          width: 933,
+          height: 1400,
+          alt: 'Diana Bucelea - Antrenor Personal & Nutriționist',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/about-me.jpeg'],
+    },
     alternates: {
       canonical: canonicalUrl,
       languages: {

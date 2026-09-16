@@ -21,12 +21,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const safeLocale = isValidLocale(locale) ? locale : defaultLocale;
-  const { t } = await getServerTranslations(safeLocale);
+  const isRo = safeLocale === 'ro';
 
-  const title =
-    safeLocale === 'ro'
-      ? 'Amazonia - FitLab | Monitorizare Precisă a Fitnessului'
-      : 'Amazonia - FitLab | Precision Fitness Tracking';
+  const title = isRo
+    ? 'Diana Bucelea | Amazonia - FitLab | Antrenor Personal & Nutriție'
+    : 'Diana Bucelea | Amazonia - FitLab | Personal Trainer & Nutrition Coach';
+
+  const description = isRo
+    ? 'Diana Bucelea - Antrenor personal și nutriționist certificat la Amazonia FitLab. Antrenamente personalizate bazate pe știință, nutriție sustenabilă și monitorizare prin aplicația FitLab.'
+    : 'Diana Bucelea - Certified personal trainer & nutritionist at Amazonia FitLab. Science-backed customized workout and nutrition programs tailored to your lifestyle.';
 
   const canonicalUrl =
     safeLocale === 'ro'
@@ -34,8 +37,50 @@ export async function generateMetadata({
       : 'https://amazonia-fitlab.ro/en/';
 
   return {
-    title,
-    description: t('hero.description'),
+    title: {
+      absolute: title,
+    },
+    description,
+    keywords: [
+      'Diana Bucelea',
+      'diana bucelea',
+      'Diana Bucelea fitness',
+      'Diana Bucelea antrenor',
+      'Diana Bucelea nutritionist',
+      'Amazonia FitLab',
+      'amazonia fitlab',
+      'antrenor personal bucuresti',
+      'coaching fitness',
+      'nutritie personalizata',
+    ],
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      siteName: 'Diana Bucelea | Amazonia - FitLab',
+      locale: isRo ? 'ro_RO' : 'en_US',
+      type: 'website',
+      images: [
+        {
+          url: '/amazonia-fitlab.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'Diana Bucelea - Amazonia FitLab',
+        },
+        {
+          url: '/about-me.jpeg',
+          width: 933,
+          height: 1400,
+          alt: 'Diana Bucelea - Antrenor Personal & Nutriționist',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/amazonia-fitlab.jpg'],
+    },
     alternates: {
       canonical: canonicalUrl,
       languages: {
