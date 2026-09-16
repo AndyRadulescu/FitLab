@@ -7,7 +7,6 @@ import AppShowcaseSection from '../components/app-showcase-section';
 import FaqSection from '../components/faq-section';
 import PhilosophySection from '../components/philosophy-section';
 import FinalCtaSection from '../components/final-cta-section';
-import { getServerTranslations } from '../i18n/server';
 import { supportedLocales, isValidLocale, defaultLocale } from '../i18n/utils';
 
 export function generateStaticParams() {

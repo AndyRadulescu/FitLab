@@ -16,7 +16,7 @@ describe('WhatIOfferSection', () => {
 
     // Coaching workflow steps
     expect(screen.getByText('The Coaching Journey')).toBeDefined();
-    expect(screen.getByText('How Diana Works With You')).toBeDefined();
+    expect(screen.getByText('How I work with you')).toBeDefined();
     expect(screen.getAllByText('Initial Get-to-Know Call').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Start Training').length).toBeGreaterThan(0);
     expect(screen.getAllByText('App-Powered Progress & Check-Ins').length).toBeGreaterThan(0);
@@ -36,7 +36,7 @@ describe('WhatIOfferSection', () => {
 
     // Coaching workflow steps
     expect(screen.getByText('Procesul de Coaching')).toBeDefined();
-    expect(screen.getByText('Cum Lucrează Diana Cu Tine')).toBeDefined();
+    expect(screen.getByText('Cum lucrez cu tine')).toBeDefined();
     expect(screen.getAllByText('Apel Inițial de Cunoaștere').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Începerea Antrenamentelor').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Monitorizare în Aplicație & Check-In').length).toBeGreaterThan(0);

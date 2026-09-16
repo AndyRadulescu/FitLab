@@ -9,7 +9,7 @@ describe('FinalCtaSection', () => {
     render(Component);
 
     expect(screen.getByText('Ready to Build a Sustainable, Science-Backed Body?')).toBeDefined();
-    const link = screen.getByRole('link', { name: /Message Diana on Instagram/i });
+    const link = screen.getByRole('link', { name: /DM on IG/i });
     expect(link).toBeDefined();
     expect(link.getAttribute('href')).toBe('https://www.instagram.com/dianabucelea/');
     expect(link.getAttribute('target')).toBe('_blank');
@@ -20,7 +20,7 @@ describe('FinalCtaSection', () => {
     render(Component);
 
     expect(screen.getByText('Ești Gata Să Îți Transformi Corpul Pe Baze Științifice?')).toBeDefined();
-    const link = screen.getByRole('link', { name: /Scrie-i Dianei pe Instagram/i });
+    const link = screen.getByRole('link', { name: /DM pe Insta/i });
     expect(link).toBeDefined();
   });
 });
