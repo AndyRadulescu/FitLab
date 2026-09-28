@@ -42,16 +42,21 @@ export default function MobileCardsScroller({
     const track = trackRef.current;
     if (!track) return;
     const x = -Math.round(offset * 100) / 100;
-    track.style.transform = `translate3d(${x}px, 0, 0)`;
-    (track.style as CSSStyleDeclaration & { webkitTransform?: string }).webkitTransform =
-      `translate3d(${x}px, 0, 0)`;
+    track.style.transform = `translateX(${x}px)`;
+    (
+      track.style as CSSStyleDeclaration & { webkitTransform?: string }
+    ).webkitTransform = `translateX(${x})`;
   }, []);
 
   const updateWrapWidth = useCallback(() => {
     const track = trackRef.current;
     if (!track || childArray.length === 0) return;
     const firstOrig = track.children[0] as HTMLElement | undefined;
-    const firstClone = track.children[childArray.length] as HTMLElement | undefined;
+    const firstClone = track.children[childArray.length] as
+      | HTMLElement
+      | undefined;
+    console.log('orig', firstOrig?.offsetLeft);
+    console.log('clone', firstClone?.offsetLeft);
     if (firstClone && firstOrig) {
       const dist = firstClone.offsetLeft - firstOrig.offsetLeft;
       if (dist > 0) {
@@ -82,7 +87,7 @@ export default function MobileCardsScroller({
         isPausedRef.current = false;
       }, delay);
     },
-    [resumeDelay]
+    [resumeDelay],
   );
 
   const runMomentum = useCallback(
@@ -124,7 +129,7 @@ export default function MobileCardsScroller({
 
       momentumRafRef.current = requestAnimationFrame(momentumStep);
     },
-    [applyTransform, resumeDelay, scheduleResume]
+    [applyTransform, resumeDelay, scheduleResume],
   );
 
   // Auto-scroll loop using requestAnimationFrame with delta-time calculation
@@ -148,13 +153,15 @@ export default function MobileCardsScroller({
         !isDraggingRef.current &&
         !momentumRafRef.current &&
         isIntersectingRef.current &&
-        wrapWidthRef.current > 0
+        wrapWidthRef.current - 250 > 0
       ) {
         const delta = (speed * dt) / (1000 / 60);
         let newOffset = currentOffsetRef.current + delta;
         const wrapWidth = wrapWidthRef.current;
+        console.log(wrapWidth);
         if (wrapWidth > 0) {
-          newOffset = ((newOffset % wrapWidth) + wrapWidth) % wrapWidth;
+          newOffset =
+            ((newOffset % (wrapWidth - wrapWidth / 2)) + wrapWidth) % wrapWidth;
         }
         currentOffsetRef.current = newOffset;
         applyTransform(newOffset);
@@ -184,7 +191,7 @@ export default function MobileCardsScroller({
         (entries) => {
           isIntersectingRef.current = entries[0]?.isIntersecting ?? true;
         },
-        { threshold: 0.05 }
+        { threshold: 0.05 },
       );
       intersectionObserver.observe(containerRef.current);
     }
@@ -300,7 +307,8 @@ export default function MobileCardsScroller({
         let avgVelocity = 0;
         if (recentVelocities.length > 0) {
           avgVelocity =
-            recentVelocities.reduce((sum, v) => sum + v, 0) / recentVelocities.length;
+            recentVelocities.reduce((sum, v) => sum + v, 0) /
+            recentVelocities.length;
         }
 
         if (Math.abs(avgVelocity) > 0.15) {
@@ -339,7 +347,13 @@ export default function MobileCardsScroller({
       container.removeEventListener('touchend', onTouchEnd);
       container.removeEventListener('touchcancel', onTouchCancel);
     };
-  }, [applyTransform, pauseAutoScroll, resumeDelay, runMomentum, scheduleResume]);
+  }, [
+    applyTransform,
+    pauseAutoScroll,
+    resumeDelay,
+    runMomentum,
+    scheduleResume,
+  ]);
 
   // Pointer drag events for desktop mouse users
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -453,7 +467,11 @@ export default function MobileCardsScroller({
   return (
     <div
       ref={containerRef}
-      className={clsx(styles.container, isDragging && styles.isDragging, className)}
+      className={clsx(
+        styles.container,
+        isDragging && styles.isDragging,
+        className,
+      )}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}

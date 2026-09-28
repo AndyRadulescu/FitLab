@@ -196,17 +196,6 @@
   filter: blur(40px);
 }
 
-.mobileScrollerWrapper {
-  display: block;
-  margin-top: 4rem;
-  margin-left: -1.5rem;
-  margin-right: -1.5rem;
-
-  @media (min-width: 769px) {
-    display: none;
-  }
-}
-
 .captionWrapper {
   margin-top: 3.5rem;
   text-align: center;
