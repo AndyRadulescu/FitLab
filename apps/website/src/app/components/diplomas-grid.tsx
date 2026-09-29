@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { Award } from 'lucide-react';
+import clsx from 'clsx';
+import MobileCardsScroller from './mobile-cards-scroller';
 import { Locale, defaultLocale } from '../i18n/utils';
 import styles from './diplomas-grid.module.scss';
 
@@ -123,6 +125,44 @@ export default function DiplomasGrid({ locale = defaultLocale }: DiplomasGridPro
       : 'Years of continuous study in nutrition, exercise physiology, and clinical research interpretation.',
   };
 
+  const renderDiplomaCard = (item: DiplomaItem, isScroller = false) => {
+    const title = isRo ? item.titleRo : item.titleEn;
+    const issuer = isRo ? item.issuerRo : item.issuerEn;
+
+    return (
+      <div
+        key={`${isScroller ? 'scroll-' : 'grid-'}${item.id}`}
+        className={clsx(styles.diplomaCard, isScroller && styles.scrollerCard)}
+        aria-label={`${title} - ${issuer}`}
+      >
+        {/* Image preserving natural aspect ratio on desktop, uniform contain on mobile scroller */}
+        <div className={clsx(styles.imageWrapper, isScroller && styles.scrollerImageWrapper)}>
+          <Image
+            src={encodeURI(item.src)}
+            alt={title}
+            width={item.width}
+            height={item.height}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className={clsx(styles.cardImage, isScroller && styles.scrollerCardImage)}
+            loading="lazy"
+          />
+
+          {/* Hover Sheen */}
+          <div className={styles.hoverOverlay} aria-hidden="true" />
+        </div>
+
+        {/* Footer Info */}
+        <div className={styles.cardFooter}>
+          <h3 className={styles.cardTitle}>{title}</h3>
+          <p className={styles.cardIssuer}>
+            <span className={styles.issuerDot} aria-hidden="true" />
+            {issuer}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section className={styles.diplomasSection} aria-label={strings.title}>
       {/* Subtle top ambient glow */}
@@ -139,45 +179,16 @@ export default function DiplomasGrid({ locale = defaultLocale }: DiplomasGridPro
           <p className={styles.subtitle}>{strings.subtitle}</p>
         </header>
 
-        {/* Dynamic Masonry Columns */}
+        {/* Desktop Dynamic Masonry Columns (>= 769px) */}
         <div className={styles.masonryGrid}>
-          {DIPLOMAS.map((item) => {
-            const title = isRo ? item.titleRo : item.titleEn;
-            const issuer = isRo ? item.issuerRo : item.issuerEn;
+          {DIPLOMAS.map((item) => renderDiplomaCard(item, false))}
+        </div>
 
-            return (
-              <div
-                key={item.id}
-                className={styles.diplomaCard}
-                aria-label={`${title} - ${issuer}`}
-              >
-                {/* Image preserving natural aspect ratio */}
-                <div className={styles.imageWrapper}>
-                  <Image
-                    src={encodeURI(item.src)}
-                    alt={title}
-                    width={item.width}
-                    height={item.height}
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className={styles.cardImage}
-                    loading="lazy"
-                  />
-
-                  {/* Hover Sheen */}
-                  <div className={styles.hoverOverlay} aria-hidden="true" />
-                </div>
-
-                {/* Footer Info */}
-                <div className={styles.cardFooter}>
-                  <h3 className={styles.cardTitle}>{title}</h3>
-                  <p className={styles.cardIssuer}>
-                    <span className={styles.issuerDot} aria-hidden="true" />
-                    {issuer}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
+        {/* Mobile Horizontal Scroller (< 769px) */}
+        <div className={clsx('mobileScrollerWrapper', styles.scrollerWrapper)}>
+          <MobileCardsScroller speed={0.9}>
+            {DIPLOMAS.map((item) => renderDiplomaCard(item, true))}
+          </MobileCardsScroller>
         </div>
       </div>
     </section>
