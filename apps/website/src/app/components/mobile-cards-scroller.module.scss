@@ -19,18 +19,26 @@
   }
 }
 
-.track {
+.setA {
+  position: relative;
   display: flex;
   gap: 1rem;
   width: max-content;
-  padding: 0.5rem 0.25rem 0.875rem 0.25rem;
+  padding: 0.5rem 0.5rem 0.875rem 0.5rem;
   will-change: transform;
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-perspective: 1000;
-  perspective: 1000;
+  transform: translateX(0);
+}
+
+.setB {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  padding: 0.5rem 0.5rem 0.875rem 0.5rem;
+  will-change: transform;
+  transform: translateX(0);
 }
 
 .item {
@@ -39,10 +47,6 @@
   max-width: 82vw;
   flex-shrink: 0;
   display: flex;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 
   & > * {
     width: 100%;

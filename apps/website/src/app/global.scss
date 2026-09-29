@@ -84,3 +84,14 @@
     background-repeat: no-repeat;
   }
 }
+
+.mobileScrollerWrapper {
+  display: block;
+  margin-top: 4rem;
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+
+  @media (min-width: 769px) {
+    display: none;
+  }
+}

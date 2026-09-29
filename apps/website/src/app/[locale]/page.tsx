@@ -78,7 +78,7 @@ export async function generateMetadata({
       card: 'summary_large_image',
       title,
       description,
-      images: ['/amazonia-fitlab.jpg'],
+      images: ['/amazonia-fitlab-fhgsaf.jpg'],
     },
     alternates: {
       canonical: canonicalUrl,

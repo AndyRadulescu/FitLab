@@ -21,20 +21,18 @@ export default async function AppShowcaseSection({
   const { t } = await getServerTranslations(locale);
 
   return (
-    <section id="app-showcase" className={styles.showcaseSection} aria-label={t('appShowcase.eyebrow')}>
+    <section
+      id="app-showcase"
+      className={styles.showcaseSection}
+      aria-label={t('appShowcase.eyebrow')}
+    >
       <GlassyReflection showGlowOnMobile={false} showLineOnMobile={true} />
       <div className={styles.container}>
         {/* Section Header */}
         <div className={styles.header}>
-          <h2 className={styles.eyebrow}>
-            {t('appShowcase.eyebrow')}
-          </h2>
-          <h3 className={styles.title}>
-            {t('appShowcase.title')}
-          </h3>
-          <p className={styles.subtitle}>
-            {t('appShowcase.subtitle')}
-          </p>
+          <h2 className={styles.eyebrow}>{t('appShowcase.eyebrow')}</h2>
+          <h3 className={styles.title}>{t('appShowcase.title')}</h3>
+          <p className={styles.subtitle}>{t('appShowcase.subtitle')}</p>
         </div>
 
         {/* Showcase Grid */}
@@ -101,7 +99,7 @@ export default async function AppShowcaseSection({
         </div>
 
         {/* Mobile Horizontal Scroller (visible on <768px, hidden on >768px) */}
-        <div className={styles.mobileScrollerWrapper}>
+        <div className="mobileScrollerWrapper">
           <MobileCardsScroller>
             <FeatureCard
               icon={<ClipboardCheck size={24} />}
@@ -148,9 +146,7 @@ export default async function AppShowcaseSection({
 
         {/* Short copy under the phone and features */}
         <div className={styles.captionWrapper}>
-          <p className={styles.caption}>
-            {t('appShowcase.caption')}
-          </p>
+          <p className={styles.caption}>{t('appShowcase.caption')}</p>
         </div>
       </div>
     </section>

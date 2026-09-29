@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     title: 'Diana Bucelea | Amazonia - FitLab | Personal Trainer & Nutritionist',
     description:
       'Diana Bucelea - Antrenor personal și nutriționist certificat la Amazonia FitLab. Programe personalizate de fitness și nutriție bazate pe știință, fără restricții absurde.',
-    images: ['/amazonia-fitlab.jpg'],
+    images: ['/amazonia-fitlab-fhgsaf.jpg'],
   },
   robots: {
     index: true,

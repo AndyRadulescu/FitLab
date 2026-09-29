@@ -44,8 +44,6 @@ export default async function AboutMeContent({
             <p className="font-semibold text-white">
               {t('aboutMe.highlight')}
             </p>
-            <p>{t('aboutMe.p3')}</p>
-            <p>{t('aboutMe.p4')}</p>
           </div>
         </div>
       </div>

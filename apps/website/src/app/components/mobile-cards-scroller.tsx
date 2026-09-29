@@ -7,6 +7,7 @@ import styles from './mobile-cards-scroller.module.scss';
 export interface MobileCardsScrollerProps {
   children: React.ReactNode;
   className?: string;
+  itemClassName?: string;
   speed?: number;
   resumeDelay?: number;
 }
@@ -14,14 +15,16 @@ export interface MobileCardsScrollerProps {
 export default function MobileCardsScroller({
   children,
   className,
-  speed = 0.6,
-  resumeDelay = 2500,
+  itemClassName,
+  speed = 0.9,
+  resumeDelay = 1200,
 }: MobileCardsScrollerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const setARef = useRef<HTMLDivElement>(null);
+  const setBRef = useRef<HTMLDivElement>(null);
 
   const currentOffsetRef = useRef(0);
-  const wrapWidthRef = useRef(0);
+  const setWidthRef = useRef(0);
 
   const isPausedRef = useRef(false);
   const isDraggingRef = useRef(false);
@@ -29,7 +32,6 @@ export default function MobileCardsScroller({
 
   const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rafIdRef = useRef<number | null>(null);
-  const momentumRafRef = useRef<number | null>(null);
   const hasDraggedRef = useRef(false);
   const isIntersectingRef = useRef(true);
 
@@ -38,32 +40,34 @@ export default function MobileCardsScroller({
 
   const childArray = React.Children.toArray(children);
 
-  const applyTransform = useCallback((offset: number) => {
-    const track = trackRef.current;
-    if (!track) return;
-    const x = -Math.round(offset * 100) / 100;
-    track.style.transform = `translate3d(${x}px, 0, 0)`;
-    (track.style as CSSStyleDeclaration & { webkitTransform?: string }).webkitTransform =
-      `translate3d(${x}px, 0, 0)`;
+  const renderPositions = useCallback(() => {
+    const W = setWidthRef.current;
+    if (W <= 0 || !setARef.current || !setBRef.current) return;
+
+    let s = currentOffsetRef.current % (2 * W);
+    if (s < 0) s += 2 * W;
+
+    let posA = -s;
+    if (posA < -W) posA += 2 * W;
+
+    let posB = W - s;
+    if (posB < -W) posB += 2 * W;
+
+    const roundA = Math.round(posA * 100) / 100;
+    const roundB = Math.round(posB * 100) / 100;
+
+    setARef.current.style.transform = `translateX(${roundA}px)`;
+    setBRef.current.style.transform = `translateX(${roundB}px)`;
   }, []);
 
-  const updateWrapWidth = useCallback(() => {
-    const track = trackRef.current;
-    if (!track || childArray.length === 0) return;
-    const firstOrig = track.children[0] as HTMLElement | undefined;
-    const firstClone = track.children[childArray.length] as HTMLElement | undefined;
-    if (firstClone && firstOrig) {
-      const dist = firstClone.offsetLeft - firstOrig.offsetLeft;
-      if (dist > 0) {
-        wrapWidthRef.current = dist;
-        return;
-      }
+  const updateSetWidth = useCallback(() => {
+    if (!setARef.current) return;
+    const measured = setARef.current.offsetWidth || setARef.current.scrollWidth;
+    if (measured > 0) {
+      setWidthRef.current = measured;
+      renderPositions();
     }
-    const half = track.scrollWidth / 2;
-    if (half > 0) {
-      wrapWidthRef.current = half;
-    }
-  }, [childArray.length]);
+  }, [renderPositions]);
 
   const pauseAutoScroll = useCallback(() => {
     isPausedRef.current = true;
@@ -85,51 +89,8 @@ export default function MobileCardsScroller({
     [resumeDelay]
   );
 
-  const runMomentum = useCallback(
-    (initialVx: number) => {
-      if (momentumRafRef.current) {
-        cancelAnimationFrame(momentumRafRef.current);
-      }
-      let vx = initialVx;
-      let lastTime = performance.now();
-
-      const momentumStep = (now: number) => {
-        if (isDraggingRef.current) {
-          momentumRafRef.current = null;
-          return;
-        }
-
-        const dt = Math.min(now - lastTime, 64);
-        lastTime = now;
-
-        const delta = vx * dt;
-        let newOffset = currentOffsetRef.current - delta;
-        const wrapWidth = wrapWidthRef.current;
-        if (wrapWidth > 0) {
-          newOffset = ((newOffset % wrapWidth) + wrapWidth) % wrapWidth;
-        }
-        currentOffsetRef.current = newOffset;
-        applyTransform(newOffset);
-
-        const friction = Math.pow(0.92, dt / 16.67);
-        vx *= friction;
-
-        if (Math.abs(vx) > 0.05) {
-          momentumRafRef.current = requestAnimationFrame(momentumStep);
-        } else {
-          momentumRafRef.current = null;
-          scheduleResume(resumeDelay);
-        }
-      };
-
-      momentumRafRef.current = requestAnimationFrame(momentumStep);
-    },
-    [applyTransform, resumeDelay, scheduleResume]
-  );
-
-  // Auto-scroll loop using requestAnimationFrame with delta-time calculation
   useEffect(() => {
-    updateWrapWidth();
+    updateSetWidth();
 
     let lastFrameTime = performance.now();
 
@@ -146,18 +107,12 @@ export default function MobileCardsScroller({
         !prefersReducedMotion &&
         !isPausedRef.current &&
         !isDraggingRef.current &&
-        !momentumRafRef.current &&
         isIntersectingRef.current &&
-        wrapWidthRef.current > 0
+        setWidthRef.current > 0
       ) {
         const delta = (speed * dt) / (1000 / 60);
-        let newOffset = currentOffsetRef.current + delta;
-        const wrapWidth = wrapWidthRef.current;
-        if (wrapWidth > 0) {
-          newOffset = ((newOffset % wrapWidth) + wrapWidth) % wrapWidth;
-        }
-        currentOffsetRef.current = newOffset;
-        applyTransform(newOffset);
+        currentOffsetRef.current += delta;
+        renderPositions();
       }
 
       rafIdRef.current = requestAnimationFrame(step);
@@ -166,15 +121,15 @@ export default function MobileCardsScroller({
     rafIdRef.current = requestAnimationFrame(step);
 
     let resizeObserver: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== 'undefined' && trackRef.current) {
+    if (typeof ResizeObserver !== 'undefined' && setARef.current) {
       resizeObserver = new ResizeObserver(() => {
-        updateWrapWidth();
+        updateSetWidth();
       });
-      resizeObserver.observe(trackRef.current);
+      resizeObserver.observe(setARef.current);
     }
 
     const handleWindowResize = () => {
-      updateWrapWidth();
+      updateSetWidth();
     };
     window.addEventListener('resize', handleWindowResize);
 
@@ -193,9 +148,6 @@ export default function MobileCardsScroller({
       if (rafIdRef.current) {
         cancelAnimationFrame(rafIdRef.current);
       }
-      if (momentumRafRef.current) {
-        cancelAnimationFrame(momentumRafRef.current);
-      }
       if (resizeObserver) {
         resizeObserver.disconnect();
       }
@@ -207,150 +159,11 @@ export default function MobileCardsScroller({
         clearTimeout(resumeTimeoutRef.current);
       }
     };
-  }, [speed, applyTransform, updateWrapWidth]);
+  }, [speed, renderPositions, updateSetWidth]);
 
-  // Bullet-proof WebKit/iOS touch gesture handling with directional locking
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchStartOffset = 0;
-    let isTouchDragging = false;
-    let touchIntent: 'horizontal' | 'vertical' | null = null;
-    let lastTouchX = 0;
-    let lastTouchTime = 0;
-    let recentVelocities: number[] = [];
-
-    const onTouchStart = (e: TouchEvent) => {
-      if (e.touches && e.touches.length > 1) return;
-      const touch = e.touches ? e.touches[0] : null;
-      if (!touch) return;
-
-      touchStartX = touch.clientX;
-      touchStartY = touch.clientY;
-      lastTouchX = touch.clientX;
-      lastTouchTime = performance.now();
-      touchStartOffset = currentOffsetRef.current;
-      isTouchDragging = false;
-      touchIntent = null;
-      recentVelocities = [];
-
-      if (momentumRafRef.current) {
-        cancelAnimationFrame(momentumRafRef.current);
-        momentumRafRef.current = null;
-      }
-      pauseAutoScroll();
-    };
-
-    const onTouchMove = (e: TouchEvent) => {
-      if (e.touches && e.touches.length > 1) return;
-      const touch = e.touches ? e.touches[0] : null;
-      if (!touch) return;
-
-      const dx = touch.clientX - touchStartX;
-      const dy = touch.clientY - touchStartY;
-
-      if (touchIntent === null) {
-        if (Math.abs(dx) < 6 && Math.abs(dy) < 6) return;
-        if (Math.abs(dy) >= Math.abs(dx)) {
-          touchIntent = 'vertical';
-          return;
-        } else {
-          touchIntent = 'horizontal';
-          isTouchDragging = true;
-          isDraggingRef.current = true;
-          setIsDragging(true);
-          hasDraggedRef.current = true;
-        }
-      }
-
-      if (touchIntent === 'horizontal') {
-        if (e.cancelable) {
-          e.preventDefault();
-        }
-        const wrapWidth = wrapWidthRef.current;
-        let newOffset = touchStartOffset - dx;
-        if (wrapWidth > 0) {
-          newOffset = ((newOffset % wrapWidth) + wrapWidth) % wrapWidth;
-        }
-        currentOffsetRef.current = newOffset;
-        applyTransform(newOffset);
-
-        const now = performance.now();
-        const dt = now - lastTouchTime;
-        if (dt > 8) {
-          const v = (touch.clientX - lastTouchX) / dt;
-          recentVelocities.push(v);
-          if (recentVelocities.length > 5) {
-            recentVelocities.shift();
-          }
-          lastTouchX = touch.clientX;
-          lastTouchTime = now;
-        }
-      }
-    };
-
-    const onTouchEnd = () => {
-      if (touchIntent === 'horizontal' || isTouchDragging) {
-        isDraggingRef.current = false;
-        setIsDragging(false);
-
-        let avgVelocity = 0;
-        if (recentVelocities.length > 0) {
-          avgVelocity =
-            recentVelocities.reduce((sum, v) => sum + v, 0) / recentVelocities.length;
-        }
-
-        if (Math.abs(avgVelocity) > 0.15) {
-          runMomentum(avgVelocity);
-        } else {
-          scheduleResume(resumeDelay);
-        }
-
-        setTimeout(() => {
-          hasDraggedRef.current = false;
-        }, 80);
-      } else {
-        scheduleResume(resumeDelay);
-      }
-
-      touchIntent = null;
-      isTouchDragging = false;
-    };
-
-    const onTouchCancel = () => {
-      isDraggingRef.current = false;
-      setIsDragging(false);
-      touchIntent = null;
-      isTouchDragging = false;
-      scheduleResume(resumeDelay);
-    };
-
-    container.addEventListener('touchstart', onTouchStart, { passive: true });
-    container.addEventListener('touchmove', onTouchMove, { passive: false });
-    container.addEventListener('touchend', onTouchEnd, { passive: true });
-    container.addEventListener('touchcancel', onTouchCancel, { passive: true });
-
-    return () => {
-      container.removeEventListener('touchstart', onTouchStart);
-      container.removeEventListener('touchmove', onTouchMove);
-      container.removeEventListener('touchend', onTouchEnd);
-      container.removeEventListener('touchcancel', onTouchCancel);
-    };
-  }, [applyTransform, pauseAutoScroll, resumeDelay, runMomentum, scheduleResume]);
-
-  // Pointer drag events for desktop mouse users
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType === 'touch') return;
     if (e.button !== 0) return;
-
     pauseAutoScroll();
-    if (momentumRafRef.current) {
-      cancelAnimationFrame(momentumRafRef.current);
-      momentumRafRef.current = null;
-    }
     isDraggingRef.current = true;
     setIsDragging(true);
     hasDraggedRef.current = false;
@@ -360,27 +173,22 @@ export default function MobileCardsScroller({
     try {
       e.currentTarget.setPointerCapture(e.pointerId);
     } catch {
-      // Ignored for environments where setPointerCapture isn't supported
+      // Ignored if not supported
     }
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDraggingRef.current || e.pointerType === 'touch') return;
+    if (!isDraggingRef.current) return;
     const deltaX = e.clientX - startXRef.current;
     if (Math.abs(deltaX) > 5) {
       hasDraggedRef.current = true;
     }
-    const wrapWidth = wrapWidthRef.current;
-    let newOffset = startOffsetRef.current - deltaX;
-    if (wrapWidth > 0) {
-      newOffset = ((newOffset % wrapWidth) + wrapWidth) % wrapWidth;
-    }
-    currentOffsetRef.current = newOffset;
-    applyTransform(newOffset);
+    currentOffsetRef.current = startOffsetRef.current - deltaX;
+    renderPositions();
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDraggingRef.current || e.pointerType === 'touch') return;
+    if (!isDraggingRef.current) return;
     isDraggingRef.current = false;
     setIsDragging(false);
 
@@ -396,23 +204,11 @@ export default function MobileCardsScroller({
     }, 80);
   };
 
-  const handlePointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
-    if (!isDraggingRef.current || e.pointerType === 'touch') return;
-    isDraggingRef.current = false;
-    setIsDragging(false);
-    scheduleResume(resumeDelay);
-  };
-
   const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
       pauseAutoScroll();
-      const wrapWidth = wrapWidthRef.current;
-      let newOffset = currentOffsetRef.current + e.deltaX;
-      if (wrapWidth > 0) {
-        newOffset = ((newOffset % wrapWidth) + wrapWidth) % wrapWidth;
-      }
-      currentOffsetRef.current = newOffset;
-      applyTransform(newOffset);
+      currentOffsetRef.current += e.deltaX;
+      renderPositions();
       scheduleResume(resumeDelay);
     }
   };
@@ -421,24 +217,14 @@ export default function MobileCardsScroller({
     if (e.key === 'ArrowRight') {
       e.preventDefault();
       pauseAutoScroll();
-      const wrapWidth = wrapWidthRef.current;
-      let newOffset = currentOffsetRef.current + 150;
-      if (wrapWidth > 0) {
-        newOffset = ((newOffset % wrapWidth) + wrapWidth) % wrapWidth;
-      }
-      currentOffsetRef.current = newOffset;
-      applyTransform(newOffset);
+      currentOffsetRef.current += 150;
+      renderPositions();
       scheduleResume(resumeDelay);
     } else if (e.key === 'ArrowLeft') {
       e.preventDefault();
       pauseAutoScroll();
-      const wrapWidth = wrapWidthRef.current;
-      let newOffset = currentOffsetRef.current - 150;
-      if (wrapWidth > 0) {
-        newOffset = ((newOffset % wrapWidth) + wrapWidth) % wrapWidth;
-      }
-      currentOffsetRef.current = newOffset;
-      applyTransform(newOffset);
+      currentOffsetRef.current -= 150;
+      renderPositions();
       scheduleResume(resumeDelay);
     }
   };
@@ -457,15 +243,11 @@ export default function MobileCardsScroller({
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerCancel}
+      onPointerCancel={handlePointerUp}
       onTouchStart={pauseAutoScroll}
       onTouchEnd={() => scheduleResume(resumeDelay)}
       onMouseEnter={pauseAutoScroll}
-      onMouseLeave={() => {
-        if (!isDraggingRef.current) {
-          scheduleResume(1000);
-        }
-      }}
+      onMouseLeave={() => scheduleResume(1000)}
       onWheel={handleWheel}
       onKeyDown={handleKeyDown}
       onClickCapture={handleClickCapture}
@@ -473,16 +255,18 @@ export default function MobileCardsScroller({
       role="region"
       aria-label="Features carousel"
     >
-      <div ref={trackRef} className={styles.track}>
-        {/* Primary set */}
+      {/* Set A: Primary set, in layout flow */}
+      <div ref={setARef} className={styles.setA}>
         {childArray.map((child, i) => (
-          <div key={`orig-${i}`} className={styles.item}>
+          <div key={`orig-${i}`} className={clsx(styles.item, itemClassName)}>
             {child}
           </div>
         ))}
-        {/* Cloned set for seamless infinite wrap */}
+      </div>
+      {/* Set B: Detached duplicate set, positioned absolutely */}
+      <div ref={setBRef} className={styles.setB} aria-hidden="true">
         {childArray.map((child, i) => (
-          <div key={`clone-${i}`} className={styles.item} aria-hidden="true">
+          <div key={`clone-${i}`} className={clsx(styles.item, itemClassName)} tabIndex={-1}>
             {child}
           </div>
         ))}
