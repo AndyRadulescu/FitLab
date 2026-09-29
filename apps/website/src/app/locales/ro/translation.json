@@ -2,6 +2,7 @@
   "nav": {
     "home": "Acasă",
     "aboutMe": "Despre mine",
+    "testimonials": "Testimoniale",
     "terms": "Termeni și condiții",
     "privacyPolicy": "Politică de confidențialitate",
     "dataDeletion": "Ștergere date",
@@ -156,5 +157,27 @@
     "checkFormula": "Vezi formula noastră.",
     "skip": "Sari seria",
     "accept": "Dă totul 💪"
+  },
+  "testimonialsPage": {
+    "metaTitle": "Rezultate Clienți, Mese & Testimoniale | Diana Bucelea - Amazonia FitLab",
+    "metaDescription": "Vezi transformările reale ale clienților, mesele sustenabile și feedback-ul direct primit în urma coaching-ului de fitness bazat pe știință oferit de Diana Bucelea.",
+    "eyebrow": "Povești de Succes & Feedback",
+    "title": "Transformări Reale, Păreri Autentice",
+    "subtitle": "Descoperă rezultatele fizice, alimentația echilibrată și experiențele clienților obținute prin coaching fundamentat științific.",
+    "results": {
+      "eyebrow": "Transformări",
+      "title": "Rezultate Reale & Măsurabile",
+      "intro": "Educația mea continuă îmi permite să disting recomandările susținute de dovezi științifice de informațiile promovate doar pentru că sunt populare. De aceea, procesul meu de coaching începe cu o analiză completă a nevoilor, obiectivelor și stilului tău de viață, nu cu un plan standard."
+    },
+    "food": {
+      "eyebrow": "Nutriție Sustenabilă",
+      "title": "Alimentație Fără Restricții Absurde",
+      "intro": "Fiecare strategie este personalizată, fundamentată pe cele mai bune dovezi disponibile și explicată clar, astfel încât să înțelegi nu doar ce ai de făcut, ci și de ce. Pun accent pe rezultate sustenabile, educație și autonomie, pentru ca obiectivul final nu este să depinzi permanent de un coach, ci să capeți încrederea și cunoștințele necesare pentru a lua singur decizii bune pe termen lung."
+    },
+    "testimonials": {
+      "eyebrow": "Feedback Verificat",
+      "title": "Ce Spun Clienții",
+      "subtitle": "Mesaje reale și păreri nefiltrate de la persoane care au ales să lucreze cu Diana pentru putere, compoziție corporală și autonomie."
+    }
   }
 }

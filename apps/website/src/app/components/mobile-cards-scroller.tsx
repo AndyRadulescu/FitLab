@@ -7,6 +7,7 @@ import styles from './mobile-cards-scroller.module.scss';
 export interface MobileCardsScrollerProps {
   children: React.ReactNode;
   className?: string;
+  itemClassName?: string;
   speed?: number;
   resumeDelay?: number;
 }
@@ -14,6 +15,7 @@ export interface MobileCardsScrollerProps {
 export default function MobileCardsScroller({
   children,
   className,
+  itemClassName,
   speed = 0.9,
   resumeDelay = 1200,
 }: MobileCardsScrollerProps) {
@@ -256,7 +258,7 @@ export default function MobileCardsScroller({
       {/* Set A: Primary set, in layout flow */}
       <div ref={setARef} className={styles.setA}>
         {childArray.map((child, i) => (
-          <div key={`orig-${i}`} className={styles.item}>
+          <div key={`orig-${i}`} className={clsx(styles.item, itemClassName)}>
             {child}
           </div>
         ))}
@@ -264,7 +266,7 @@ export default function MobileCardsScroller({
       {/* Set B: Detached duplicate set, positioned absolutely */}
       <div ref={setBRef} className={styles.setB} aria-hidden="true">
         {childArray.map((child, i) => (
-          <div key={`clone-${i}`} className={styles.item} tabIndex={-1}>
+          <div key={`clone-${i}`} className={clsx(styles.item, itemClassName)} tabIndex={-1}>
             {child}
           </div>
         ))}

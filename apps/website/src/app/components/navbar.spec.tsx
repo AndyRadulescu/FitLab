@@ -26,6 +26,7 @@ describe('Navbar', () => {
     expect(screen.getByText('FitLab')).toBeDefined();
     expect(screen.getAllByText('Home').length).toBeGreaterThan(0);
     expect(screen.getAllByText('About Me').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('Testimonials').length).toBeGreaterThan(0);
   });
 
   it('renders Instagram link pointing to Diana Bucelea profile', () => {

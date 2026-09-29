@@ -1,0 +1,191 @@
+.foodSection {
+  position: relative;
+  width: 100%;
+  background-color: #000000;
+  padding-top: 3rem;
+  padding-bottom: 6rem;
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    padding-top: 4rem;
+    padding-bottom: 8rem;
+  }
+}
+
+.ambientGlow {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 650px;
+  max-width: 100%;
+  height: 350px;
+  background: radial-gradient(circle, rgba(234, 179, 8, 0.07) 0%, transparent 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.container {
+  position: relative;
+  z-index: 10;
+  max-width: 72rem; /* 1152px */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 4rem;
+  }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+
+  @media (min-width: 640px) {
+    font-size: 0.75rem;
+  }
+}
+
+.title {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 1.25rem;
+
+  @media (min-width: 640px) {
+    font-size: 2.25rem; /* 36px */
+  }
+
+  @media (min-width: 768px) {
+    font-size: 2.75rem; /* 44px */
+  }
+}
+
+.intro {
+  font-size: 0.9375rem; /* 15px */
+  line-height: 1.7;
+  color: #d4d4d8; /* zinc-300 */
+  max-width: 44rem;
+  margin-left: auto;
+  margin-right: auto;
+
+  @media (min-width: 640px) {
+    font-size: 1.0625rem; /* 17px */
+  }
+}
+
+/* Dynamic Masonry Columns (Desktop: >= 769px) */
+.masonryGrid {
+  display: none;
+
+  @media (min-width: 769px) {
+    display: block;
+    column-count: 2;
+    column-gap: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    column-count: 3;
+    column-gap: 1.75rem;
+  }
+}
+
+.scrollerWrapper {
+  margin-top: 1rem;
+}
+
+.mediaCard {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: rgba(18, 18, 22, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease,
+              background 0.35s ease;
+
+  @media (min-width: 1024px) {
+    margin-bottom: 1.75rem;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    background: rgba(24, 24, 28, 0.9);
+    border-color: rgba(234, 179, 8, 0.45);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(234, 179, 8, 0.12);
+
+    .cardImage {
+      transform: scale(1.02);
+    }
+
+    .hoverOverlay {
+      opacity: 1;
+    }
+  }
+}
+
+.scrollerCard {
+  margin-bottom: 0;
+  height: 100%;
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: #0d0d10;
+}
+
+.scrollerImageWrapper {
+  height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scrollerCardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hoverOverlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(234, 179, 8, 0.12) 0%, rgba(0, 0, 0, 0.3) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}

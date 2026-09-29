@@ -60,6 +60,8 @@ All commands should be run from the root of the monorepo. The workspace is manag
 
 ### Testing
 
+*   **Rule:** **Never add tests for `website` pages or components.** Writing tests for website pages is considered a loss of resources. Testing is focused on the `web-frontend` application and critical utilities.
+
 *   **Run unit tests for the Web Frontend:**
     ```bash
     npx nx test web-frontend
@@ -95,3 +97,4 @@ All commands should be run from the root of the monorepo. The workspace is manag
 *   **State Management:** Global state is managed with Zustand. See `apps/web-frontend/src/app/store` for existing stores.
 *   **Routing:** Application routes are defined in `apps/web-frontend/src/app/routes/router.tsx`.
 *   **Firebase:** Firestore queries are located in `apps/web-frontend/src/app/firestore/queries.ts`. Firebase initialization is handled in `apps/web-frontend/src/init-firebase-auth.ts`.
+*   **Website Testing Policy:** **Never add tests for `website` pages or components** (considered a loss of resources). Focus purely on implementation, visual quality, and build verification.

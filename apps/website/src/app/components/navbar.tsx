@@ -13,6 +13,7 @@ import { defaultLocale } from '../i18n/utils';
 
 export interface NavbarTranslations {
   home?: string;
+  testimonials?: string;
 }
 
 interface NavbarProps {
@@ -57,10 +58,16 @@ export function Navbar({ locale = defaultLocale, translations }: NavbarProps) {
   const homeHref = locale === 'en' ? '/en/' : '/ro/';
   const aboutHref = locale === 'en' ? '/en/about-me/' : '/ro/about-me/';
   const aboutLabel = t.nav.aboutMe || (locale === 'en' ? 'About Me' : 'Despre mine');
+  const testimonialsHref = locale === 'en' ? '/en/testimonials/' : '/ro/testimonials/';
+  const testimonialsLabel =
+    translations?.testimonials ||
+    (t.nav as Record<string, string>).testimonials ||
+    (locale === 'en' ? 'Testimonials' : 'Testimoniale');
 
   const navLinks = [
     { href: homeHref, label: home },
     { href: aboutHref, label: aboutLabel },
+    { href: testimonialsHref, label: testimonialsLabel },
   ];
 
   const isLinkActive = (href: string) => {
