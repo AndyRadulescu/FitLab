@@ -165,9 +165,9 @@ export default function TestimonialsSection({
       {/* Ambient Glow */}
       <div className={styles.ambientGlow} aria-hidden="true" />
 
-      <div className={styles.container}>
+      <div className="">
         {/* Section Header */}
-        <header className={styles.header}>
+        <header className="text-center mb-4 lg:mb-8 px-4">
           <span className={`${styles.eyebrow} primary-text-gradient`}>
             <Sparkles className="w-3.5 h-3.5 text-primary inline" aria-hidden="true" />
             {strings.eyebrow}
