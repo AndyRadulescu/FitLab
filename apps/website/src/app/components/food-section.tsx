@@ -18,11 +18,11 @@ export interface FoodItem {
 export const FOOD_ITEMS: FoodItem[] = [
   {
     id: 'food-1',
-    src: '/food/11c052c3-8232-4f05-bec2-826a5f210760.JPG',
-    width: 900,
-    height: 1600,
-    altEn: 'High-protein balanced meal bowl',
-    altRo: 'Bol cu masă echilibrată bogată în proteine',
+    src: '/food/fcccf7c2-22cf-4c5a-988b-81274eec25b8.JPG',
+    width: 1500,
+    height: 2000,
+    altEn: 'Sustainable nutrition made simple and enjoyable',
+    altRo: 'Nutriție sustenabilă, simplă și plăcută',
   },
   {
     id: 'food-2',
@@ -225,12 +225,12 @@ export const FOOD_ITEMS: FoodItem[] = [
     altRo: 'Farfurie savuroasă și sățioasă',
   },
   {
-    id: 'food-27',
-    src: '/food/fcccf7c2-22cf-4c5a-988b-81274eec25b8.JPG',
-    width: 1500,
-    height: 2000,
-    altEn: 'Sustainable nutrition made simple and enjoyable',
-    altRo: 'Nutriție sustenabilă, simplă și plăcută',
+    id: 'food-1',
+    src: '/food/11c052c3-8232-4f05-bec2-826a5f210760.JPG',
+    width: 900,
+    height: 1600,
+    altEn: 'High-protein balanced meal bowl',
+    altRo: 'Bol cu masă echilibrată bogată în proteine',
   },
 ];
 
@@ -264,7 +264,7 @@ export default function FoodSection({ locale = defaultLocale }: FoodSectionProps
             alt={alt}
             width={item.width}
             height={item.height}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            sizes="(max-width: 640px) 100vw, (max-width: 860px) 50vw, (max-width: 1100px) 25vw, 20vw"
             className={clsx(styles.cardImage, isScroller && styles.scrollerCardImage)}
             loading="lazy"
           />
@@ -279,7 +279,7 @@ export default function FoodSection({ locale = defaultLocale }: FoodSectionProps
       {/* Ambient Glow */}
       <div className={styles.ambientGlow} aria-hidden="true" />
 
-      <div className={styles.container}>
+      <div className="mx-auto px-4 max-w-450">
         {/* Section Header with Eyebrow, Title and p4 Intro */}
         <header className={styles.header}>
           <span className={`${styles.eyebrow} primary-text-gradient`}>
